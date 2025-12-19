@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <div x-data="{ fill(email, password) { $refs.email.value = email; $refs.password.value = password } }">
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -8,7 +9,7 @@
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-text-input x-ref="email" id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -16,7 +17,7 @@
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
+            <x-text-input x-ref="password" id="password" class="block mt-1 w-full"
                             type="password"
                             name="password"
                             required autocomplete="current-password" />
@@ -44,4 +45,26 @@
             </x-primary-button>
         </div>
     </form>
+    @if(app()->environment(['local','dusk']))
+        <div class="mt-6 bg-white border rounded p-4">
+            <p class="text-sm font-medium text-gray-800 mb-3">Demo Login (Local / Testing Only)</p>
+            <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-700">
+                        Instructor — instructor@demo.com
+                    </div>
+                    <button type="button" class="px-3 py-1 rounded bg-[var(--color-secondary)] text-white"
+                            x-on:click="fill('instructor@demo.com','password')">Fill</button>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-700">
+                        Student — student@demo.com
+                    </div>
+                    <button type="button" class="px-3 py-1 rounded bg-[var(--color-secondary)] text-white"
+                            x-on:click="fill('student@demo.com','password')">Fill</button>
+                </div>
+            </div>
+        </div>
+    @endif
+    </div>
 </x-guest-layout>

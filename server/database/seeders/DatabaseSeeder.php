@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AdminSeeder::class);
         $this->call(PageSeeder::class);
-        $this->call(DemoSeeder::class);
+        if (app()->environment(['local','dusk'])) {
+            $this->call(DemoSeeder::class);
+        }
 
         Course::updateOrCreate(
             ['slug' => 'sample-course'],
