@@ -7,6 +7,7 @@
     <div class="py-8 max-w-3xl mx-auto">
         <div class="bg-white p-6 rounded shadow">
             <p class="mb-4">Your payment was received by Stripe. Enrollment will be applied once confirmed by our system.</p>
+            <p class="text-sm text-gray-600 mb-2">You can safely close this page. We will redirect you back once confirmed.</p>
             <p><a class="text-blue-600" href="{{ url('/courses') }}">Back to courses</a></p>
         </div>
     </div>

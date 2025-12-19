@@ -5,7 +5,14 @@
             @forelse ($courses as $course)
                 <x-course.card :course="$course" />
             @empty
-                <p class="text-gray-600">No courses available.</p>
+                <div class="col-span-full bg-white rounded shadow p-8 text-center">
+                    <div class="text-4xl mb-3">🎓</div>
+                    <p class="text-gray-700 font-medium">No courses available yet.</p>
+                    <p class="text-gray-500 text-sm mt-1">Please check back soon.</p>
+                    <div class="mt-4">
+                        <a href="{{ url('/') }}" class="text-blue-600 underline">Go to homepage</a>
+                    </div>
+                </div>
             @endforelse
         </div>
         <div class="mt-6">
@@ -13,4 +20,3 @@
         </div>
     </section>
 </x-public-layout>
-

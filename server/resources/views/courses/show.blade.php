@@ -1,4 +1,9 @@
 <x-public-layout :title="$course->title" :metaDescription="str($course->description)->limit(160)">
+    <nav class="mb-4 text-sm">
+        <a href="{{ route('courses.index') }}" class="underline text-gray-700">Courses</a>
+        <span class="text-gray-500">/</span>
+        <span class="text-gray-700">{{ $course->title }}</span>
+    </nav>
     <article class="max-w-3xl">
         <h1 class="text-3xl font-semibold mb-4">{{ $course->title }}</h1>
         @if ($course->thumbnail_path)
@@ -25,6 +30,9 @@
             </div>
         @endif
         <div class="mt-8">
+            @if (!($course->is_free || (float)$course->price == 0.0))
+                <p class="text-sm text-gray-600 mb-3">Choose a payment method to access all lessons.</p>
+            @endif
             @guest
                 <a href="{{ route('login') }}" class="px-4 py-2 rounded bg-gray-800 text-white">Login to Enroll</a>
             @else

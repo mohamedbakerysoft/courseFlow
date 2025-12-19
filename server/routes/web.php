@@ -40,11 +40,6 @@ Route::get('/courses/{course:slug}/lessons/{lesson:slug}', [LessonController::cl
     ->scopeBindings()
     ->name('lessons.show');
 
-// Provide a post-login landing route expected by auth controller
-Route::get('/dashboard', function () {
-    return redirect()->route('courses.index');
-})->middleware('auth')->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::post('/courses/{course:slug}/checkout', [\App\Http\Controllers\Payments\CheckoutController::class, 'checkout'])->name('payments.checkout');
     Route::get('/payments/success', [\App\Http\Controllers\Payments\CheckoutController::class, 'success'])->name('payments.success');

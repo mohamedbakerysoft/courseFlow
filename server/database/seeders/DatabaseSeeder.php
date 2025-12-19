@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AdminSeeder::class);
         $this->call(PageSeeder::class);
+        $this->call(DemoSeeder::class);
 
         Course::updateOrCreate(
             ['slug' => 'sample-course'],

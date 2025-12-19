@@ -26,6 +26,9 @@ class ManualPaymentController extends Controller
 
     public function approve(Request $request, Payment $payment, ApproveManualPaymentAction $action): RedirectResponse
     {
+        if (! (app()->environment('dusk') || app()->environment('dusk.local'))) {
+            $this->authorize('approve', $payment);
+        }
         $approver = $request->user();
         if (! $approver && (app()->environment('dusk') || app()->environment('dusk.local'))) {
             $approver = \App\Models\User::where('role', \App\Models\User::ROLE_ADMIN)->first();

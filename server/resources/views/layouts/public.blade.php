@@ -11,7 +11,8 @@
         <header class="bg-white border-b">
             <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
                 <a href="/" class="font-semibold">CourseFlow</a>
-                <nav>
+                <nav class="space-x-4">
+                    <a href="{{ route('courses.index') }}" class="text-sm text-gray-700 hover:underline">Courses</a>
                     @if (Route::has('login'))
                         @auth
                             <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 hover:underline">Dashboard</a>
@@ -30,4 +31,3 @@
         </main>
     </body>
 </html>
-

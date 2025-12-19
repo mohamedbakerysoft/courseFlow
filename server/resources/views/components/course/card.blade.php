@@ -11,12 +11,13 @@
             @endif
             <p class="mt-3 font-medium">
                 @if ($course->is_free || (float)$course->price == 0.0)
-                    Free
+                    <span class="inline-flex items-center px-2 py-1 rounded bg-green-100 text-green-700 text-sm">Free</span>
                 @else
-                    {{ number_format((float)$course->price, 2) }} {{ $course->currency }}
+                    <span class="inline-flex items-center px-2 py-1 rounded bg-blue-100 text-blue-700 text-sm">
+                        {{ number_format((float)$course->price, 2) }} {{ $course->currency }}
+                    </span>
                 @endif
             </p>
         </div>
     </a>
 </article>
-

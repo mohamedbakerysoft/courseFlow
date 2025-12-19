@@ -1,5 +1,7 @@
 <x-public-layout :title="$lesson->title" :metaDescription="str($lesson->description)->limit(160)">
     <nav class="mb-4 text-sm">
+        <a href="{{ route('courses.index') }}" class="underline text-gray-700">Courses</a>
+        <span class="text-gray-500">/</span>
         <a href="{{ route('courses.show', $course) }}" class="underline text-gray-700">{{ $course->title }}</a>
         <span class="text-gray-500">/</span>
         <span class="text-gray-700">{{ $lesson->title }}</span>
