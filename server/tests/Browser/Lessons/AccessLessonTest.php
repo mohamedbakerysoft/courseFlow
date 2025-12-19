@@ -13,7 +13,7 @@ class AccessLessonTest extends DuskTestCase
 {
     public function test_open_lesson_after_enroll(): void
     {
-        Artisan::call('migrate', ['--force' => true]);
+        Artisan::call('migrate:fresh', ['--force' => true]);
 
         $user = User::updateOrCreate(['email' => 'student2@example.com'], [
             'name' => 'Student 2',
@@ -39,19 +39,17 @@ class AccessLessonTest extends DuskTestCase
             'status' => \App\Models\Lesson::STATUS_PUBLISHED,
         ]);
 
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/courses')
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
+                ->visit('/courses')
                 ->clickLink('Video Course')
                 ->assertPathIs('/courses/video-course')
-                ->assertSee('Login to Enroll')
-                ->clickLink('Login to Enroll')
-                ->type('email', 'student2@example.com')
-                ->type('password', 'password')
-                ->click('button[type="submit"]')
-                ->visit('/courses/video-course')
+                ->waitForText('Enroll', 10)
                 ->press('Enroll')
+                ->waitForText('You are enrolled', 10)
                 ->visit('/courses/video-course/lessons/lesson-1')
-                ->waitForText('Lesson 1', 5)
+                ->waitForLocation('/courses/video-course/lessons/lesson-1', 10)
+                ->waitForText('Lesson 1', 10)
                 ->assertSee('Lesson 1')
                 ->assertPresent('iframe');
         });

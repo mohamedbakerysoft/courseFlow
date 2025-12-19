@@ -6,6 +6,9 @@
     </nav>
     <article class="max-w-3xl">
         <h1 class="text-2xl font-semibold mb-4">{{ $lesson->title }}</h1>
+        @if ($isCompleted)
+            <span class="inline-block px-3 py-1 rounded bg-green-600 text-white mb-4">Completed</span>
+        @endif
         <div class="aspect-video bg-black mb-6">
             <iframe
                 src="{{ $lesson->video_url }}"
@@ -16,6 +19,7 @@
                 referrerpolicy="no-referrer"
             ></iframe>
         </div>
+        <p class="text-sm text-gray-600 mb-6">Progress: {{ $progressPercent }}%</p>
         @if (!empty($lesson->description))
             <div class="prose max-w-none">
                 {!! nl2br(e($lesson->description)) !!}
@@ -23,4 +27,3 @@
         @endif
     </article>
 </x-public-layout>
-

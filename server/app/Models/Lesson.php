@@ -24,6 +24,13 @@ class Lesson extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function completedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'lesson_user_progress')
+            ->withPivot('completed_at')
+            ->withTimestamps();
+    }
+
     public function scopePublished($query)
     {
         return $query->where('status', self::STATUS_PUBLISHED);
@@ -34,4 +41,3 @@ class Lesson extends Model
         return 'slug';
     }
 }
-

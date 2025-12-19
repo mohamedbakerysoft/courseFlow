@@ -14,6 +14,11 @@
             @endif
         </p>
         <p class="text-sm text-gray-600 mb-6">Language: {{ strtoupper($course->language) }}</p>
+        @auth
+            @if ($isEnrolled)
+                <p class="text-sm text-gray-800 mb-4">Progress: {{ $progressPercent }}%</p>
+            @endif
+        @endauth
         @if (!empty($course->description))
             <div class="prose max-w-none">
                 {!! nl2br(e($course->description)) !!}

@@ -6,6 +6,7 @@ use App\Actions\Courses\ListPublishedCoursesAction;
 use App\Actions\Courses\ShowCourseAction;
 use App\Actions\Courses\CheckUserEnrollmentAction;
 use App\Actions\Courses\EnrollUserInCourseAction;
+use App\Actions\Progress\CalculateCourseProgressAction;
 use App\Models\Course;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -23,12 +24,14 @@ class CourseController extends Controller
         Course $course,
         ShowCourseAction $action,
         CheckUserEnrollmentAction $checker,
-        Request $request
+        Request $request,
+        CalculateCourseProgressAction $progressAction
     ): View
     {
         $course = $action->execute($course);
         $isEnrolled = $checker->execute($request->user(), $course);
-        return view('courses.show', compact('course', 'isEnrolled'));
+        $progressPercent = $isEnrolled ? $progressAction->execute($request->user(), $course) : 0;
+        return view('courses.show', compact('course', 'isEnrolled', 'progressPercent'));
     }
 
     public function enroll(
