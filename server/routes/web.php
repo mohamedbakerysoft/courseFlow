@@ -39,3 +39,22 @@ Route::get('/courses/{course:slug}/lessons/{lesson:slug}', [LessonController::cl
     ->middleware(['auth', \App\Http\Middleware\EnsureUserIsEnrolled::class])
     ->scopeBindings()
     ->name('lessons.show');
+
+Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.')->group(function () {
+    Route::get('/courses', [\App\Http\Controllers\Dashboard\CourseController::class, 'index'])->name('courses.index');
+    Route::get('/courses/create', [\App\Http\Controllers\Dashboard\CourseController::class, 'create'])->name('courses.create');
+    Route::post('/courses', [\App\Http\Controllers\Dashboard\CourseController::class, 'store'])->name('courses.store');
+    Route::get('/courses/{course:slug}/edit', [\App\Http\Controllers\Dashboard\CourseController::class, 'edit'])->name('courses.edit');
+    Route::put('/courses/{course:slug}', [\App\Http\Controllers\Dashboard\CourseController::class, 'update'])->name('courses.update');
+    Route::delete('/courses/{course:slug}', [\App\Http\Controllers\Dashboard\CourseController::class, 'destroy'])->name('courses.destroy');
+    Route::post('/courses/{course:slug}/publish', [\App\Http\Controllers\Dashboard\CourseController::class, 'publish'])->name('courses.publish');
+    Route::post('/courses/{course:slug}/unpublish', [\App\Http\Controllers\Dashboard\CourseController::class, 'unpublish'])->name('courses.unpublish');
+
+    Route::get('/courses/{course:slug}/lessons', [\App\Http\Controllers\Dashboard\LessonController::class, 'index'])->name('courses.lessons.index');
+    Route::get('/courses/{course:slug}/lessons/create', [\App\Http\Controllers\Dashboard\LessonController::class, 'create'])->name('courses.lessons.create');
+    Route::post('/courses/{course:slug}/lessons', [\App\Http\Controllers\Dashboard\LessonController::class, 'store'])->name('courses.lessons.store');
+
+    Route::get('/lessons/{lesson}/edit', [\App\Http\Controllers\Dashboard\LessonController::class, 'edit'])->name('lessons.edit');
+    Route::put('/lessons/{lesson}', [\App\Http\Controllers\Dashboard\LessonController::class, 'update'])->name('lessons.update');
+    Route::delete('/lessons/{lesson}', [\App\Http\Controllers\Dashboard\LessonController::class, 'destroy'])->name('lessons.destroy');
+});

@@ -16,6 +16,7 @@ class Course extends \Illuminate\Database\Eloquent\Model
         'is_free',
         'status',
         'language',
+        'instructor_id',
     ];
 
     public const STATUS_PUBLISHED = 'published';
@@ -46,5 +47,10 @@ class Course extends \Illuminate\Database\Eloquent\Model
     public function lessons()
     {
         return $this->hasMany(Lesson::class)->orderBy('position');
+    }
+
+    public function instructor()
+    {
+        return $this->belongsTo(User::class, 'instructor_id');
     }
 }

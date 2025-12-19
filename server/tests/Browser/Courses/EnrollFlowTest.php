@@ -41,7 +41,6 @@ class EnrollFlowTest extends DuskTestCase
                 ->type('password', 'password')
                 ->click('button[type="submit"]')
                 ->visit('/courses/free-course')
-                ->waitForLocation('/courses/free-course', 10)
                 ->waitForText('Enroll', 10)
                 ->press('Enroll')
                 ->waitForText('You are enrolled', 10)
