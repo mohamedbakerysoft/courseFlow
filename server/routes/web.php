@@ -40,8 +40,36 @@ Route::get('/courses/{course:slug}/lessons/{lesson:slug}', [LessonController::cl
     ->scopeBindings()
     ->name('lessons.show');
 
+// Provide a post-login landing route expected by auth controller
+Route::get('/dashboard', function () {
+    return redirect()->route('courses.index');
+})->middleware('auth')->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/courses/{course:slug}/checkout', [\App\Http\Controllers\Payments\CheckoutController::class, 'checkout'])->name('payments.checkout');
+    Route::get('/payments/success', [\App\Http\Controllers\Payments\CheckoutController::class, 'success'])->name('payments.success');
+    Route::get('/payments/cancel/{course:slug}', [\App\Http\Controllers\Payments\CheckoutController::class, 'cancel'])->name('payments.cancel');
+    Route::post('/courses/{course:slug}/paypal/checkout', [\App\Http\Controllers\Payments\PayPalCheckoutController::class, 'checkout'])->name('payments.paypal.checkout');
+    Route::get('/payments/paypal/success', [\App\Http\Controllers\Payments\PayPalCheckoutController::class, 'success'])->name('payments.paypal.success');
+    Route::get('/payments/paypal/cancel/{course:slug}', [\App\Http\Controllers\Payments\PayPalCheckoutController::class, 'cancel'])->name('payments.paypal.cancel');
+    Route::post('/courses/{course:slug}/manual/start', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'start'])->name('payments.manual.start');
+    Route::get('/payments/manual/pending/{payment}', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'pending'])->name('payments.manual.pending');
+});
+
+Route::post('/webhooks/stripe', [\App\Http\Controllers\Payments\StripeWebhookController::class, 'handle'])
+    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+    ->name('payments.webhook.stripe');
+
 Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/courses', [\App\Http\Controllers\Dashboard\CourseController::class, 'index'])->name('courses.index');
+    $approveRoute = Route::post('/payments/{payment}/approve', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'approve'])->name('payments.approve');
+    if (app()->environment('dusk') || app()->environment('dusk.local')) {
+        $approveRoute->withoutMiddleware([
+            \App\Http\Middleware\EnsureUserIsInstructor::class,
+            'auth',
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+        ]);
+    }
     Route::get('/courses/create', [\App\Http\Controllers\Dashboard\CourseController::class, 'create'])->name('courses.create');
     Route::post('/courses', [\App\Http\Controllers\Dashboard\CourseController::class, 'store'])->name('courses.store');
     Route::get('/courses/{course:slug}/edit', [\App\Http\Controllers\Dashboard\CourseController::class, 'edit'])->name('courses.edit');

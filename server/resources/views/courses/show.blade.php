@@ -31,10 +31,25 @@
                 @if ($isEnrolled)
                     <span class="inline-block px-3 py-2 rounded bg-green-600 text-white">You are enrolled</span>
                 @else
-                    <form action="{{ route('courses.enroll', $course) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="px-4 py-2 rounded bg-black text-white">Enroll</button>
-                    </form>
+                    @if ($course->is_free || (float)$course->price == 0.0)
+                        <form action="{{ route('courses.enroll', $course) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="px-4 py-2 rounded bg-black text-white">Enroll</button>
+                        </form>
+                    @else
+                        <form action="{{ route('payments.checkout', $course) }}" method="POST" class="inline-block mr-2">
+                            @csrf
+                            <button type="submit" class="px-4 py-2 rounded bg-blue-700 text-white">Buy Course</button>
+                        </form>
+                        <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="inline-block mr-2">
+                            @csrf
+                            <button type="submit" class="px-4 py-2 rounded bg-yellow-700 text-white">Pay with PayPal</button>
+                        </form>
+                        <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="inline-block">
+                            @csrf
+                            <button type="submit" class="px-4 py-2 rounded bg-gray-700 text-white">Manual Payment</button>
+                        </form>
+                    @endif
                 @endif
             @endguest
         </div>

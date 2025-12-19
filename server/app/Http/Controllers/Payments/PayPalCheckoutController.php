@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Http\Controllers\Payments;
+
+use App\Actions\Payments\CreatePayPalCheckoutAction;
+use App\Actions\Payments\HandlePayPalPaymentSuccessAction;
+use App\Actions\Payments\MarkPaymentFailedAction;
+use App\Http\Controllers\Controller;
+use App\Models\Course;
+use App\Models\Payment;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+
+class PayPalCheckoutController extends Controller
+{
+
+    public function checkout(Request $request, Course $course, CreatePayPalCheckoutAction $action): RedirectResponse
+    {
+        $order = $action->execute($request->user(), $course);
+        return redirect()->away($order['approve_url']);
+    }
+
+    public function success(Request $request, HandlePayPalPaymentSuccessAction $handler): RedirectResponse
+    {
+        $orderId = (string) $request->query('order_id', '');
+        $ts = (string) $request->query('t', '');
+        $sig = (string) $request->query('sig', '');
+        $handler->execute($orderId, $ts, $sig);
+        $payment = Payment::where('external_reference', $orderId)->first();
+        $course = $payment ? $payment->course : null;
+        return redirect()->route('courses.show', $course ?? $request->query('course'));
+    }
+
+    public function cancel(Request $request, Course $course, MarkPaymentFailedAction $fail): RedirectResponse
+    {
+        $payment = Payment::where('user_id', $request->user()->id)
+            ->where('course_id', $course->id)
+            ->where('provider', 'paypal')
+            ->where('status', \App\Models\Payment::STATUS_PENDING)
+            ->latest()->first();
+        if ($payment) {
+            $fail->execute($payment);
+        }
+        return redirect()->route('courses.show', $course);
+    }
+}

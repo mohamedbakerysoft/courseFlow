@@ -40,6 +40,9 @@ class CourseController extends Controller
         Request $request
     ): RedirectResponse
     {
+        if (! ($course->is_free || (float) $course->price == 0.0)) {
+            abort(403);
+        }
         $enrollAction->execute($request->user(), $course);
         return redirect()->route('courses.show', $course)
             ->with('status', 'enrolled');
