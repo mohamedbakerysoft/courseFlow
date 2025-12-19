@@ -19,9 +19,18 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminSeeder::class);
         $this->call(PageSeeder::class);
 
-        Course::firstOrCreate(
-            ['title' => 'Sample Course'],
-            ['thumbnail_path' => null, 'status' => Course::STATUS_PUBLISHED],
+        Course::updateOrCreate(
+            ['slug' => 'sample-course'],
+            [
+                'title' => 'Sample Course',
+                'thumbnail_path' => null,
+                'description' => 'Sample course description',
+                'price' => 0,
+                'currency' => 'USD',
+                'is_free' => true,
+                'status' => Course::STATUS_PUBLISHED,
+                'language' => 'en',
+            ],
         );
 
         User::query()->where('role', User::ROLE_ADMIN)->update([

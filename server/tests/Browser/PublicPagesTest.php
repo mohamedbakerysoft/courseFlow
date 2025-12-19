@@ -4,6 +4,7 @@ namespace Tests\Browser;
 
 use App\Models\Page;
 use App\Models\User;
+use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -11,7 +12,7 @@ class PublicPagesTest extends DuskTestCase
 {
     public function test_instructor_and_about_visible(): void
     {
-        \Pest\Laravel\artisan('migrate', ['--force' => true])->run();
+        Artisan::call('migrate', ['--force' => true]);
 
         User::firstOrCreate(['email' => 'admin@example.com'], [
             'name' => 'Admin',

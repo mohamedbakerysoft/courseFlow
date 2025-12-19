@@ -13,8 +13,8 @@ it('returns admin instructor and published courses', function () {
         'role' => User::ROLE_ADMIN,
     ]);
 
-    Course::create(['title' => 'C1', 'status' => \App\Models\Course::STATUS_PUBLISHED]);
-    Course::create(['title' => 'C2', 'status' => \App\Models\Course::STATUS_DRAFT]);
+    Course::create(['title' => 'C1', 'slug' => 'c1', 'status' => \App\Models\Course::STATUS_PUBLISHED, 'price' => 0, 'currency' => 'USD', 'is_free' => true, 'language' => 'en']);
+    Course::create(['title' => 'C2', 'slug' => 'c2', 'status' => \App\Models\Course::STATUS_DRAFT, 'price' => 0, 'currency' => 'USD', 'is_free' => true, 'language' => 'en']);
 
     [$instructor, $courses, $links] = app(ShowInstructorProfileAction::class)->execute();
 
@@ -22,4 +22,3 @@ it('returns admin instructor and published courses', function () {
     expect($courses)->toHaveCount(1);
     expect($courses->first()->title)->toBe('C1');
 });
-

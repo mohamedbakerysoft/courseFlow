@@ -1,0 +1,27 @@
+<x-public-layout :title="$course->title" :metaDescription="str($course->description)->limit(160)">
+    <article class="max-w-3xl">
+        <h1 class="text-3xl font-semibold mb-4">{{ $course->title }}</h1>
+        @if ($course->thumbnail_path)
+            <img src="{{ asset($course->thumbnail_path) }}" alt="{{ $course->title }}" class="w-full max-w-xl rounded mb-6">
+        @endif
+        <p class="mb-4">
+            @if ($course->is_free || (float)$course->price == 0.0)
+                <span class="inline-block px-3 py-1 rounded bg-green-100 text-green-700">Free</span>
+            @else
+                <span class="inline-block px-3 py-1 rounded bg-blue-100 text-blue-700">
+                    {{ number_format((float)$course->price, 2) }} {{ $course->currency }}
+                </span>
+            @endif
+        </p>
+        <p class="text-sm text-gray-600 mb-6">Language: {{ strtoupper($course->language) }}</p>
+        @if (!empty($course->description))
+            <div class="prose max-w-none">
+                {!! nl2br(e($course->description)) !!}
+            </div>
+        @endif
+        <div class="mt-8">
+            <button type="button" class="px-4 py-2 rounded bg-black text-white">Enroll</button>
+        </div>
+    </article>
+</x-public-layout>
+

@@ -16,7 +16,12 @@ it('loads instructor profile page without auth', function () {
 
     Course::create([
         'title' => 'Published Course',
+        'slug' => 'published-course',
         'thumbnail_path' => null,
+        'price' => 0,
+        'currency' => 'USD',
+        'is_free' => true,
+        'language' => 'en',
         'status' => \App\Models\Course::STATUS_PUBLISHED,
     ]);
 
@@ -25,4 +30,3 @@ it('loads instructor profile page without auth', function () {
     $response->assertSee('Admin One');
     $response->assertSee('Published Course');
 });
-
