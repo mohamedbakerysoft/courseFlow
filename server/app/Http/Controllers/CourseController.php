@@ -8,6 +8,7 @@ use App\Actions\Courses\CheckUserEnrollmentAction;
 use App\Actions\Courses\EnrollUserInCourseAction;
 use App\Actions\Progress\CalculateCourseProgressAction;
 use App\Models\Course;
+use App\Services\SettingsService;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -25,7 +26,8 @@ class CourseController extends Controller
         ShowCourseAction $action,
         CheckUserEnrollmentAction $checker,
         Request $request,
-        CalculateCourseProgressAction $progressAction
+        CalculateCourseProgressAction $progressAction,
+        SettingsService $settings
     ): View
     {
         $course = $action->execute($course);
@@ -33,7 +35,23 @@ class CourseController extends Controller
         $progressPercent = $isEnrolled ? $progressAction->execute($request->user(), $course) : 0;
         $lessons = $course->lessons()->published()->select(['id', 'slug', 'title', 'position'])->orderBy('position')->get();
         $firstLesson = $lessons->first();
-        return view('courses.show', compact('course', 'isEnrolled', 'progressPercent', 'lessons', 'firstLesson'));
+        $isStripeEnabled = (bool) $settings->get('payments.stripe.enabled', false);
+        $isPayPalEnabled = (bool) $settings->get('payments.paypal.enabled', false);
+        $manualInstructions = (string) $settings->get('payments.manual.instructions', '');
+        $hasManualPayment = trim($manualInstructions) !== '';
+        $hasAnyPaymentMethod = $isStripeEnabled || $isPayPalEnabled || $hasManualPayment;
+
+        return view('courses.show', compact(
+            'course',
+            'isEnrolled',
+            'progressPercent',
+            'lessons',
+            'firstLesson',
+            'isStripeEnabled',
+            'isPayPalEnabled',
+            'hasManualPayment',
+            'hasAnyPaymentMethod',
+        ));
     }
 
     public function enroll(

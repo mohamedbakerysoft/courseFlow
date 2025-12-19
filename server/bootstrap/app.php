@@ -14,6 +14,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'instructor' => \App\Http\Middleware\EnsureUserIsInstructor::class,
         ]);
+
+        if (env('APP_ENV') === 'testing') {
+            $middleware->validateCsrfTokens(except: ['*']);
+        }
+
+        $middleware->web(
+            append: [
+                \App\Http\Middleware\ApplySettings::class,
+            ],
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -4,7 +4,11 @@
             <div class="flex">
                 <div class="shrink-0 flex items-center">
                     <a href="{{ url('/') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        @if (!empty($siteLogoUrl))
+                            <img src="{{ $siteLogoUrl }}" alt="{{ config('app.name') }}" class="block h-9 w-auto">
+                        @else
+                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        @endif
                     </a>
                 </div>
                 <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex">
@@ -34,6 +38,9 @@
                             </x-nav-link>
                             <x-nav-link :href="route('dashboard.courses.index')" :active="request()->routeIs('dashboard.courses.*')">
                                 {{ __('Courses') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('dashboard.settings.edit')" :active="request()->routeIs('dashboard.settings.*')">
+                                {{ __('Settings') }}
                             </x-nav-link>
                             <x-nav-link :href="route('dashboard.appearance.edit')" :active="request()->routeIs('dashboard.appearance.*')">
                                 {{ __('Appearance') }}
@@ -119,13 +126,16 @@
                     </x-responsive-nav-link>
                 @endif
             @endguest
-            @auth
+                @auth
                 @can('viewAny', \App\Models\Course::class)
                     <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('dashboard.courses.index')" :active="request()->routeIs('dashboard.courses.*')">
                         {{ __('Courses') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('dashboard.settings.edit')" :active="request()->routeIs('dashboard.settings.*')">
+                        {{ __('Settings') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('dashboard.appearance.edit')" :active="request()->routeIs('dashboard.appearance.*')">
                         {{ __('Appearance') }}

@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-6">
+            <div class="mt-6 space-y-2">
                 @guest
                     <a href="{{ route('login') }}" class="inline-flex items-center px-6 py-3 rounded bg-[var(--color-primary)] text-white text-base font-semibold hover:opacity-90">Login to Enroll</a>
                 @else
@@ -26,6 +26,8 @@
                         @if (!empty($firstLesson))
                             <a href="{{ route('lessons.show', [$course, $firstLesson]) }}" class="inline-flex items-center px-6 py-3 rounded bg-[var(--color-primary)] text-white text-base font-semibold hover:opacity-90">Continue Learning</a>
                         @endif
+                        <p class="text-sm text-green-700 font-medium">You are enrolled</p>
+                        <p class="text-sm text-gray-700">Progress: {{ $progressPercent }}%</p>
                     @else
                         @if ($course->is_free || (float)$course->price == 0.0)
                             <form action="{{ route('courses.enroll', $course) }}" method="POST" class="inline-block">
@@ -33,18 +35,30 @@
                                 <button type="submit" class="inline-flex items-center px-6 py-3 rounded bg-[var(--color-primary)] text-white text-base font-semibold hover:opacity-90">Enroll</button>
                             </form>
                         @else
-                            <form action="{{ route('payments.checkout', $course) }}" method="POST" class="inline-block mr-2">
-                                @csrf
-                                <button type="submit" class="inline-flex items-center px-6 py-3 rounded bg-[var(--color-primary)] text-white text-base font-semibold hover:opacity-90">Buy Course</button>
-                            </form>
-                            <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="inline-block mr-2">
-                                @csrf
-                                <button type="submit" class="inline-flex items-center px-6 py-3 rounded bg-yellow-600 text-white text-base font-semibold hover:opacity-90">Pay with PayPal</button>
-                            </form>
-                            <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="inline-block">
-                                @csrf
-                                <button type="submit" class="inline-flex items-center px-6 py-3 rounded bg-gray-800 text-white text-base font-semibold hover:opacity-90">Manual Payment</button>
-                            </form>
+                            @if ($hasAnyPaymentMethod)
+                                @if ($isStripeEnabled)
+                                    <form action="{{ route('payments.checkout', $course) }}" method="POST" class="inline-block mr-2">
+                                        @csrf
+                                        <button type="submit" class="inline-flex items-center px-6 py-3 rounded bg-[var(--color-primary)] text-white text-base font-semibold hover:opacity-90">Buy Course</button>
+                                    </form>
+                                @endif
+                                @if ($isPayPalEnabled)
+                                    <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="inline-block mr-2">
+                                        @csrf
+                                        <button type="submit" class="inline-flex items-center px-6 py-3 rounded bg-yellow-600 text-white text-base font-semibold hover:opacity-90">Pay with PayPal</button>
+                                    </form>
+                                @endif
+                                @if ($hasManualPayment)
+                                    <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        <button type="submit" class="inline-flex items-center px-6 py-3 rounded bg-gray-800 text-white text-base font-semibold hover:opacity-90">Manual Payment</button>
+                                    </form>
+                                @endif
+                            @else
+                                <p class="text-sm text-red-600 font-medium">
+                                    Payments are currently disabled. Please contact the instructor.
+                                </p>
+                            @endif
                         @endif
                     @endif
                 @endguest

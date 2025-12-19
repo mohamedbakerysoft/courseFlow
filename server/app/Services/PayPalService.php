@@ -11,7 +11,13 @@ class PayPalService
 {
     public function createOrder(User $user, Course $course, string $successUrl, string $cancelUrl): array
     {
-        if (app()->environment('testing') || app()->environment('dusk') || app()->environment('dusk.local')) {
+        if (
+            app()->runningUnitTests()
+            || env('APP_ENV') === 'testing'
+            || env('APP_ENV') === 'dusk'
+            || env('APP_ENV') === 'dusk.local'
+            || config('demo.enabled')
+        ) {
             $orderId = 'order_' . Str::random(12);
             $secret = config('services.paypal.webhook_secret');
             $ts = (string) time();
@@ -65,7 +71,13 @@ class PayPalService
 
     public function verifyOrder(string $orderId, ?string $ts = null, ?string $sig = null): bool
     {
-        if (app()->environment('testing') || app()->environment('dusk') || app()->environment('dusk.local')) {
+        if (
+            app()->runningUnitTests()
+            || env('APP_ENV') === 'testing'
+            || env('APP_ENV') === 'dusk'
+            || env('APP_ENV') === 'dusk.local'
+            || config('demo.enabled')
+        ) {
             $secret = config('services.paypal.webhook_secret');
             if (! $ts || ! $sig) {
                 return false;

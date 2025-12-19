@@ -20,12 +20,7 @@
             <h2 class="text-xl font-semibold mb-4">Published Courses</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse ($courses as $course)
-                    <article class="bg-white rounded shadow p-4">
-                        @if ($course->thumbnail_path)
-                            <img src="{{ asset($course->thumbnail_path) }}" alt="{{ $course->title }}" class="w-full h-40 object-cover rounded">
-                        @endif
-                        <h3 class="mt-3 font-medium">{{ $course->title }}</h3>
-                    </article>
+                    <x-course.card :course="$course" />
                 @empty
                     <p class="text-gray-600">No published courses yet.</p>
                 @endforelse

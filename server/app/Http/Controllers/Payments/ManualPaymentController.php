@@ -7,6 +7,7 @@ use App\Actions\Payments\CreateManualPaymentAction;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Payment;
+use App\Services\SettingsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -19,9 +20,10 @@ class ManualPaymentController extends Controller
         return redirect()->route('payments.manual.pending', ['payment' => $payment->id]);
     }
 
-    public function pending(Payment $payment)
+    public function pending(Payment $payment, SettingsService $settings)
     {
-        return view('payments.manual.pending', compact('payment'));
+        $manualInstructions = (string) $settings->get('payments.manual.instructions', '');
+        return view('payments.manual.pending', compact('payment', 'manualInstructions'));
     }
 
     public function approve(Request $request, Payment $payment, ApproveManualPaymentAction $action): RedirectResponse

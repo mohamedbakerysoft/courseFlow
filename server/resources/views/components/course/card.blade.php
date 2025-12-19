@@ -1,31 +1,54 @@
-@props(['course', 'ctaLabel' => 'View', 'ctaUrl' => null])
+@props(['course', 'ctaLabel' => 'View course', 'ctaUrl' => null])
 @php($ctaUrl = $ctaUrl ?? route('courses.show', $course))
-<article class="bg-white rounded-lg border border-gray-200 overflow-hidden transition transform hover:shadow-lg hover:-translate-y-0.5">
-    <a href="{{ route('courses.show', $course) }}" class="block">
-        @if ($course->thumbnail_path)
-            <img src="{{ asset($course->thumbnail_path) }}" alt="{{ $course->title }}" class="w-full h-44 object-cover">
-        @else
-            <div class="w-full h-44 bg-gray-100 flex items-center justify-center text-gray-500 text-sm">No image</div>
-        @endif
-        <div class="p-4">
-            <h3 class="font-semibold text-lg text-gray-900">{{ $course->title }}</h3>
-            @if (!empty($course->description))
-                <p class="text-gray-600 mt-2">{{ str($course->description)->limit(120) }}</p>
+<article class="group relative bg-white rounded-2xl shadow-md ring-1 ring-gray-100 overflow-hidden transition transform hover:-translate-y-1 hover:shadow-xl">
+    <a href="{{ $ctaUrl }}" class="block h-full">
+        <div class="relative h-44 overflow-hidden">
+            @if ($course->thumbnail_path)
+                <img src="{{ asset($course->thumbnail_path) }}" alt="{{ $course->title }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+            @else
+                <div class="w-full h-full bg-gradient-to-br from-[var(--color-primary)]/10 via-[var(--color-secondary)]/10 to-[var(--color-accent)]/10 flex items-center justify-center text-gray-500 text-sm">
+                    Course preview
+                </div>
             @endif
-            <div class="mt-4 flex items-center justify-between">
-                <p class="font-medium">
-                    @if ($course->is_free || (float)$course->price == 0.0)
-                        <span class="inline-flex items-center px-2 py-1 rounded bg-green-100 text-green-700 text-xs">Free</span>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent opacity-70 group-hover:opacity-80 transition"></div>
+            <div class="absolute top-3 left-3 flex items-center gap-2">
+                @if ($course->is_free || (float)$course->price == 0.0)
+                    <span class="inline-flex items-center px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                        Free
+                    </span>
+                @else
+                    <span class="inline-flex items-center px-2 py-1 rounded-full bg-white/90 text-gray-900 text-xs font-semibold">
+                        {{ number_format((float)$course->price, 2) }} {{ $course->currency }}
+                    </span>
+                @endif
+            </div>
+        </div>
+        <div class="p-4 flex flex-col h-full">
+            <h3 class="font-semibold text-base text-gray-900 line-clamp-2">
+                {{ $course->title }}
+            </h3>
+            @if (!empty($course->description))
+                <p class="mt-2 text-sm text-gray-600 line-clamp-2">
+                    {{ str($course->description)->limit(120) }}
+                </p>
+            @endif
+            <div class="mt-4 flex items-center justify-between text-xs text-gray-500">
+                <div class="flex flex-col">
+                    @if ($course->instructor)
+                        <span class="font-medium text-gray-800">
+                            {{ $course->instructor->name }}
+                        </span>
                     @else
-                        <span class="inline-flex items-center px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs">
-                            {{ number_format((float)$course->price, 2) }} {{ $course->currency }}
+                        <span class="font-medium text-gray-800">
+                            Instructor
                         </span>
                     @endif
-                </p>
-                <span class="inline-flex items-center">
-                    <a href="{{ $ctaUrl }}" class="inline-flex items-center px-3 py-2 rounded bg-[var(--color-primary)] text-white text-sm hover:opacity-90">
-                        {{ $ctaLabel }}
-                    </a>
+                    <span class="text-gray-500">
+                        {{ strtoupper($course->language ?? 'en') }}
+                    </span>
+                </div>
+                <span class="inline-flex items-center rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-3 py-1 font-medium">
+                    {{ $ctaLabel }}
                 </span>
             </div>
         </div>

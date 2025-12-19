@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Payment;
@@ -12,7 +10,9 @@ use App\Models\User;
 use App\Policies\CoursePolicy;
 use App\Policies\LessonPolicy;
 use App\Policies\PaymentPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

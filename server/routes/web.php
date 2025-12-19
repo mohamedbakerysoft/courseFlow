@@ -5,13 +5,12 @@ use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', LandingController::class);
 
 Route::get('/dashboard', function () {
     $user = User::find(Auth::id());
@@ -73,6 +72,8 @@ Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.
     }
     Route::get('/appearance', [\App\Http\Controllers\Dashboard\AppearanceController::class, 'edit'])->name('appearance.edit');
     Route::post('/appearance', [\App\Http\Controllers\Dashboard\AppearanceController::class, 'update'])->name('appearance.update');
+    Route::get('/settings', [\App\Http\Controllers\Dashboard\SettingsController::class, 'edit'])->name('settings.edit');
+    Route::post('/settings', [\App\Http\Controllers\Dashboard\SettingsController::class, 'update'])->name('settings.update');
     Route::get('/courses/create', [\App\Http\Controllers\Dashboard\CourseController::class, 'create'])->name('courses.create');
     Route::post('/courses', [\App\Http\Controllers\Dashboard\CourseController::class, 'store'])->name('courses.store');
     Route::get('/courses/{course:slug}/edit', [\App\Http\Controllers\Dashboard\CourseController::class, 'edit'])->name('courses.edit');
