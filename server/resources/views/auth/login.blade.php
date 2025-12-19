@@ -46,21 +46,22 @@
         </div>
     </form>
     @if(app()->environment(['local','dusk']))
-        <div class="mt-6 bg-white border rounded p-4">
+        <div class="mt-6 bg-white border border-gray-200 rounded p-4">
             <p class="text-sm font-medium text-gray-800 mb-3">Demo Login (Local / Testing Only)</p>
             <div class="space-y-2">
                 <div class="flex items-center justify-between">
-                    <div class="text-sm text-gray-700">
-                        Instructor — instructor@demo.com
-                    </div>
-                    <button type="button" class="px-3 py-1 rounded bg-[var(--color-secondary)] text-white"
+                    <span class="text-sm text-gray-700">Admin — admin@demo.com</span>
+                    <button type="button" class="px-3 py-1 rounded bg-slate-700 text-white"
+                            x-on:click="fill('admin@demo.com','password')">Fill</button>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-700">Instructor — instructor@demo.com</span>
+                    <button type="button" class="px-3 py-1 rounded bg-slate-700 text-white"
                             x-on:click="fill('instructor@demo.com','password')">Fill</button>
                 </div>
                 <div class="flex items-center justify-between">
-                    <div class="text-sm text-gray-700">
-                        Student — student@demo.com
-                    </div>
-                    <button type="button" class="px-3 py-1 rounded bg-[var(--color-secondary)] text-white"
+                    <span class="text-sm text-gray-700">Student — student@demo.com</span>
+                    <button type="button" class="px-3 py-1 rounded bg-slate-700 text-white"
                             x-on:click="fill('student@demo.com','password')">Fill</button>
                 </div>
             </div>
