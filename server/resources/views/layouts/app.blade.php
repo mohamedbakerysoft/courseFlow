@@ -13,9 +13,18 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            :root {
+                --color-primary: {{ $theme['primary'] ?? '#4F46E5' }};
+                --color-secondary: {{ $theme['secondary'] ?? '#334155' }};
+                --color-accent: {{ $theme['accent'] ?? '#10B981' }};
+                --color-bg: {{ $theme['bg'] ?? '#F8FAFC' }};
+                --color-text: {{ $theme['text'] ?? '#0F172A' }};
+            }
+        </style>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-[var(--color-bg)]">
             @include('layouts.navigation')
 
             <!-- Page Heading -->

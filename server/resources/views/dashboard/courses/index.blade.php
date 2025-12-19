@@ -11,7 +11,7 @@
             <span class="text-gray-700">Courses</span>
         </nav>
         <div class="mb-4">
-            <a href="{{ route('dashboard.courses.create') }}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded">Create Course</a>
+            <a href="{{ route('dashboard.courses.create') }}" class="inline-block bg-[var(--color-primary)] text-white px-4 py-2 rounded">Create Course</a>
         </div>
         <div class="bg-white shadow rounded">
             <table class="min-w-full">
@@ -36,17 +36,17 @@
                             @endif
                         </td>
                         <td class="px-4 py-2 space-x-2">
-                            <a href="{{ route('dashboard.courses.edit', $course) }}" class="text-blue-600">Edit</a>
-                            <a href="{{ route('dashboard.courses.lessons.index', $course) }}" class="text-indigo-600">Lessons</a>
+                            <a href="{{ route('dashboard.courses.edit', $course) }}" class="text-[var(--color-secondary)]">Edit</a>
+                            <a href="{{ route('dashboard.courses.lessons.index', $course) }}" class="text-[var(--color-secondary)]">Lessons</a>
                             @if($course->status === \App\Models\Course::STATUS_DRAFT)
                                 <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.publish', $course) }}" method="POST" class="inline">
                                     @csrf
-                                    <button :disabled="isSubmitting" class="text-green-600">Publish</button>
+                                    <button :disabled="isSubmitting" class="text-[var(--color-accent)]">Publish</button>
                                 </form>
                             @else
                                 <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.unpublish', $course) }}" method="POST" class="inline">
                                     @csrf
-                                    <button :disabled="isSubmitting" class="text-yellow-600">Unpublish</button>
+                                    <button :disabled="isSubmitting" class="text-gray-600">Unpublish</button>
                                 </form>
                             @endif
                             <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.destroy', $course) }}" method="POST" class="inline" onsubmit="return confirm('Delete course?')">

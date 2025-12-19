@@ -85,7 +85,7 @@
             @endif
         </div>
         <div class="mt-6">
-            <a href="{{ route('dashboard.courses.lessons.index', $course) }}" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded">Manage Lessons</a>
+            <a href="{{ route('dashboard.courses.lessons.index', $course) }}" class="inline-block bg-[var(--color-primary)] text-white px-4 py-2 rounded">Manage Lessons</a>
         </div>
     </div>
 </x-app-layout>

@@ -65,6 +65,8 @@ Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.
             \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
         ]);
     }
+    Route::get('/appearance', [\App\Http\Controllers\Dashboard\AppearanceController::class, 'edit'])->name('appearance.edit');
+    Route::post('/appearance', [\App\Http\Controllers\Dashboard\AppearanceController::class, 'update'])->name('appearance.update');
     Route::get('/courses/create', [\App\Http\Controllers\Dashboard\CourseController::class, 'create'])->name('courses.create');
     Route::post('/courses', [\App\Http\Controllers\Dashboard\CourseController::class, 'store'])->name('courses.store');
     Route::get('/courses/{course:slug}/edit', [\App\Http\Controllers\Dashboard\CourseController::class, 'edit'])->name('courses.edit');

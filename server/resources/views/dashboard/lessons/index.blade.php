@@ -13,7 +13,7 @@
             <span class="text-gray-700">Lessons</span>
         </nav>
         <div class="mb-4">
-            <a href="{{ route('dashboard.courses.lessons.create', $course) }}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded">Add Lesson</a>
+            <a href="{{ route('dashboard.courses.lessons.create', $course) }}" class="inline-block bg-[var(--color-primary)] text-white px-4 py-2 rounded">Add Lesson</a>
             <a href="{{ route('dashboard.courses.edit', $course) }}" class="inline-block ml-2 text-blue-600">Back to Course</a>
         </div>
         <div class="bg-white shadow rounded">
