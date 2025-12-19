@@ -31,7 +31,9 @@ class CourseController extends Controller
         $course = $action->execute($course);
         $isEnrolled = $checker->execute($request->user(), $course);
         $progressPercent = $isEnrolled ? $progressAction->execute($request->user(), $course) : 0;
-        return view('courses.show', compact('course', 'isEnrolled', 'progressPercent'));
+        $lessons = $course->lessons()->published()->select(['id', 'slug', 'title', 'position'])->orderBy('position')->get();
+        $firstLesson = $lessons->first();
+        return view('courses.show', compact('course', 'isEnrolled', 'progressPercent', 'lessons', 'firstLesson'));
     }
 
     public function enroll(

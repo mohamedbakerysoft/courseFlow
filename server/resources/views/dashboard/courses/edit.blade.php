@@ -5,13 +5,11 @@
         </h2>
     </x-slot>
     <div class="py-8 max-w-4xl mx-auto">
-        <nav class="mb-4 text-sm">
-            <a href="{{ route('dashboard') }}" class="underline text-gray-700">Dashboard</a>
-            <span class="text-gray-500">/</span>
-            <a href="{{ route('dashboard.courses.index') }}" class="underline text-gray-700">Courses</a>
-            <span class="text-gray-500">/</span>
-            <span class="text-gray-700">Edit</span>
-        </nav>
+        <x-breadcrumbs :items="[
+            ['label' => __('Dashboard'), 'url' => route('dashboard')],
+            ['label' => __('Courses'), 'url' => route('dashboard.courses.index')],
+            ['label' => __('Edit')]
+        ]" />
         <div class="mb-4">
             <a href="{{ route('dashboard.courses.index') }}" class="text-blue-600">Back to Courses</a>
         </div>

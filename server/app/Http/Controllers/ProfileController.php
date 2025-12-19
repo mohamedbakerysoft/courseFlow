@@ -48,6 +48,8 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        $this->authorize('delete', $user);
+
         Auth::logout();
 
         $user->delete();

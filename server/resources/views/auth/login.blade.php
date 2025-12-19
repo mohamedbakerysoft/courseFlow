@@ -45,14 +45,18 @@
             </x-primary-button>
         </div>
     </form>
-    @if(app()->environment(['local','dusk','dusk.local']))
+    @if(config('demo.enabled') && app()->environment(['local','dusk','dusk.local']))
         <div class="mt-6 bg-white border border-gray-200 rounded p-4">
-            <p class="text-sm font-medium text-gray-800 mb-3">Demo Login (Local / Testing Only)</p>
+            <p class="text-sm font-medium text-gray-800 mb-3">Demo Login</p>
             <div class="space-y-2">
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-700">Admin — admin@example.com</span>
-                    <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-indigo-500"
-                            x-on:click="fill('admin@example.com','password')">Fill</button>
+                    <span class="text-sm text-gray-700">Admin — {{ config('demo.admin_email') }}</span>
+                    <div class="space-x-2">
+                        <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-2 focus:ring-indigo-500"
+                                x-on:click="fill(config('demo.admin_email'),'password')">Fill</button>
+                        <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-indigo-500"
+                                x-on:click="fill(config('demo.admin_email'),'password'); $el.closest('form').submit()">Login as Admin</button>
+                    </div>
                 </div>
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-700">Instructor — instructor@demo.com</span>
@@ -61,8 +65,12 @@
                 </div>
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-700">Student — student@demo.com</span>
-                    <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-indigo-500"
-                            x-on:click="fill('student@demo.com','password')">Fill</button>
+                    <div class="space-x-2">
+                        <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-2 focus:ring-indigo-500"
+                                x-on:click="fill('student@demo.com','password')">Fill</button>
+                        <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-indigo-500"
+                                x-on:click="fill('student@demo.com','password'); $el.closest('form').submit()">Login as Student</button>
+                    </div>
                 </div>
             </div>
         </div>

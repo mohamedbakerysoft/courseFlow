@@ -1,11 +1,10 @@
 <x-public-layout :title="$course->title" :metaDescription="str($course->description)->limit(160)">
-    <nav class="mb-4 text-sm">
-        <a href="{{ route('courses.index') }}" class="underline text-gray-700">Courses</a>
-        <span class="text-gray-500">/</span>
-        <span class="text-gray-700">{{ $course->title }}</span>
-    </nav>
+    <x-breadcrumbs :items="[
+        ['label' => __('Courses'), 'url' => route('courses.index')],
+        ['label' => $course->title]
+    ]" />
     <article class="max-w-3xl">
-        <h1 class="text-3xl font-semibold mb-4">{{ $course->title }}</h1>
+        <h1 class="text-3xl font-semibold mb-6">{{ $course->title }}</h1>
         @if ($course->thumbnail_path)
             <img src="{{ asset($course->thumbnail_path) }}" alt="{{ $course->title }}" class="w-full max-w-xl rounded mb-6">
         @endif
@@ -38,6 +37,9 @@
             @else
                 @if ($isEnrolled)
                     <span class="inline-block px-3 py-2 rounded bg-green-600 text-white">You are enrolled</span>
+                    @if (!empty($firstLesson))
+                        <a href="{{ route('lessons.show', [$course, $firstLesson]) }}" class="ml-2 inline-flex items-center px-4 py-2 rounded bg-[var(--color-primary)] text-white hover:opacity-90">Continue Learning</a>
+                    @endif
                 @else
                     @if ($course->is_free || (float)$course->price == 0.0)
                         <form action="{{ route('courses.enroll', $course) }}" method="POST">
@@ -47,7 +49,7 @@
                     @else
                         <form action="{{ route('payments.checkout', $course) }}" method="POST" class="inline-block mr-2">
                             @csrf
-                            <button type="submit" class="px-4 py-2 rounded bg-blue-700 text-white">Buy Course</button>
+                            <button type="submit" class="px-4 py-2 rounded bg-[var(--color-primary)] text-white hover:opacity-90">Buy Course</button>
                         </form>
                         <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="inline-block mr-2">
                             @csrf
@@ -60,6 +62,21 @@
                     @endif
                 @endif
             @endguest
+        </div>
+        <div class="mt-10">
+            <h2 class="text-xl font-semibold mb-4">Lessons</h2>
+            @if (!empty($lessons) && $lessons->count())
+                <ul class="space-y-2">
+                    @foreach ($lessons as $l)
+                        <li class="flex items-center justify-between bg-white border rounded px-3 py-2">
+                            <a href="{{ route('lessons.show', [$course, $l]) }}" class="text-blue-700 underline">{{ $l->title }}</a>
+                            <span class="text-xs text-gray-500">#{{ $l->position }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="text-gray-600 text-sm">No lessons yet.</p>
+            @endif
         </div>
     </article>
 </x-public-layout>

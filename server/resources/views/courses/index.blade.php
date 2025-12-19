@@ -7,10 +7,10 @@
             @empty
                 <div class="col-span-full bg-white rounded shadow p-8 text-center">
                     <div class="text-4xl mb-3">🎓</div>
-                    <p class="text-gray-700 font-medium">No courses available yet.</p>
+                    <p class="text-gray-700 font-medium">No courses yet</p>
                     <p class="text-gray-500 text-sm mt-1">Please check back soon.</p>
                     <div class="mt-4">
-                        <a href="{{ url('/') }}" class="text-blue-600 underline">Go to homepage</a>
+                        <a href="{{ url('/') }}" class="inline-flex items-center px-4 py-2 rounded bg-[var(--color-primary)] text-white">Go to homepage</a>
                     </div>
                 </div>
             @endforelse

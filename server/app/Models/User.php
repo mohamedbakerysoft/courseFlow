@@ -16,6 +16,8 @@ class User extends Authenticatable
 
     public const ROLE_STUDENT = 'student';
 
+    public const PROTECTED_ADMIN_EMAIL = 'admin@example.com';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -53,6 +55,20 @@ class User extends Authenticatable
             'password' => 'hashed',
             'social_links' => 'array',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (User $user) {
+            if ($user->email === config('demo.admin_email', self::PROTECTED_ADMIN_EMAIL)) {
+                abort(403);
+            }
+        });
+        static::saving(function (User $user) {
+            if ($user->email === config('demo.admin_email', self::PROTECTED_ADMIN_EMAIL) && $user->role !== self::ROLE_ADMIN) {
+                abort(403);
+            }
+        });
     }
 
     public function courses()

@@ -6,13 +6,19 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $user = User::find(Auth::id());
+    $enrolledCourses = $user
+        ? $user->courses()->get()
+        : collect();
+    return view('dashboard', compact('enrolledCourses'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

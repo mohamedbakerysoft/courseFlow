@@ -5,16 +5,18 @@
         </h2>
     </x-slot>
     <div class="py-8 max-w-6xl mx-auto">
-        <nav class="mb-4 text-sm">
-            <a href="{{ route('dashboard') }}" class="underline text-gray-700">Dashboard</a>
-            <span class="text-gray-500">/</span>
-            <a href="{{ route('dashboard.courses.index') }}" class="underline text-gray-700">Courses</a>
-            <span class="text-gray-500">/</span>
-            <span class="text-gray-700">Lessons</span>
-        </nav>
-        <div class="mb-4">
-            <a href="{{ route('dashboard.courses.lessons.create', $course) }}" class="inline-block bg-[var(--color-primary)] text-white px-4 py-2 rounded">Add Lesson</a>
-            <a href="{{ route('dashboard.courses.edit', $course) }}" class="inline-block ml-2 text-blue-600">Back to Course</a>
+        <x-breadcrumbs :items="[
+            ['label' => __('Dashboard'), 'url' => route('dashboard')],
+            ['label' => __('Courses'), 'url' => route('dashboard.courses.index')],
+            ['label' => __('Lessons')]
+        ]" />
+        <div class="mb-4 flex items-center justify-between">
+            <a href="{{ route('dashboard.courses.lessons.create', $course) }}" class="inline-flex items-center px-4 py-2 rounded bg-[var(--color-primary)] text-white hover:opacity-90">
+                {{ __('Add Lesson') }}
+            </a>
+            <a href="{{ route('dashboard.courses.edit', $course) }}" class="inline-flex items-center px-4 py-2 rounded border text-gray-700 hover:bg-gray-50">
+                {{ __('Back to Course') }}
+            </a>
         </div>
         <div class="bg-white shadow rounded">
             <table class="min-w-full">

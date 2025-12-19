@@ -24,6 +24,16 @@ class LessonController extends Controller
         $lesson = $action->execute($course, $lesson);
         $isCompleted = $markAction->execute($request->user(), $lesson);
         $progressPercent = $progressAction->execute($request->user(), $course);
-        return view('lessons.show', compact('course', 'lesson', 'isCompleted', 'progressPercent'));
+        $prevLesson = $course->lessons()->published()
+            ->where('position', '<', $lesson->position)
+            ->orderBy('position', 'desc')
+            ->select(['id', 'slug', 'title', 'position'])
+            ->first();
+        $nextLesson = $course->lessons()->published()
+            ->where('position', '>', $lesson->position)
+            ->orderBy('position', 'asc')
+            ->select(['id', 'slug', 'title', 'position'])
+            ->first();
+        return view('lessons.show', compact('course', 'lesson', 'isCompleted', 'progressPercent', 'prevLesson', 'nextLesson'));
     }
 }

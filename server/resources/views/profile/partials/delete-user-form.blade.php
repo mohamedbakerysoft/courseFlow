@@ -9,10 +9,12 @@
         </p>
     </header>
 
+    @php $isProtectedAdmin = auth()->check() && auth()->user()->email === config('demo.admin_email', \App\Models\User::PROTECTED_ADMIN_EMAIL'); @endphp
     <x-danger-button
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Delete Account') }}</x-danger-button>
+        @disabled($isProtectedAdmin)
+    >{{ $isProtectedAdmin ? __('Protected Admin') : __('Delete Account') }}</x-danger-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
         <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
@@ -46,8 +48,8 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button class="ms-3">
-                    {{ __('Delete Account') }}
+                <x-danger-button class="ms-3" @disabled($isProtectedAdmin)>
+                    {{ $isProtectedAdmin ? __('Protected Admin') : __('Delete Account') }}
                 </x-danger-button>
             </div>
         </form>

@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Payment;
 use App\Models\Setting;
+use App\Models\User;
 use App\Policies\CoursePolicy;
 use App\Policies\LessonPolicy;
 use App\Policies\PaymentPolicy;
@@ -31,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Course::class, CoursePolicy::class);
         Gate::policy(Lesson::class, LessonPolicy::class);
         Gate::policy(Payment::class, PaymentPolicy::class);
+        Gate::policy(User::class, \App\Policies\UserPolicy::class);
 
         $defaults = [
             'primary' => '#4F46E5',

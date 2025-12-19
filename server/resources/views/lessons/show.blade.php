@@ -1,13 +1,11 @@
 <x-public-layout :title="$lesson->title" :metaDescription="str($lesson->description)->limit(160)">
-    <nav class="mb-4 text-sm">
-        <a href="{{ route('courses.index') }}" class="underline text-gray-700">Courses</a>
-        <span class="text-gray-500">/</span>
-        <a href="{{ route('courses.show', $course) }}" class="underline text-gray-700">{{ $course->title }}</a>
-        <span class="text-gray-500">/</span>
-        <span class="text-gray-700">{{ $lesson->title }}</span>
-    </nav>
+    <x-breadcrumbs :items="[
+        ['label' => __('Dashboard'), 'url' => route('dashboard')],
+        ['label' => $course->title, 'url' => route('courses.show', $course)],
+        ['label' => $lesson->title]
+    ]" />
     <article class="max-w-3xl">
-        <h1 class="text-2xl font-semibold mb-4">{{ $lesson->title }}</h1>
+        <h1 class="text-2xl font-semibold mb-6">{{ $lesson->title }}</h1>
         @if ($isCompleted)
             <span class="inline-block px-3 py-1 rounded bg-green-600 text-white mb-4">Completed</span>
         @endif
@@ -27,5 +25,14 @@
                 {!! nl2br(e($lesson->description)) !!}
             </div>
         @endif
+        <div class="mt-8 flex items-center space-x-3">
+            @if (!empty($prevLesson))
+                <a href="{{ route('lessons.show', [$course, $prevLesson]) }}" class="inline-flex items-center px-4 py-2 rounded border text-gray-700 hover:bg-gray-50">Previous</a>
+            @endif
+            @if (!empty($nextLesson))
+                <a href="{{ route('lessons.show', [$course, $nextLesson]) }}" class="inline-flex items-center px-4 py-2 rounded bg-[var(--color-primary)] text-white hover:opacity-90">Next</a>
+            @endif
+            <a href="{{ route('courses.show', $course) }}" class="inline-flex items-center px-4 py-2 rounded border text-gray-700 hover:bg-gray-50">Back to Course</a>
+        </div>
     </article>
 </x-public-layout>
