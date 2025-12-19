@@ -29,6 +29,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->environment(['local', 'demo']) && config('database.default') === 'sqlite') {
+            $databasePath = config('database.connections.sqlite.database');
+            if ($databasePath && $databasePath !== ':memory:' && ! file_exists($databasePath)) {
+                @touch($databasePath);
+            }
+        }
+
         Gate::policy(Course::class, CoursePolicy::class);
         Gate::policy(Lesson::class, LessonPolicy::class);
         Gate::policy(Payment::class, PaymentPolicy::class);

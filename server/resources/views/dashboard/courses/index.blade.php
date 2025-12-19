@@ -1,15 +1,13 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+    <div class="py-8 max-w-6xl mx-auto">
+        <div class="mb-6 flex items-center justify-between">
+            <h1 class="text-2xl font-semibold text-gray-900">
                 {{ __('My Courses') }}
-            </h2>
+            </h1>
             <a href="{{ route('dashboard.courses.create') }}" class="inline-flex items-center px-4 py-2 rounded bg-[var(--color-primary)] text-white hover:opacity-90">
                 {{ __('Add Course') }}
             </a>
         </div>
-    </x-slot>
-    <div class="py-8 max-w-6xl mx-auto">
         <x-breadcrumbs :items="[
             ['label' => __('Dashboard'), 'url' => route('dashboard')],
             ['label' => __('Courses')]
