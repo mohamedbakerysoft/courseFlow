@@ -20,8 +20,18 @@
             </div>
         @endif
         <div class="mt-8">
-            <button type="button" class="px-4 py-2 rounded bg-black text-white">Enroll</button>
+            @guest
+                <a href="{{ route('login') }}" class="px-4 py-2 rounded bg-gray-800 text-white">Login to Enroll</a>
+            @else
+                @if ($isEnrolled)
+                    <span class="inline-block px-3 py-2 rounded bg-green-600 text-white">You are enrolled</span>
+                @else
+                    <form action="{{ route('courses.enroll', $course) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="px-4 py-2 rounded bg-black text-white">Enroll</button>
+                    </form>
+                @endif
+            @endguest
         </div>
     </article>
 </x-public-layout>
-

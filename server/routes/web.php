@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\LessonController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,3 +31,11 @@ Route::get('/privacy', [PageController::class, 'show'])->defaults('slug', 'priva
 
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
+Route::post('/courses/{course:slug}/enroll', [CourseController::class, 'enroll'])
+    ->middleware('auth')
+    ->name('courses.enroll');
+
+Route::get('/courses/{course:slug}/lessons/{lesson:slug}', [LessonController::class, 'show'])
+    ->middleware(['auth', \App\Http\Middleware\EnsureUserIsEnrolled::class])
+    ->scopeBindings()
+    ->name('lessons.show');

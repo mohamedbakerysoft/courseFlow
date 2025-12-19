@@ -45,4 +45,9 @@ abstract class DuskTestCase extends BaseTestCase
             )
         );
     }
+
+    protected function newBrowser($driver)
+    {
+        return new \App\Testing\SlowBrowser($driver);
+    }
 }

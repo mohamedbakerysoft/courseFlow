@@ -54,4 +54,11 @@ class User extends Authenticatable
             'social_links' => 'array',
         ];
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'enrollments')
+            ->withPivot('enrolled_at')
+            ->withTimestamps();
+    }
 }

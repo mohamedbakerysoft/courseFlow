@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Lesson;
+
 class Course extends \Illuminate\Database\Eloquent\Model
 {
     protected $fillable = [
@@ -32,5 +34,17 @@ class Course extends \Illuminate\Database\Eloquent\Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'enrollments')
+            ->withPivot('enrolled_at')
+            ->withTimestamps();
+    }
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class)->orderBy('position');
     }
 }
