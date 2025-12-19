@@ -45,23 +45,23 @@
             </x-primary-button>
         </div>
     </form>
-    @if(app()->environment(['local','dusk']))
+    @if(app()->environment(['local','dusk','dusk.local']))
         <div class="mt-6 bg-white border border-gray-200 rounded p-4">
             <p class="text-sm font-medium text-gray-800 mb-3">Demo Login (Local / Testing Only)</p>
             <div class="space-y-2">
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-700">Admin — admin@demo.com</span>
-                    <button type="button" class="px-3 py-1 rounded bg-slate-700 text-white"
-                            x-on:click="fill('admin@demo.com','password')">Fill</button>
+                    <span class="text-sm text-gray-700">Admin — admin@example.com</span>
+                    <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-indigo-500"
+                            x-on:click="fill('admin@example.com','password')">Fill</button>
                 </div>
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-700">Instructor — instructor@demo.com</span>
-                    <button type="button" class="px-3 py-1 rounded bg-slate-700 text-white"
+                    <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-indigo-500"
                             x-on:click="fill('instructor@demo.com','password')">Fill</button>
                 </div>
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-700">Student — student@demo.com</span>
-                    <button type="button" class="px-3 py-1 rounded bg-slate-700 text-white"
+                    <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-indigo-500"
                             x-on:click="fill('student@demo.com','password')">Fill</button>
                 </div>
             </div>
