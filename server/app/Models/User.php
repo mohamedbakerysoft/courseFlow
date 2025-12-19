@@ -60,7 +60,7 @@ class User extends Authenticatable
     protected static function booted(): void
     {
         static::deleting(function (User $user) {
-            if ($user->email === config('demo.admin_email', self::PROTECTED_ADMIN_EMAIL)) {
+            if ($user->is_demo) {
                 abort(403);
             }
         });
@@ -69,6 +69,19 @@ class User extends Authenticatable
                 abort(403);
             }
         });
+    }
+
+    public function getIsDemoAttribute(): bool
+    {
+        $demoEmails = [
+            config('demo.admin_email', self::PROTECTED_ADMIN_EMAIL),
+            'instructor@demo.com',
+            'student@demo.com',
+        ];
+        if (str_ends_with($this->email, '@demo.com')) {
+            $demoEmails[] = $this->email;
+        }
+        return in_array($this->email, $demoEmails, true);
     }
 
     public function courses()

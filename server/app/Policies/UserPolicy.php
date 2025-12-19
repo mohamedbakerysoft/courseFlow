@@ -8,7 +8,7 @@ class UserPolicy
 {
     public function delete(User $actor, User $user): bool
     {
-        if ($user->email === config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL)) {
+        if ($user->is_demo) {
             return false;
         }
         return $actor->id === $user->id;

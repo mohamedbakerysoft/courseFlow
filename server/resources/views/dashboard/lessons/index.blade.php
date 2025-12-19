@@ -1,8 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Lessons for') }} {{ $course->title }}
-        </h2>
+        <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Lessons for') }} {{ $course->title }}
+            </h2>
+            @isset($course)
+                <a href="{{ route('dashboard.courses.lessons.create', $course) }}" class="inline-flex items-center px-4 py-2 rounded border text-gray-700 hover:bg-gray-50">
+                    {{ __('Add Lesson') }}
+                </a>
+            @endisset
+        </div>
     </x-slot>
     <div class="py-8 max-w-6xl mx-auto">
         <x-breadcrumbs :items="[
@@ -10,10 +17,7 @@
             ['label' => __('Courses'), 'url' => route('dashboard.courses.index')],
             ['label' => __('Lessons')]
         ]" />
-        <div class="mb-4 flex items-center justify-between">
-            <a href="{{ route('dashboard.courses.lessons.create', $course) }}" class="inline-flex items-center px-4 py-2 rounded bg-[var(--color-primary)] text-white hover:opacity-90">
-                {{ __('Add Lesson') }}
-            </a>
+        <div class="mb-4 flex items-center justify-end">
             <a href="{{ route('dashboard.courses.edit', $course) }}" class="inline-flex items-center px-4 py-2 rounded border text-gray-700 hover:bg-gray-50">
                 {{ __('Back to Course') }}
             </a>

@@ -60,9 +60,12 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-4 py-8 text-center text-gray-700">
-                            <div class="text-3xl mb-2">📚</div>
-                            You have not created any courses yet.
+                        <td colspan="4" class="px-4 py-10 text-center text-gray-700">
+                            <div class="text-3xl mb-3">📚</div>
+                            <p class="mb-4">You have not created any courses yet.</p>
+                            <a href="{{ route('dashboard.courses.create') }}" class="inline-flex items-center px-5 py-2.5 rounded bg-[var(--color-primary)] text-white hover:opacity-90">
+                                {{ __('Add Course') }}
+                            </a>
                         </td>
                     </tr>
                 @endforelse

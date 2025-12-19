@@ -14,6 +14,18 @@ class DemoSeeder extends Seeder
 {
     public function run(): void
     {
+        $admin = User::where('email', config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL))->first();
+        if (! $admin) {
+            $admin = User::updateOrCreate(
+                ['email' => config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL)],
+                [
+                    'name' => 'Admin',
+                    'password' => bcrypt('password'),
+                    'role' => User::ROLE_ADMIN,
+                ]
+            );
+        }
+
         $instructor = User::updateOrCreate(
             ['email' => 'instructor@demo.com'],
             [
@@ -57,7 +69,7 @@ class DemoSeeder extends Seeder
                     'is_free' => $c['is_free'],
                     'status' => Course::STATUS_PUBLISHED,
                     'language' => 'en',
-                    'instructor_id' => $instructor->id,
+                    'instructor_id' => $admin->id,
                 ]
             );
             $createdCourses[] = $course;
