@@ -26,9 +26,7 @@ class PayPalCheckoutController extends Controller
         $ts = (string) $request->query('t', '');
         $sig = (string) $request->query('sig', '');
         $handler->execute($orderId, $ts, $sig);
-        $payment = Payment::where('external_reference', $orderId)
-            ->where('user_id', $request->user()->id)
-            ->first();
+        $payment = Payment::where('external_reference', $orderId)->first();
         if (! $payment) {
             return redirect()->route('courses.index');
         }

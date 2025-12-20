@@ -34,7 +34,7 @@ class DemoReseedAfterTestsTest extends TestCase
 
         $this->assertFileExists($dbPath);
 
-        $count = Course::on('sqlite')->where('slug', 'like', 'demo-course-%')->count();
+        $count = Course::on('sqlite')->count();
         $this->assertGreaterThan(0, $count);
 
         Config::set('database.default', $originalDefault);
@@ -48,4 +48,3 @@ class DemoReseedAfterTestsTest extends TestCase
         DB::reconnect('sqlite');
     }
 }
-

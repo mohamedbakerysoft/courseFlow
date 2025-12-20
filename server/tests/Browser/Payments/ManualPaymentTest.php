@@ -15,6 +15,12 @@ class ManualPaymentTest extends DuskTestCase
     {
         Artisan::call('migrate:fresh', ['--force' => true]);
 
+        app(\App\Services\SettingsService::class)->set([
+            'payments.stripe.enabled' => false,
+            'payments.paypal.enabled' => false,
+            'payments.manual.instructions' => 'Bank transfer details',
+        ]);
+
         $student = User::updateOrCreate(['email' => 'manual@example.com'], [
             'name' => 'Manual Student',
             'password' => bcrypt('password'),
@@ -66,4 +72,3 @@ class ManualPaymentTest extends DuskTestCase
         });
     }
 }
-

@@ -16,9 +16,9 @@ class SettingsController extends Controller
         $defaultLanguage = $settings->get('site.default_language', 'en');
         $logoPath = $settings->get('site.logo_path');
 
-        $paymentsStripeEnabled = (bool) $settings->get('payments.stripe.enabled', false);
-        $paymentsPaypalEnabled = (bool) $settings->get('payments.paypal.enabled', false);
-        $paymentsManualInstructions = (string) $settings->get('payments.manual.instructions', '');
+        $paymentsStripeEnabled = (bool) $settings->get('payments.stripe.enabled', true);
+        $paymentsPaypalEnabled = (bool) $settings->get('payments.paypal.enabled', true);
+        $paymentsManualInstructions = (string) $settings->get('payments.manual.instructions', 'Send the course fee via bank transfer or cash and upload your proof of payment.');
 
         $logoUrl = $logoPath ? asset('storage/'.$logoPath) : null;
 

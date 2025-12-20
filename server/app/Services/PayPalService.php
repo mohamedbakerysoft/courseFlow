@@ -13,9 +13,7 @@ class PayPalService
     {
         if (
             app()->runningUnitTests()
-            || env('APP_ENV') === 'testing'
-            || env('APP_ENV') === 'dusk'
-            || env('APP_ENV') === 'dusk.local'
+            || app()->environment(['local', 'testing', 'dusk', 'dusk.local'])
             || config('demo.enabled')
         ) {
             $orderId = 'order_' . Str::random(12);
@@ -73,9 +71,7 @@ class PayPalService
     {
         if (
             app()->runningUnitTests()
-            || env('APP_ENV') === 'testing'
-            || env('APP_ENV') === 'dusk'
-            || env('APP_ENV') === 'dusk.local'
+            || app()->environment(['local', 'testing', 'dusk', 'dusk.local'])
             || config('demo.enabled')
         ) {
             $secret = config('services.paypal.webhook_secret');

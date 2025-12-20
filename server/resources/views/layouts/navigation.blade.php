@@ -92,7 +92,7 @@
                     </x-slot>
                 </x-dropdown>
                 @else
-                    <a href="{{ route('login') }}" class="inline-flex items-center px-3 py-2 rounded bg-[var(--color-primary)] text-white text-sm hover:opacity-90">{{ __('Login') }}</a>
+                    <a href="{{ route('login') }}" class="inline-flex items-center px-3 py-2 rounded bg-[var(--color-primary)] text-white text-sm hover:opacity-90">{{ __('Log in') }}</a>
                 @endauth
             </div>
             <div class="-me-2 flex items-center sm:hidden">

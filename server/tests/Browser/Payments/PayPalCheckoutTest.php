@@ -16,6 +16,12 @@ class PayPalCheckoutTest extends DuskTestCase
         Artisan::call('migrate:fresh', ['--force' => true]);
         config()->set('services.paypal.webhook_secret', 'test_webhook_secret');
 
+        app(\App\Services\SettingsService::class)->set([
+            'payments.stripe.enabled' => false,
+            'payments.paypal.enabled' => true,
+            'payments.manual.instructions' => 'Bank transfer details',
+        ]);
+
         $user = User::updateOrCreate(['email' => 'pp@example.com'], [
             'name' => 'PP',
             'password' => bcrypt('password'),
@@ -57,4 +63,3 @@ class PayPalCheckoutTest extends DuskTestCase
         });
     }
 }
-

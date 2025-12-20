@@ -35,9 +35,9 @@ class CourseController extends Controller
         $progressPercent = $isEnrolled ? $progressAction->execute($request->user(), $course) : 0;
         $lessons = $course->lessons()->published()->select(['id', 'slug', 'title', 'position'])->orderBy('position')->get();
         $firstLesson = $lessons->first();
-        $isStripeEnabled = (bool) $settings->get('payments.stripe.enabled', false);
-        $isPayPalEnabled = (bool) $settings->get('payments.paypal.enabled', false);
-        $manualInstructions = (string) $settings->get('payments.manual.instructions', '');
+        $isStripeEnabled = (bool) $settings->get('payments.stripe.enabled', true);
+        $isPayPalEnabled = (bool) $settings->get('payments.paypal.enabled', true);
+        $manualInstructions = (string) $settings->get('payments.manual.instructions', 'Send the course fee via bank transfer or cash and upload your proof of payment.');
         $hasManualPayment = trim($manualInstructions) !== '';
         $hasAnyPaymentMethod = $isStripeEnabled || $isPayPalEnabled || $hasManualPayment;
 
