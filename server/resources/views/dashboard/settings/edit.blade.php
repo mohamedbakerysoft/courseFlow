@@ -51,10 +51,10 @@
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
                         @if ($logoUrl)
-                            <div class="mt-3 flex items-center gap-4">
-                                <div>
-                                    <p class="text-xs font-medium text-gray-500 mb-1">{{ __('Current logo') }}</p>
-                                    <img src="{{ $logoUrl }}" alt="Logo" class="h-12">
+                            <div class="mt-3">
+                                <p class="text-xs font-medium text-gray-500 mb-1">{{ __('Current logo') }}</p>
+                                <div class="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white shadow-sm p-3">
+                                    <img src="{{ $logoUrl }}" alt="Logo" class="h-16 w-16 object-contain">
                                 </div>
                             </div>
                         @endif
@@ -172,8 +172,10 @@
                         @enderror
                         @if ($landingInstructorImageUrl)
                             <div class="mt-3">
-                                <p class="text-xs text-gray-500 mb-1">{{ __('Current hero image') }}</p>
-                                <img src="{{ $landingInstructorImageUrl }}" alt="Instructor hero" class="h-16 rounded">
+                                <p class="text-xs font-medium text-gray-500 mb-1">{{ __('Current hero image') }}</p>
+                                <div class="overflow-hidden rounded-xl ring-1 ring-gray-200 shadow-sm">
+                                    <img src="{{ $landingInstructorImageUrl }}" alt="Instructor hero" class="w-48 h-48 object-cover">
+                                </div>
                             </div>
                         @endif
                     </div>

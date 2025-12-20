@@ -13,16 +13,16 @@
                         </p>
                         <div class="space-y-4">
                             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900">
-                                {{ __('Build a sales career you are proud of') }}
+                                {{ $heroTitle }}
                             </h1>
                             <p class="text-base sm:text-lg text-gray-600 max-w-xl">
-                                {{ __('Learn practical sales skills, close more deals, and grow your income with step-by-step courses and live coaching from Mena Mahmoud.') }}
+                                {{ $heroSubtitle }}
                             </p>
                         </div>
                         <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
                             <a href="{{ route('courses.index') }}"
                                class="inline-flex justify-center items-center w-full sm:w-auto px-7 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                {{ __('Browse courses') }}
+                                {{ __('Browse Courses') }}
                             </a>
                             <a href="#contact"
                                class="inline-flex justify-center items-center w-full sm:w-auto px-6 py-3 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]/40">
@@ -45,14 +45,37 @@
                             <div class="absolute inset-0 rounded-full bg-[var(--color-primary)]/10"></div>
                             <div class="absolute inset-4 rounded-full bg-white shadow-xl ring-1 ring-gray-100 overflow-hidden">
                                 <img
-                                    src="{{ asset('images/demo/IMG_1702.JPG') }}"
-                                    alt="{{ __('Mena Mahmoud speaking at a business event') }}"
+                                    src="{{ $instructorImageUrl ?? asset('images/demo/IMG_1702.JPG') }}"
+                                    alt="{{ __('Instructor hero') }}"
                                     class="h-full w-full object-cover"
                                     loading="lazy"
                                 >
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <section aria-label="{{ __('Featured courses') }}" class="space-y-8">
+                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                    <div class="space-y-2">
+                        <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
+                            {{ __('Courses') }}
+                        </p>
+                        <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900">
+                            {{ __('Featured courses') }}
+                        </h2>
+                    </div>
+                    <a href="{{ route('courses.index') }}" class="inline-flex items-center text-sm font-semibold text-[var(--color-primary)] hover:underline">
+                        {{ __('View all courses') }}
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @forelse ($featuredCourses as $course)
+                        <x-course.card :course="$course" />
+                    @empty
+                        <p class="text-sm text-gray-600">{{ __('No courses available yet') }}</p>
+                    @endforelse
                 </div>
             </section>
 
@@ -63,14 +86,20 @@
                             {{ __('Meet your coach') }}
                         </p>
                         <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900">
-                            {{ __('Hi, I\'m Mena Mahmoud') }}
+                            {{ $instructor?->name ?? __('Your Instructor') }}
                         </h2>
-                        <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
-                            {{ __('I help ambitious professionals and founders build a confident sales mindset, design repeatable closing systems, and communicate their value clearly in every conversation.') }}
-                        </p>
-                        <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
-                            {{ __('Inside my programs, you will find practical frameworks, real-world call breakdowns, and simple exercises you can apply the same day with your clients, team, or interviews.') }}
-                        </p>
+                        @if (!empty($instructor?->bio))
+                            <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
+                                {{ $instructor->bio }}
+                            </p>
+                        @endif
+                        @if (!empty($instructorLinks))
+                            <div class="flex gap-3 text-sm">
+                                @foreach ($instructorLinks as $label => $url)
+                                    <a href="{{ $url }}" class="text-[var(--color-primary)] hover:underline" rel="noopener" target="_blank">{{ ucfirst($label) }}</a>
+                                @endforeach
+                            </div>
+                        @endif
                         <div class="flex flex-wrap gap-3 text-xs sm:text-sm">
                             <div class="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 text-gray-700">
                                 <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]"></span>
