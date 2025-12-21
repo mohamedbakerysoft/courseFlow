@@ -5,6 +5,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ $title ?? config('app.name', 'CourseFlow') }}</title>
         <meta name="description" content="{{ $metaDescription ?? '' }}">
+        @php
+            $googleFonts = [
+                'Cairo' => 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap',
+                'Tajawal' => 'https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap',
+                'IBM Plex Arabic' => 'https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@400;600;700&display=swap',
+                'Inter' => 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap',
+                'Poppins' => 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap',
+                'Roboto' => 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap',
+            ];
+            $arabicFont = $typography['arabic_font'] ?? 'Cairo';
+            $englishFont = $typography['english_font'] ?? 'Inter';
+            $arabicFontUrl = $googleFonts[$arabicFont] ?? $googleFonts['Cairo'];
+            $englishFontUrl = $googleFonts[$englishFont] ?? $googleFonts['Inter'];
+        @endphp
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="{{ $englishFontUrl }}" rel="stylesheet" />
+        <link href="{{ $arabicFontUrl }}" rel="stylesheet" />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>
             :root {
@@ -18,10 +36,14 @@
                 --color-text-primary: {{ $theme['text'] ?? '#0F172A' }};
                 --color-text-muted: {{ $theme['text_muted'] ?? '#64748B' }};
                 --color-error: {{ $theme['error'] ?? '#EF4444' }};
+                --font-arabic: {{ $typographyCss['arabic_stack'] ?? "'Cairo', sans-serif" }};
+                --font-english: {{ $typographyCss['english_stack'] ?? "'Inter', system-ui, sans-serif" }};
             }
+            html { font-family: var(--font-english); }
+            html[lang="ar"], .rtl { font-family: var(--font-arabic); }
         </style>
     </head>
-    <body class="font-sans antialiased bg-[var(--color-background)] text-[var(--color-text-primary)]">
+    <body class="antialiased bg-[var(--color-background)] text-[var(--color-text-primary)]">
         @include('layouts.navigation')
         <main class="max-w-7xl mx-auto px-4 py-8">
             {{ $slot }}

@@ -41,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Payment::class, PaymentPolicy::class);
         Gate::policy(User::class, \App\Policies\UserPolicy::class);
 
+        // Theme (colors)
         $defaults = [
             'primary' => '#4F46E5',
             'secondary' => '#334155',
@@ -62,5 +63,38 @@ class AppServiceProvider extends ServiceProvider
             $theme = $defaults;
         }
         View::share('theme', $theme);
+
+        // Typography (fonts)
+        $typographyDefaults = [
+            'arabic_font' => 'Cairo',
+            'english_font' => 'Inter',
+        ];
+        $typography = $typographyDefaults;
+        try {
+            foreach (['typography.arabic_font' => 'arabic_font', 'typography.english_font' => 'english_font'] as $key => $map) {
+                $row = Setting::query()->where('key', $key)->first();
+                if ($row && is_string($row->value) && $row->value !== '') {
+                    $typography[$map] = $row->value;
+                }
+            }
+        } catch (\Throwable $e) {
+            $typography = $typographyDefaults;
+        }
+        $fontStacks = [
+            // Arabic stacks
+            'Cairo' => "'Cairo', sans-serif",
+            'Tajawal' => "'Tajawal', sans-serif",
+            'IBM Plex Arabic' => "'IBM Plex Arabic', sans-serif",
+            // English stacks
+            'Inter' => "'Inter', system-ui, sans-serif",
+            'Poppins' => "'Poppins', system-ui, sans-serif",
+            'Roboto' => "'Roboto', system-ui, sans-serif",
+        ];
+        $typographyCss = [
+            'arabic_stack' => $fontStacks[$typography['arabic_font']] ?? $fontStacks['Cairo'],
+            'english_stack' => $fontStacks[$typography['english_font']] ?? $fontStacks['Inter'],
+        ];
+        View::share('typography', $typography);
+        View::share('typographyCss', $typographyCss);
     }
 }
