@@ -47,6 +47,8 @@ class AppServiceProvider extends ServiceProvider
             'accent' => '#10B981',
             'bg' => '#F8FAFC',
             'text' => '#0F172A',
+            'text_muted' => '#64748B',
+            'primary_hover' => '#4338CA',
         ];
         $theme = $defaults;
         try {

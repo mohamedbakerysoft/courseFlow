@@ -9,14 +9,19 @@
         <style>
             :root {
                 --color-primary: {{ $theme['primary'] ?? '#4F46E5' }};
+                --color-primary-hover: {{ $theme['primary_hover'] ?? '#4338CA' }};
                 --color-secondary: {{ $theme['secondary'] ?? '#334155' }};
                 --color-accent: {{ $theme['accent'] ?? '#10B981' }};
                 --color-bg: {{ $theme['bg'] ?? '#F8FAFC' }};
+                --color-background: {{ $theme['bg'] ?? '#F8FAFC' }};
                 --color-text: {{ $theme['text'] ?? '#0F172A' }};
+                --color-text-primary: {{ $theme['text'] ?? '#0F172A' }};
+                --color-text-muted: {{ $theme['text_muted'] ?? '#64748B' }};
+                --color-error: {{ $theme['error'] ?? '#EF4444' }};
             }
         </style>
     </head>
-    <body class="font-sans antialiased bg-[var(--color-bg)] text-[var(--color-text)]">
+    <body class="font-sans antialiased bg-[var(--color-background)] text-[var(--color-text-primary)]">
         @include('layouts.navigation')
         <main class="max-w-7xl mx-auto px-4 py-8">
             {{ $slot }}

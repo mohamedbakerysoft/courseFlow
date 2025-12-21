@@ -1,12 +1,12 @@
 @props(['course', 'ctaLabel' => 'View course', 'ctaUrl' => null])
 @php($ctaUrl = $ctaUrl ?? route('courses.show', $course))
-<article class="group relative bg-white rounded-xl shadow-sm ring-1 ring-gray-100 overflow-hidden transition transform hover:-translate-y-1 hover:shadow-md">
+<article class="group relative bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 overflow-hidden transition transform hover:-translate-y-1 hover:shadow-md">
     <a href="{{ $ctaUrl }}" class="block h-full">
         <div class="relative aspect-video overflow-hidden">
             @if ($course->thumbnail_path)
                 <img src="{{ asset($course->thumbnail_path) }}" alt="{{ $course->title }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
             @else
-                <div class="w-full h-full bg-gradient-to-br from-[var(--color-primary)]/10 via-white to-[var(--color-primary)]/5 flex items-center justify-center text-gray-500 text-sm">
+                <div class="w-full h-full bg-gradient-to-br from-[var(--color-primary)]/10 via-white to-[var(--color-primary)]/5 flex items-center justify-center text-[var(--color-text-muted)] text-sm">
                     {{ __('Course preview') }}
                 </div>
             @endif
@@ -24,26 +24,26 @@
             </div>
         </div>
         <div class="p-4 flex flex-col h-full space-y-3">
-            <h3 class="font-semibold text-base text-gray-900 line-clamp-2">
+            <h3 class="font-semibold text-base text-[var(--color-text-primary)] line-clamp-2">
                 {{ $course->title }}
             </h3>
             @if (!empty($course->description))
-                <p class="text-sm text-gray-600 line-clamp-2">
+                <p class="text-sm text-[var(--color-text-muted)] line-clamp-2">
                     {{ str($course->description)->limit(120) }}
                 </p>
             @endif
-            <div class="flex items-center justify-between text-xs text-gray-500">
+            <div class="flex items-center justify-between text-xs text-[var(--color-text-muted)]">
                 <div class="flex flex-col">
                     @if ($course->instructor)
-                        <span class="font-medium text-gray-800">
+                        <span class="font-medium text-[var(--color-text-primary)]">
                             {{ $course->instructor->name }}
                         </span>
                     @else
-                        <span class="font-medium text-gray-800">
+                        <span class="font-medium text-[var(--color-text-primary)]">
                             {{ __('Instructor') }}
                         </span>
                     @endif
-                    <div class="flex items-center gap-2 text-gray-500 mt-1">
+                    <div class="flex items-center gap-2 text-[var(--color-text-muted)] mt-1">
                         @if (isset($course->lessons_count))
                             <span>
                                 {{ $course->lessons_count }} {{ Str::plural(__('lesson'), $course->lessons_count) }}

@@ -86,7 +86,7 @@
                                     @if ($isPayPalEnabled)
                                         <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="inline-block me-2">
                                             @csrf
-                                            <button type="submit" class="inline-flex items-center px-6 py-3 rounded-full bg-yellow-600 text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600">
+                                            <button type="submit" class="inline-flex items-center px-6 py-3 rounded-full bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)]">
                                                 {{ __('Pay with PayPal') }}
                                             </button>
                                         </form>
@@ -94,13 +94,13 @@
                                     @if ($hasManualPayment)
                                         <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="inline-block">
                                             @csrf
-                                            <button type="submit" class="inline-flex items-center px-6 py-3 rounded-full bg-gray-800 text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">
+                                            <button type="submit" class="inline-flex items-center px-6 py-3 rounded-full bg-[var(--color-secondary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-secondary)]">
                                                 {{ __('Manual Payment') }}
                                             </button>
                                         </form>
                                     @endif
                                 @else
-                                    <p class="text-sm text-red-600 font-medium">
+                                    <p class="text-sm text-[var(--color-error)] font-medium">
                                         {{ __('Payments are currently disabled. Please contact the instructor.') }}
                                     </p>
                                 @endif
@@ -285,7 +285,7 @@
                                             @if ($isPayPalEnabled)
                                                 <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="w-full">
                                                     @csrf
-                                                    <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-yellow-600 text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600">
+                                                    <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)]">
                                                         {{ __('Pay with PayPal') }}
                                                     </button>
                                                 </form>
@@ -293,13 +293,13 @@
                                             @if ($hasManualPayment)
                                                 <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="w-full">
                                                     @csrf
-                                                    <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-gray-800 text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">
+                                                    <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-secondary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-secondary)]">
                                                         {{ __('Manual Payment') }}
                                                     </button>
                                                 </form>
                                             @endif
                                         @else
-                                            <p class="text-xs text-red-600 text-center font-medium">
+                                            <p class="text-xs text-[var(--color-error)] text-center font-medium">
                                                 {{ __('Payments are currently disabled. Please contact the instructor.') }}
                                             </p>
                                         @endif

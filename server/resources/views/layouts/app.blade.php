@@ -16,15 +16,20 @@
         <style>
             :root {
                 --color-primary: {{ $theme['primary'] ?? '#4F46E5' }};
+                --color-primary-hover: {{ $theme['primary_hover'] ?? '#4338CA' }};
                 --color-secondary: {{ $theme['secondary'] ?? '#334155' }};
                 --color-accent: {{ $theme['accent'] ?? '#10B981' }};
                 --color-bg: {{ $theme['bg'] ?? '#F8FAFC' }};
+                --color-background: {{ $theme['bg'] ?? '#F8FAFC' }};
                 --color-text: {{ $theme['text'] ?? '#0F172A' }};
+                --color-text-primary: {{ $theme['text'] ?? '#0F172A' }};
+                --color-text-muted: {{ $theme['text_muted'] ?? '#64748B' }};
+                --color-error: {{ $theme['error'] ?? '#EF4444' }};
             }
         </style>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-[var(--color-bg)]">
+        <div class="min-h-screen bg-[var(--color-background)]">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
