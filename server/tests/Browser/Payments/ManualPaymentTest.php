@@ -64,7 +64,8 @@ class ManualPaymentTest extends DuskTestCase
                 ],
             ];
             $context = stream_context_create($opts);
-            file_get_contents('http://localhost:8000/dashboard/payments/'.$payment->id.'/approve', false, $context);
+            $base = rtrim(config('app.url'), '/');
+            file_get_contents($base.'/dashboard/payments/'.$payment->id.'/approve', false, $context);
 
             $browser->visit('/courses/'.$course->slug)
                 ->waitForText('You are enrolled', 10)

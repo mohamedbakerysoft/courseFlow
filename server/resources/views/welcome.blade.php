@@ -7,31 +7,31 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 px-4 sm:px-6 lg:px-8">
                         <div class="space-y-6">
                             <div class="space-y-1">
-                                <h2 class="text-lg sm:text-xl font-semibold text-gray-900">
+                                <h2 class="text-lg sm:text-xl font-semibold text-[var(--color-text-primary)]">
                                     {{ $instructorName }}
                                 </h2>
                                 @if (!empty($instructorTitle) && $showAboutInstructor)
-                                    <p class="text-xs sm:text-sm text-gray-600">
+                                    <p class="text-xs sm:text-sm text-[var(--color-text-muted)]">
                                         {{ $instructorTitle }}
                                     </p>
                                 @endif
                             </div>
                             <div class="space-y-4">
-                                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900">
+                                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[var(--color-text-primary)]">
                                     {{ $heroTitle }}
                                 </h1>
-                                <p class="text-base sm:text-lg text-gray-700">
+                                <p class="text-base sm:text-lg text-[var(--color-text-muted)]">
                                     {{ $heroSubtitle }}
                                 </p>
                                 @if (!empty($instructorBio) && $showAboutInstructor)
-                                    <p class="text-sm sm:text-base text-gray-600">
+                                    <p class="text-sm sm:text-base text-[var(--color-text-muted)]">
                                         {{ $instructorBio }}
                                     </p>
                                 @endif
                             </div>
                             <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
                                 <a href="{{ route('courses.index') }}"
-                                   class="inline-flex justify-center items-center w-full sm:w-auto px-7 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                                   class="inline-flex justify-center items-center w-full sm:w-auto px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
                                     {{ __('Courses') }}
                                 </a>
                             </div>
@@ -39,7 +39,7 @@
                                 <div class="flex items-center gap-4 pt-1">
                                     @foreach ($instructorLinks as $label => $url)
                                         @if (!empty($url))
-                                            <a href="{{ $url }}" class="inline-flex items-center justify-center h-9 w-9 rounded-full ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50 hover:opacity-80 transition-colors" rel="noopener" target="_blank" aria-label="{{ ucfirst($label) }}">
+                                            <a href="{{ $url }}" class="inline-flex items-center justify-center h-9 w-9 rounded-full ring-1 ring-[var(--color-secondary)]/20 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]/10 hover:opacity-80 transition-colors" rel="noopener" target="_blank" aria-label="{{ ucfirst($label) }}">
                                                 <span class="text-xs font-semibold">{{ strtoupper(substr($label,0,1)) }}</span>
                                             </a>
                                         @endif
@@ -74,7 +74,7 @@
                         <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
                             {{ __('Courses') }}
                         </p>
-                        <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900">
+                        <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
                             {{ __('Featured courses') }}
                         </h2>
                     </div>
@@ -86,7 +86,7 @@
                     @forelse ($featuredCourses as $course)
                         <x-course.card :course="$course" />
                     @empty
-                        <p class="text-sm text-gray-600">{{ __('No courses available yet') }}</p>
+                        <p class="text-sm text-[var(--color-text-muted)]">{{ __('No courses available yet') }}</p>
                     @endforelse
                 </div>
             </section>
@@ -98,22 +98,22 @@
                     <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
                         {{ __('Work with a clear plan') }}
                     </p>
-                    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900">
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
                         {{ __('Choose the support that fits your next step') }}
                     </h2>
-                    <p class="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
+                    <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-2xl mx-auto">
                         {{ __('Whether you are just starting or already closing deals, you will find a focused path to upgrade your skills and confidence.') }}
                     </p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 flex flex-col gap-3">
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-3">
                         <div class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
                             <span class="text-sm font-semibold">01</span>
                         </div>
-                        <h3 class="text-sm font-semibold text-gray-900">
+                        <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
                             {{ __('Sales Fundamentals Lab') }}
                         </h3>
-                        <p class="text-sm text-gray-600">
+                        <p class="text-sm text-[var(--color-text-muted)]">
                             {{ __('Master the basics of prospecting, discovery calls, and objection handling with simple scripts and checklists.') }}
                         </p>
                     </div>
@@ -121,21 +121,21 @@
                         <div class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-primary)] text-white">
                             <span class="text-sm font-semibold">02</span>
                         </div>
-                        <h3 class="text-sm font-semibold text-gray-900">
+                        <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
                             {{ __('Career & Interview Coaching') }}
                         </h3>
-                        <p class="text-sm text-gray-600">
+                        <p class="text-sm text-[var(--color-text-muted)]">
                             {{ __('Position yourself for sales roles, practice interviews, and tell your story in a confident, structured way.') }}
                         </p>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 flex flex-col gap-3">
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-3">
                         <div class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
                             <span class="text-sm font-semibold">03</span>
                         </div>
-                        <h3 class="text-sm font-semibold text-gray-900">
+                        <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
                             {{ __('1:1 Strategy Sessions') }}
                         </h3>
-                        <p class="text-sm text-gray-600">
+                        <p class="text-sm text-[var(--color-text-muted)]">
                             {{ __('Bring your real deals, offers, or presentations and leave with a clear action plan for the next 30 days.') }}
                         </p>
                     </div>
@@ -148,10 +148,10 @@
                         <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
                             {{ __('Programs & courses') }}
                         </p>
-                        <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900">
+                        <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
                             {{ __('Start with a clear, focused program') }}
                         </h2>
-                        <p class="text-sm sm:text-base text-gray-600 max-w-xl">
+                        <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-xl">
                             {{ __('Each program is designed to be practical, compact, and easy to apply around your work schedule.') }}
                         </p>
                     </div>
@@ -160,8 +160,8 @@
                     </a>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <article class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 overflow-hidden flex flex-col">
-                        <div class="h-40 bg-gray-50 overflow-hidden">
+                    <article class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 overflow-hidden flex flex-col">
+                        <div class="h-40 bg-[var(--color-background)] overflow-hidden">
                             <img
                                 src="{{ asset('images/demo/course-1.svg') }}"
                                 alt="{{ __('Sales fundamentals course illustration') }}"
@@ -173,15 +173,15 @@
                             <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]/80">
                                 {{ __('Foundations') }}
                             </p>
-                            <h3 class="text-sm font-semibold text-gray-900">
+                            <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
                                 {{ __('Sales Fundamentals: From First Call to First Deal') }}
                             </h3>
-                            <p class="text-sm text-gray-600 flex-1">
+                            <p class="text-sm text-[var(--color-text-muted)] flex-1">
                                 {{ __('Build a solid base in prospecting, discovery, and closing so you can start selling with confidence.') }}
                             </p>
                             <div class="flex items-center justify-between text-xs mt-1">
-                                <span class="font-semibold text-gray-900">{{ __('Beginner friendly') }}</span>
-                                <span class="rounded-full bg-green-50 px-2.5 py-1 text-[11px] font-medium text-green-700">
+                                <span class="font-semibold text-[var(--color-text-primary)]">{{ __('Beginner friendly') }}</span>
+                                <span class="rounded-full bg-[var(--color-accent)]/10 px-2.5 py-1 text-[11px] font-medium text-[var(--color-accent)]">
                                     {{ __('Self-paced') }}
                                 </span>
                             </div>
@@ -196,8 +196,8 @@
                         </div>
                     </article>
 
-                    <article class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 overflow-hidden flex flex-col">
-                        <div class="h-40 bg-gray-50 overflow-hidden">
+                    <article class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 overflow-hidden flex flex-col">
+                        <div class="h-40 bg-[var(--color-background)] overflow-hidden">
                             <img
                                 src="{{ asset('images/demo/course-2.svg') }}"
                                 alt="{{ __('Interview coaching course illustration') }}"
@@ -209,15 +209,15 @@
                             <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]/80">
                                 {{ __('Career') }}
                             </p>
-                            <h3 class="text-sm font-semibold text-gray-900">
+                            <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
                                 {{ __('Sales Interview & Role-Play Bootcamp') }}
                             </h3>
-                            <p class="text-sm text-gray-600 flex-1">
+                            <p class="text-sm text-[var(--color-text-muted)] flex-1">
                                 {{ __('Practice real interview scenarios, structure your answers, and show up as the obvious choice for the role.') }}
                             </p>
                             <div class="flex items-center justify-between text-xs mt-1">
-                                <span class="font-semibold text-gray-900">{{ __('Job seekers') }}</span>
-                                <span class="rounded-full bg-purple-50 px-2.5 py-1 text-[11px] font-medium text-[var(--color-primary)]">
+                                <span class="font-semibold text-[var(--color-text-primary)]">{{ __('Job seekers') }}</span>
+                                <span class="rounded-full bg-[var(--color-primary)]/10 px-2.5 py-1 text-[11px] font-medium text-[var(--color-primary)]">
                                     {{ __('Live cohort') }}
                                 </span>
                             </div>
@@ -232,8 +232,8 @@
                         </div>
                     </article>
 
-                    <article class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 overflow-hidden flex flex-col">
-                        <div class="h-40 bg-gray-50 overflow-hidden">
+                    <article class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 overflow-hidden flex flex-col">
+                        <div class="h-40 bg-[var(--color-background)] overflow-hidden">
                             <img
                                 src="{{ asset('images/demo/course-3.svg') }}"
                                 alt="{{ __('Personal brand course illustration') }}"
@@ -245,15 +245,15 @@
                             <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]/80">
                                 {{ __('Brand') }}
                             </p>
-                            <h3 class="text-sm font-semibold text-gray-900">
+                            <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
                                 {{ __('Personal Brand for Sales Professionals') }}
                             </h3>
-                            <p class="text-sm text-gray-600 flex-1">
+                            <p class="text-sm text-[var(--color-text-muted)] flex-1">
                                 {{ __('Create a clear positioning, LinkedIn profile, and content plan that brings opportunities to you.') }}
                             </p>
                             <div class="flex items-center justify-between text-xs mt-1">
-                                <span class="font-semibold text-gray-900">{{ __('Intermediate') }}</span>
-                                <span class="rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-medium text-blue-700">
+                                <span class="font-semibold text-[var(--color-text-primary)]">{{ __('Intermediate') }}</span>
+                                <span class="rounded-full bg-[var(--color-secondary)]/10 px-2.5 py-1 text-[11px] font-medium text-[var(--color-secondary)]">
                                     {{ __('Templates included') }}
                                 </span>
                             </div>
@@ -276,35 +276,35 @@
                     <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
                         {{ __('Student results') }}
                     </p>
-                    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900">
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
                         {{ __('What people say after working together') }}
                     </h2>
-                    <p class="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
+                    <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-2xl mx-auto">
                         {{ __('These are examples of the type of transformations and clarity you can expect when you commit to the work.') }}
                     </p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 flex flex-col gap-3">
-                        <p class="text-sm text-gray-700">
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-3">
+                        <p class="text-sm text-[var(--color-text-muted)]">
                             {{ __('"I went from avoiding sales calls to actually looking forward to them. The scripts and mindset shifts changed everything for me."') }}
                         </p>
-                        <p class="text-xs font-semibold text-gray-900">
+                        <p class="text-xs font-semibold text-[var(--color-text-primary)]">
                             {{ __('Sara, Freelance designer') }}
                         </p>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 flex flex-col gap-3">
-                        <p class="text-sm text-gray-700">
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-3">
+                        <p class="text-sm text-[var(--color-text-muted)]">
                             {{ __('"After our interview prep, I received two offers in the same week. I finally knew how to talk about my experience clearly."') }}
                         </p>
-                        <p class="text-xs font-semibold text-gray-900">
+                        <p class="text-xs font-semibold text-[var(--color-text-primary)]">
                             {{ __('Omar, Sales representative') }}
                         </p>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 flex flex-col gap-3">
-                        <p class="text-sm text-gray-700">
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-3">
+                        <p class="text-sm text-[var(--color-text-muted)]">
                             {{ __('"The frameworks are simple but powerful. I used them with my team and we closed our biggest month so far."') }}
                         </p>
-                        <p class="text-xs font-semibold text-gray-900">
+                        <p class="text-xs font-semibold text-[var(--color-text-primary)]">
                             {{ __('Laila, Startup founder') }}
                         </p>
                     </div>
@@ -317,49 +317,49 @@
                     <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
                         {{ __('Get in touch') }}
                     </p>
-                    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900">
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
                         {{ __('Tell me about your goals') }}
                     </h2>
-                    <p class="text-sm sm:text-base text-gray-600 max-w-xl mx-auto">
+                    <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-xl mx-auto">
                         {{ __('Share a few details about where you are right now and what you want to achieve. I will get back to you with the best next step.') }}
                     </p>
                 </div>
-                <div class="bg-white rounded-3xl shadow-sm ring-1 ring-gray-100 p-6 sm:p-8 lg:p-10">
+                <div class="bg-white rounded-3xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 sm:p-8 lg:p-10">
                     <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-8">
                         <form class="space-y-4">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xs font-medium text-gray-700 mb-1">
+                                    <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">
                                         {{ __('Full name') }}
                                     </label>
-                                    <input type="text" class="block w-full rounded-xl border-gray-200 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
+                                    <input type="text" class="block w-full rounded-xl border-[var(--color-secondary)]/30 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-gray-700 mb-1">
+                                    <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">
                                         {{ __('Email') }}
                                     </label>
-                                    <input type="email" class="block w-full rounded-xl border-gray-200 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
+                                    <input type="email" class="block w-full rounded-xl border-[var(--color-secondary)]/30 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xs font-medium text-gray-700 mb-1">
+                                    <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">
                                         {{ __('Current role') }}
                                     </label>
-                                    <input type="text" class="block w-full rounded-xl border-gray-200 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
+                                    <input type="text" class="block w-full rounded-xl border-[var(--color-secondary)]/30 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-gray-700 mb-1">
+                                    <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">
                                         {{ __('Main goal') }}
                                     </label>
-                                    <input type="text" class="block w-full rounded-xl border-gray-200 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
+                                    <input type="text" class="block w-full rounded-xl border-[var(--color-secondary)]/30 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">
+                                <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">
                                     {{ __('What would you like help with?') }}
                                 </label>
-                                <textarea rows="4" class="block w-full rounded-xl border-gray-200 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""></textarea>
+                                <textarea rows="4" class="block w-full rounded-xl border-[var(--color-secondary)]/30 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""></textarea>
                             </div>
                             <div class="pt-2">
                                 <button type="button" class="inline-flex justify-center items-center px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
@@ -367,8 +367,8 @@
                                 </button>
                             </div>
                         </form>
-                        <div class="space-y-4 text-sm text-gray-600">
-                            <h3 class="text-sm font-semibold text-gray-900">
+                        <div class="space-y-4 text-sm text-[var(--color-text-muted)]">
+                            <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
                                 {{ __('What happens after you send this?') }}
                             </h3>
                             <p>
@@ -395,7 +395,7 @@
                     </div>
                     <div class="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full md:w-auto">
                         <a href="{{ route('courses.index') }}"
-                           class="inline-flex justify-center items-center w-full sm:w-auto px-7 py-3 rounded-full bg-white text-sm font-semibold text-[var(--color-primary)] shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
+                           class="inline-flex justify-center items-center w-full sm:w-auto px-4 py-2 rounded-md bg-white text-sm font-semibold text-[var(--color-primary)] shadow-sm hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
                             {{ __('Courses') }}
                         </a>
                     </div>

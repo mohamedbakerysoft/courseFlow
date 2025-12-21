@@ -54,7 +54,8 @@ class PayPalCheckoutTest extends DuskTestCase
             $sig = hash_hmac('sha256', $ts . '.' . $orderId, (string) config('services.paypal.webhook_secret'));
 
             // Simulate success callback
-            $successUrl = 'http://localhost:8000/payments/paypal/success?order_id='.$orderId.'&t='.$ts.'&sig='.$sig;
+            $base = rtrim(config('app.url'), '/');
+            $successUrl = $base.'/payments/paypal/success?order_id='.$orderId.'&t='.$ts.'&sig='.$sig;
             file_get_contents($successUrl);
 
             $browser->visit('/courses/'.$course->slug)

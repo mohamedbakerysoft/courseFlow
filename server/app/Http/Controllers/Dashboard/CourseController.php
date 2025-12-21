@@ -8,6 +8,7 @@ use App\Actions\Dashboard\Courses\ListInstructorCoursesAction;
 use App\Actions\Dashboard\Courses\PublishCourseAction;
 use App\Actions\Dashboard\Courses\UnpublishCourseAction;
 use App\Actions\Dashboard\Courses\UpdateCourseAction;
+use App\Actions\Dashboard\Courses\UploadCourseThumbnailAction;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class CourseController extends Controller
         return view('dashboard.courses.create');
     }
 
-    public function store(Request $request, CreateCourseAction $create)
+    public function store(Request $request, CreateCourseAction $create, UploadCourseThumbnailAction $upload)
     {
         $this->authorize('create', Course::class);
 
@@ -34,11 +35,16 @@ class CourseController extends Controller
             'slug' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:courses,slug'],
             'description' => ['nullable', 'string'],
             'thumbnail_path' => ['nullable', 'string'],
+            'thumbnail' => ['nullable', 'image', 'max:2048'],
             'price' => ['nullable', 'numeric', 'min:0'],
             'currency' => ['nullable', 'string', 'max:8'],
             'is_free' => ['nullable', 'boolean'],
             'language' => ['nullable', 'string', 'max:12'],
         ]);
+
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail_path'] = $upload->execute($request->file('thumbnail'));
+        }
 
         $course = $create->execute($request->user(), $validated);
 
@@ -51,7 +57,7 @@ class CourseController extends Controller
         return view('dashboard.courses.edit', compact('course'));
     }
 
-    public function update(Request $request, Course $course, UpdateCourseAction $update)
+    public function update(Request $request, Course $course, UpdateCourseAction $update, UploadCourseThumbnailAction $upload)
     {
         $this->authorize('update', $course);
 
@@ -60,11 +66,16 @@ class CourseController extends Controller
             'slug' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:courses,slug,'.$course->id],
             'description' => ['nullable', 'string'],
             'thumbnail_path' => ['nullable', 'string'],
+            'thumbnail' => ['nullable', 'image', 'max:2048'],
             'price' => ['nullable', 'numeric', 'min:0'],
             'currency' => ['nullable', 'string', 'max:8'],
             'is_free' => ['nullable', 'boolean'],
             'language' => ['nullable', 'string', 'max:12'],
         ]);
+
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail_path'] = $upload->execute($request->file('thumbnail'));
+        }
 
         $update->execute($course, $validated);
 
@@ -92,4 +103,3 @@ class CourseController extends Controller
         return back()->with('status', 'Course unpublished.');
     }
 }
-

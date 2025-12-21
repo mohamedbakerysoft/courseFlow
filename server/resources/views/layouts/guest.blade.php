@@ -31,6 +31,16 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>
             :root {
+                --color-primary: {{ $theme['primary'] ?? '#4F46E5' }};
+                --color-primary-hover: {{ $theme['primary_hover'] ?? '#4338CA' }};
+                --color-secondary: {{ $theme['secondary'] ?? '#334155' }};
+                --color-accent: {{ $theme['accent'] ?? '#10B981' }};
+                --color-bg: {{ $theme['bg'] ?? '#F8FAFC' }};
+                --color-background: {{ $theme['bg'] ?? '#F8FAFC' }};
+                --color-text: {{ $theme['text'] ?? '#0F172A' }};
+                --color-text-primary: {{ $theme['text'] ?? '#0F172A' }};
+                --color-text-muted: {{ $theme['text_muted'] ?? '#64748B' }};
+                --color-error: {{ $theme['error'] ?? '#EF4444' }};
                 --font-arabic: {{ $typographyCss['arabic_stack'] ?? "'Cairo', sans-serif" }};
                 --font-english: {{ $typographyCss['english_stack'] ?? "'Inter', system-ui, sans-serif" }};
             }
@@ -38,15 +48,15 @@
             html[lang="ar"], .rtl { font-family: var(--font-arabic); }
         </style>
     </head>
-    <body class="text-gray-900 antialiased">
+    <body class="text-[var(--color-text-primary)] antialiased bg-[var(--color-background)]">
         @include('layouts.navigation')
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-[var(--color-background)]">
             <div>
                 <a href="/">
                     @if (!empty($siteLogoUrl))
                         <img src="{{ $siteLogoUrl }}" alt="{{ config('app.name') }}" class="w-20 h-20">
                     @else
-                        <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                        <x-branding-logo class="w-20 h-20 fill-current text-[var(--color-text-muted)]" />
                     @endif
                 </a>
             </div>

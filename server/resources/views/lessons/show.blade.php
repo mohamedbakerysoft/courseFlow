@@ -7,7 +7,7 @@
     <article class="max-w-3xl">
         <h1 class="text-2xl font-semibold mb-6">{{ $lesson->title }}</h1>
         @if ($isCompleted)
-            <span class="inline-block px-3 py-1 rounded bg-green-600 text-white mb-4">Completed</span>
+            <span class="inline-block px-3 py-1 rounded bg-[var(--color-accent)] text-white mb-4">Completed</span>
         @endif
         <div class="aspect-video bg-black mb-6">
             <iframe
@@ -19,20 +19,20 @@
                 referrerpolicy="no-referrer"
             ></iframe>
         </div>
-        <p class="text-sm text-gray-600 mb-6">Progress: {{ $progressPercent }}%</p>
+        <p class="text-sm text-[var(--color-text-muted)] mb-6">Progress: {{ $progressPercent }}%</p>
         @if (!empty($lesson->description))
             <div class="prose max-w-none">
                 {!! nl2br(e($lesson->description)) !!}
             </div>
         @endif
-        <div class="mt-8 flex items-center space-x-3">
-            @if (!empty($prevLesson))
-                <a href="{{ route('lessons.show', [$course, $prevLesson]) }}" class="inline-flex items-center px-4 py-2 rounded border text-gray-700 hover:bg-gray-50">Previous</a>
-            @endif
-            @if (!empty($nextLesson))
-                <a href="{{ route('lessons.show', [$course, $nextLesson]) }}" class="inline-flex items-center px-4 py-2 rounded bg-[var(--color-primary)] text-white hover:opacity-90">Next</a>
-            @endif
-            <a href="{{ route('courses.show', $course) }}" class="inline-flex items-center px-4 py-2 rounded border text-gray-700 hover:bg-gray-50">Back to Course</a>
-        </div>
+            <div class="flex items-center gap-3">
+                @if (!empty($prevLesson))
+                    <a href="{{ route('lessons.show', [$course, $prevLesson]) }}" class="inline-flex items-center px-4 py-2 rounded-md border border-[var(--color-secondary)]/30 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">Previous</a>
+                @endif
+                @if (!empty($nextLesson))
+                    <a href="{{ route('lessons.show', [$course, $nextLesson]) }}" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">Next</a>
+                @endif
+                <a href="{{ route('courses.show', $course) }}" class="inline-flex items-center px-4 py-2 rounded-md border border-[var(--color-secondary)]/30 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">Back to Course</a>
+            </div>
     </article>
 </x-public-layout>

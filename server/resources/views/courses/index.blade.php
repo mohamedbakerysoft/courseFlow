@@ -7,10 +7,10 @@
 
         <section class="space-y-6">
             <div>
-                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--color-text-primary)]">
                     {{ __('Courses') }}
                 </h1>
-                <p class="mt-2 text-sm text-gray-600">
+                <p class="mt-2 text-sm text-[var(--color-text-muted)]">
                     {{ __('Browse published courses and find the right one for you.') }}
                 </p>
             </div>
@@ -19,17 +19,17 @@
                 @forelse ($courses as $course)
                     <x-course.card :course="$course" />
                 @empty
-                    <div class="col-span-full bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-10 text-center">
+                    <div class="col-span-full bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-10 text-center">
                         <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
                             <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M4 7l8-4 8 4-8 4-8-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
                                 <path d="M6 10v7a2 2 0 002 2h8a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                             </svg>
                         </div>
-                        <p class="text-gray-800 font-semibold text-lg">
+                        <p class="text-[var(--color-text-primary)] font-semibold text-lg">
                             {{ __('No courses available yet') }}
                         </p>
-                        <p class="text-gray-500 text-sm mt-1">
+                        <p class="text-[var(--color-text-muted)] text-sm mt-1">
                             {{ __('Once courses are published, they will appear here.') }}
                         </p>
                         <div class="mt-6">

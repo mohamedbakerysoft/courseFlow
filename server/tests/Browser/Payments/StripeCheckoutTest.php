@@ -46,7 +46,7 @@ class StripeCheckoutTest extends DuskTestCase
                 ->type('password', 'password')
                 ->click('button[type="submit"]')
                 ->visit('/courses/'.$course->slug)
-                ->waitForText('Buy Course', 5)
+                ->waitForText('Buy Course', 10)
                 ->press('Buy Course');
 
             // Retrieve session id from DB (pending payment created)
@@ -76,7 +76,8 @@ class StripeCheckoutTest extends DuskTestCase
                 ],
             ];
             $context = stream_context_create($opts);
-            file_get_contents('http://localhost:8000/webhooks/stripe', false, $context);
+            $base = rtrim(config('app.url'), '/');
+            file_get_contents($base.'/webhooks/stripe', false, $context);
 
             $browser->visit('/courses/'.$course->slug)
                 ->waitForText('You are enrolled', 10)

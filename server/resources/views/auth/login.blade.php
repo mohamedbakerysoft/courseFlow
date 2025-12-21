@@ -1,5 +1,13 @@
 <x-guest-layout>
     <div x-data="{ fill(email, password) { $refs.email.value = email; $refs.password.value = password } }">
+    <div class="mb-4">
+        <h1 class="text-xl font-semibold text-[var(--color-text-primary)]">
+            {{ __('Login') }}
+        </h1>
+        <p class="text-sm text-[var(--color-text-muted)]">
+            {{ __('Access your dashboard and manage courses.') }}
+        </p>
+    </div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -10,7 +18,7 @@
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input x-ref="email" id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2 text-[var(--color-error)]" />
         </div>
 
         <!-- Password -->
@@ -22,55 +30,50 @@
                             name="password"
                             required autocomplete="current-password" />
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2 text-[var(--color-error)]" />
         </div>
 
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                <input id="remember_me" type="checkbox" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] shadow-sm focus:ring-[var(--color-primary)]" name="remember">
+                <span class="ms-2 text-sm text-[var(--color-text-muted)]">{{ __('Remember me') }}</span>
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center justify-between mt-4">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+                <a class="underline text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
+            <x-primary-button class="ms-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
     </form>
-    @if(config('demo.enabled') && app()->environment(['local','dusk','dusk.local']))
-        <div class="mt-6 bg-white border border-gray-200 rounded p-4">
-            <p class="text-sm font-medium text-gray-800 mb-3">Demo Login</p>
-            <div class="space-y-2">
+    @if(config('demo.enabled'))
+        <div class="mt-6 bg-white border border-[var(--color-secondary)]/10 rounded-lg p-4">
+            <p class="text-xs font-semibold text-[var(--color-text-muted)] mb-3">{{ __('Demo Fill') }}</p>
+            <div class="flex flex-col gap-2">
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-700">Admin — {{ config('demo.admin_email') }}</span>
-                    <div class="space-x-2">
-                        <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-2 focus:ring-indigo-500"
-                                x-on:click="fill(config('demo.admin_email'),'password')">Fill</button>
-                        <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-indigo-500"
-                                x-on:click="fill(config('demo.admin_email'),'password'); $el.closest('form').submit()">Login as Admin</button>
-                    </div>
+                    <span class="text-sm text-[var(--color-text-muted)]">Admin — {{ config('demo.admin_email') }}</span>
+                    <x-secondary-button type="button" x-on:click="fill(config('demo.admin_email'),'password')">
+                        {{ __('Fill') }}
+                    </x-secondary-button>
                 </div>
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-700">Instructor — instructor@demo.com</span>
-                    <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-indigo-500"
-                            x-on:click="fill('instructor@demo.com','password')">Fill</button>
+                    <span class="text-sm text-[var(--color-text-muted)]">Instructor — instructor@demo.com</span>
+                    <x-secondary-button type="button" x-on:click="fill('instructor@demo.com','password')">
+                        {{ __('Fill') }}
+                    </x-secondary-button>
                 </div>
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-700">Student — student@demo.com</span>
-                    <div class="space-x-2">
-                        <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-2 focus:ring-indigo-500"
-                                x-on:click="fill('student@demo.com','password')">Fill</button>
-                        <button type="button" class="inline-flex items-center px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 focus:ring-2 focus:ring-indigo-500"
-                                x-on:click="fill('student@demo.com','password'); $el.closest('form').submit()">Login as Student</button>
-                    </div>
+                    <span class="text-sm text-[var(--color-text-muted)]">Student — student@demo.com</span>
+                    <x-secondary-button type="button" x-on:click="fill('student@demo.com','password')">
+                        {{ __('Fill') }}
+                    </x-secondary-button>
                 </div>
             </div>
         </div>
