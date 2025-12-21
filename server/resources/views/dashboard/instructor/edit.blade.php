@@ -86,6 +86,24 @@
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div>
+                        <span class="block text-sm font-medium text-gray-700">
+                            {{ __('Hero Image Display Mode') }}
+                        </span>
+                        <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="flex items-center gap-2 rounded-md border border-gray-200 p-3 cursor-pointer">
+                                <input type="radio" name="hero_image_mode" value="contain" {{ old('hero_image_mode', $heroImageMode) === 'contain' ? 'checked' : '' }}>
+                                <span class="text-sm text-gray-800">{{ __('Fit (Show Full Image)') }}</span>
+                            </label>
+                            <label class="flex items-center gap-2 rounded-md border border-gray-200 p-3 cursor-pointer">
+                                <input type="radio" name="hero_image_mode" value="cover" {{ old('hero_image_mode', $heroImageMode) === 'cover' ? 'checked' : '' }}>
+                                <span class="text-sm text-gray-800">{{ __('Fill (Crop to Container)') }}</span>
+                            </label>
+                        </div>
+                        @error('hero_image_mode')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </section>
 

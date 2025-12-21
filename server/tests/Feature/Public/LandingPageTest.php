@@ -124,3 +124,22 @@ it('instructor settings override landing data', function () {
     $response->assertSee('Instructor Headline');
     $response->assertSee('Instructor Subheadline');
 });
+
+it('landing hero image mode defaults to contain', function () {
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('object-contain');
+    $response->assertSee('transition-transform');
+});
+
+it('admin can switch hero image mode to cover', function () {
+    $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+    \Pest\Laravel\actingAs($admin)->post(route('dashboard.instructor_profile.update'), [
+        'hero_image_mode' => 'cover',
+    ])->assertRedirect();
+
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('object-cover');
+    $response->assertSee('transition-transform');
+});

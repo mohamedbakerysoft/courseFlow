@@ -27,6 +27,9 @@ class ShowLandingPageAction
         $instructorImagePath = (string) $this->settings->get('landing.instructor_image', '');
         $instructorImageUrl = $instructorImagePath !== '' ? asset('storage/'.$instructorImagePath) : null;
 
+        $heroImageModeSetting = (string) $this->settings->get('landing.hero_image_mode', 'contain');
+        $heroImageMode = in_array($heroImageModeSetting, ['contain', 'cover'], true) ? $heroImageModeSetting : 'contain';
+
         $settingsLinks = [
             'twitter' => (string) ($this->settings->get('instructor.social.twitter') ?: ''),
             'instagram' => (string) ($this->settings->get('instructor.social.instagram') ?: ''),
@@ -78,6 +81,7 @@ class ShowLandingPageAction
             'instructorBio' => $instructorBio,
             'instructorImageUrl' => $instructorImageUrl,
             'instructorLinks' => $instructorLinks,
+            'heroImageMode' => $heroImageMode,
             'features' => $features,
             'featuredCourses' => $featuredCourses,
         ];

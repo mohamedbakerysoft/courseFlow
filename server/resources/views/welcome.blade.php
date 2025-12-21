@@ -37,7 +37,7 @@
                                 <img
                                     src="{{ $instructorImageUrl ?? asset('images/demo/IMG_1700.JPG') }}"
                                     alt="{{ __('Portrait of ') . $instructorName }}"
-                                    class="w-full h-full object-cover object-right transition-transform duration-700 ease-out"
+                                    class="w-full h-full object-center transition-transform duration-700 ease-out {{ $heroImageMode === 'contain' ? 'object-contain' : 'object-cover' }}"
                                     loading="lazy"
                                 >
                             </div>
