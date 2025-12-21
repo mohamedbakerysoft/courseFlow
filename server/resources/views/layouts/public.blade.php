@@ -48,5 +48,14 @@
         <main class="max-w-7xl mx-auto px-4 py-8">
             {{ $slot }}
         </main>
+        <footer class="max-w-7xl mx-auto px-4 py-8 border-t border-[var(--color-secondary)]/10 text-sm text-[var(--color-text-muted)]">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <p>&copy; {{ date('Y') }} {{ config('app.name') }}</p>
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('pages.terms') }}" class="hover:text-[var(--color-text-primary)]">{{ __('Terms') }}</a>
+                    <a href="{{ route('pages.privacy') }}" class="hover:text-[var(--color-text-primary)]">{{ __('Privacy') }}</a>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>

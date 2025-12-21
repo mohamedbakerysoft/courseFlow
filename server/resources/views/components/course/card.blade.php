@@ -51,7 +51,7 @@
                     <div class="flex items-center gap-2 text-[var(--color-text-muted)] mt-1">
                         @if (isset($course->lessons_count))
                             <span>
-                                {{ $course->lessons_count }} {{ Str::plural(__('lesson'), $course->lessons_count) }}
+                                {{ $course->lessons_count }} {{ ($appLocale ?? app()->getLocale()) === 'ar' ? 'دروس' : Str::plural(__('lesson'), $course->lessons_count) }}
                             </span>
                         @endif
                         <span>

@@ -28,9 +28,13 @@
                             <span class="font-medium text-[var(--color-text-primary)]">
                                 {{ $course->instructor->name }}
                             </span>
+                        @elseif (!empty($instructorName))
+                            <span class="font-medium text-[var(--color-text-primary)]">
+                                {{ $instructorName }}
+                            </span>
                         @endif
                         <span class="inline-flex items-center rounded-full bg-[var(--color-secondary)]/10 px-3 py-1 text-xs font-medium text-[var(--color-text-muted)]">
-                            {{ $lessons->count() }} {{ Str::plural(__('lesson'), $lessons->count()) }}
+                            {{ $lessons->count() }} {{ ($appLocale ?? app()->getLocale()) === 'ar' ? 'دروس' : Str::plural(__('lesson'), $lessons->count()) }}
                         </span>
                         <span class="inline-flex items-center rounded-full bg-[var(--color-secondary)]/10 px-3 py-1 text-xs font-medium text-[var(--color-text-muted)]">
                             {{ strtoupper($course->language) }}
@@ -47,67 +51,19 @@
                     </div>
                 </div>
 
-                <div class="mt-4 space-y-2">
-                    @guest
-                        <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                            {{ __('Login to Enroll') }}
-                        </a>
-                    @else
+                <div class="mt-2">
+                    @auth
                         @if ($isEnrolled)
-                            @if (!empty($firstLesson))
-                                <a href="{{ route('lessons.show', [$course, $firstLesson]) }}" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                    {{ __('Continue learning') }}
-                                </a>
-                            @endif
                             <p class="text-sm text-[var(--color-accent)] font-medium">
                                 {{ __('You are enrolled') }}
                             </p>
                             <p class="text-sm text-[var(--color-text-muted)]">
                                 {{ __('Progress') }}: {{ $progressPercent }}%
                             </p>
-                        @else
-                            @if ($course->is_free || (float)$course->price == 0.0)
-                                <form action="{{ route('courses.enroll', $course) }}" method="POST" class="inline-block">
-                                    @csrf
-                                    <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                        {{ __('Enroll') }}
-                                    </button>
-                                </form>
-                            @else
-                                @if ($hasAnyPaymentMethod)
-                                    @if ($isStripeEnabled)
-                                        <form action="{{ route('payments.checkout', $course) }}" method="POST" class="inline-block me-2">
-                                            @csrf
-                                            <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                                {{ __('Buy Course') }}
-                                            </button>
-                                        </form>
-                                    @endif
-                                    @if ($isPayPalEnabled)
-                                        <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="inline-block me-2">
-                                            @csrf
-                                            <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)]">
-                                                {{ __('Pay with PayPal') }}
-                                            </button>
-                                        </form>
-                                    @endif
-                                    @if ($hasManualPayment)
-                                        <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="inline-block">
-                                            @csrf
-                                            <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-secondary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-secondary)]">
-                                                {{ __('Manual Payment') }}
-                                            </button>
-                                        </form>
-                                    @endif
-                                @else
-                                    <p class="text-sm text-[var(--color-error)] font-medium">
-                                        {{ __('Payments are currently disabled. Please contact the instructor.') }}
-                                    </p>
-                                @endif
-                            @endif
                         @endif
-                    @endguest
+                    @endauth
                 </div>
+
             </div>
 
             <div class="space-y-4">
@@ -204,10 +160,10 @@
                                 </svg>
                             </div>
                             <p class="text-[var(--color-text-muted)] font-medium">
-                                {{ __('No lessons yet') }}
+                                {{ __('Lessons will appear once the course is published.') }}
                             </p>
                             <p class="text-[var(--color-text-muted)] text-sm">
-                                {{ __('Lessons will appear here once added.') }}
+                                {{ __('Once published, lessons will appear here.') }}
                             </p>
                         </div>
                     @endif
@@ -244,7 +200,7 @@
                                     </p>
                                 @endif
                                 <p class="text-xs text-[var(--color-text-muted)]">
-                                    {{ $lessons->count() }} {{ Str::plural(__('lesson'), $lessons->count()) }}
+                                    {{ $lessons->count() }} {{ ($appLocale ?? app()->getLocale()) === 'ar' ? 'دروس' : Str::plural(__('lesson'), $lessons->count()) }}
                                 </p>
                             </div>
                         </div>
@@ -321,75 +277,30 @@
                 {{ __('Instructor') }}
             </h2>
             <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                @if ($course->instructor && $course->instructor->profile_image_path)
-                    <img src="{{ asset($course->instructor->profile_image_path) }}" alt="{{ $course->instructor->name }}" class="w-20 h-20 rounded-full object-cover ring-4 ring-[var(--color-primary)]/10">
+                @php
+                    $profileImage = ($course->instructor && $course->instructor->profile_image_path)
+                        ? asset($course->instructor->profile_image_path)
+                        : ($instructorImageUrl ?? null);
+                    $displayName = $instructorName !== '' ? $instructorName : ($course->instructor->name ?? '');
+                    $displayBio = $instructorBio !== '' ? $instructorBio : ($course->instructor->bio ?? '');
+                @endphp
+                @if (!empty($profileImage))
+                    <img src="{{ $profileImage }}" alt="{{ $displayName }}" class="w-20 h-20 rounded-full object-cover ring-4 ring-[var(--color-primary)]/10">
                 @else
                     <div class="w-20 h-20 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] text-lg">
-                        {{ Str::substr($course->instructor->name ?? '', 0, 1) }}
+                        {{ Str::substr($displayName ?? '', 0, 1) }}
                     </div>
                 @endif
                 <div class="space-y-2 text-center sm:text-start">
-                    @if ($course->instructor)
-                        <p class="text-base font-semibold text-gray-900">
-                            {{ $course->instructor->name }}
-                        </p>
-                        @if (!empty($course->instructor->bio))
-                            <p class="text-sm text-gray-600">
-                                {{ $course->instructor->bio }}
-                            </p>
-                        @else
-                            <p class="text-sm text-gray-600">
-                                {{ __('This instructor profile can be customized to share your experience and teaching style.') }}
-                            </p>
-                        @endif
-                    @else
+                    <p class="text-base font-semibold text-gray-900">
+                        {{ $displayName }}
+                    </p>
+                    @if (!empty($displayBio))
                         <p class="text-sm text-gray-600">
-                            {{ __('Add an instructor profile to build more trust with students.') }}
+                            {{ $displayBio }}
                         </p>
                     @endif
                 </div>
-            </div>
-        </section>
-
-        <section class="rounded-3xl bg-[var(--color-primary)] text-white px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="space-y-2">
-                <h2 class="text-2xl font-semibold">
-                    {{ __('Start learning today') }}
-                </h2>
-                <p class="text-sm text-white/80 max-w-xl">
-                    {{ __('Enroll in this course and get instant access to all available lessons and future updates.') }}
-                </p>
-            </div>
-            <div class="flex flex-wrap items-center gap-3">
-                @guest
-                    <a href="{{ route('login') }}" class="inline-flex items-center px-6 py-3 rounded-full bg-white text-sm font-semibold text-[var(--color-primary)] shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                        {{ __('Login to enroll') }}
-                    </a>
-                @else
-                    @if ($isEnrolled && !empty($firstLesson))
-                        <a href="{{ route('lessons.show', [$course, $firstLesson]) }}" class="inline-flex items-center px-6 py-3 rounded-full bg-white text-sm font-semibold text-[var(--color-primary)] shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                            {{ __('Continue learning') }}
-                        </a>
-                    @else
-                        @if ($course->is_free || (float)$course->price == 0.0)
-                            <form action="{{ route('courses.enroll', $course) }}" method="POST" class="inline-block">
-                                @csrf
-                                <button type="submit" class="inline-flex items-center px-6 py-3 rounded-full bg-white text-sm font-semibold text-[var(--color-primary)] shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                                    {{ __('Enroll') }}
-                                </button>
-                            </form>
-                        @else
-                            @if ($hasAnyPaymentMethod && $isStripeEnabled)
-                                <form action="{{ route('payments.checkout', $course) }}" method="POST" class="inline-block">
-                                    @csrf
-                                    <button type="submit" class="inline-flex items-center px-6 py-3 rounded-full bg-white text-sm font-semibold text-[var(--color-primary)] shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                                        {{ __('Buy Course') }}
-                                    </button>
-                                </form>
-                            @endif
-                        @endif
-                    @endif
-                @endguest
             </div>
         </section>
     </div>

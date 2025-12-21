@@ -41,6 +41,11 @@ class CourseController extends Controller
         $hasManualPayment = trim($manualInstructions) !== '';
         $hasAnyPaymentMethod = $isStripeEnabled || $isPayPalEnabled || $hasManualPayment;
 
+        $instructorName = (string) ($settings->get('instructor.name') ?: ($course->instructor?->name ?? ''));
+        $instructorBio = (string) ($settings->get('instructor.bio') ?: ($course->instructor?->bio ?? ''));
+        $instructorImagePath = (string) $settings->get('landing.instructor_image', '');
+        $instructorImageUrl = $instructorImagePath !== '' ? asset('storage/'.$instructorImagePath) : null;
+
         return view('courses.show', compact(
             'course',
             'isEnrolled',
@@ -51,6 +56,9 @@ class CourseController extends Controller
             'isPayPalEnabled',
             'hasManualPayment',
             'hasAnyPaymentMethod',
+            'instructorName',
+            'instructorBio',
+            'instructorImageUrl',
         ));
     }
 
