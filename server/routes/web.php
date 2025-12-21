@@ -17,11 +17,34 @@ Route::get('/', LandingController::class);
 Route::get('/dashboard', function () {
     $user = User::find(Auth::id());
     $enrolledCourses = $user ? $user->courses()->get() : collect();
-    $totalCourses = Course::query()->count();
-    $totalStudents = User::query()->where('role', \App\Models\User::ROLE_STUDENT)->count();
-    $totalLessons = Lesson::query()->count();
-    $latestDraftCourse = Course::query()->where('status', \App\Models\Course::STATUS_DRAFT)->latest('updated_at')->first();
-    $latestDraftLesson = Lesson::query()->where('status', \App\Models\Lesson::STATUS_DRAFT)->latest('updated_at')->first();
+    $instructorCourseIds = collect();
+    if ($user && $user->role === \App\Models\User::ROLE_ADMIN) {
+        $instructorCourseIds = Course::query()->where('instructor_id', $user->id)->pluck('id');
+    }
+    $totalCourses = $instructorCourseIds->count();
+    $totalLessons = $instructorCourseIds->isEmpty()
+        ? 0
+        : Lesson::query()->whereIn('course_id', $instructorCourseIds)->count();
+    $totalStudents = $instructorCourseIds->isEmpty()
+        ? 0
+        : \Illuminate\Support\Facades\DB::table('enrollments')
+            ->whereIn('course_id', $instructorCourseIds->all())
+            ->distinct('user_id')
+            ->count('user_id');
+    $latestDraftCourse = $instructorCourseIds->isEmpty()
+        ? null
+        : Course::query()
+            ->where('instructor_id', $user->id)
+            ->where('status', \App\Models\Course::STATUS_DRAFT)
+            ->latest('updated_at')
+            ->first();
+    $latestDraftLesson = $instructorCourseIds->isEmpty()
+        ? null
+        : Lesson::query()
+            ->whereIn('course_id', $instructorCourseIds->all())
+            ->where('status', \App\Models\Lesson::STATUS_DRAFT)
+            ->latest('updated_at')
+            ->first();
     return view('dashboard', compact('enrolledCourses', 'totalCourses', 'totalStudents', 'totalLessons', 'latestDraftCourse', 'latestDraftLesson'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 

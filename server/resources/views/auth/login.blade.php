@@ -59,7 +59,7 @@
             <div class="flex flex-col gap-2">
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-[var(--color-text-muted)]">Admin — {{ config('demo.admin_email') }}</span>
-                    <x-secondary-button type="button" x-on:click="fill(config('demo.admin_email'),'password')">
+                    <x-secondary-button type="button" x-on:click="fill('{{ config('demo.admin_email') }}','password')">
                         {{ __('Fill') }}
                     </x-secondary-button>
                 </div>

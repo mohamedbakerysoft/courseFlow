@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
                 'is_free' => true,
                 'status' => Course::STATUS_PUBLISHED,
                 'language' => 'en',
+                'instructor_id' => User::query()->where('email', config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL))->first()?->id,
             ],
         );
 

@@ -15,7 +15,10 @@ class ShowLandingPageAction
 
     public function execute(): array
     {
-        $instructor = User::query()->where('role', User::ROLE_ADMIN)->first();
+        $instructor = User::query()
+            ->where('email', config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL))
+            ->first()
+            ?: User::query()->where('role', User::ROLE_ADMIN)->first();
 
         $heroTitle = (string) ($this->settings->get('instructor.hero_headline') ?: $this->settings->get('landing.hero_title', 'Teach and sell your courses with CourseFlow'));
         $heroSubtitle = (string) ($this->settings->get('instructor.hero_subheadline') ?: $this->settings->get('landing.hero_subtitle', 'Launch a clean, modern course platform in minutes.'));
