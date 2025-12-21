@@ -45,6 +45,9 @@
                             <x-nav-link :href="route('dashboard.appearance.edit')" :active="request()->routeIs('dashboard.appearance.*')">
                                 {{ __('Appearance') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('dashboard.instructor_profile.edit')" :active="request()->routeIs('dashboard.instructor_profile.*')">
+                                {{ __('Instructor Profile') }}
+                            </x-nav-link>
                             <x-nav-link :href="url('/')" :active="request()->is('/')">
                                 {{ __('View Site') }}
                             </x-nav-link>
@@ -139,6 +142,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('dashboard.appearance.edit')" :active="request()->routeIs('dashboard.appearance.*')">
                         {{ __('Appearance') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('dashboard.instructor_profile.edit')" :active="request()->routeIs('dashboard.instructor_profile.*')">
+                        {{ __('Instructor Profile') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="url('/')" :active="request()->is('/')">
                         {{ __('View Site') }}

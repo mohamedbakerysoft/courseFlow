@@ -108,3 +108,19 @@ it('course cards appear on landing and courses index', function () {
     $index->assertSee('Card Course');
 });
 
+it('instructor settings override landing data', function () {
+    $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+    \Pest\Laravel\actingAs($admin)->post(route('dashboard.instructor_profile.update'), [
+        'instructor_name' => 'Settings Instructor',
+        'instructor_bio' => 'Settings bio text here',
+        'hero_headline' => 'Instructor Headline',
+        'hero_subheadline' => 'Instructor Subheadline',
+    ])->assertRedirect();
+
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('Settings Instructor');
+    $response->assertSee('Settings bio text here');
+    $response->assertSee('Instructor Headline');
+    $response->assertSee('Instructor Subheadline');
+});

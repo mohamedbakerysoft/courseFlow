@@ -6,7 +6,7 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 px-4 sm:px-6 lg:px-8">
                         <div class="space-y-6">
                             <p class="text-xs sm:text-sm font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
-                                {{ 'Mena Mahmoud' }}
+                                {{ $instructorName }}
                             </p>
                             <div class="space-y-4">
                                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900">
@@ -36,7 +36,7 @@
                             >
                                 <img
                                     src="{{ $instructorImageUrl ?? asset('images/demo/IMG_1700.JPG') }}"
-                                    alt="{{ __('Portrait of Mena Mahmoud') }}"
+                                    alt="{{ __('Portrait of ') . $instructorName }}"
                                     class="w-full h-full object-cover object-right transition-transform duration-700 ease-out"
                                     loading="lazy"
                                 >
@@ -69,18 +69,18 @@
                 </div>
             </section>
 
-            <section aria-label="{{ __('About Mena Mahmoud') }}" class="space-y-10">
+            <section aria-label="{{ __('About ') . $instructorName }}" class="space-y-10">
                 <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-10 items-center">
                     <div class="space-y-4">
                         <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
                             {{ __('Meet your coach') }}
                         </p>
                         <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900">
-                            {{ $instructor?->name ?? __('Your Instructor') }}
+                            {{ $instructorName }}
                         </h2>
-                        @if (!empty($instructor?->bio))
+                        @if (!empty($instructorBio))
                             <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
-                                {{ $instructor->bio }}
+                                {{ $instructorBio }}
                             </p>
                         @endif
                         @if (!empty($instructorLinks))
@@ -109,7 +109,7 @@
                         <div class="overflow-hidden rounded-3xl shadow-xl ring-1 ring-gray-100 max-w-xs w-full">
                             <img
                                 src="{{ asset('images/demo/IMG_1700.JPG') }}"
-                                alt="{{ __('Portrait of Mena Mahmoud') }}"
+                                alt="{{ __('Portrait of ') . $instructorName }}"
                                 class="w-full h-full object-cover"
                                 loading="lazy"
                             >

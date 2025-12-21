@@ -15,19 +15,33 @@ class ShowLandingPageAction
 
     public function execute(): array
     {
-        $heroTitle = (string) $this->settings->get('landing.hero_title', 'Teach and sell your courses with CourseFlow');
-        $heroSubtitle = (string) $this->settings->get('landing.hero_subtitle', 'Launch a clean, modern course platform in minutes.');
-
         $instructor = User::query()->where('role', User::ROLE_ADMIN)->first();
+
+        $heroTitle = (string) ($this->settings->get('instructor.hero_headline') ?: $this->settings->get('landing.hero_title', 'Teach and sell your courses with CourseFlow'));
+        $heroSubtitle = (string) ($this->settings->get('instructor.hero_subheadline') ?: $this->settings->get('landing.hero_subtitle', 'Launch a clean, modern course platform in minutes.'));
+
+        $instructorName = (string) ($this->settings->get('instructor.name') ?: ($instructor?->name ?? 'Instructor'));
+        $instructorTitle = (string) ($this->settings->get('instructor.title') ?: '');
+        $instructorBio = (string) ($this->settings->get('instructor.bio') ?: ($instructor?->bio ?? ''));
 
         $instructorImagePath = (string) $this->settings->get('landing.instructor_image', '');
         $instructorImageUrl = $instructorImagePath !== '' ? asset('storage/'.$instructorImagePath) : null;
 
-        $instructorLinks = [];
+        $settingsLinks = [
+            'twitter' => (string) ($this->settings->get('instructor.social.twitter') ?: ''),
+            'instagram' => (string) ($this->settings->get('instructor.social.instagram') ?: ''),
+            'youtube' => (string) ($this->settings->get('instructor.social.youtube') ?: ''),
+            'linkedin' => (string) ($this->settings->get('instructor.social.linkedin') ?: ''),
+        ];
+        $userLinks = [];
         if ($instructor && ! empty($instructor->social_links)) {
-            $instructorLinks = is_array($instructor->social_links)
+            $userLinks = is_array($instructor->social_links)
                 ? $instructor->social_links
                 : json_decode($instructor->social_links, true) ?? [];
+        }
+        $instructorLinks = [];
+        foreach (['twitter', 'instagram', 'youtube', 'linkedin'] as $key) {
+            $instructorLinks[$key] = $settingsLinks[$key] ?: ($userLinks[$key] ?? '');
         }
 
         $features = [
@@ -59,6 +73,9 @@ class ShowLandingPageAction
             'heroTitle' => $heroTitle,
             'heroSubtitle' => $heroSubtitle,
             'instructor' => $instructor,
+            'instructorName' => $instructorName,
+            'instructorTitle' => $instructorTitle,
+            'instructorBio' => $instructorBio,
             'instructorImageUrl' => $instructorImageUrl,
             'instructorLinks' => $instructorLinks,
             'features' => $features,
