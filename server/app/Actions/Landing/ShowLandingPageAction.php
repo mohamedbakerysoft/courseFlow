@@ -30,6 +30,12 @@ class ShowLandingPageAction
         $heroImageModeSetting = (string) $this->settings->get('landing.hero_image_mode', 'contain');
         $heroImageMode = in_array($heroImageModeSetting, ['contain', 'cover'], true) ? $heroImageModeSetting : 'contain';
 
+        $showHero = (bool) $this->settings->get('landing.show_hero', true);
+        $showAboutInstructor = (bool) $this->settings->get('landing.show_about', true);
+        $showCoursesPreview = (bool) $this->settings->get('landing.show_courses_preview', true);
+        $showTestimonials = (bool) $this->settings->get('landing.show_testimonials', true);
+        $showFooterCta = (bool) $this->settings->get('landing.show_footer_cta', true);
+
         $settingsLinks = [
             'twitter' => (string) ($this->settings->get('instructor.social.twitter') ?: ''),
             'instagram' => (string) ($this->settings->get('instructor.social.instagram') ?: ''),
@@ -82,6 +88,11 @@ class ShowLandingPageAction
             'instructorImageUrl' => $instructorImageUrl,
             'instructorLinks' => $instructorLinks,
             'heroImageMode' => $heroImageMode,
+            'showHero' => $showHero,
+            'showAboutInstructor' => $showAboutInstructor,
+            'showCoursesPreview' => $showCoursesPreview,
+            'showTestimonials' => $showTestimonials,
+            'showFooterCta' => $showFooterCta,
             'features' => $features,
             'featuredCourses' => $featuredCourses,
         ];

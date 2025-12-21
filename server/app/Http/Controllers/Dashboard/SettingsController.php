@@ -32,6 +32,11 @@ class SettingsController extends Controller
         $landingFeature3Description = (string) $settings->get('landing.feature_3_description', 'Clean lessons, progress tracking and RTL-ready layouts out of the box.');
         $landingInstructorImagePath = $settings->get('landing.instructor_image');
         $landingInstructorImageUrl = $landingInstructorImagePath ? asset('storage/'.$landingInstructorImagePath) : null;
+        $landingShowHero = (bool) $settings->get('landing.show_hero', true);
+        $landingShowAbout = (bool) $settings->get('landing.show_about', true);
+        $landingShowCoursesPreview = (bool) $settings->get('landing.show_courses_preview', true);
+        $landingShowTestimonials = (bool) $settings->get('landing.show_testimonials', true);
+        $landingShowFooterCta = (bool) $settings->get('landing.show_footer_cta', true);
 
         return view('dashboard.settings.edit', compact(
             'defaultLanguage',
@@ -48,6 +53,11 @@ class SettingsController extends Controller
             'landingFeature3Title',
             'landingFeature3Description',
             'landingInstructorImageUrl',
+            'landingShowHero',
+            'landingShowAbout',
+            'landingShowCoursesPreview',
+            'landingShowTestimonials',
+            'landingShowFooterCta',
         ));
     }
 
@@ -68,6 +78,11 @@ class SettingsController extends Controller
             'landing_feature_3_title' => ['nullable', 'string', 'max:255'],
             'landing_feature_3_description' => ['nullable', 'string'],
             'landing_instructor_image' => ['nullable', 'image', 'max:2048'],
+            'landing_show_hero' => ['nullable', 'boolean'],
+            'landing_show_about' => ['nullable', 'boolean'],
+            'landing_show_courses_preview' => ['nullable', 'boolean'],
+            'landing_show_testimonials' => ['nullable', 'boolean'],
+            'landing_show_footer_cta' => ['nullable', 'boolean'],
         ]);
 
         $values = [
@@ -83,6 +98,11 @@ class SettingsController extends Controller
             'landing.feature_2_description' => $validated['landing_feature_2_description'] ?? '',
             'landing.feature_3_title' => $validated['landing_feature_3_title'] ?? '',
             'landing.feature_3_description' => $validated['landing_feature_3_description'] ?? '',
+            'landing.show_hero' => $request->boolean('landing_show_hero'),
+            'landing.show_about' => $request->boolean('landing_show_about'),
+            'landing.show_courses_preview' => $request->boolean('landing_show_courses_preview'),
+            'landing.show_testimonials' => $request->boolean('landing_show_testimonials'),
+            'landing.show_footer_cta' => $request->boolean('landing_show_footer_cta'),
         ];
 
         if ($request->hasFile('logo')) {

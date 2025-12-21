@@ -9,15 +9,20 @@ use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Course;
+use App\Models\Lesson;
 
 Route::get('/', LandingController::class);
 
 Route::get('/dashboard', function () {
     $user = User::find(Auth::id());
-    $enrolledCourses = $user
-        ? $user->courses()->get()
-        : collect();
-    return view('dashboard', compact('enrolledCourses'));
+    $enrolledCourses = $user ? $user->courses()->get() : collect();
+    $totalCourses = Course::query()->count();
+    $totalStudents = User::query()->where('role', \App\Models\User::ROLE_STUDENT)->count();
+    $totalLessons = Lesson::query()->count();
+    $latestDraftCourse = Course::query()->where('status', \App\Models\Course::STATUS_DRAFT)->latest('updated_at')->first();
+    $latestDraftLesson = Lesson::query()->where('status', \App\Models\Lesson::STATUS_DRAFT)->latest('updated_at')->first();
+    return view('dashboard', compact('enrolledCourses', 'totalCourses', 'totalStudents', 'totalLessons', 'latestDraftCourse', 'latestDraftLesson'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

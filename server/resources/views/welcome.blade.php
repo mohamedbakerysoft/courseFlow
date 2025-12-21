@@ -1,13 +1,21 @@
 <x-public-layout :title="$heroTitle" :metaDescription="$heroSubtitle">
     <div class="bg-white">
         <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 space-y-20 lg:space-y-24 py-10 lg:py-16">
+            @if ($showHero)
             <header id="hero" class="relative min-h-[85vh]">
                 <div class="relative w-full min-h-[85vh]">
                     <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 px-4 sm:px-6 lg:px-8">
                         <div class="space-y-6">
-                            <p class="text-xs sm:text-sm font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
-                                {{ $instructorName }}
-                            </p>
+                            <div class="space-y-1">
+                                <h2 class="text-lg sm:text-xl font-semibold text-gray-900">
+                                    {{ $instructorName }}
+                                </h2>
+                                @if (!empty($instructorTitle) && $showAboutInstructor)
+                                    <p class="text-xs sm:text-sm text-gray-600">
+                                        {{ $instructorTitle }}
+                                    </p>
+                                @endif
+                            </div>
                             <div class="space-y-4">
                                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900">
                                     {{ $heroTitle }}
@@ -15,17 +23,29 @@
                                 <p class="text-base sm:text-lg text-gray-700">
                                     {{ $heroSubtitle }}
                                 </p>
+                                @if (!empty($instructorBio) && $showAboutInstructor)
+                                    <p class="text-sm sm:text-base text-gray-600">
+                                        {{ $instructorBio }}
+                                    </p>
+                                @endif
                             </div>
                             <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
                                 <a href="{{ route('courses.index') }}"
                                    class="inline-flex justify-center items-center w-full sm:w-auto px-7 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                    {{ __('Browse Courses') }}
-                                </a>
-                                <a href="{{ route('pages.about') }}"
-                                   class="inline-flex justify-center items-center w-full sm:w-auto px-6 py-3 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]/40">
-                                    {{ __('Learn More') }}
+                                    {{ __('Courses') }}
                                 </a>
                             </div>
+                            @if (!empty($instructorLinks))
+                                <div class="flex items-center gap-4 pt-1">
+                                    @foreach ($instructorLinks as $label => $url)
+                                        @if (!empty($url))
+                                            <a href="{{ $url }}" class="inline-flex items-center justify-center h-9 w-9 rounded-full ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50 hover:opacity-80 transition-colors" rel="noopener" target="_blank" aria-label="{{ ucfirst($label) }}">
+                                                <span class="text-xs font-semibold">{{ strtoupper(substr($label,0,1)) }}</span>
+                                            </a>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                         <div class="flex justify-center lg:justify-end">
                             <div
@@ -45,7 +65,9 @@
                     </div>
                 </div>
             </header>
+            @endif
 
+            @if ($showCoursesPreview)
             <section aria-label="{{ __('Featured courses') }}" class="space-y-8">
                 <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                     <div class="space-y-2">
@@ -68,55 +90,8 @@
                     @endforelse
                 </div>
             </section>
+            @endif
 
-            <section aria-label="{{ __('About ') . $instructorName }}" class="space-y-10">
-                <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-10 items-center">
-                    <div class="space-y-4">
-                        <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
-                            {{ __('Meet your coach') }}
-                        </p>
-                        <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900">
-                            {{ $instructorName }}
-                        </h2>
-                        @if (!empty($instructorBio))
-                            <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
-                                {{ $instructorBio }}
-                            </p>
-                        @endif
-                        @if (!empty($instructorLinks))
-                            <div class="flex gap-3 text-sm">
-                                @foreach ($instructorLinks as $label => $url)
-                                    <a href="{{ $url }}" class="text-[var(--color-primary)] hover:underline" rel="noopener" target="_blank">{{ ucfirst($label) }}</a>
-                                @endforeach
-                            </div>
-                        @endif
-                        <div class="flex flex-wrap gap-3 text-xs sm:text-sm">
-                            <div class="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 text-gray-700">
-                                <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]"></span>
-                                <span>{{ __('Sales career roadmaps') }}</span>
-                            </div>
-                            <div class="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 text-gray-700">
-                                <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]"></span>
-                                <span>{{ __('Live coaching & feedback') }}</span>
-                            </div>
-                            <div class="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 text-gray-700">
-                                <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]"></span>
-                                <span>{{ __('Interview & presentation prep') }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex justify-center lg:justify-end">
-                        <div class="overflow-hidden rounded-3xl shadow-xl ring-1 ring-gray-100 max-w-xs w-full">
-                            <img
-                                src="{{ asset('images/demo/IMG_1700.JPG') }}"
-                                alt="{{ __('Portrait of ') . $instructorName }}"
-                                class="w-full h-full object-cover"
-                                loading="lazy"
-                            >
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <section aria-label="{{ __('How I can help you') }}" class="space-y-8">
                 <div class="space-y-3 text-center">
@@ -295,6 +270,7 @@
                 </div>
             </section>
 
+            @if ($showTestimonials)
             <section aria-label="{{ __('Testimonials') }}" class="space-y-8">
                 <div class="space-y-3 text-center">
                     <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
@@ -334,6 +310,7 @@
                     </div>
                 </div>
             </section>
+            @endif
 
             <section id="contact" aria-label="{{ __('Contact form') }}" class="space-y-8">
                 <div class="space-y-3 text-center">
@@ -405,6 +382,7 @@
                 </div>
             </section>
 
+            @if ($showFooterCta)
             <section aria-label="{{ __('Final call to action') }}">
                 <div class="rounded-3xl bg-[var(--color-primary)] text-white px-6 sm:px-10 py-10 lg:py-12 flex flex-col md:flex-row items-center justify-between gap-6">
                     <div class="space-y-2">
@@ -418,11 +396,12 @@
                     <div class="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full md:w-auto">
                         <a href="{{ route('courses.index') }}"
                            class="inline-flex justify-center items-center w-full sm:w-auto px-7 py-3 rounded-full bg-white text-sm font-semibold text-[var(--color-primary)] shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                            {{ __('Browse courses') }}
+                            {{ __('Courses') }}
                         </a>
                     </div>
                 </div>
             </section>
+            @endif
         </div>
     </div>
 </x-public-layout>

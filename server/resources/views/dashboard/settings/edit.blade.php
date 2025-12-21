@@ -107,6 +107,43 @@
                     {{ __('Landing Page') }}
                 </h2>
                 <div class="space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="flex items-center justify-between rounded-md border border-gray-200 p-3">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">{{ __('Show Hero') }}</p>
+                                <p class="text-xs text-gray-500">{{ __('Toggle visibility of the hero section.') }}</p>
+                            </div>
+                            <input type="checkbox" name="landing_show_hero" value="1" class="rounded border-gray-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowHero)>
+                        </label>
+                        <label class="flex items-center justify-between rounded-md border border-gray-200 p-3">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">{{ __('Show About Instructor') }}</p>
+                                <p class="text-xs text-gray-500">{{ __('Toggle instructor bio block inside hero.') }}</p>
+                            </div>
+                            <input type="checkbox" name="landing_show_about" value="1" class="rounded border-gray-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowAbout)>
+                        </label>
+                        <label class="flex items-center justify-between rounded-md border border-gray-200 p-3">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">{{ __('Show Courses Preview') }}</p>
+                                <p class="text-xs text-gray-500">{{ __('Toggle featured courses grid.') }}</p>
+                            </div>
+                            <input type="checkbox" name="landing_show_courses_preview" value="1" class="rounded border-gray-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowCoursesPreview)>
+                        </label>
+                        <label class="flex items-center justify-between rounded-md border border-gray-200 p-3">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">{{ __('Show Testimonials') }}</p>
+                                <p class="text-xs text-gray-500">{{ __('Toggle testimonials section.') }}</p>
+                            </div>
+                            <input type="checkbox" name="landing_show_testimonials" value="1" class="rounded border-gray-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowTestimonials)>
+                        </label>
+                        <label class="flex items-center justify-between rounded-md border border-gray-200 p-3">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">{{ __('Show Footer CTA') }}</p>
+                                <p class="text-xs text-gray-500">{{ __('Toggle final call to action.') }}</p>
+                            </div>
+                            <input type="checkbox" name="landing_show_footer_cta" value="1" class="rounded border-gray-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowFooterCta)>
+                        </label>
+                    </div>
                     <div>
                         <label for="landing_hero_title" class="block text-sm font-medium text-gray-700">
                             {{ __('Hero title') }}
