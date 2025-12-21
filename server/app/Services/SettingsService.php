@@ -14,6 +14,9 @@ class SettingsService
 
     public function all(): array
     {
+        if (! app()->environment('production')) {
+            return Setting::query()->pluck('value', 'key')->toArray();
+        }
         return Cache::rememberForever($this->cacheKey(), function () {
             return Setting::query()->pluck('value', 'key')->toArray();
         });
@@ -36,4 +39,3 @@ class SettingsService
         Cache::forget($this->cacheKey());
     }
 }
-

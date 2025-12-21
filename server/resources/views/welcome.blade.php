@@ -1,60 +1,50 @@
 <x-public-layout :title="$heroTitle" :metaDescription="$heroSubtitle">
     <div class="bg-white">
         <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 space-y-20 lg:space-y-24 py-10 lg:py-16">
-            <section id="hero" class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--color-primary)]/10 via-white to-[var(--color-primary)]/5 px-6 sm:px-10 py-10 sm:py-14 lg:py-16">
-                <div class="absolute inset-0 pointer-events-none">
-                    <div class="absolute -right-24 -top-24 h-64 w-64 sm:h-80 sm:w-80 rounded-full bg-[var(--color-primary)]/10 blur-3xl"></div>
-                    <div class="absolute -left-16 -bottom-32 h-64 w-64 rounded-full bg-[var(--color-primary)]/5 blur-3xl"></div>
-                </div>
-                <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-                    <div class="space-y-6">
-                        <p class="text-xs sm:text-sm font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
-                            {{ __('Sales Coach & Consultant') }}
-                        </p>
-                        <div class="space-y-4">
-                            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900">
-                                {{ $heroTitle }}
-                            </h1>
-                            <p class="text-base sm:text-lg text-gray-600 max-w-xl">
-                                {{ $heroSubtitle }}
+            <header id="hero" class="relative min-h-[85vh]">
+                <div class="relative w-full min-h-[85vh]">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 px-4 sm:px-6 lg:px-8">
+                        <div class="space-y-6">
+                            <p class="text-xs sm:text-sm font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
+                                {{ 'Mena Mahmoud' }}
                             </p>
-                        </div>
-                        <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
-                            <a href="{{ route('courses.index') }}"
-                               class="inline-flex justify-center items-center w-full sm:w-auto px-7 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                {{ __('Browse Courses') }}
-                            </a>
-                            <a href="#contact"
-                               class="inline-flex justify-center items-center w-full sm:w-auto px-6 py-3 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]/40">
-                                {{ __('Book a free discovery call') }}
-                            </a>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-gray-500">
-                            <div class="flex items-center gap-2">
-                                <span class="h-2 w-2 rounded-full bg-[var(--color-primary)]"></span>
-                                <span>{{ __('Proven frameworks used by sales teams and founders') }}</span>
+                            <div class="space-y-4">
+                                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900">
+                                    {{ $heroTitle }}
+                                </h1>
+                                <p class="text-base sm:text-lg text-gray-700">
+                                    {{ $heroSubtitle }}
+                                </p>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="h-2 w-2 rounded-full bg-[var(--color-primary)]/70"></span>
-                                <span>{{ __('Actionable templates, scripts, and real call breakdowns') }}</span>
+                            <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
+                                <a href="{{ route('courses.index') }}"
+                                   class="inline-flex justify-center items-center w-full sm:w-auto px-7 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                                    {{ __('Browse Courses') }}
+                                </a>
+                                <a href="{{ route('pages.about') }}"
+                                   class="inline-flex justify-center items-center w-full sm:w-auto px-6 py-3 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]/40">
+                                    {{ __('Learn More') }}
+                                </a>
                             </div>
                         </div>
-                    </div>
-                    <div class="relative flex justify-center lg:justify-end">
-                        <div class="relative h-64 w-64 sm:h-72 sm:w-72 lg:h-80 lg:w-80">
-                            <div class="absolute inset-0 rounded-full bg-[var(--color-primary)]/10"></div>
-                            <div class="absolute inset-4 rounded-full bg-white shadow-xl ring-1 ring-gray-100 overflow-hidden">
+                        <div class="flex justify-center lg:justify-end">
+                            <div
+                                x-data="{ show: false }"
+                                x-init="setTimeout(() => show = true, 50)"
+                                :class="show ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
+                                class="w-full max-w-none h-[70vh] sm:h-[80vh] lg:h-[85vh] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 ease-out"
+                            >
                                 <img
-                                    src="{{ $instructorImageUrl ?? asset('images/demo/IMG_1702.JPG') }}"
-                                    alt="{{ __('Instructor hero') }}"
-                                    class="h-full w-full object-cover"
+                                    src="{{ $instructorImageUrl ?? asset('images/demo/IMG_1700.JPG') }}"
+                                    alt="{{ __('Portrait of Mena Mahmoud') }}"
+                                    class="w-full h-full object-cover object-right transition-transform duration-700 ease-out"
                                     loading="lazy"
                                 >
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </header>
 
             <section aria-label="{{ __('Featured courses') }}" class="space-y-8">
                 <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
