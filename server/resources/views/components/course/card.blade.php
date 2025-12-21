@@ -1,10 +1,15 @@
 @props(['course', 'ctaLabel' => 'View course', 'ctaUrl' => null])
 @php($ctaUrl = $ctaUrl ?? route('courses.show', $course))
+@php($thumb = $course->thumbnail_path
+    ? (\Illuminate\Support\Str::startsWith($course->thumbnail_path, ['http://', 'https://'])
+        ? $course->thumbnail_path
+        : asset($course->thumbnail_path))
+    : null)
 <article class="group relative bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 overflow-hidden transition transform hover:-translate-y-1 hover:shadow-md">
     <a href="{{ $ctaUrl }}" class="block h-full">
         <div class="relative aspect-video overflow-hidden">
-            @if ($course->thumbnail_path)
-                <img src="{{ asset($course->thumbnail_path) }}" alt="{{ $course->title }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+            @if ($thumb)
+                <img src="{{ $thumb }}" alt="{{ $course->title }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
             @else
                 <div class="w-full h-full bg-gradient-to-br from-[var(--color-primary)]/10 via-white to-[var(--color-primary)]/5 flex items-center justify-center text-[var(--color-text-muted)] text-sm">
                     {{ __('Course preview') }}
