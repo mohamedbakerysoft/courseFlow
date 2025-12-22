@@ -80,6 +80,7 @@
                 </div>
             </div>
         </section>
+        <x-public.trust-bar />
 
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             <div class="lg:col-span-2 space-y-6">
@@ -204,7 +205,7 @@
                                 </p>
                             </div>
                         </div>
-
+                        <x-public.trust-bar />
                         <div class="space-y-2">
                 @guest
                     <a href="{{ route('login') }}" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
@@ -225,7 +226,7 @@
                                         <form action="{{ route('courses.enroll', $course) }}" method="POST" class="w-full">
                                             @csrf
                                             <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                                {{ __('Enroll') }}
+                                                {{ app()->getLocale() === 'ar' ? 'احصل على وصول فوري' : 'Get instant access' }}
                                             </button>
                                         </form>
                                     @else
@@ -291,9 +292,15 @@
                             @endguest
                         </div>
 
-                        <p class="text-xs text-[var(--color-text-muted)] text-center">
-                            {{ __('Secure checkout · No hidden fees') }}
-                        </p>
+                        @php $ar = app()->getLocale() === 'ar'; @endphp
+                        <div class="space-y-1">
+                            <p class="text-xs text-[var(--color-text-muted)] text-center">
+                                {{ $ar ? 'لا اشتراك · دفع لمرة واحدة' : 'No subscription · One‑time payment' }}
+                            </p>
+                            <p class="text-xs text-[var(--color-text-muted)] text-center">
+                                {{ $ar ? 'دفع آمن · وصول فوري' : 'Secure checkout · Instant access' }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
