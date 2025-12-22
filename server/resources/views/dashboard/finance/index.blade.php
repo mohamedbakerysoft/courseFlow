@@ -1,27 +1,35 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-[var(--color-text-primary)] leading-tight">
-            {{ __('Finance') }}
-        </h2>
+        <div class="space-y-1">
+            <h2 class="font-semibold text-xl text-[var(--color-text-primary)] leading-tight">
+                {{ __('Finance') }}
+            </h2>
+            <p class="text-sm text-[var(--color-text-muted)]">
+                {{ __('Track sales and understand performance at a glance') }}
+            </p>
+        </div>
     </x-slot>
 
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 space-y-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6">
+            <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 space-y-1">
                 <p class="text-sm text-[var(--color-text-muted)]">{{ __('Total Sales (All Time)') }}</p>
-                <p class="mt-1 text-2xl font-bold text-[var(--color-text-primary)]">{{ number_format($all_time_sales, 2) }} USD</p>
+                <p class="text-2xl font-bold text-[var(--color-text-primary)]">{{ number_format($all_time_sales, 2) }} USD</p>
+                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Across all time') }}</p>
             </div>
-            <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6">
+            <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 space-y-1">
                 <p class="text-sm text-[var(--color-text-muted)]">{{ __('Total Sales (This Month)') }}</p>
-                <p class="mt-1 text-2xl font-bold text-[var(--color-text-primary)]">{{ number_format($month_sales, 2) }} USD</p>
+                <p class="text-2xl font-bold text-[var(--color-text-primary)]">{{ number_format($month_sales, 2) }} USD</p>
+                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Recorded this month') }}</p>
             </div>
-            <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6">
+            <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 space-y-1">
                 <p class="text-sm text-[var(--color-text-muted)]">{{ __('Best Selling Course') }}</p>
                 @if ($best_selling_course)
-                    <p class="mt-1 text-lg font-semibold text-[var(--color-primary)]">{{ $best_selling_course['title'] }}</p>
+                    <p class="text-lg font-semibold text-[var(--color-primary)]">{{ $best_selling_course['title'] }}</p>
                     <p class="text-sm text-[var(--color-text-muted)]">{{ __('Sales') }}: {{ $best_selling_course['count'] }}</p>
+                    <p class="text-xs text-[var(--color-text-muted)]">{{ __('Based on paid enrollments') }}</p>
                 @else
-                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('No sales yet.') }}</p>
+                    <p class="text-sm text-[var(--color-text-muted)]">{{ __('No sales yet.') }}</p>
                 @endif
             </div>
         </div>
@@ -53,4 +61,3 @@
         </div>
     </div>
 </x-app-layout>
-

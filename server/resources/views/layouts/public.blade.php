@@ -56,6 +56,9 @@
                     <a href="{{ route('pages.privacy') }}" class="hover:text-[var(--color-text-primary)]">{{ __('Privacy') }}</a>
                 </div>
             </div>
+            <p class="mt-3 text-center sm:text-start text-xs">
+                {{ __('Secure payments and instant course access after enrollment.') }}
+            </p>
         </footer>
     </body>
 </html>

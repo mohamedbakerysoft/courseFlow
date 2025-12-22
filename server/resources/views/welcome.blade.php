@@ -77,6 +77,9 @@
                         <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
                             {{ __('Featured courses') }}
                         </h2>
+                        <p class="text-xs text-[var(--color-text-muted)]">
+                            {{ __('Showing') }} {{ $featuredCourses->count() }} {{ __('courses') }}
+                        </p>
                     </div>
                     <a href="{{ route('courses.index') }}" class="inline-flex items-center text-sm font-semibold text-[var(--color-primary)] hover:underline">
                         {{ __('View all courses') }}

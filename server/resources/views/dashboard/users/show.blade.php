@@ -1,8 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-[var(--color-text-primary)] leading-tight">
-            {{ __('User Details') }}
-        </h2>
+        <div class="space-y-1">
+            <h2 class="font-semibold text-xl text-[var(--color-text-primary)] leading-tight">
+                {{ __('User Details') }}
+            </h2>
+            <p class="text-sm text-[var(--color-text-muted)]">
+                {{ __('Review status and course access. Toggle Active/Disabled and grant access.') }}
+            </p>
+        </div>
     </x-slot>
 
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 space-y-6">
@@ -55,7 +60,20 @@
                         @endforeach
                     </ul>
                 @else
-                    <p class="text-sm text-[var(--color-text-muted)]">{{ __('No enrolled courses yet.') }}</p>
+                    <div class="rounded-lg border border-dashed border-[var(--color-secondary)]/30 p-6 text-center">
+                        <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-text-muted)]">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M8 9h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <p class="text-[var(--color-text-muted)] font-medium">
+                            {{ __('No enrolled courses yet.') }}
+                        </p>
+                        <p class="text-[var(--color-text-muted)] text-sm">
+                            {{ __('Grant access below to enroll the user in a course.') }}
+                        </p>
+                    </div>
                 @endif
 
                 <div class="mt-6">
@@ -78,4 +96,3 @@
         </div>
     </div>
 </x-app-layout>
-

@@ -67,5 +67,18 @@
     "Site Logo": "شعار الموقع",
     "Save Settings": "حفظ الإعدادات",
     "Cancel": "إلغاء",
-    "Default Language": "اللغة الافتراضية"
+    "Default Language": "اللغة الافتراضية",
+    "Manage users and grant course access": "إدارة المستخدمين ومنح الوصول إلى الدورات",
+    "No users found": "لا يوجد مستخدمون",
+    "Users will appear here as they register or are added.": "سيظهر المستخدمون هنا عند التسجيل أو الإضافة.",
+    "View details": "عرض التفاصيل",
+    "Track sales and understand performance at a glance": "تتبع المبيعات وافهم الأداء بسرعة",
+    "Review status and course access. Toggle Active/Disabled and grant access.": "راجع الحالة والوصول للدورات. قم بالتفعيل/التعطيل ومنح الوصول.",
+    "Across all time": "طوال الوقت",
+    "Recorded this month": "سُجل هذا الشهر",
+    "Based on paid enrollments": "استنادًا إلى التسجيلات المدفوعة",
+    "Featured courses": "دورات مميزة",
+    "Showing": "عرض",
+    "courses": "دورات",
+    "Grant access below to enroll the user in a course.": "امنح الوصول أدناه لتسجيل المستخدم في دورة."
 }
