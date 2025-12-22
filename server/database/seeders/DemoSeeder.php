@@ -103,8 +103,8 @@ class DemoSeeder extends Seeder
         $coursesData = [
             [
                 'slug' => 'courseflow-mastery-launch',
-                'title' => 'CourseFlow Mastery: Launch Your Course Platform',
-                'description' => 'Learn how to install CourseFlow with Sail, configure branding, publish courses and accept real payments with Stripe, PayPal and manual invoices.',
+                'title' => 'CourseFlow Mastery (Advanced • Best Seller)',
+                'description' => 'Advanced program to launch a polished platform, set branding, and sell confidently with Stripe, PayPal and manual payments.',
                 'is_free' => false,
                 'price' => 129,
                 'language' => 'en',
@@ -113,8 +113,8 @@ class DemoSeeder extends Seeder
             ],
             [
                 'slug' => 'laravel-fundamentals-online-courses',
-                'title' => 'Laravel Fundamentals for Online Course Creators',
-                'description' => 'Understand routing, Eloquent, Blade and actions so you can confidently ship and customize Laravel-powered course platforms.',
+                'title' => 'Laravel Fundamentals (Intermediate)',
+                'description' => 'Intermediate track covering routing, Eloquent, Blade and actions to customize CourseFlow with confidence.',
                 'is_free' => false,
                 'price' => 49,
                 'language' => 'en',
@@ -123,8 +123,8 @@ class DemoSeeder extends Seeder
             ],
             [
                 'slug' => 'tailwind-alpine-ui-kit',
-                'title' => 'Tailwind & Alpine UI Kit for Creators',
-                'description' => 'Design clean dashboards, lesson layouts and responsive landing pages using Tailwind CSS and Alpine.js.',
+                'title' => 'Tailwind & Alpine UI Kit (Intermediate)',
+                'description' => 'Intermediate design kit for clean dashboards, lesson layouts and responsive landing pages with Tailwind & Alpine.',
                 'is_free' => false,
                 'price' => 39,
                 'language' => 'en',
@@ -133,8 +133,8 @@ class DemoSeeder extends Seeder
             ],
             [
                 'slug' => 'course-launch-marketing-blueprint',
-                'title' => 'Course Launch & Marketing Blueprint',
-                'description' => 'Plan your launch, craft sales copy and set up funnels that send students directly into your CourseFlow checkout.',
+                'title' => 'Course Launch & Marketing (Advanced)',
+                'description' => 'Advanced playbook to plan your launch, craft effective sales copy and set up funnels into CourseFlow checkout.',
                 'is_free' => false,
                 'price' => 89,
                 'language' => 'en',
@@ -143,8 +143,8 @@ class DemoSeeder extends Seeder
             ],
             [
                 'slug' => 'courseflow-arabic-rtl',
-                'title' => 'CourseFlow in Arabic: RTL Layouts & Localization',
-                'description' => 'Translate CourseFlow, enable RTL support and deliver a first-class Arabic learning experience.',
+                'title' => 'CourseFlow in Arabic (Intermediate): RTL & Localization',
+                'description' => 'Intermediate guide to translate CourseFlow, enable RTL, and deliver a first-class Arabic experience.',
                 'is_free' => false,
                 'price' => 29,
                 'language' => 'ar',
@@ -153,8 +153,8 @@ class DemoSeeder extends Seeder
             ],
             [
                 'slug' => 'courseflow-quickstart-mini-course',
-                'title' => 'CourseFlow Quickstart: 60 Minute Mini-Course',
-                'description' => 'Follow a focused, one-hour walkthrough that takes you from a fresh install to a polished, demo-ready platform.',
+                'title' => 'CourseFlow Quickstart (Beginner)',
+                'description' => 'Beginner-friendly mini-course: follow a focused walkthrough from fresh install to a polished, demo-ready platform.',
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
@@ -163,8 +163,8 @@ class DemoSeeder extends Seeder
             ],
             [
                 'slug' => 'creator-productivity-systems',
-                'title' => 'Creator Productivity Systems for Instructors',
-                'description' => 'Build a simple system to plan lessons, batch content and keep your CourseFlow classroom organized.',
+                'title' => 'Creator Productivity Systems (Beginner)',
+                'description' => 'Beginner track to plan lessons, batch content and keep your CourseFlow classroom organized.',
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
@@ -173,8 +173,8 @@ class DemoSeeder extends Seeder
             ],
             [
                 'slug' => 'web-accessibility-essentials',
-                'title' => 'Web Accessibility Essentials',
-                'description' => 'Inclusive design principles, ARIA roles and practical accessibility audits for courses.',
+                'title' => 'Web Accessibility Essentials (Intermediate)',
+                'description' => 'Intermediate essentials: inclusive design, ARIA roles and practical accessibility audits for courses.',
                 'is_free' => false,
                 'price' => 59,
                 'language' => 'en',
@@ -183,8 +183,8 @@ class DemoSeeder extends Seeder
             ],
             [
                 'slug' => 'video-editing-for-instructors',
-                'title' => 'Video Editing for Instructors',
-                'description' => 'Trim, color correct and export high-quality lesson videos with simple workflows.',
+                'title' => 'Video Editing for Instructors (Intermediate)',
+                'description' => 'Intermediate workflows: trim, color correct and export high-quality lesson videos with simple steps.',
                 'is_free' => false,
                 'price' => 69,
                 'language' => 'en',

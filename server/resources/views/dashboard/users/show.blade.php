@@ -42,6 +42,9 @@
                             </button>
                         @endif
                     </form>
+                    <p class="mt-2 text-xs text-[var(--color-text-muted)]">
+                        {{ __('Deactivating a user removes course access; data remains.') }}
+                    </p>
                 </div>
             </div>
         </div>

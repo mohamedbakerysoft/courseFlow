@@ -19,8 +19,8 @@ class ShowLandingPageAction
             ->first()
             ?: User::query()->where('role', User::ROLE_ADMIN)->first();
 
-        $heroTitle = (string) ($this->settings->get('instructor.hero_headline') ?: $this->settings->get('landing.hero_title', 'Teach and sell your courses with CourseFlow'));
-        $heroSubtitle = (string) ($this->settings->get('instructor.hero_subheadline') ?: $this->settings->get('landing.hero_subtitle', 'Launch a clean, modern course platform in minutes.'));
+        $heroTitle = (string) ($this->settings->get('instructor.hero_headline') ?: $this->settings->get('landing.hero_title', 'Single‑Instructor LMS for Selling Courses'));
+        $heroSubtitle = (string) ($this->settings->get('instructor.hero_subheadline') ?: $this->settings->get('landing.hero_subtitle', 'For solo creators: sell courses with Stripe/PayPal, manual payments, and track student progress.'));
 
         $instructorName = (string) ($this->settings->get('instructor.name') ?: ($instructor?->name ?? 'Instructor'));
         $instructorTitle = (string) ($this->settings->get('instructor.title') ?: '');

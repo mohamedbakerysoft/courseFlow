@@ -16,11 +16,13 @@
                 <p class="text-sm text-[var(--color-text-muted)]">{{ __('Total Sales (All Time)') }}</p>
                 <p class="text-2xl font-bold text-[var(--color-text-primary)]">{{ number_format($all_time_sales, 2) }} USD</p>
                 <p class="text-xs text-[var(--color-text-muted)]">{{ __('Across all time') }}</p>
+                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Refunded / canceled payments are excluded') }}</p>
             </div>
             <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 space-y-1">
                 <p class="text-sm text-[var(--color-text-muted)]">{{ __('Total Sales (This Month)') }}</p>
                 <p class="text-2xl font-bold text-[var(--color-text-primary)]">{{ number_format($month_sales, 2) }} USD</p>
                 <p class="text-xs text-[var(--color-text-muted)]">{{ __('Recorded this month') }}</p>
+                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Refunded / canceled payments are excluded') }}</p>
             </div>
             <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 space-y-1">
                 <p class="text-sm text-[var(--color-text-muted)]">{{ __('Best Selling Course') }}</p>
@@ -31,6 +33,7 @@
                 @else
                     <p class="text-sm text-[var(--color-text-muted)]">{{ __('No sales yet.') }}</p>
                 @endif
+                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Refunded / canceled payments are excluded') }}</p>
             </div>
         </div>
 
