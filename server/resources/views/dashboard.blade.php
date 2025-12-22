@@ -3,6 +3,9 @@
         <h2 class="font-semibold text-xl text-[var(--color-text-primary)] leading-tight">
             {{ __('Dashboard') }}
         </h2>
+        <p class="text-sm text-[var(--color-text-muted)]">
+            {{ __('All core modules are configured and ready for real usage.') }}
+        </p>
     </x-slot>
 
     <div class="py-10">
@@ -105,7 +108,7 @@
                         @else
                             <div class="text-center text-[var(--color-text-primary)]">
                                 <div class="text-4xl mb-3">🎓</div>
-                                <p class="font-medium">{{ __('No enrollments yet') }}</p>
+                                <p class="font-medium">{{ __('No enrollments yet — this is where real enrollments will appear.') }}</p>
                                 <p class="text-sm text-[var(--color-text-muted)] mt-1">{{ __('Browse courses to get started.') }}</p>
                                 <div class="mt-4">
                                     <a href="{{ route('courses.index') }}" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">{{ __('Browse Courses') }}</a>

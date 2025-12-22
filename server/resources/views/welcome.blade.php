@@ -23,6 +23,9 @@
                                 <p class="text-base sm:text-lg text-[var(--color-text-muted)]">
                                     {{ $heroSubtitle }}
                                 </p>
+                                <p class="text-xs text-[var(--color-text-muted)]">
+                                    {{ __('Designed for independent instructors and real students.') }}
+                                </p>
                                 @if (!empty($instructorBio) && $showAboutInstructor)
                                     <p class="text-sm sm:text-base text-[var(--color-text-muted)]">
                                         {{ $instructorBio }}

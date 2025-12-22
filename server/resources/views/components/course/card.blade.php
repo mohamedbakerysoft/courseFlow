@@ -32,6 +32,9 @@
             <h3 class="font-semibold text-base text-[var(--color-text-primary)] line-clamp-2">
                 {{ $course->title }}
             </h3>
+            <p class="text-xs text-[var(--color-text-muted)]">
+                {{ __('Self-paced · Lifetime access') }}
+            </p>
             @if (!empty($course->description))
                 <p class="text-sm text-[var(--color-text-muted)] line-clamp-2">
                     {{ str($course->description)->limit(120) }}

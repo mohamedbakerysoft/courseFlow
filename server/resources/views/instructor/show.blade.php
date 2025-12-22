@@ -27,7 +27,11 @@
                 @forelse ($courses as $course)
                     <x-course.card :course="$course" />
                 @empty
-                    <p class="text-[var(--color-text-muted)]">No published courses yet.</p>
+                    <div class="rounded-lg border border-dashed border-[var(--color-secondary)]/30 p-6 text-center">
+                        <p class="text-[var(--color-text-muted)] font-medium">
+                            {{ __('No published courses yet — published listings will appear here.') }}
+                        </p>
+                    </div>
                 @endforelse
             </div>
         </div>

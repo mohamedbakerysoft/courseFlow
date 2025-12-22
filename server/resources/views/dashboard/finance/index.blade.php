@@ -31,7 +31,7 @@
                     <p class="text-sm text-[var(--color-text-muted)]">{{ __('Sales') }}: {{ $best_selling_course['count'] }}</p>
                     <p class="text-xs text-[var(--color-text-muted)]">{{ __('Based on paid enrollments') }}</p>
                 @else
-                    <p class="text-sm text-[var(--color-text-muted)]">{{ __('No sales yet.') }}</p>
+                    <p class="text-sm text-[var(--color-text-muted)]">{{ __('No payments recorded yet — this is where confirmed transactions will appear.') }}</p>
                 @endif
                 <p class="text-xs text-[var(--color-text-muted)]">{{ __('Refunded / canceled payments are excluded') }}</p>
             </div>
@@ -59,7 +59,7 @@
                     </table>
                 </div>
             @else
-                <p class="text-sm text-[var(--color-text-muted)]">{{ __('No sales yet.') }}</p>
+                <p class="text-sm text-[var(--color-text-muted)]">{{ __('No payments recorded yet — this is where confirmed transactions will appear.') }}</p>
             @endif
         </div>
     </div>
