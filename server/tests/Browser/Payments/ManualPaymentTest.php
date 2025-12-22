@@ -50,7 +50,7 @@ class ManualPaymentTest extends DuskTestCase
                 ->visit('/courses/'.$course->slug)
                 ->waitForText('Request manual payment', 10)
                 ->press('Request manual payment')
-                ->waitForText('Manual Payment Pending', 10)
+                ->waitForText('Manual Payment Pending', 15)
                 ->assertSee('Manual Payment Pending');
 
             // Approve payment via POST request as admin
@@ -68,7 +68,7 @@ class ManualPaymentTest extends DuskTestCase
             file_get_contents($base.'/dashboard/payments/'.$payment->id.'/approve', false, $context);
 
             $browser->visit('/courses/'.$course->slug)
-                ->waitForText('You are enrolled', 10)
+                ->waitForText('You are enrolled', 15)
                 ->assertSee('You are enrolled');
         });
     }

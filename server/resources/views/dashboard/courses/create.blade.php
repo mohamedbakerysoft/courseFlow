@@ -5,8 +5,12 @@
         </h2>
     </x-slot>
     <div class="py-8 max-w-4xl mx-auto">
+        <x-public.demo-notice />
         <form x-data="{isSubmitting:false, thumbPreview:null}" x-on:submit="isSubmitting=true" method="POST" action="{{ route('dashboard.courses.store') }}" enctype="multipart/form-data" class="space-y-4 bg-white p-6 rounded shadow">
             @csrf
+            <p class="text-xs text-[var(--color-text-muted)]">
+                {{ app()->getLocale() === 'ar' ? 'بعض الخصائص المتقدمة غير مفعلة في النسخة التجريبية.' : 'Some advanced features are disabled in demo mode.' }}
+            </p>
             <div>
                 <label class="block text-sm font-medium">Title</label>
                 <input name="title" type="text" class="mt-1 w-full border rounded p-2" required>

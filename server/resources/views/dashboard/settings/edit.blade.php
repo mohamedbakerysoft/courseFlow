@@ -14,6 +14,7 @@
                 </a>
             </div>
         </div>
+        <x-public.demo-notice />
 
         @if (session('status'))
             <div class="mb-4 rounded-lg border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 px-4 py-2 text-sm text-[var(--color-accent)]">
@@ -146,6 +147,11 @@
                     {{ __('Payment Methods') }}
                 </h2>
                 <div class="space-y-5">
+                    <div class="rounded-md border border-[var(--color-secondary)]/20 bg-white p-3">
+                        <p class="text-xs text-[var(--color-text-muted)]">
+                            {{ app()->getLocale() === 'ar' ? 'شراء لمرة واحدة · وصول مدى الحياة · بدون رسوم شهرية' : 'One‑time purchase. Lifetime access. No monthly fees.' }}
+                        </p>
+                    </div>
                     <div class="rounded-md border border-[var(--color-secondary)]/20 p-4 space-y-4">
                         <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Online Payments') }}</p>
                         <div class="flex items-start justify-between gap-4">

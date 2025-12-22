@@ -7,12 +7,14 @@
 
     <div class="py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <x-public.demo-notice />
             @can('viewAny', \App\Models\Course::class)
                 <section aria-label="{{ __('Quick Actions') }}" class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6">
                     <div class="flex flex-wrap items-center justify-between gap-4">
                         <div class="space-y-1">
                             <h3 class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('Quick Actions') }}</h3>
                             <p class="text-sm text-[var(--color-text-muted)]">{{ __('Create and manage content faster.') }}</p>
+                            <p class="text-xs text-[var(--color-text-muted)]">{{ app()->getLocale() === 'ar' ? 'بعض الخصائص المتقدمة غير مفعلة في النسخة التجريبية.' : 'Some advanced features are disabled in demo mode.' }}</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-3">
                             <a href="{{ route('dashboard.courses.create') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[var(--color-primary)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">

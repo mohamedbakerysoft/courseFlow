@@ -273,6 +273,11 @@
                                                         {{ __('Some payment methods are currently unavailable.') }}
                                                     </p>
                                                 @endif
+                                                <div class="rounded-md border border-[var(--color-secondary)]/20 bg-white p-3">
+                                                    <p class="text-xs text-[var(--color-text-muted)] text-center">
+                                                        {{ app()->getLocale() === 'ar' ? 'شراء لمرة واحدة · وصول مدى الحياة · بدون رسوم شهرية' : 'One‑time purchase. Lifetime access. No monthly fees.' }}
+                                                    </p>
+                                                </div>
                                             @else
                                                 <div class="rounded-md border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/10 p-3">
                                                     <p class="text-xs text-[var(--color-text-muted)] text-center">
