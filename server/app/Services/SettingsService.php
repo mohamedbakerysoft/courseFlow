@@ -14,13 +14,21 @@ class SettingsService
 
     public function all(): array
     {
-        if (! app()->environment('production')) {
-            return Setting::query()->pluck('value', 'key')->toArray();
-        }
+        try {
+            if (! app()->environment('production')) {
+                return Setting::query()->pluck('value', 'key')->toArray();
+            }
 
-        return Cache::rememberForever($this->cacheKey(), function () {
-            return Setting::query()->pluck('value', 'key')->toArray();
-        });
+            return Cache::rememberForever($this->cacheKey(), function () {
+                try {
+                    return Setting::query()->pluck('value', 'key')->toArray();
+                } catch (\Throwable $e) {
+                    return [];
+                }
+            });
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 
     public function get(string $key, mixed $default = null): mixed

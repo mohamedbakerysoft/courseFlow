@@ -19,8 +19,19 @@ class ShowLandingPageAction
             ->first()
             ?: User::query()->where('role', User::ROLE_ADMIN)->first();
 
-        $heroTitle = (string) ($this->settings->get('instructor.hero_headline') ?: $this->settings->get('landing.hero_title', 'Single‑Instructor LMS for Selling Courses'));
-        $heroSubtitle = (string) ($this->settings->get('instructor.hero_subheadline') ?: $this->settings->get('landing.hero_subtitle', 'For solo creators: sell courses with Stripe/PayPal, manual payments, and track student progress.'));
+        $locale = app()->getLocale();
+        $heroTitle = (string) (
+            $this->settings->get("instructor.hero_headline_{$locale}")
+            ?: $this->settings->get('instructor.hero_headline')
+            ?: $this->settings->get("landing.hero_title_{$locale}")
+            ?: $this->settings->get('landing.hero_title', 'Single‑Instructor LMS for Selling Courses')
+        );
+        $heroSubtitle = (string) (
+            $this->settings->get("instructor.hero_subheadline_{$locale}")
+            ?: $this->settings->get('instructor.hero_subheadline')
+            ?: $this->settings->get("landing.hero_subtitle_{$locale}")
+            ?: $this->settings->get('landing.hero_subtitle', 'For solo creators: sell courses with Stripe/PayPal, manual payments, and track student progress.')
+        );
 
         $instructorName = (string) ($this->settings->get('instructor.name') ?: ($instructor?->name ?? 'Instructor'));
         $instructorTitle = (string) ($this->settings->get('instructor.title') ?: '');
@@ -31,12 +42,22 @@ class ShowLandingPageAction
 
         $heroImageModeSetting = (string) $this->settings->get('landing.hero_image_mode', 'contain');
         $heroImageMode = in_array($heroImageModeSetting, ['contain', 'cover'], true) ? $heroImageModeSetting : 'contain';
+        $heroImageFocusSetting = (string) $this->settings->get('landing.hero_image_focus', 'center');
+        $heroImageFocus = in_array($heroImageFocusSetting, ['center', 'top', 'bottom', 'left', 'right'], true) ? $heroImageFocusSetting : 'center';
 
         $showHero = (bool) $this->settings->get('landing.show_hero', true);
         $showAboutInstructor = (bool) $this->settings->get('landing.show_about', true);
         $showCoursesPreview = (bool) $this->settings->get('landing.show_courses_preview', true);
         $showTestimonials = (bool) $this->settings->get('landing.show_testimonials', true);
         $showFooterCta = (bool) $this->settings->get('landing.show_footer_cta', true);
+        $rawContact = $this->settings->get('landing.show_contact_form', false);
+        $showContactForm = false;
+        if (is_bool($rawContact)) {
+            $showContactForm = $rawContact;
+        } else {
+            $val = strtolower(trim((string) $rawContact));
+            $showContactForm = in_array($val, ['1', 'true', 'on', 'yes'], true);
+        }
 
         $settingsLinks = [
             'twitter' => (string) ($this->settings->get('instructor.social.twitter') ?: ''),
@@ -90,11 +111,13 @@ class ShowLandingPageAction
             'instructorImageUrl' => $instructorImageUrl,
             'instructorLinks' => $instructorLinks,
             'heroImageMode' => $heroImageMode,
+            'heroImageFocus' => $heroImageFocus,
             'showHero' => $showHero,
             'showAboutInstructor' => $showAboutInstructor,
             'showCoursesPreview' => $showCoursesPreview,
             'showTestimonials' => $showTestimonials,
             'showFooterCta' => $showFooterCta,
+            'showContactForm' => $showContactForm,
             'features' => $features,
             'featuredCourses' => $featuredCourses,
         ];

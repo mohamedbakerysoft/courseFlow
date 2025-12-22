@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div x-data="{ fill(email, password) { $refs.email.value = email; $refs.password.value = password } }">
+    <div x-data="{ demoLogin(email, password) { $refs.email.value = email; $refs.password.value = password; $refs.form.submit() } }">
     <div class="mb-4">
         <h1 class="text-xl font-semibold text-[var(--color-text-primary)]">
             {{ __('Login') }}
@@ -8,10 +8,25 @@
             {{ __('Access your dashboard and manage courses.') }}
         </p>
     </div>
+    @if(config('demo.enabled'))
+        <div class="mb-4">
+            <div class="bg-white rounded-lg shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-4 flex flex-col sm:flex-row items-center gap-3">
+                <a href="{{ route('demo.login', ['who' => 'admin']) }}" data-test="demo-admin" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold hover:bg-[var(--color-primary-hover)]">
+                    {{ __('Login as Admin') }}
+                </a>
+                <a href="{{ route('demo.login', ['who' => 'student']) }}" data-test="demo-student" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-secondary)] text-white text-sm font-semibold hover:opacity-90">
+                    {{ __('Login as Student') }}
+                </a>
+            </div>
+            <p class="mt-2 text-xs text-[var(--color-text-muted)]">
+                {{ __('Demo credentials are pre-filled for quick exploration.') }}
+            </p>
+        </div>
+    @endif
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}" x-ref="form">
         @csrf
 
         <!-- Email Address -->
@@ -53,30 +68,5 @@
             </x-primary-button>
         </div>
     </form>
-    @if(config('demo.enabled'))
-        <div class="mt-6 bg-white border border-[var(--color-secondary)]/10 rounded-lg p-4">
-            <p class="text-xs font-semibold text-[var(--color-text-muted)] mb-3">{{ __('Demo Fill') }}</p>
-            <div class="flex flex-col gap-2">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-[var(--color-text-muted)]">Admin — {{ config('demo.admin_email') }}</span>
-                    <x-secondary-button type="button" x-on:click="fill('{{ config('demo.admin_email') }}','password')">
-                        {{ __('Fill') }}
-                    </x-secondary-button>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-[var(--color-text-muted)]">Instructor — instructor@demo.com</span>
-                    <x-secondary-button type="button" x-on:click="fill('instructor@demo.com','password')">
-                        {{ __('Fill') }}
-                    </x-secondary-button>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-[var(--color-text-muted)]">Student — student@demo.com</span>
-                    <x-secondary-button type="button" x-on:click="fill('student@demo.com','password')">
-                        {{ __('Fill') }}
-                    </x-secondary-button>
-                </div>
-            </div>
-        </div>
-    @endif
     </div>
 </x-guest-layout>

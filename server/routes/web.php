@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', LandingController::class);
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.submit');
 
 Route::get('/dashboard', function () {
     $user = User::find(Auth::id());
@@ -62,6 +63,10 @@ Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show')
 Route::get('/about', [PageController::class, 'show'])->defaults('slug', 'about')->name('pages.about');
 Route::get('/terms', [PageController::class, 'show'])->defaults('slug', 'terms')->name('pages.terms');
 Route::get('/privacy', [PageController::class, 'show'])->defaults('slug', 'privacy')->name('pages.privacy');
+
+Route::get('/demo-login/{who}', function (string $who) {
+    return app(\App\Actions\Auth\DemoLoginAction::class)->execute($who);
+})->name('demo.login');
 
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('courses.show');

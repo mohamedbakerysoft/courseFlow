@@ -52,8 +52,8 @@
             <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
                 <p>&copy; {{ date('Y') }} {{ config('app.name') }}</p>
                 <div class="flex items-center gap-4">
-                    <a href="{{ route('pages.terms') }}" class="hover:text-[var(--color-text-primary)]">{{ __('Terms') }}</a>
-                    <a href="{{ route('pages.privacy') }}" class="hover:text-[var(--color-text-primary)]">{{ __('Privacy') }}</a>
+                    <a href="/terms" class="hover:text-[var(--color-text-primary)]">{{ __('Terms') }}</a>
+                    <a href="/privacy" class="hover:text-[var(--color-text-primary)]">{{ __('Privacy') }}</a>
                 </div>
             </div>
             <p class="mt-3 text-center sm:text-start text-xs">

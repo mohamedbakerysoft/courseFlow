@@ -17,6 +17,16 @@ Artisan::command('demo:reseed-after-tests {--force-testing}', function () {
 
     if ($forceTesting) {
         config()->set('demo.enabled', true);
+        try {
+            $sessionPath = storage_path('framework/sessions');
+            if (is_dir($sessionPath)) {
+                foreach (glob($sessionPath.'/*') as $file) {
+                    @unlink($file);
+                }
+            }
+        } catch (\Throwable $e) {
+            // ignore
+        }
         $this->call('migrate', ['--force' => true]);
         $this->call(\Database\Seeders\DemoSeeder::class);
 

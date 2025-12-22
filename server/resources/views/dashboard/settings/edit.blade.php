@@ -64,6 +64,50 @@
 
             <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
+                    {{ __('Legal Pages') }}
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label for="legal_terms_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                            {{ __('Terms of Service (English)') }}
+                        </label>
+                        <textarea id="legal_terms_en" name="legal_terms_en" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_terms_en', $legalTermsEn) }}</textarea>
+                        @error('legal_terms_en')
+                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label for="legal_terms_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                            {{ __('شروط الخدمة (العربية)') }}
+                        </label>
+                        <textarea id="legal_terms_ar" name="legal_terms_ar" dir="rtl" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_terms_ar', $legalTermsAr) }}</textarea>
+                        @error('legal_terms_ar')
+                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label for="legal_privacy_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                            {{ __('Privacy Policy (English)') }}
+                        </label>
+                        <textarea id="legal_privacy_en" name="legal_privacy_en" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_privacy_en', $legalPrivacyEn) }}</textarea>
+                        @error('legal_privacy_en')
+                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label for="legal_privacy_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                            {{ __('سياسة الخصوصية (العربية)') }}
+                        </label>
+                        <textarea id="legal_privacy_ar" name="legal_privacy_ar" dir="rtl" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_privacy_ar', $legalPrivacyAr) }}</textarea>
+                        @error('legal_privacy_ar')
+                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+                <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('Payment Methods') }}
                 </h2>
                 <div class="space-y-5">
@@ -107,6 +151,16 @@
                     {{ __('Landing Page') }}
                 </h2>
                 <div class="space-y-5">
+                    <div>
+                        <label for="instructor_name" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                            {{ __('Instructor Name') }}
+                        </label>
+                        <input id="instructor_name" name="instructor_name" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                               value="{{ old('instructor_name', $instructorName ?? '') }}">
+                        @error('instructor_name')
+                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
                             <div>
@@ -114,6 +168,13 @@
                                 <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle visibility of the hero section.') }}</p>
                             </div>
                             <input type="checkbox" name="landing_show_hero" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowHero)>
+                        </label>
+                        <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
+                            <div>
+                                <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show Contact Form') }}</p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle simple contact form at the bottom.') }}</p>
+                            </div>
+                            <input type="checkbox" name="landing_show_contact_form" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowContactForm ?? false)>
                         </label>
                         <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
                             <div>
@@ -154,6 +215,22 @@
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="landing_hero_title_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('Hero title (EN)') }}
+                            </label>
+                            <input id="landing_hero_title_en" name="landing_hero_title_en" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                                   value="{{ old('landing_hero_title_en', $landingHeroTitleEn ?? '') }}">
+                        </div>
+                        <div>
+                            <label for="landing_hero_title_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('Hero title (AR)') }}
+                            </label>
+                            <input id="landing_hero_title_ar" name="landing_hero_title_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                                   value="{{ old('landing_hero_title_ar', $landingHeroTitleAr ?? '') }}">
+                        </div>
+                    </div>
                     <div>
                         <label for="landing_hero_subtitle" class="block text-sm font-medium text-[var(--color-text-muted)]">
                             {{ __('Hero subtitle') }}
@@ -163,6 +240,48 @@
                         @error('landing_hero_subtitle')
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="landing_hero_subtitle_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('Hero subtitle (EN)') }}
+                            </label>
+                            <input id="landing_hero_subtitle_en" name="landing_hero_subtitle_en" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                                   value="{{ old('landing_hero_subtitle_en', $landingHeroSubtitleEn ?? '') }}">
+                        </div>
+                        <div>
+                            <label for="landing_hero_subtitle_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('Hero subtitle (AR)') }}
+                            </label>
+                            <input id="landing_hero_subtitle_ar" name="landing_hero_subtitle_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                                   value="{{ old('landing_hero_subtitle_ar', $landingHeroSubtitleAr ?? '') }}">
+                        </div>
+                    </div>
+                    <div>
+                        <span class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero Image Display Mode') }}</span>
+                        <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="flex items-center gap-2 rounded-md border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
+                                <input type="radio" name="landing_hero_image_mode" value="contain" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'contain') === 'contain' ? 'checked' : '' }}>
+                                <span class="text-sm text-[var(--color-text-primary)]">{{ __('Fit (Show Full Image)') }}</span>
+                            </label>
+                            <label class="flex items-center gap-2 rounded-md border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
+                                <input type="radio" name="landing_hero_image_mode" value="cover" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'contain') === 'cover' ? 'checked' : '' }}>
+                                <span class="text-sm text-[var(--color-text-primary)]">{{ __('Fill (Crop to Container)') }}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="landing_hero_image_focus" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                            {{ __('Hero Image Focus') }}
+                        </label>
+                        <select id="landing_hero_image_focus" name="landing_hero_image_focus" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
+                            @php $focus = $landingHeroImageFocus ?? 'center'; @endphp
+                            <option value="center" @selected($focus === 'center')>{{ __('Center') }}</option>
+                            <option value="top" @selected($focus === 'top')>{{ __('Top') }}</option>
+                            <option value="bottom" @selected($focus === 'bottom')>{{ __('Bottom') }}</option>
+                            <option value="left" @selected($focus === 'left')>{{ __('Left') }}</option>
+                            <option value="right" @selected($focus === 'right')>{{ __('Right') }}</option>
+                        </select>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="space-y-2">
@@ -197,6 +316,32 @@
                                 {{ __('Feature 3 description') }}
                             </label>
                             <textarea id="landing_feature_3_description" name="landing_feature_3_description" rows="3" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('landing_feature_3_description', $landingFeature3Description) }}</textarea>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="social_twitter" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('Twitter') }}
+                            </label>
+                            <input id="social_twitter" name="social_twitter" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_twitter', $socialTwitter ?? '') }}" placeholder="https://twitter.com/username">
+                        </div>
+                        <div>
+                            <label for="social_instagram" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('Instagram') }}
+                            </label>
+                            <input id="social_instagram" name="social_instagram" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_instagram', $socialInstagram ?? '') }}" placeholder="https://instagram.com/username">
+                        </div>
+                        <div>
+                            <label for="social_youtube" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('YouTube') }}
+                            </label>
+                            <input id="social_youtube" name="social_youtube" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_youtube', $socialYouTube ?? '') }}" placeholder="https://youtube.com/@channel">
+                        </div>
+                        <div>
+                            <label for="social_linkedin" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('LinkedIn') }}
+                            </label>
+                            <input id="social_linkedin" name="social_linkedin" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_linkedin', $socialLinkedIn ?? '') }}" placeholder="https://www.linkedin.com/in/username">
                         </div>
                     </div>
                     <div>

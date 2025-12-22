@@ -6,10 +6,10 @@
                 <div class="relative w-full min-h-[85vh]">
                     <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 px-4 sm:px-6 lg:px-8">
                         <div class="space-y-6">
-                            <div class="space-y-1">
-                                <h2 class="text-lg sm:text-xl font-semibold text-[var(--color-text-primary)]">
+                            <div class="space-y-2">
+                                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[var(--color-text-primary)]">
                                     {{ $instructorName }}
-                                </h2>
+                                </h1>
                                 @if (!empty($instructorTitle) && $showAboutInstructor)
                                     <p class="text-xs sm:text-sm text-[var(--color-text-muted)]">
                                         {{ $instructorTitle }}
@@ -17,9 +17,9 @@
                                 @endif
                             </div>
                             <div class="space-y-4">
-                                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[var(--color-text-primary)]">
+                                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[var(--color-text-primary)]">
                                     {{ $heroTitle }}
-                                </h1>
+                                </h2>
                                 <p class="text-base sm:text-lg text-[var(--color-text-muted)]">
                                     {{ $heroSubtitle }}
                                 </p>
@@ -40,7 +40,22 @@
                                     @foreach ($instructorLinks as $label => $url)
                                         @if (!empty($url))
                                             <a href="{{ $url }}" class="inline-flex items-center justify-center h-9 w-9 rounded-full ring-1 ring-[var(--color-secondary)]/20 text-[var(--color-text-muted)] hover:bg-[var(--color-secondary)]/10 hover:opacity-80 transition-colors" rel="noopener" target="_blank" aria-label="{{ ucfirst($label) }}">
-                                                <span class="text-xs font-semibold">{{ strtoupper(substr($label,0,1)) }}</span>
+                                                @switch($label)
+                                                    @case('twitter')
+                                                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.633 7.997c.013.175.013.35.013.524 0 5.348-4.07 11.512-11.512 11.512-2.291 0-4.418-.676-6.207-1.84.318.037.624.05.955.05a8.153 8.153 0 0 0 5.058-1.742 4.077 4.077 0 0 1-3.805-2.825c.25.037.5.062.763.062.363 0 .726-.05 1.063-.137a4.07 4.07 0 0 1-3.265-4.003v-.05c.537.3 1.156.487 1.816.512a4.066 4.066 0 0 1-1.813-3.389c0-.75.2-1.45.55-2.055a11.55 11.55 0 0 0 8.39 4.257 4.58 4.58 0 0 1-.1-.934 4.07 4.07 0 0 1 7.04-2.784 8.015 8.015 0 0 0 2.58-.984 4.084 4.084 0 0 1-1.787 2.244 8.116 8.116 0 0 0 2.34-.625 8.764 8.764 0 0 1-2.03 2.11z"/></svg>
+                                                        @break
+                                                    @case('instagram')
+                                                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm10 2c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3h10zm-5 3a5 5 0 1 0 .001 10.001A5 5 0 0 0 12 7zm0 2a3 3 0 1 1-.001 6.001A3 3 0 0 1 12 9zm4.5-3a1.5 1.5 0 1 0 .001 3.001A1.5 1.5 0 0 0 16.5 6z"/></svg>
+                                                        @break
+                                                    @case('youtube')
+                                                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.4.6A3 3 0 0 0 .5 6.2C0 8 .1 12 .1 12s-.1 4 .4 5.8a3 3 0 0 0 2.1 2.1c1.8.6 9.4.6 9.4.6s7.6 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.8.4-5.8.4-5.8s.1-4-.4-5.8zM9.8 15.2V8.8l6.2 3.2-6.2 3.2z"/></svg>
+                                                        @break
+                                                    @case('linkedin')
+                                                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8.98h5v14H0v-14zM8.98 8.98h4.78v1.91h.07c.66-1.25 2.26-2.57 4.65-2.57 4.98 0 5.9 3.28 5.9 7.55v8.11h-5v-7.2c0-1.72-.03-3.93-2.4-3.93-2.4 0-2.77 1.87-2.77 3.8v7.33h-5v-14z"/></svg>
+                                                        @break
+                                                    @default
+                                                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                                                @endswitch
                                             </a>
                                         @endif
                                     @endforeach
@@ -52,12 +67,13 @@
                                 x-data="{ show: false }"
                                 x-init="setTimeout(() => show = true, 50)"
                                 :class="show ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
-                                class="w-full max-w-none h-[70vh] sm:h-[80vh] lg:h-[85vh] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 ease-out"
+                                class="w-full max-w-none h-[70vh] sm:h-[80vh] lg:h-[85vh] overflow-hidden transition-all duration-700 ease-out"
                             >
                                 <img
                                     src="{{ $instructorImageUrl ?? asset('images/demo/IMG_1700.JPG') }}"
                                     alt="{{ __('Portrait of ') . $instructorName }}"
-                                    class="w-full h-full object-center transition-transform duration-700 ease-out {{ $heroImageMode === 'contain' ? 'object-contain' : 'object-cover' }}"
+                                    style="object-position: {{ $heroImageFocus ?? 'center' }};"
+                                    class="w-full h-full transition-transform duration-700 ease-out {{ $heroImageMode === 'contain' ? 'object-contain' : 'object-cover' }}"
                                     loading="lazy"
                                 >
                             </div>
@@ -67,6 +83,75 @@
             </header>
             @endif
 
+            @if ($showContactForm === true)
+            <section aria-label="{{ __('Contact') }}" class="space-y-8">
+                @if (session('status'))
+                    <div class="rounded-lg border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 px-4 py-2 text-sm text-[var(--color-accent)]">
+                        {{ session('status') }}
+                    </div>
+                @endif
+                @error('captcha')
+                    <div class="rounded-lg border border-[var(--color-error)]/20 bg-[var(--color-error)]/10 px-4 py-2 text-sm text-[var(--color-error)]">
+                        {{ $message }}
+                    </div>
+                @enderror
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
+                            {{ __('Get in touch') }}
+                        </h2>
+                        <p class="text-sm sm:text-base text-[var(--color-text-muted)]">
+                            {{ __('Send a message and I will reply shortly.') }}
+                        </p>
+                    </div>
+                    <form id="contactForm" method="POST" action="{{ route('contact.submit') }}" class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 space-y-4">
+                        @csrf
+                        <div>
+                            <label for="contact_name" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Name') }}</label>
+                            <input id="contact_name" name="name" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('name') }}" required>
+                            @error('name')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
+                        </div>
+                        <div>
+                            <label for="contact_email" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Email') }}</label>
+                            <input id="contact_email" name="email" type="email" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('email') }}" required>
+                            @error('email')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
+                        </div>
+                        <div>
+                            <label for="contact_message" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Message') }}</label>
+                            <textarea id="contact_message" name="message" rows="5" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" required>{{ old('message') }}</textarea>
+                            @error('message')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
+                        </div>
+                        <input type="hidden" id="captcha_token" name="captcha_token" value="">
+                        <div class="flex items-center justify-end">
+                            <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                                {{ __('Send Message') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                @php $siteKey = config('services.recaptcha.site_key'); @endphp
+                @if (!empty($siteKey))
+                    <script src="https://www.google.com/recaptcha/api.js?render={{ $siteKey }}"></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var form = document.getElementById('contactForm');
+                            if (!form) return;
+                            form.addEventListener('submit', function (e) {
+                                if (typeof grecaptcha === 'undefined') return;
+                                e.preventDefault();
+                                grecaptcha.ready(function () {
+                                    grecaptcha.execute('{{ $siteKey }}', {action: 'contact'}).then(function (token) {
+                                        var input = document.getElementById('captcha_token');
+                                        if (input) input.value = token;
+                                        form.submit();
+                                    });
+                                });
+                            }, { passive: false });
+                        });
+                    </script>
+                @endif
+            </section>
+            @endif
             @if ($showCoursesPreview)
             <section aria-label="{{ __('Featured courses') }}" class="space-y-8">
                 <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
@@ -315,6 +400,7 @@
             </section>
             @endif
 
+            @if ($showContactForm)
             <section id="contact" aria-label="{{ __('Contact form') }}" class="space-y-8">
                 <div class="space-y-3 text-center">
                     <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
@@ -384,6 +470,7 @@
                     </div>
                 </div>
             </section>
+            @endif
 
             @if ($showFooterCta)
             <section aria-label="{{ __('Final call to action') }}">
