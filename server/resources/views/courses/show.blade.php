@@ -5,6 +5,7 @@
             ['label' => __('Courses'), 'url' => route('courses.index')],
             ['label' => $course->title],
         ]" />
+        <x-public.demo-notice />
 
         <div class="flex items-center justify-between gap-4">
             <a href="{{ route('courses.index') }}" class="inline-flex items-center text-sm font-medium text-[var(--color-primary)] hover:underline">
@@ -303,7 +304,7 @@
                                 {{ $ar ? 'لا اشتراك · دفع لمرة واحدة' : 'No subscription · One‑time payment' }}
                             </p>
                             <p class="text-xs text-[var(--color-text-muted)] text-center">
-                                {{ $ar ? 'دفع آمن · وصول فوري' : 'Secure checkout · Instant access' }}
+                                {{ $ar ? 'الدفع عبر سترايب وباي بال · وصول فوري' : 'Payments handled via Stripe & PayPal · Instant access' }}
                             </p>
                         </div>
                     </div>

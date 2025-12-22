@@ -9,7 +9,7 @@
         @if ($isCompleted)
             <span class="inline-block px-3 py-1 rounded bg-[var(--color-accent)] text-white mb-4">{{ __('Completed') }}</span>
             <div class="mb-4 rounded-lg border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/5 px-4 py-3 text-sm text-[var(--color-text-muted)]">
-                {{ __('You’ve explored the core workflow. The full version is designed for real students and real revenue.') }}
+                {{ __('You’ve explored the core workflow. The full version is designed for real instruction and student management.') }}
             </div>
         @endif
         <div class="aspect-video bg-black mb-6">

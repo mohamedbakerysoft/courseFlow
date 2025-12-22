@@ -56,7 +56,7 @@
                     <div class="flex items-center justify-center sm:justify-start gap-3 mt-2 text-xs">
                         <span class="inline-flex items-center gap-1">
                             <svg class="h-4 w-4 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <span>{{ $locale === 'ar' ? 'دفع آمن' : 'Secure payments' }}</span>
+                            <span>{{ $locale === 'ar' ? 'الدفع عبر سترايب وباي بال' : 'Payments handled via Stripe & PayPal' }}</span>
                         </span>
                         <span>·</span>
                         <span class="inline-flex items-center gap-1">

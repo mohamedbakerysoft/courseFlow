@@ -8,7 +8,7 @@
                     <path d="M3 9h18" />
                 </svg>
                 <p class="text-sm text-[var(--color-text-primary)]">
-                    {{ $ar ? 'مدفوعات آمنة عبر سترايب وباي بال' : 'Secure payments (Stripe & PayPal)' }}
+                    {{ $ar ? 'الدفع عبر سترايب وباي بال' : 'Payments handled via Stripe & PayPal' }}
                 </p>
             </div>
             <div class="flex items-center gap-3 rounded-xl ring-1 ring-[var(--color-secondary)]/10 bg-white p-4">
@@ -34,7 +34,7 @@
                     <rect x="6" y="11" width="12" height="9" rx="2" />
                 </svg>
                 <p class="text-sm text-[var(--color-text-primary)]">
-                    {{ $ar ? 'الخصوصية أولاً · متوافق مع اللائحة العامة لحماية البيانات' : 'Privacy‑first · GDPR‑friendly' }}
+                    {{ $ar ? 'تركيز على الخصوصية' : 'Privacy‑focused' }}
                 </p>
             </div>
         </div>

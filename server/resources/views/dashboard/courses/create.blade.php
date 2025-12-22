@@ -6,7 +6,7 @@
     </x-slot>
     <div class="py-8 max-w-4xl mx-auto">
         <div class="mb-4 rounded-lg border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/5 px-4 py-3 text-xs text-[var(--color-text-muted)]">
-            {{ __('You’ve explored the core workflow. The full version is designed for real students and real revenue.') }}
+            {{ __('You’ve explored the core workflow. The full version is designed for real instruction and student management.') }}
         </div>
         <x-public.demo-notice />
         <form x-data="{isSubmitting:false, thumbPreview:null}" x-on:submit="isSubmitting=true" method="POST" action="{{ route('dashboard.courses.store') }}" enctype="multipart/form-data" class="space-y-4 bg-white p-6 rounded shadow">

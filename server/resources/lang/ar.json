@@ -89,7 +89,7 @@
     "Grant access below to enroll the user in a course.": "امنح الوصول أدناه لتسجيل المستخدم في دورة."
     ,
     "Completed": "مكتمل",
-    "You’ve explored the core workflow. The full version is designed for real students and real revenue.": "لقد اطلعت على دورة العمل الأساسية. النسخة الكاملة مصممة لإدارة طلاب حقيقيين وتحقيق دخل فعلي."
+    "You’ve explored the core workflow. The full version is designed for real instruction and student management.": "لقد اطلعت على دورة العمل الأساسية. النسخة الكاملة مهيّأة للاستخدام الفعلي في التدريس وإدارة الطلاب."
     ,
     "The rest is about scaling, not learning.": "الباقي يتعلق بالتوسّع، لا بالتعلّم."
     ,
@@ -97,6 +97,9 @@
     "No enrollments yet — this is where real enrollments will appear.": "لا توجد تسجيلات بعد — هنا ستظهر التسجيلات الفعلية.",
     "No payments recorded yet — this is where confirmed transactions will appear.": "لا توجد مدفوعات مسجلة بعد — هنا ستظهر المعاملات المؤكدة.",
     "No published courses yet — published listings will appear here.": "لا توجد دورات منشورة بعد — ستظهر القوائم المنشورة هنا.",
-    "Self-paced · Lifetime access": "تعلم ذاتي · وصول مدى الحياة",
-    "Designed for independent instructors and real students.": "مصمم للمدربين المستقلين والطلاب الحقيقيين."
+    "Course access provided after enrollment": "يتم توفير الوصول للدورة بعد التسجيل",
+    "Designed for independent instructors and real students.": "مصمم للمدربين المستقلين والطلاب الفعليين."
+    ,
+    "Payments handled via Stripe & PayPal": "الدفع عبر سترايب وباي بال",
+    "Privacy‑focused": "تركيز على الخصوصية"
 }

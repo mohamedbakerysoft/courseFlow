@@ -29,7 +29,7 @@
                 <p class="text-xs text-[var(--color-text-muted)] text-center">
                     {{ app()->getLocale() === 'ar' ? 'لا اشتراك · دفع لمرة واحدة' : 'No subscription · One‑time payment' }}
                     ·
-                    {{ app()->getLocale() === 'ar' ? 'وصول فوري · دفع آمن' : 'Instant access · Secure checkout' }}
+                    {{ app()->getLocale() === 'ar' ? 'وصول فوري · الدفع عبر سترايب وباي بال' : 'Instant access · Payments handled via Stripe & PayPal' }}
                 </p>
             </section>
             @endif

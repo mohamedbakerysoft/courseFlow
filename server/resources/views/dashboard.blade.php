@@ -89,7 +89,7 @@
                 </section>
                 <section aria-label="{{ __('Completion') }}" class="rounded-xl border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/5 p-4">
                     <p class="text-sm text-[var(--color-text-muted)]">
-                        {{ __('You’ve explored the core workflow. The full version is designed for real students and real revenue.') }}
+                        {{ __('You’ve explored the core workflow. The full version is designed for real instruction and student management.') }}
                     </p>
                     <p class="mt-1 text-xs text-[var(--color-text-muted)]">
                         {{ __('The rest is about scaling, not learning.') }}

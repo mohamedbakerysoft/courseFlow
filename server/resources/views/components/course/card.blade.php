@@ -33,7 +33,7 @@
                 {{ $course->title }}
             </h3>
             <p class="text-xs text-[var(--color-text-muted)]">
-                {{ __('Self-paced · Lifetime access') }}
+                {{ __('Course access provided after enrollment') }}
             </p>
             @if (!empty($course->description))
                 <p class="text-sm text-[var(--color-text-muted)] line-clamp-2">
