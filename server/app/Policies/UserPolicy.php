@@ -11,6 +11,7 @@ class UserPolicy
         if ($user->is_demo) {
             return false;
         }
+
         return $actor->id === $user->id;
     }
 }

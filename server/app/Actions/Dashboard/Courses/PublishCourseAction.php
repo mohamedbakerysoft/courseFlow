@@ -10,7 +10,7 @@ class PublishCourseAction
     {
         $course->status = Course::STATUS_PUBLISHED;
         $course->save();
+
         return $course;
     }
 }
-

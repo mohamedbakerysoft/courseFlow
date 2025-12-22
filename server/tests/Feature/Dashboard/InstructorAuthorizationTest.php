@@ -28,4 +28,3 @@ it('instructor cannot access others courses', function () {
     ])->assertForbidden();
     $this->post(route('dashboard.courses.publish', $courseB))->assertForbidden();
 });
-

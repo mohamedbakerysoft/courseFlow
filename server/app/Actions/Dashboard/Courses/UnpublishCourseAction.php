@@ -10,7 +10,7 @@ class UnpublishCourseAction
     {
         $course->status = Course::STATUS_DRAFT;
         $course->save();
+
         return $course;
     }
 }
-

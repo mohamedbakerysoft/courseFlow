@@ -11,4 +11,3 @@ class ShowPageAction
         return Page::query()->where('slug', $slug)->firstOrFail();
     }
 }
-

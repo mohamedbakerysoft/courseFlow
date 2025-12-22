@@ -12,4 +12,3 @@ class PaymentPolicy
         return $user->role === User::ROLE_ADMIN;
     }
 }
-

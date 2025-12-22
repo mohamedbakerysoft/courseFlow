@@ -15,7 +15,7 @@ class EnsureUserIsInstructor
         if (! $user || $user->role !== User::ROLE_ADMIN) {
             abort(403);
         }
+
         return $next($request);
     }
 }
-

@@ -22,6 +22,7 @@ class CheckoutController extends Controller
         }
 
         $session = $action->execute($request->user(), $course);
+
         return redirect($session['url']);
     }
 

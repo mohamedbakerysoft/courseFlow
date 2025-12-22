@@ -51,7 +51,7 @@ class PayPalCheckoutTest extends DuskTestCase
             $payment = Payment::where('user_id', $user->id)->where('course_id', $course->id)->where('provider', 'paypal')->latest()->first();
             $orderId = $payment?->external_reference ?? 'order_fake';
             $ts = (string) time();
-            $sig = hash_hmac('sha256', $ts . '.' . $orderId, (string) config('services.paypal.webhook_secret'));
+            $sig = hash_hmac('sha256', $ts.'.'.$orderId, (string) config('services.paypal.webhook_secret'));
 
             // Simulate success callback
             $base = rtrim(config('app.url'), '/');

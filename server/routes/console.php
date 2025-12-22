@@ -19,11 +19,13 @@ Artisan::command('demo:reseed-after-tests {--force-testing}', function () {
         config()->set('demo.enabled', true);
         $this->call('migrate', ['--force' => true]);
         $this->call(\Database\Seeders\DemoSeeder::class);
+
         return;
     }
 
     if (! app()->environment(['local', 'demo'])) {
         $this->info('Skipping demo reseed outside local/demo environment.');
+
         return;
     }
 

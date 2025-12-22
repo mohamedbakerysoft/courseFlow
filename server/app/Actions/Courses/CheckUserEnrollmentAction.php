@@ -16,4 +16,3 @@ class CheckUserEnrollmentAction
         return $user->courses()->where('course_id', $course->id)->exists();
     }
 }
-

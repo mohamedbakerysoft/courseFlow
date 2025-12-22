@@ -20,4 +20,3 @@ class ShowLessonAction
         return $lesson;
     }
 }
-

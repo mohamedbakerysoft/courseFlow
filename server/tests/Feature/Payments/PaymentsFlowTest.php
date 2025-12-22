@@ -8,9 +8,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-function stripeSignature(string $payload, string $secret): string {
+function stripeSignature(string $payload, string $secret): string
+{
     $ts = (string) time();
     $sig = hash_hmac('sha256', $ts.'.'.$payload, $secret);
+
     return "t={$ts},v1={$sig}";
 }
 

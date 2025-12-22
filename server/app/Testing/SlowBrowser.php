@@ -17,6 +17,7 @@ class SlowBrowser extends Browser
     {
         $result = parent::visit($url);
         $this->maybePause();
+
         return $result;
     }
 
@@ -24,6 +25,7 @@ class SlowBrowser extends Browser
     {
         $result = parent::click($selector);
         $this->maybePause();
+
         return $result;
     }
 
@@ -31,6 +33,7 @@ class SlowBrowser extends Browser
     {
         $result = parent::clickLink($link, $element);
         $this->maybePause();
+
         return $result;
     }
 
@@ -38,6 +41,7 @@ class SlowBrowser extends Browser
     {
         $result = parent::press($button);
         $this->maybePause();
+
         return $result;
     }
 
@@ -45,6 +49,7 @@ class SlowBrowser extends Browser
     {
         $result = parent::type($field, $value);
         $this->maybePause();
+
         return $result;
     }
 
@@ -52,6 +57,7 @@ class SlowBrowser extends Browser
     {
         $result = parent::assertSee($text, $ignoreCase);
         $this->maybePause();
+
         return $result;
     }
 
@@ -59,6 +65,7 @@ class SlowBrowser extends Browser
     {
         $result = parent::assertPathIs($path);
         $this->maybePause();
+
         return $result;
     }
 
@@ -66,6 +73,7 @@ class SlowBrowser extends Browser
     {
         $result = parent::assertPresent($selector);
         $this->maybePause();
+
         return $result;
     }
 }

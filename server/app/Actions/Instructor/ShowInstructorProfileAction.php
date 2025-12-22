@@ -20,7 +20,7 @@ class ShowInstructorProfileAction
             ->get();
 
         $links = [];
-        if (!empty($instructor->social_links)) {
+        if (! empty($instructor->social_links)) {
             $links = is_array($instructor->social_links)
                 ? $instructor->social_links
                 : json_decode($instructor->social_links, true) ?? [];

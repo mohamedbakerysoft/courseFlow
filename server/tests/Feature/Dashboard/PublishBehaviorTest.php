@@ -27,4 +27,3 @@ it('draft course not visible publicly until published', function () {
     $response->assertOk();
     $response->assertSee('Draft Course');
 });
-

@@ -37,4 +37,3 @@ class CoursePolicy
         return $course->instructor_id === $user->id;
     }
 }
-

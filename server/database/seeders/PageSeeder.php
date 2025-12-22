@@ -25,4 +25,3 @@ class PageSeeder extends Seeder
         ]);
     }
 }
-

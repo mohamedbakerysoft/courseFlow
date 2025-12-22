@@ -13,10 +13,10 @@ use Illuminate\Http\Request;
 
 class PayPalCheckoutController extends Controller
 {
-
     public function checkout(Request $request, Course $course, CreatePayPalCheckoutAction $action): RedirectResponse
     {
         $order = $action->execute($request->user(), $course);
+
         return redirect()->away($order['approve_url']);
     }
 
@@ -30,6 +30,7 @@ class PayPalCheckoutController extends Controller
         if (! $payment) {
             return redirect()->route('courses.index');
         }
+
         return redirect()->route('courses.show', $payment->course);
     }
 
@@ -43,6 +44,7 @@ class PayPalCheckoutController extends Controller
         if ($payment) {
             $fail->execute($payment);
         }
+
         return redirect()->route('courses.show', $course);
     }
 }

@@ -14,7 +14,7 @@ class StripeService
     public function __construct()
     {
         $secret = config('services.stripe.secret');
-        if ($secret && !app()->environment('testing') && !app()->environment('dusk') && !app()->environment('dusk.local')) {
+        if ($secret && ! app()->environment('testing') && ! app()->environment('dusk') && ! app()->environment('dusk.local')) {
             $this->client = new StripeClient($secret);
         }
     }
@@ -41,17 +41,19 @@ class StripeService
                     ],
                     'quantity' => 1,
                 ]],
-                'success_url' => $successUrl . '?session_id={CHECKOUT_SESSION_ID}',
+                'success_url' => $successUrl.'?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => $cancelUrl,
                 'client_reference_id' => (string) $user->id,
                 'metadata' => $metadata,
             ]);
+
             return ['id' => $session->id, 'url' => $session->url];
         }
 
         // Fake mode for testing/dusk: return relative path to avoid host/port mismatch
-        $fakeId = 'sess_' . bin2hex(random_bytes(8));
+        $fakeId = 'sess_'.bin2hex(random_bytes(8));
         $fakeUrl = route('payments.success', ['session_id' => $fakeId], false);
+
         return ['id' => $fakeId, 'url' => $fakeUrl, 'metadata' => $metadata];
     }
 
@@ -73,13 +75,15 @@ class StripeService
             if (! $ts || ! $sig) {
                 throw new \RuntimeException('Invalid signature header');
             }
-            $expected = hash_hmac('sha256', $ts . '.' . $payload, (string) $webhookSecret);
+            $expected = hash_hmac('sha256', $ts.'.'.$payload, (string) $webhookSecret);
             if (! hash_equals($expected, $sig)) {
                 throw new \RuntimeException('Signature mismatch');
             }
             $data = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
+
             return \Stripe\Event::constructFrom($data);
         }
+
         return Webhook::constructEvent($payload, $signatureHeader, $webhookSecret);
     }
 }

@@ -10,8 +10,7 @@ class ShowLandingPageAction
 {
     public function __construct(
         protected SettingsService $settings
-    ) {
-    }
+    ) {}
 
     public function execute(): array
     {

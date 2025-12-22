@@ -18,6 +18,7 @@ class CourseController extends Controller
     public function index(Request $request, ListInstructorCoursesAction $list)
     {
         $courses = $list->execute($request->user(), 20);
+
         return view('dashboard.courses.index', compact('courses'));
     }
 
@@ -54,6 +55,7 @@ class CourseController extends Controller
     public function edit(Course $course)
     {
         $this->authorize('view', $course);
+
         return view('dashboard.courses.edit', compact('course'));
     }
 
@@ -86,6 +88,7 @@ class CourseController extends Controller
     {
         $this->authorize('delete', $course);
         $delete->execute($course);
+
         return redirect()->route('dashboard.courses.index')->with('status', 'Course deleted.');
     }
 
@@ -93,6 +96,7 @@ class CourseController extends Controller
     {
         $this->authorize('publish', $course);
         $publish->execute($course);
+
         return back()->with('status', 'Course published.');
     }
 
@@ -100,6 +104,7 @@ class CourseController extends Controller
     {
         $this->authorize('publish', $course);
         $unpublish->execute($course);
+
         return back()->with('status', 'Course unpublished.');
     }
 }

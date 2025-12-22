@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Lesson;
-
 class Course extends \Illuminate\Database\Eloquent\Model
 {
     protected $fillable = [
@@ -20,6 +18,7 @@ class Course extends \Illuminate\Database\Eloquent\Model
     ];
 
     public const STATUS_PUBLISHED = 'published';
+
     public const STATUS_DRAFT = 'draft';
 
     protected $casts = [

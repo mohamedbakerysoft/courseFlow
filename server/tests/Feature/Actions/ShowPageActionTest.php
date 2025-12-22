@@ -12,4 +12,3 @@ it('fetches page by slug via action', function () {
     $page = app(ShowPageAction::class)->execute('about');
     expect($page->title)->toBe('About');
 });
-

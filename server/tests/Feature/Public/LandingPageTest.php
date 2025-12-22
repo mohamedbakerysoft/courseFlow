@@ -2,7 +2,6 @@
 
 use App\Models\Course;
 use App\Models\User;
-use App\Services\SettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);

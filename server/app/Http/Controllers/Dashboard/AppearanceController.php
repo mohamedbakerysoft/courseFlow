@@ -15,6 +15,7 @@ class AppearanceController extends Controller
         $accent = optional(Setting::where('key', 'theme.accent')->first())->value ?: '#10B981';
         $arabicFont = optional(Setting::where('key', 'typography.arabic_font')->first())->value ?: 'Cairo';
         $englishFont = optional(Setting::where('key', 'typography.english_font')->first())->value ?: 'Inter';
+
         return view('dashboard.appearance.edit', compact('primary', 'secondary', 'accent', 'arabicFont', 'englishFont'));
     }
 
@@ -41,6 +42,7 @@ class AppearanceController extends Controller
             ['key' => 'typography.english_font'],
             ['value' => $validated['english_font']]
         );
+
         return back()->with('status', 'Appearance updated.');
     }
 }

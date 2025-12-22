@@ -15,6 +15,7 @@ class CreateManualPaymentAction
         if ($course->is_free || (float) $course->price <= 0.0) {
             throw new \RuntimeException('Course is free; manual payment not applicable.');
         }
+
         return DB::transaction(function () use ($user, $course) {
             return Payment::create([
                 'user_id' => $user->id,
@@ -23,9 +24,8 @@ class CreateManualPaymentAction
                 'amount' => (float) $course->price,
                 'currency' => $course->currency ?? 'USD',
                 'status' => Payment::STATUS_PENDING,
-                'external_reference' => 'manual_' . Str::random(10),
+                'external_reference' => 'manual_'.Str::random(10),
             ]);
         });
     }
 }
-

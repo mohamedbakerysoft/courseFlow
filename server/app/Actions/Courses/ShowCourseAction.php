@@ -3,7 +3,6 @@
 namespace App\Actions\Courses;
 
 use App\Models\Course;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ShowCourseAction
 {
@@ -16,4 +15,3 @@ class ShowCourseAction
         return $course;
     }
 }
-

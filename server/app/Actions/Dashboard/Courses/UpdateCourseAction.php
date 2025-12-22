@@ -22,4 +22,3 @@ class UpdateCourseAction
         return $course;
     }
 }
-

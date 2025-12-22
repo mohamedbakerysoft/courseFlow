@@ -54,6 +54,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'social_links' => 'array',
+            'is_disabled' => 'boolean',
         ];
     }
 
@@ -81,6 +82,7 @@ class User extends Authenticatable
         if (str_ends_with($this->email, '@demo.com')) {
             $demoEmails[] = $this->email;
         }
+
         return in_array($this->email, $demoEmails, true);
     }
 

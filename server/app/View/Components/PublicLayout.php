@@ -8,6 +8,7 @@ use Illuminate\View\View;
 class PublicLayout extends Component
 {
     public string $title;
+
     public string $metaDescription;
 
     public function __construct(string $title = '', string $metaDescription = '')
@@ -21,4 +22,3 @@ class PublicLayout extends Component
         return view('layouts.public');
     }
 }
-

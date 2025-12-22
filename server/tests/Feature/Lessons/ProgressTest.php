@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
-function makeCourseWithLesson(string $courseSlug = 'course-p', string $lessonSlug = 'l-1', string $status = 'published'): array {
+function makeCourseWithLesson(string $courseSlug = 'course-p', string $lessonSlug = 'l-1', string $status = 'published'): array
+{
     $course = Course::create([
         'title' => 'Course P',
         'slug' => $courseSlug,
@@ -111,4 +112,3 @@ it('course progress percentage is calculated correctly', function () {
         ->assertOk()
         ->assertSee('Progress: 67%');
 });
-

@@ -11,7 +11,7 @@ it('stores uploaded thumbnail and returns public path', function () {
     Storage::fake('public');
     $file = UploadedFile::fake()->image('thumb.jpg', 400, 300);
 
-    $action = new UploadCourseThumbnailAction();
+    $action = new UploadCourseThumbnailAction;
     $stored = $action->execute($file);
 
     expect($stored)->toStartWith('storage/thumbnails/');

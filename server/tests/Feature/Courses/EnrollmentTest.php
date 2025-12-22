@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
-function makeCourse(): Course {
+function makeCourse(): Course
+{
     return Course::create([
         'title' => 'Free Course',
         'slug' => 'free-course',

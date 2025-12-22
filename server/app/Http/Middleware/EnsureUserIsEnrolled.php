@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnsureUserIsEnrolled
 {
-    public function __construct(private CheckUserEnrollmentAction $checker)
-    {
-    }
+    public function __construct(private CheckUserEnrollmentAction $checker) {}
 
     public function handle(Request $request, Closure $next): Response
     {
@@ -25,4 +23,3 @@ class EnsureUserIsEnrolled
         return $next($request);
     }
 }
-

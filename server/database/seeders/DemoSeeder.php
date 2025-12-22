@@ -3,14 +3,13 @@
 namespace Database\Seeders;
 
 use App\Actions\Courses\EnrollUserInCourseAction;
-use App\Actions\Progress\MarkLessonCompletedAction;
 use App\Actions\Payments\ApproveManualPaymentAction;
+use App\Actions\Progress\MarkLessonCompletedAction;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
 
 class DemoSeeder extends Seeder
 {
@@ -627,8 +626,8 @@ class DemoSeeder extends Seeder
             }
         }
 
-        $enroll = new EnrollUserInCourseAction();
-        $markLessonCompleted = new MarkLessonCompletedAction();
+        $enroll = new EnrollUserInCourseAction;
+        $markLessonCompleted = new MarkLessonCompletedAction;
 
         foreach ($students as $index => $student) {
             if ($index === 0) {
@@ -770,7 +769,7 @@ class DemoSeeder extends Seeder
                 ]
             );
             $approver = $admin;
-            (new ApproveManualPaymentAction(new EnrollUserInCourseAction()))->execute($pending, $approver);
+            (new ApproveManualPaymentAction(new EnrollUserInCourseAction))->execute($pending, $approver);
         }
 
         if ($secondaryCourse && isset($students[4])) {

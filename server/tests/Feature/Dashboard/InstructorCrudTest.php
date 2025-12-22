@@ -80,4 +80,3 @@ it('instructor can create edit delete lessons and set position', function () {
     $delete->assertRedirect();
     expect(Lesson::where('course_id', $course->id)->exists())->toBeFalse();
 });
-

@@ -15,7 +15,8 @@ class StripeCheckoutTest extends DuskTestCase
     {
         $ts = (string) time();
         $secret = config('services.stripe.webhook_secret');
-        $sig = hash_hmac('sha256', $ts . '.' . $payload, $secret);
+        $sig = hash_hmac('sha256', $ts.'.'.$payload, $secret);
+
         return "t={$ts},v1={$sig}";
     }
 

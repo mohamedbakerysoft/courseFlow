@@ -37,4 +37,3 @@ class ApplySettings
         return $next($request);
     }
 }
-

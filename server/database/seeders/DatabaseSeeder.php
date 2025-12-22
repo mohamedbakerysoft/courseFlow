@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AdminSeeder::class);
         $this->call(PageSeeder::class);
-        if (config('demo.enabled') && app()->environment(['local','demo','dusk'])) {
+        if (config('demo.enabled') && app()->environment(['local', 'demo', 'dusk'])) {
             $this->call(DemoSeeder::class);
         }
 

@@ -24,4 +24,3 @@ class LessonProgress extends Model
         return $this->belongsTo(Lesson::class);
     }
 }
-

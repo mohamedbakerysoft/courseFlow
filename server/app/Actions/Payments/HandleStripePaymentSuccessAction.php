@@ -2,10 +2,10 @@
 
 namespace App\Actions\Payments;
 
+use App\Actions\Courses\EnrollUserInCourseAction;
+use App\Models\Course;
 use App\Models\Payment;
 use App\Models\User;
-use App\Models\Course;
-use App\Actions\Courses\EnrollUserInCourseAction;
 use Illuminate\Support\Facades\DB;
 
 class HandleStripePaymentSuccessAction
@@ -59,4 +59,3 @@ class HandleStripePaymentSuccessAction
         });
     }
 }
-

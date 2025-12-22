@@ -42,7 +42,7 @@ class ManualPaymentTest extends DuskTestCase
             'language' => 'en',
         ]);
 
-        $this->browse(function (Browser $browser) use ($student, $admin, $course) {
+        $this->browse(function (Browser $browser) use ($student, $course) {
             $browser->visit('/login')
                 ->type('email', 'manual@example.com')
                 ->type('password', 'password')

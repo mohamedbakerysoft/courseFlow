@@ -25,4 +25,3 @@ class CreateCourseAction
         return Course::create($payload);
     }
 }
-

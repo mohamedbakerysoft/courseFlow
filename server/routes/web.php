@@ -1,16 +1,16 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\InstructorController;
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\LessonController;
+use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\LandingController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use App\Http\Controllers\LessonController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', LandingController::class);
 
@@ -45,6 +45,7 @@ Route::get('/dashboard', function () {
             ->where('status', \App\Models\Lesson::STATUS_DRAFT)
             ->latest('updated_at')
             ->first();
+
     return view('dashboard', compact('enrolledCourses', 'totalCourses', 'totalStudents', 'totalLessons', 'latestDraftCourse', 'latestDraftLesson'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -126,4 +127,11 @@ Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.
     Route::get('/lessons/{lesson}/edit', [\App\Http\Controllers\Dashboard\LessonController::class, 'edit'])->name('lessons.edit');
     Route::put('/lessons/{lesson}', [\App\Http\Controllers\Dashboard\LessonController::class, 'update'])->name('lessons.update');
     Route::delete('/lessons/{lesson}', [\App\Http\Controllers\Dashboard\LessonController::class, 'destroy'])->name('lessons.destroy');
+
+    Route::get('/users', [\App\Http\Controllers\Dashboard\UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}', [\App\Http\Controllers\Dashboard\UserController::class, 'show'])->name('users.show');
+    Route::post('/users/{user}/status', [\App\Http\Controllers\Dashboard\UserController::class, 'updateStatus'])->name('users.status');
+    Route::post('/users/{user}/grant-access', [\App\Http\Controllers\Dashboard\UserController::class, 'grantAccess'])->name('users.grant_access');
+
+    Route::get('/finance', [\App\Http\Controllers\Dashboard\FinanceController::class, 'index'])->name('finance.index');
 });

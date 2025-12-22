@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StripeWebhookController extends Controller
 {
-    public function __construct(private StripeService $stripe, private HandleStripePaymentSuccessAction $successHandler)
-    {
-    }
+    public function __construct(private StripeService $stripe, private HandleStripePaymentSuccessAction $successHandler) {}
 
     public function handle(Request $request): Response
     {
@@ -33,4 +31,3 @@ class StripeWebhookController extends Controller
         return response('ok', 200);
     }
 }
-

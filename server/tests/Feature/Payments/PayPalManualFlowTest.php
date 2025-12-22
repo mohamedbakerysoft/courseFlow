@@ -1,8 +1,8 @@
 <?php
 
-use App\Actions\Payments\CreatePayPalCheckoutAction;
-use App\Actions\Payments\CreateManualPaymentAction;
 use App\Actions\Payments\ApproveManualPaymentAction;
+use App\Actions\Payments\CreateManualPaymentAction;
+use App\Actions\Payments\CreatePayPalCheckoutAction;
 use App\Models\Course;
 use App\Models\Payment;
 use App\Models\User;
@@ -25,7 +25,7 @@ it('paypal payment success enrolls user', function () {
     expect($payment)->not->toBeNull();
     expect($payment->status)->toBe(Payment::STATUS_PENDING);
     $ts = (string) time();
-    $sig = hash_hmac('sha256', $ts . '.' . $orderId, config('services.paypal.webhook_secret'));
+    $sig = hash_hmac('sha256', $ts.'.'.$orderId, config('services.paypal.webhook_secret'));
     $resp = $this->actingAs($user)->get(route('payments.paypal.success', ['order_id' => $orderId, 't' => $ts, 'sig' => $sig]));
     $resp->assertRedirect(route('courses.show', $course));
     $payment->refresh();
@@ -91,7 +91,7 @@ it('duplicate payments prevented for paypal and manual', function () {
     $order = app(CreatePayPalCheckoutAction::class)->execute($student, $course);
     $orderId = $order['id'];
     $ts = (string) time();
-    $sig = hash_hmac('sha256', $ts . '.' . $orderId, config('services.paypal.webhook_secret'));
+    $sig = hash_hmac('sha256', $ts.'.'.$orderId, config('services.paypal.webhook_secret'));
     $this->actingAs($student)->get(route('payments.paypal.success', ['order_id' => $orderId, 't' => $ts, 'sig' => $sig]))->assertRedirect();
     // Approving manual after paid should not create another paid record
     $manual = app(CreateManualPaymentAction::class)->execute($student, $course);
@@ -99,4 +99,3 @@ it('duplicate payments prevented for paypal and manual', function () {
     $paidCount = Payment::where('user_id', $student->id)->where('course_id', $course->id)->where('status', Payment::STATUS_PAID)->count();
     expect($paidCount)->toBe(1);
 });
-

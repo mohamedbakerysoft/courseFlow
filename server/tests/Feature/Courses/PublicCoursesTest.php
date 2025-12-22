@@ -69,4 +69,3 @@ it('does not show draft course detail', function () {
 
     \Pest\Laravel\get('/courses/hidden-course')->assertNotFound();
 });
-

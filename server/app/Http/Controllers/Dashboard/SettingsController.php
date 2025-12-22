@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Services\SettingsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class SettingsController extends Controller
@@ -110,10 +109,10 @@ class SettingsController extends Controller
             $values['site.logo_path'] = $path;
         }
 
-         if ($request->hasFile('landing_instructor_image')) {
-             $path = $request->file('landing_instructor_image')->store('landing', 'public');
-             $values['landing.instructor_image'] = $path;
-         }
+        if ($request->hasFile('landing_instructor_image')) {
+            $path = $request->file('landing_instructor_image')->store('landing', 'public');
+            $values['landing.instructor_image'] = $path;
+        }
 
         $settings->set($values);
 

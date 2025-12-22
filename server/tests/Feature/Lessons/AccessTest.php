@@ -7,7 +7,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-function seedCourseLesson(): array {
+function seedCourseLesson(): array
+{
     $course = Course::create([
         'title' => 'Course X',
         'slug' => 'course-x',
@@ -85,4 +86,3 @@ it('draft lesson returns 404', function () {
         ->get("/courses/{$course->slug}/lessons/{$lesson->slug}")
         ->assertNotFound();
 });
-

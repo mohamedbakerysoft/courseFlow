@@ -23,4 +23,3 @@ class CalculateCourseProgressAction
         return (int) round(($completed / $total) * 100);
     }
 }
-

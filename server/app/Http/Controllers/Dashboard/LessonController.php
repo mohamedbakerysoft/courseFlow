@@ -17,12 +17,14 @@ class LessonController extends Controller
     {
         $this->authorize('view', $course);
         $lessons = $list->execute($course);
+
         return view('dashboard.lessons.index', compact('course', 'lessons'));
     }
 
     public function create(Course $course)
     {
         $this->authorize('view', $course);
+
         return view('dashboard.lessons.create', compact('course'));
     }
 
@@ -45,6 +47,7 @@ class LessonController extends Controller
     public function edit(Lesson $lesson)
     {
         $this->authorize('update', $lesson);
+
         return view('dashboard.lessons.edit', compact('lesson'));
     }
 
@@ -68,7 +71,7 @@ class LessonController extends Controller
     {
         $this->authorize('delete', $lesson);
         $delete->execute($lesson);
+
         return redirect()->route('dashboard.courses.lessons.index', $lesson->course)->with('status', 'Lesson deleted.');
     }
 }
-

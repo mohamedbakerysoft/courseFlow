@@ -20,7 +20,7 @@
                             {{ __('Courses') }}
                         </x-nav-link>
                         <x-nav-link :href="route('instructor.show')" :active="request()->routeIs('instructor.show')">
-                            {{ __('Instructor') }}
+                            {{ __('Platform Owner') }}
                         </x-nav-link>
                         <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
                             {{ __('Login') }}
@@ -47,6 +47,12 @@
                             </x-nav-link>
                             <x-nav-link :href="route('dashboard.instructor_profile.edit')" :active="request()->routeIs('dashboard.instructor_profile.*')">
                                 {{ __('Instructor Profile') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('dashboard.users.index')" :active="request()->routeIs('dashboard.users.*')">
+                                {{ __('Users') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('dashboard.finance.index')" :active="request()->routeIs('dashboard.finance.*')">
+                                {{ __('Finance') }}
                             </x-nav-link>
                             <x-nav-link :href="url('/')" :active="request()->is('/')">
                                 {{ __('View Site') }}
@@ -118,7 +124,7 @@
                     {{ __('Courses') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('instructor.show')" :active="request()->routeIs('instructor.show')">
-                    {{ __('Instructor') }}
+                    {{ __('Platform Owner') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
                     {{ __('Login') }}
@@ -145,6 +151,12 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('dashboard.instructor_profile.edit')" :active="request()->routeIs('dashboard.instructor_profile.*')">
                         {{ __('Instructor Profile') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('dashboard.users.index')" :active="request()->routeIs('dashboard.users.*')">
+                        {{ __('Users') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('dashboard.finance.index')" :active="request()->routeIs('dashboard.finance.*')">
+                        {{ __('Finance') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="url('/')" :active="request()->is('/')">
                         {{ __('View Site') }}

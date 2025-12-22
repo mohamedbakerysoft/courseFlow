@@ -68,4 +68,3 @@ it('applies default language and rtl direction on public pages', function () {
     $response->assertOk();
     $response->assertSee('dir="rtl"', false);
 });
-

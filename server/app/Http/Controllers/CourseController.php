@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Courses\ListPublishedCoursesAction;
-use App\Actions\Courses\ShowCourseAction;
 use App\Actions\Courses\CheckUserEnrollmentAction;
 use App\Actions\Courses\EnrollUserInCourseAction;
+use App\Actions\Courses\ListPublishedCoursesAction;
+use App\Actions\Courses\ShowCourseAction;
 use App\Actions\Progress\CalculateCourseProgressAction;
 use App\Models\Course;
 use App\Services\SettingsService;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CourseController extends Controller
 {
     public function index(ListPublishedCoursesAction $action): View
     {
         $courses = $action->execute();
+
         return view('courses.index', compact('courses'));
     }
 
@@ -28,8 +29,7 @@ class CourseController extends Controller
         Request $request,
         CalculateCourseProgressAction $progressAction,
         SettingsService $settings
-    ): View
-    {
+    ): View {
         $course = $action->execute($course);
         $isEnrolled = $checker->execute($request->user(), $course);
         $progressPercent = $isEnrolled ? $progressAction->execute($request->user(), $course) : 0;
@@ -66,12 +66,12 @@ class CourseController extends Controller
         Course $course,
         EnrollUserInCourseAction $enrollAction,
         Request $request
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         if (! ($course->is_free || (float) $course->price == 0.0)) {
             abort(403);
         }
         $enrollAction->execute($request->user(), $course);
+
         return redirect()->route('courses.show', $course)
             ->with('status', 'enrolled');
     }

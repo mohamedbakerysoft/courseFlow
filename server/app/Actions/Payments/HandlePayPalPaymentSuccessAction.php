@@ -2,11 +2,11 @@
 
 namespace App\Actions\Payments;
 
+use App\Actions\Courses\EnrollUserInCourseAction;
 use App\Models\Course;
 use App\Models\Payment;
 use App\Models\User;
 use App\Services\PayPalService;
-use App\Actions\Courses\EnrollUserInCourseAction;
 use Illuminate\Support\Facades\DB;
 
 class HandlePayPalPaymentSuccessAction
@@ -25,6 +25,7 @@ class HandlePayPalPaymentSuccessAction
             if (! $verified) {
                 $payment->status = Payment::STATUS_FAILED;
                 $payment->save();
+
                 return;
             }
 

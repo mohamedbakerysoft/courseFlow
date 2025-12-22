@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Courses\ShowLessonAction;
-use App\Actions\Progress\MarkLessonCompletedAction;
 use App\Actions\Progress\CalculateCourseProgressAction;
+use App\Actions\Progress\MarkLessonCompletedAction;
 use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
@@ -19,8 +19,7 @@ class LessonController extends Controller
         MarkLessonCompletedAction $markAction,
         CalculateCourseProgressAction $progressAction,
         Request $request
-    ): View
-    {
+    ): View {
         $lesson = $action->execute($course, $lesson);
         $isCompleted = $markAction->execute($request->user(), $lesson);
         $progressPercent = $progressAction->execute($request->user(), $course);
@@ -34,6 +33,7 @@ class LessonController extends Controller
             ->orderBy('position', 'asc')
             ->select(['id', 'slug', 'title', 'position'])
             ->first();
+
         return view('lessons.show', compact('course', 'lesson', 'isCompleted', 'progressPercent', 'prevLesson', 'nextLesson'));
     }
 }

@@ -13,6 +13,8 @@ class Payment extends Model
         'amount',
         'currency',
         'status',
+        'created_at',
+        'updated_at',
         'stripe_session_id',
         'external_reference',
         'proof_path',
@@ -21,7 +23,9 @@ class Payment extends Model
     ];
 
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_PAID = 'paid';
+
     public const STATUS_FAILED = 'failed';
 
     public function user()

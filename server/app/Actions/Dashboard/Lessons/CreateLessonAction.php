@@ -2,8 +2,8 @@
 
 namespace App\Actions\Dashboard\Lessons;
 
-use App\Models\Lesson;
 use App\Models\Course;
+use App\Models\Lesson;
 
 class CreateLessonAction
 {
@@ -19,4 +19,3 @@ class CreateLessonAction
         ]);
     }
 }
-

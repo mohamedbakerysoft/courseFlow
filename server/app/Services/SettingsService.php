@@ -17,6 +17,7 @@ class SettingsService
         if (! app()->environment('production')) {
             return Setting::query()->pluck('value', 'key')->toArray();
         }
+
         return Cache::rememberForever($this->cacheKey(), function () {
             return Setting::query()->pluck('value', 'key')->toArray();
         });
@@ -25,6 +26,7 @@ class SettingsService
     public function get(string $key, mixed $default = null): mixed
     {
         $all = $this->all();
+
         return array_key_exists($key, $all) ? $all[$key] : $default;
     }
 

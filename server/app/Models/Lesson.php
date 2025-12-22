@@ -17,6 +17,7 @@ class Lesson extends Model
     ];
 
     public const STATUS_PUBLISHED = 'published';
+
     public const STATUS_DRAFT = 'draft';
 
     public function course()

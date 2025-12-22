@@ -23,4 +23,3 @@ class MarkLessonCompletedAction
         return $progress->wasRecentlyCreated === true || ! is_null($progress->completed_at);
     }
 }
-

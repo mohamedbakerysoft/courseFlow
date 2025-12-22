@@ -7,7 +7,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-function createPaidCourse(): Course {
+function createPaidCourse(): Course
+{
     return Course::create([
         'title' => 'Paid Course',
         'slug' => 'paid-course',

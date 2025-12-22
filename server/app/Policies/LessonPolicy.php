@@ -22,4 +22,3 @@ class LessonPolicy
         return $lesson->course && $lesson->course->instructor_id === $user->id;
     }
 }
-

@@ -18,4 +18,3 @@ class UpdateLessonAction
         return $lesson;
     }
 }
-

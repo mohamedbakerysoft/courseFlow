@@ -14,4 +14,3 @@ it('loads static pages by slug without auth', function () {
     \Pest\Laravel\get('/terms')->assertOk()->assertSee('Terms');
     \Pest\Laravel\get('/privacy')->assertOk()->assertSee('Privacy');
 });
-
