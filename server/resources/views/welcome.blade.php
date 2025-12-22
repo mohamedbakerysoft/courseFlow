@@ -32,8 +32,13 @@
                             <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
                                 <a href="{{ route('courses.index') }}"
                                    class="inline-flex justify-center items-center w-full sm:w-auto px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                    {{ __('Courses') }}
+                                    {{ app()->getLocale() === 'ar' ? 'احصل على وصول فوري' : 'Get instant access' }}
                                 </a>
+                                <p class="text-xs text-[var(--color-text-muted)]">
+                                    {{ app()->getLocale() === 'ar' ? 'لا اشتراك · دفع لمرة واحدة' : 'No subscription · One‑time payment' }}
+                                    ·
+                                    {{ app()->getLocale() === 'ar' ? 'وصول فوري · دفع آمن' : 'Instant access · Secure checkout' }}
+                                </p>
                             </div>
                             @if (!empty($instructorLinks))
                                 <div class="flex items-center gap-4 pt-1">
@@ -67,21 +72,24 @@
                                 x-data="{ show: false }"
                                 x-init="setTimeout(() => show = true, 50)"
                                 :class="show ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
-                                class="w-full max-w-none h-[70vh] sm:h-[80vh] lg:h-[85vh] overflow-hidden transition-all duration-700 ease-out"
+                                class="w-full max-w-xl lg:max-w-2xl transition-all duration-700 ease-out"
                             >
-                                <img
-                                    src="{{ $instructorImageUrl ?? asset('images/demo/IMG_1700.JPG') }}"
-                                    alt="{{ __('Portrait of ') . $instructorName }}"
-                                    style="object-position: {{ $heroImageFocus ?? 'center' }};"
-                                    class="w-full h-full transition-transform duration-700 ease-out {{ $heroImageMode === 'contain' ? 'object-contain' : 'object-cover' }}"
-                                    loading="lazy"
-                                >
+                                <div class="rounded-2xl shadow-lg ring-1 ring-[var(--color-secondary)]/10 bg-white p-2">
+                                    <img
+                                        src="{{ $heroImageUrl ?? asset('images/demo/IMG_1700.JPG') }}"
+                                        alt="{{ __('Hero Image') }}"
+                                        style="object-position: {{ $heroImageFocus ?? 'center' }}; aspect-ratio: {{ $heroImageRatio ?? '16/9' }}"
+                                        class="w-full h-auto transition-transform duration-700 ease-out {{ $heroImageMode === 'contain' ? 'object-contain' : 'object-cover' }} rounded-xl"
+                                        loading="lazy"
+                                    >
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </header>
             @endif
+            <x-public.trust-bar />
 
             @if ($showContactForm === true)
             <section aria-label="{{ __('Contact') }}" class="space-y-8">
@@ -154,6 +162,7 @@
             @endif
             @if ($showCoursesPreview)
             <section aria-label="{{ __('Featured courses') }}" class="space-y-8">
+                <x-public.trust-bar />
                 <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                     <div class="space-y-2">
                         <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
@@ -179,6 +188,7 @@
                 </div>
             </section>
             @endif
+            <x-public.social-proof />
 
 
             <section aria-label="{{ __('How I can help you') }}" class="space-y-8">

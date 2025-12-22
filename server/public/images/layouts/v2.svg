@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <rect width="320" height="180" fill="#ffffff"/>
+  <rect x="12" y="12" width="88" height="120" rx="12" fill="#e5e7eb" stroke="#d1d5db"/>
+  <rect x="110" y="12" width="198" height="120" rx="12" fill="#f3f4f6" stroke="#e5e7eb"/>
+  <rect x="12" y="144" width="296" height="24" rx="6" fill="#3A5BA9"/>
+  <text x="160" y="160" font-size="12" fill="#ffffff" text-anchor="middle" font-family="system-ui">Modern Alt (v2)</text>
+</svg>

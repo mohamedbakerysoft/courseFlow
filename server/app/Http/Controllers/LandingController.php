@@ -9,8 +9,6 @@ class LandingController extends Controller
 {
     public function __invoke(ShowLandingPageAction $action): View
     {
-        $data = $action->execute();
-
-        return view('landing', $data);
+        return $action->execute();
     }
 }

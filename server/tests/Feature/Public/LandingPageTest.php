@@ -181,3 +181,26 @@ it('admin can hide instructor bio block inside hero', function () {
     $response->assertSee('Landing Admin');
     $response->assertDontSee('Landing bio');
 });
+
+it('hero image settings override landing image config', function () {
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.image_fit'], ['value' => 'cover']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.image_focus'], ['value' => 'left']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.image_ratio'], ['value' => '4:5']);
+
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('object-cover');
+    $response->assertSee('object-position: left;', false);
+    $response->assertSee('aspect-ratio: 4/5', false);
+});
+
+it('hero text settings render by locale', function () {
+    \App\Models\Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'ar']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.title.ar'], ['value' => 'عنوان البطل']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.ar'], ['value' => 'وصف قصير للبطل']);
+
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('عنوان البطل');
+    $response->assertSee('وصف قصير للبطل');
+});

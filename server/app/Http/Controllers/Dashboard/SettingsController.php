@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
-use App\Actions\Payments\ValidateStripeConfigAction;
 use App\Actions\Payments\ValidatePayPalConfigAction;
+use App\Actions\Payments\ValidateStripeConfigAction;
+use App\Http\Controllers\Controller;
 use App\Services\SettingsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,6 +30,10 @@ class SettingsController extends Controller
         $landingHeroTitleAr = (string) $settings->get('landing.hero_title_ar', '');
         $landingHeroSubtitleEn = (string) $settings->get('landing.hero_subtitle_en', '');
         $landingHeroSubtitleAr = (string) $settings->get('landing.hero_subtitle_ar', '');
+        $heroTitleEn = (string) $settings->get('hero.title.en', '');
+        $heroTitleAr = (string) $settings->get('hero.title.ar', '');
+        $heroSubtitleEn = (string) $settings->get('hero.subtitle.en', '');
+        $heroSubtitleAr = (string) $settings->get('hero.subtitle.ar', '');
         $landingFeature1Title = (string) $settings->get('landing.feature_1_title', 'Launch quickly');
         $landingFeature1Description = (string) $settings->get('landing.feature_1_description', 'Ship a polished learning platform without building everything from scratch.');
         $landingFeature2Title = (string) $settings->get('landing.feature_2_title', 'Sell courses with confidence');
@@ -123,6 +127,10 @@ class SettingsController extends Controller
             'landingHeroTitleAr',
             'landingHeroSubtitleEn',
             'landingHeroSubtitleAr',
+            'heroTitleEn',
+            'heroTitleAr',
+            'heroSubtitleEn',
+            'heroSubtitleAr',
             'landingFeature1Title',
             'landingFeature1Description',
             'landingFeature2Title',
@@ -179,6 +187,10 @@ class SettingsController extends Controller
             'landing_hero_title_ar' => ['nullable', 'string', 'max:255'],
             'landing_hero_subtitle_en' => ['nullable', 'string', 'max:255'],
             'landing_hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
+            'hero_title_en' => ['nullable', 'string', 'max:255'],
+            'hero_title_ar' => ['nullable', 'string', 'max:255'],
+            'hero_subtitle_en' => ['nullable', 'string', 'max:255'],
+            'hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
             'landing_feature_1_title' => ['nullable', 'string', 'max:255'],
             'landing_feature_1_description' => ['nullable', 'string'],
             'landing_feature_2_title' => ['nullable', 'string', 'max:255'],
@@ -268,6 +280,10 @@ class SettingsController extends Controller
             'landing.hero_title_ar' => $validated['landing_hero_title_ar'] ?? '',
             'landing.hero_subtitle_en' => $validated['landing_hero_subtitle_en'] ?? '',
             'landing.hero_subtitle_ar' => $validated['landing_hero_subtitle_ar'] ?? '',
+            'hero.title.en' => $validated['hero_title_en'] ?? '',
+            'hero.title.ar' => $validated['hero_title_ar'] ?? '',
+            'hero.subtitle.en' => $validated['hero_subtitle_en'] ?? '',
+            'hero.subtitle.ar' => $validated['hero_subtitle_ar'] ?? '',
             'landing.feature_1_title' => $validated['landing_feature_1_title'] ?? '',
             'landing.feature_1_description' => $validated['landing_feature_1_description'] ?? '',
             'landing.feature_2_title' => $validated['landing_feature_2_title'] ?? '',

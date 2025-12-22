@@ -24,12 +24,13 @@ class ShowPageAction
             $title = $slug === 'terms'
                 ? ($localeKey === 'ar' ? 'شروط الخدمة' : 'Terms of Service')
                 : ($localeKey === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy');
-            $page = new Page();
+            $page = new Page;
             $page->fill([
                 'slug' => $slug,
                 'title' => $title,
                 'content' => $content,
             ]);
+
             return $page;
         }
 

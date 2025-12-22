@@ -64,6 +64,41 @@
 
             <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
+                    {{ __('Appearance') }}
+                </h2>
+                <p class="text-xs text-[var(--color-text-muted)]">
+                    {{ __('Update brand colors used across buttons, CTAs and the landing page.') }}
+                </p>
+                <form method="POST" action="{{ route('dashboard.appearance.update') }}" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    @csrf
+                    <div>
+                        <label class="block text-sm font-medium text-[var(--color-text-muted)] mb-1">{{ __('Primary Color') }}</label>
+                        <input type="color" name="primary" value="{{ $theme['primary'] ?? '#3A5BA9' }}" class="h-10 w-16 border rounded">
+                        <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Main actions and highlights.') }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-[var(--color-text-muted)] mb-1">{{ __('Secondary Color') }}</label>
+                        <input type="color" name="secondary" value="{{ $theme['secondary'] ?? '#2F3C4F' }}" class="h-10 w-16 border rounded">
+                        <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Links and secondary actions.') }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-[var(--color-text-muted)] mb-1">{{ __('Accent Color') }}</label>
+                        <input type="color" name="accent" value="{{ $theme['accent'] ?? '#0FA3A4' }}" class="h-10 w-16 border rounded">
+                        <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Status badges and success.') }}</p>
+                    </div>
+                    <div class="md:col-span-3">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                            {{ __('Save Appearance') }}
+                        </button>
+                        <a href="{{ route('dashboard.appearance.edit') }}" class="ml-3 inline-flex items-center text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]">
+                            {{ __('Open full Appearance settings') }}
+                        </a>
+                    </div>
+                </form>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+                <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('Legal Pages') }}
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -352,6 +387,22 @@
                                    value="{{ old('landing_hero_title_ar', $landingHeroTitleAr ?? '') }}">
                         </div>
                     </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="hero_title_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('Hero title (EN, override)') }}
+                            </label>
+                            <input id="hero_title_en" name="hero_title_en" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                                   value="{{ old('hero_title_en', $heroTitleEn ?? '') }}">
+                        </div>
+                        <div>
+                            <label for="hero_title_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('Hero title (AR, override)') }}
+                            </label>
+                            <input id="hero_title_ar" name="hero_title_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                                   value="{{ old('hero_title_ar', $heroTitleAr ?? '') }}">
+                        </div>
+                    </div>
                     <div>
                         <label for="landing_hero_subtitle" class="block text-sm font-medium text-[var(--color-text-muted)]">
                             {{ __('Hero subtitle') }}
@@ -376,6 +427,22 @@
                             </label>
                             <input id="landing_hero_subtitle_ar" name="landing_hero_subtitle_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                                    value="{{ old('landing_hero_subtitle_ar', $landingHeroSubtitleAr ?? '') }}">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="hero_subtitle_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('Hero subtitle (EN, override)') }}
+                            </label>
+                            <input id="hero_subtitle_en" name="hero_subtitle_en" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                                   value="{{ old('hero_subtitle_en', $heroSubtitleEn ?? '') }}">
+                        </div>
+                        <div>
+                            <label for="hero_subtitle_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                                {{ __('Hero subtitle (AR, override)') }}
+                            </label>
+                            <input id="hero_subtitle_ar" name="hero_subtitle_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                                   value="{{ old('hero_subtitle_ar', $heroSubtitleAr ?? '') }}">
                         </div>
                     </div>
                     <div>

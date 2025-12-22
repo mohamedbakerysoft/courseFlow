@@ -18,6 +18,7 @@ class RegisteredUserController extends Controller
     public function create(\App\Services\SettingsService $settings): View
     {
         $googleLoginEnabled = (bool) $settings->get('auth.google.enabled', false);
+
         return view('auth.register', compact('googleLoginEnabled'));
     }
 
@@ -29,7 +30,7 @@ class RegisteredUserController extends Controller
     public function store(RegisterRequest $request, RegisterUserAction $registerUser, \App\Actions\Security\ValidateRecaptchaAction $captcha): RedirectResponse
     {
         $ok = $captcha->execute($request->string('captcha_token')->toString());
-        if (!$ok) {
+        if (! $ok) {
             return back()->withErrors(['captcha' => __('Captcha verification failed')])->withInput();
         }
 

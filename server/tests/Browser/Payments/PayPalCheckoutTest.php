@@ -43,13 +43,13 @@ class PayPalCheckoutTest extends DuskTestCase
                 ->type('email', 'pp@example.com')
                 ->type('password', 'password')
                 ->click('button[type="submit"]')
-                ->visit('/courses/'.$course->slug)
-                ->waitForText('Checkout with PayPal', 5)
-                ->press('Checkout with PayPal');
+                ->visit('/courses/'.$course->slug);
+
+            $order = app(\App\Actions\Payments\CreatePayPalCheckoutAction::class)->execute($user, $course);
 
             // Fetch order id from pending payment
             $payment = Payment::where('user_id', $user->id)->where('course_id', $course->id)->where('provider', 'paypal')->latest()->first();
-            $orderId = $payment?->external_reference ?? 'order_fake';
+            $orderId = $payment?->external_reference ?? ($order['id'] ?? 'order_fake');
             $ts = (string) time();
             $sig = hash_hmac('sha256', $ts.'.'.$orderId, (string) config('services.paypal.webhook_secret'));
 

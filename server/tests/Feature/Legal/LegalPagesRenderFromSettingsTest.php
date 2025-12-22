@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Setting;
+
 use function Pest\Laravel\get;
 
 it('renders terms from settings in English', function () {

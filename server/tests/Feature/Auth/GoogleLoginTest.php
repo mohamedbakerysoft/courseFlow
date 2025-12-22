@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\User;
-use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Contracts\User as SocialiteUserContract;
+use Laravel\Socialite\Facades\Socialite;
 
 it('hides google button when disabled', function () {
     \App\Models\Setting::updateOrCreate(['key' => 'auth.google.enabled'], ['value' => false]);
@@ -29,22 +29,79 @@ it('logs in existing user via google', function () {
 
     $user = User::factory()->create(['email' => 'existing@example.com']);
 
-    $mockGoogleUser = new class implements SocialiteUserContract {
-        public function getId() { return 'gid'; }
-        public function getNickname() { return null; }
-        public function getName() { return 'Existing User'; }
-        public function getEmail() { return 'existing@example.com'; }
-        public function getAvatar() { return null; }
+    $mockGoogleUser = new class implements SocialiteUserContract
+    {
+        public function getId()
+        {
+            return 'gid';
+        }
+
+        public function getNickname()
+        {
+            return null;
+        }
+
+        public function getName()
+        {
+            return 'Existing User';
+        }
+
+        public function getEmail()
+        {
+            return 'existing@example.com';
+        }
+
+        public function getAvatar()
+        {
+            return null;
+        }
+
         public function setRaw(array $user) {}
-        public function getRaw() { return []; }
-        public function map(array $user) { return $this; }
-        public function user() { return $this; }
-        public function accessTokenResponseBody() { return []; }
-        public function refreshTokenExpires() { return null; }
-        public function getApprovedScopes() { return []; }
-        public function getRefreshToken() { return null; }
-        public function getExpiresIn() { return null; }
-        public function getToken() { return 'token'; }
+
+        public function getRaw()
+        {
+            return [];
+        }
+
+        public function map(array $user)
+        {
+            return $this;
+        }
+
+        public function user()
+        {
+            return $this;
+        }
+
+        public function accessTokenResponseBody()
+        {
+            return [];
+        }
+
+        public function refreshTokenExpires()
+        {
+            return null;
+        }
+
+        public function getApprovedScopes()
+        {
+            return [];
+        }
+
+        public function getRefreshToken()
+        {
+            return null;
+        }
+
+        public function getExpiresIn()
+        {
+            return null;
+        }
+
+        public function getToken()
+        {
+            return 'token';
+        }
     };
 
     Socialite::shouldReceive('driver')->with('google')->andReturnSelf();
@@ -61,22 +118,79 @@ it('registers new user via google', function () {
     \App\Models\Setting::updateOrCreate(['key' => 'auth.google.client_id'], ['value' => 'id']);
     \App\Models\Setting::updateOrCreate(['key' => 'auth.google.client_secret'], ['value' => 'secret']);
 
-    $mockGoogleUser = new class implements SocialiteUserContract {
-        public function getId() { return 'gid2'; }
-        public function getNickname() { return null; }
-        public function getName() { return 'New User'; }
-        public function getEmail() { return 'new@example.com'; }
-        public function getAvatar() { return null; }
+    $mockGoogleUser = new class implements SocialiteUserContract
+    {
+        public function getId()
+        {
+            return 'gid2';
+        }
+
+        public function getNickname()
+        {
+            return null;
+        }
+
+        public function getName()
+        {
+            return 'New User';
+        }
+
+        public function getEmail()
+        {
+            return 'new@example.com';
+        }
+
+        public function getAvatar()
+        {
+            return null;
+        }
+
         public function setRaw(array $user) {}
-        public function getRaw() { return []; }
-        public function map(array $user) { return $this; }
-        public function user() { return $this; }
-        public function accessTokenResponseBody() { return []; }
-        public function refreshTokenExpires() { return null; }
-        public function getApprovedScopes() { return []; }
-        public function getRefreshToken() { return null; }
-        public function getExpiresIn() { return null; }
-        public function getToken() { return 'token'; }
+
+        public function getRaw()
+        {
+            return [];
+        }
+
+        public function map(array $user)
+        {
+            return $this;
+        }
+
+        public function user()
+        {
+            return $this;
+        }
+
+        public function accessTokenResponseBody()
+        {
+            return [];
+        }
+
+        public function refreshTokenExpires()
+        {
+            return null;
+        }
+
+        public function getApprovedScopes()
+        {
+            return [];
+        }
+
+        public function getRefreshToken()
+        {
+            return null;
+        }
+
+        public function getExpiresIn()
+        {
+            return null;
+        }
+
+        public function getToken()
+        {
+            return 'token';
+        }
     };
 
     Socialite::shouldReceive('driver')->with('google')->andReturnSelf();

@@ -21,4 +21,3 @@ it('handles null token gracefully in testing env', function () {
     $ok = app(ValidateRecaptchaAction::class)->execute(null);
     expect($ok)->toBeTrue();
 });
-

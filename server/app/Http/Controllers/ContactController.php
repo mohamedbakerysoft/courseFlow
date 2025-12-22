@@ -18,7 +18,7 @@ class ContactController extends Controller
             (string) ($data['captcha_token'] ?? '')
         );
 
-        if (!$ok) {
+        if (! $ok) {
             return back()->withErrors(['captcha' => __('Captcha verification failed')])->withInput();
         }
 

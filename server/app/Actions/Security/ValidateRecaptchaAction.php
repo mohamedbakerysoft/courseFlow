@@ -25,7 +25,7 @@ class ValidateRecaptchaAction
             $response = @file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
             $payload = is_string($response) ? json_decode($response, true) : null;
             $ok = is_array($payload) ? (bool) ($payload['success'] ?? false) : false;
-            if (!$ok) {
+            if (! $ok) {
                 return false;
             }
         }

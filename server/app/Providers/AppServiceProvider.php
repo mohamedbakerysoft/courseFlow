@@ -43,13 +43,13 @@ class AppServiceProvider extends ServiceProvider
 
         // Theme (colors)
         $defaults = [
-            'primary' => '#4F46E5',
-            'secondary' => '#334155',
-            'accent' => '#10B981',
-            'bg' => '#F8FAFC',
-            'text' => '#0F172A',
-            'text_muted' => '#64748B',
-            'primary_hover' => '#4338CA',
+            'primary' => '#3A5BA9',
+            'secondary' => '#2F3C4F',
+            'accent' => '#0FA3A4',
+            'bg' => '#F3F5F9',
+            'text' => '#0B1221',
+            'text_muted' => '#5C6E86',
+            'primary_hover' => '#2F4F97',
         ];
         $theme = $defaults;
         try {

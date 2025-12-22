@@ -5,6 +5,7 @@ namespace App\Actions\Landing;
 use App\Models\Course;
 use App\Models\User;
 use App\Services\SettingsService;
+use Illuminate\View\View;
 
 class ShowLandingPageAction
 {
@@ -12,7 +13,7 @@ class ShowLandingPageAction
         protected SettingsService $settings
     ) {}
 
-    public function execute(): array
+    public function execute(): View
     {
         $instructor = User::query()
             ->where('email', config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL))
@@ -23,12 +24,14 @@ class ShowLandingPageAction
         $heroTitle = (string) (
             $this->settings->get("instructor.hero_headline_{$locale}")
             ?: $this->settings->get('instructor.hero_headline')
+            ?: $this->settings->get("hero.title.{$locale}")
             ?: $this->settings->get("landing.hero_title_{$locale}")
             ?: $this->settings->get('landing.hero_title', 'Single‑Instructor LMS for Selling Courses')
         );
         $heroSubtitle = (string) (
             $this->settings->get("instructor.hero_subheadline_{$locale}")
             ?: $this->settings->get('instructor.hero_subheadline')
+            ?: $this->settings->get("hero.subtitle.{$locale}")
             ?: $this->settings->get("landing.hero_subtitle_{$locale}")
             ?: $this->settings->get('landing.hero_subtitle', 'For solo creators: sell courses with Stripe/PayPal, manual payments, and track student progress.')
         );
@@ -37,13 +40,22 @@ class ShowLandingPageAction
         $instructorTitle = (string) ($this->settings->get('instructor.title') ?: '');
         $instructorBio = (string) ($this->settings->get('instructor.bio') ?: ($instructor?->bio ?? ''));
 
-        $instructorImagePath = (string) $this->settings->get('landing.instructor_image', '');
-        $instructorImageUrl = $instructorImagePath !== '' ? asset('storage/'.$instructorImagePath) : null;
+        $heroImagePath = (string) (
+            $this->settings->get('hero.image_path')
+            ?: $this->settings->get('landing.instructor_image', '')
+        );
+        $heroImageUrl = $heroImagePath !== '' ? asset('storage/'.$heroImagePath) : null;
 
-        $heroImageModeSetting = (string) $this->settings->get('landing.hero_image_mode', 'contain');
-        $heroImageMode = in_array($heroImageModeSetting, ['contain', 'cover'], true) ? $heroImageModeSetting : 'contain';
-        $heroImageFocusSetting = (string) $this->settings->get('landing.hero_image_focus', 'center');
+        $heroImageFitSetting = (string) ($this->settings->get('hero.image_fit') ?: $this->settings->get('landing.hero_image_mode', 'contain'));
+        $heroImageMode = in_array($heroImageFitSetting, ['contain', 'cover'], true) ? $heroImageFitSetting : 'contain';
+        $heroImageFocusSetting = (string) ($this->settings->get('hero.image_focus') ?: $this->settings->get('landing.hero_image_focus', 'center'));
         $heroImageFocus = in_array($heroImageFocusSetting, ['center', 'top', 'bottom', 'left', 'right'], true) ? $heroImageFocusSetting : 'center';
+        $heroImageRatioSetting = (string) ($this->settings->get('hero.image_ratio') ?: '16:9');
+        $heroImageRatio = match ($heroImageRatioSetting) {
+            '4:5' => '4/5',
+            '1:1' => '1/1',
+            default => '16/9',
+        };
 
         $showHero = (bool) $this->settings->get('landing.show_hero', true);
         $showAboutInstructor = (bool) $this->settings->get('landing.show_about', true);
@@ -101,17 +113,18 @@ class ShowLandingPageAction
             ->limit(6)
             ->get();
 
-        return [
+        $data = [
             'heroTitle' => $heroTitle,
             'heroSubtitle' => $heroSubtitle,
             'instructor' => $instructor,
             'instructorName' => $instructorName,
             'instructorTitle' => $instructorTitle,
             'instructorBio' => $instructorBio,
-            'instructorImageUrl' => $instructorImageUrl,
+            'heroImageUrl' => $heroImageUrl,
             'instructorLinks' => $instructorLinks,
             'heroImageMode' => $heroImageMode,
             'heroImageFocus' => $heroImageFocus,
+            'heroImageRatio' => $heroImageRatio,
             'showHero' => $showHero,
             'showAboutInstructor' => $showAboutInstructor,
             'showCoursesPreview' => $showCoursesPreview,
@@ -121,5 +134,15 @@ class ShowLandingPageAction
             'features' => $features,
             'featuredCourses' => $featuredCourses,
         ];
+
+        $layoutSetting = (string) ($this->settings->get('landing.layout') ?? 'default');
+        $layoutView = match ($layoutSetting) {
+            'default' => 'default',
+            'layout_v2' => 'v2',
+            'layout_v3' => 'v3',
+            default => 'default',
+        };
+
+        return view("landing.layouts.$layoutView", $data);
     }
 }
