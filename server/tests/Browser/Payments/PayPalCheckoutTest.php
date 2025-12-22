@@ -44,8 +44,8 @@ class PayPalCheckoutTest extends DuskTestCase
                 ->type('password', 'password')
                 ->click('button[type="submit"]')
                 ->visit('/courses/'.$course->slug)
-                ->waitForText('Pay with PayPal', 5)
-                ->press('Pay with PayPal');
+                ->waitForText('Checkout with PayPal', 5)
+                ->press('Checkout with PayPal');
 
             // Fetch order id from pending payment
             $payment = Payment::where('user_id', $user->id)->where('course_id', $course->id)->where('provider', 'paypal')->latest()->first();

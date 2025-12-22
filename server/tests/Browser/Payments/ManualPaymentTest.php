@@ -48,8 +48,8 @@ class ManualPaymentTest extends DuskTestCase
                 ->type('password', 'password')
                 ->click('button[type="submit"]')
                 ->visit('/courses/'.$course->slug)
-                ->waitForText('Manual Payment', 5)
-                ->press('Manual Payment')
+                ->waitForText('Request manual payment', 5)
+                ->press('Request manual payment')
                 ->waitForText('Manual Payment Pending', 5)
                 ->assertSee('Manual Payment Pending');
 

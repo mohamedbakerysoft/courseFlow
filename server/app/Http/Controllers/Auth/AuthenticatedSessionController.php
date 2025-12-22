@@ -14,9 +14,10 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(\App\Services\SettingsService $settings): View
     {
-        return view('auth.login');
+        $googleLoginEnabled = (bool) $settings->get('auth.google.enabled', false);
+        return view('auth.login', compact('googleLoginEnabled'));
     }
 
     /**

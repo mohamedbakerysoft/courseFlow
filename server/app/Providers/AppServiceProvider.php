@@ -96,5 +96,57 @@ class AppServiceProvider extends ServiceProvider
         ];
         View::share('typography', $typography);
         View::share('typographyCss', $typographyCss);
+
+        // Security: reCAPTCHA settings -> config override
+        try {
+            $recaptchaEnabledRow = Setting::query()->where('key', 'security.recaptcha.enabled')->first();
+            $recaptchaSiteKeyRow = Setting::query()->where('key', 'security.recaptcha.site_key')->first();
+            $recaptchaSecretKeyRow = Setting::query()->where('key', 'security.recaptcha.secret_key')->first();
+            $recaptchaEnabled = (bool) ($recaptchaEnabledRow?->value ?? config('services.recaptcha.enabled'));
+            $recaptchaSiteKey = (string) ($recaptchaSiteKeyRow?->value ?? config('services.recaptcha.site_key'));
+            $recaptchaSecretKey = (string) ($recaptchaSecretKeyRow?->value ?? config('services.recaptcha.secret_key'));
+            config([
+                'services.recaptcha.enabled' => $recaptchaEnabled,
+                'services.recaptcha.site_key' => $recaptchaSiteKey,
+                'services.recaptcha.secret_key' => $recaptchaSecretKey,
+            ]);
+        } catch (\Throwable $e) {
+            // noop
+        }
+
+        // Authentication: Google login settings -> config override
+        try {
+            $googleEnabledRow = Setting::query()->where('key', 'auth.google.enabled')->first();
+            $googleClientIdRow = Setting::query()->where('key', 'auth.google.client_id')->first();
+            $googleClientSecretRow = Setting::query()->where('key', 'auth.google.client_secret')->first();
+            $googleEnabled = (bool) ($googleEnabledRow?->value ?? config('services.google.enabled'));
+            $googleClientId = (string) ($googleClientIdRow?->value ?? config('services.google.client_id'));
+            $googleClientSecret = (string) ($googleClientSecretRow?->value ?? config('services.google.client_secret'));
+            config([
+                'services.google.enabled' => $googleEnabled,
+                'services.google.client_id' => $googleClientId,
+                'services.google.client_secret' => $googleClientSecret,
+            ]);
+        } catch (\Throwable $e) {
+            // noop
+        }
+
+        // Contact: WhatsApp CTA shared to public layout
+        try {
+            $waEnabled = (bool) (Setting::query()->where('key', 'contact.whatsapp.enabled')->value('value') ?? false);
+            $waPhone = (string) (Setting::query()->where('key', 'contact.whatsapp.phone')->value('value') ?? '');
+            $waMessage = (string) (Setting::query()->where('key', 'contact.whatsapp.message')->value('value') ?? '');
+            View::share('whatsappCta', [
+                'enabled' => $waEnabled && $waPhone !== '',
+                'phone' => $waPhone,
+                'message' => $waMessage,
+            ]);
+        } catch (\Throwable $e) {
+            View::share('whatsappCta', [
+                'enabled' => false,
+                'phone' => '',
+                'message' => '',
+            ]);
+        }
     }
 }

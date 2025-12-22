@@ -230,42 +230,69 @@
                                         </form>
                                     @else
                                         @if ($hasAnyPaymentMethod)
-                                            @if ($isStripeEnabled)
+                                            @php
+                                                $envOk = app()->environment(['production']) ? true : false;
+                                                $stripeConfigValid = !$envOk || ((string) config('services.stripe.publishable_key') !== '' && (string) config('services.stripe.secret') !== '');
+                                                $paypalClientOk = (string) config('services.paypal.client_id') !== '' && (string) config('services.paypal.client_secret') !== '';
+                                                $paypalBase = (string) config('services.paypal.base_url', '');
+                                                $paypalModeOk = str_contains(strtolower($paypalBase), 'sandbox') || str_contains(strtolower($paypalBase), 'paypal.com');
+                                                $paypalConfigValid = !$envOk || ($paypalClientOk && $paypalModeOk);
+                                                $stripeAvailable = $isStripeEnabled && $stripeConfigValid;
+                                                $paypalAvailable = $isPayPalEnabled && $paypalConfigValid;
+                                                $hasAnyAvailable = $stripeAvailable || $paypalAvailable || $hasManualPayment;
+                                                $hasSomeUnavailable = ($isStripeEnabled && ! $stripeAvailable) || ($isPayPalEnabled && ! $paypalAvailable);
+                                            @endphp
+                                            @if ($hasAnyAvailable)
+                                                @if ($stripeAvailable)
                                                 <form action="{{ route('payments.checkout', $course) }}" method="POST" class="w-full">
                                                     @csrf
                                                     <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                                        {{ __('Buy Course') }}
+                                                        {{ __('Pay securely with Card') }}
                                                     </button>
                                                 </form>
-                                            @endif
-                                            @if ($isPayPalEnabled)
+                                                @endif
+                                                @if ($paypalAvailable)
                                                 <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="w-full">
                                                     @csrf
                                                     <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)]">
-                                                        {{ __('Pay with PayPal') }}
+                                                        {{ __('Checkout with PayPal') }}
                                                     </button>
                                                 </form>
-                                            @endif
-                                            @if ($hasManualPayment)
+                                                @endif
+                                                @if ($hasManualPayment)
                                                 <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="w-full">
                                                     @csrf
                                                     <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-secondary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-secondary)]">
-                                                        {{ __('Manual Payment') }}
+                                                        {{ __('Request manual payment') }}
                                                     </button>
                                                 </form>
+                                                @endif
+                                                @if ($hasSomeUnavailable)
+                                                    <p class="text-xs text-[var(--color-text-muted)] text-center">
+                                                        {{ __('Some payment methods are currently unavailable.') }}
+                                                    </p>
+                                                @endif
+                                            @else
+                                                <div class="rounded-md border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/10 p-3">
+                                                    <p class="text-xs text-[var(--color-text-muted)] text-center">
+                                                        {{ __('Online payments are temporarily unavailable. Please contact the instructor.') }}
+                                                    </p>
+                                                </div>
                                             @endif
                                         @else
-                                            <p class="text-xs text-[var(--color-error)] text-center font-medium">
-                                                {{ __('Payments are currently disabled. Please contact the instructor.') }}
-                                            </p>
+                                            <div class="rounded-md border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/10 p-3">
+                                                <p class="text-xs text-[var(--color-text-muted)] text-center">
+                                                    {{ __('Online payments are temporarily unavailable. Please contact the instructor.') }}
+                                                </p>
+                                            </div>
                                         @endif
                                     @endif
                                 @endif
                             @endguest
                         </div>
 
-                        <p class="text-xs text-gray-500">
-                            {{ __('Secure payments and instant course access after enrollment.') }}
+                        <p class="text-xs text-[var(--color-text-muted)] text-center">
+                            {{ __('Secure checkout · No hidden fees') }}
                         </p>
                     </div>
                 </div>

@@ -68,5 +68,12 @@
             </x-primary-button>
         </div>
     </form>
+    @if (($googleLoginEnabled ?? false) === true)
+        <div class="mt-6">
+            <a href="{{ route('auth.google.redirect') }}" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-secondary)] text-white text-sm font-semibold hover:opacity-90">
+                {{ __('Continue with Google') }}
+            </a>
+        </div>
+    @endif
     </div>
 </x-guest-layout>

@@ -111,25 +111,56 @@
                     {{ __('Payment Methods') }}
                 </h2>
                 <div class="space-y-5">
-                    <div class="flex items-start justify-between gap-4">
-                        <div>
-                            <p class="text-sm font-medium text-[var(--color-text-primary)]">Stripe</p>
-                            <p class="text-xs text-[var(--color-text-muted)]">{{ __('Enable Stripe checkout buttons.') }}</p>
+                    <div class="rounded-md border border-[var(--color-secondary)]/20 p-4 space-y-4">
+                        <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Online Payments') }}</p>
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="space-y-1">
+                                <p class="text-sm font-medium text-[var(--color-text-primary)]">Stripe
+                                    @if ($stripeStatusVariant === 'green')
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs">{{ $stripeStatusLabel }}</span>
+                                    @elseif ($stripeStatusVariant === 'red')
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-error)]/20 bg-[var(--color-error)]/10 text-[var(--color-error)] text-xs">{{ $stripeStatusLabel }}</span>
+                                    @else
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/10 text-[var(--color-text-muted)] text-xs">{{ $stripeStatusLabel }}</span>
+                                    @endif
+                                </p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Enable Stripe checkout buttons.') }}</p>
+                                @if ($stripeStatusMessage)
+                                    <p class="text-xs text-[var(--color-error)]">{{ $stripeStatusMessage }}</p>
+                                @endif
+                                @error('stripe')
+                                    <p class="text-xs text-[var(--color-error)]">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="payments_stripe_enabled" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)] mr-2" @checked($paymentsStripeEnabled)>
+                                <span class="text-sm text-[var(--color-text-muted)]">{{ __('Enabled') }}</span>
+                            </label>
                         </div>
-                        <label class="inline-flex items-center">
-                            <input type="checkbox" name="payments_stripe_enabled" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)] mr-2" @checked($paymentsStripeEnabled)>
-                            <span class="text-sm text-[var(--color-text-muted)]">{{ __('Enabled') }}</span>
-                        </label>
-                    </div>
-                    <div class="flex items-start justify-between gap-4">
-                        <div>
-                            <p class="text-sm font-medium text-[var(--color-text-primary)]">PayPal</p>
-                            <p class="text-xs text-[var(--color-text-muted)]">{{ __('Enable PayPal checkout buttons.') }}</p>
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="space-y-1">
+                                <p class="text-sm font-medium text-[var(--color-text-primary)]">PayPal
+                                    @if ($paypalStatusVariant === 'green')
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs">{{ $paypalStatusLabel }}</span>
+                                    @elseif ($paypalStatusVariant === 'red')
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-error)]/20 bg-[var(--color-error)]/10 text-[var(--color-error)] text-xs">{{ $paypalStatusLabel }}</span>
+                                    @else
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/10 text-[var(--color-text-muted)] text-xs">{{ $paypalStatusLabel }}</span>
+                                    @endif
+                                </p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Enable PayPal checkout buttons.') }}</p>
+                                @if ($paypalStatusMessage)
+                                    <p class="text-xs text-[var(--color-error)]">{{ $paypalStatusMessage }}</p>
+                                @endif
+                                @error('paypal')
+                                    <p class="text-xs text-[var(--color-error)]">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="payments_paypal_enabled" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)] mr-2" @checked($paymentsPaypalEnabled)>
+                                <span class="text-sm text-[var(--color-text-muted)]">{{ __('Enabled') }}</span>
+                            </label>
                         </div>
-                        <label class="inline-flex items-center">
-                            <input type="checkbox" name="payments_paypal_enabled" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)] mr-2" @checked($paymentsPaypalEnabled)>
-                            <span class="text-sm text-[var(--color-text-muted)]">{{ __('Enabled') }}</span>
-                        </label>
                     </div>
                     <div>
                         <label for="payments_manual_instructions" class="block text-sm font-medium text-[var(--color-text-muted)]">
@@ -142,6 +173,96 @@
                         <p class="mt-2 text-xs text-[var(--color-text-muted)]">
                             {{ __('These instructions will be shown to students choosing manual payments (bank transfer, cash, etc.).') }}
                         </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+                <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
+                    {{ __('Authentication') }}
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="space-y-1">
+                            <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Google Login') }}</p>
+                            <p class="text-xs text-[var(--color-text-muted)]">{{ __('Allow users to log in or register using Google.') }}</p>
+                            @error('auth_google')
+                                <p class="text-xs text-[var(--color-error)]">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" name="auth_google_enabled" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)] mr-2" @checked($googleLoginEnabled)>
+                            <span class="text-sm text-[var(--color-text-muted)]">{{ __('Enabled') }}</span>
+                        </label>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="auth_google_client_id" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Google Client ID') }}</label>
+                            <input id="auth_google_client_id" name="auth_google_client_id" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('auth_google_client_id', $googleClientId) }}">
+                        </div>
+                        <div>
+                            <label for="auth_google_client_secret" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Google Client Secret') }}</label>
+                            <input id="auth_google_client_secret" name="auth_google_client_secret" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('auth_google_client_secret', $googleClientSecret) }}">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+                <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
+                    {{ __('Security') }}
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="space-y-1">
+                            <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Google reCAPTCHA') }}</p>
+                            <p class="text-xs text-[var(--color-text-muted)]">{{ __('Protect the contact and registration forms from spam.') }}</p>
+                            @error('security_recaptcha')
+                                <p class="text-xs text-[var(--color-error)]">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" name="security_recaptcha_enabled" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)] mr-2" @checked($recaptchaEnabled)>
+                            <span class="text-sm text-[var(--color-text-muted)]">{{ __('Enabled') }}</span>
+                        </label>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="security_recaptcha_site_key" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Site Key') }}</label>
+                            <input id="security_recaptcha_site_key" name="security_recaptcha_site_key" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('security_recaptcha_site_key', $recaptchaSiteKey) }}">
+                        </div>
+                        <div>
+                            <label for="security_recaptcha_secret_key" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Secret Key') }}</label>
+                            <input id="security_recaptcha_secret_key" name="security_recaptcha_secret_key" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('security_recaptcha_secret_key', $recaptchaSecretKey) }}">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+                <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
+                    {{ __('Contact') }}
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="space-y-1">
+                            <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('WhatsApp Floating Button') }}</p>
+                            <p class="text-xs text-[var(--color-text-muted)]">{{ __('Show a subtle WhatsApp chat button on public pages.') }}</p>
+                        </div>
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" name="contact_whatsapp_enabled" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)] mr-2" @checked($whatsappEnabled)>
+                            <span class="text-sm text-[var(--color-text-muted)]">{{ __('Enabled') }}</span>
+                        </label>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="contact_whatsapp_phone" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('WhatsApp Phone') }}</label>
+                            <input id="contact_whatsapp_phone" name="contact_whatsapp_phone" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('contact_whatsapp_phone', $whatsappPhone) }}" placeholder="+201234567890">
+                        </div>
+                        <div>
+                            <label for="contact_whatsapp_message" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Default Message') }}</label>
+                            <input id="contact_whatsapp_message" name="contact_whatsapp_message" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('contact_whatsapp_message', $whatsappMessage) }}">
+                        </div>
                     </div>
                 </div>
             </section>

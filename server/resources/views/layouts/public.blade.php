@@ -49,16 +49,66 @@
             {{ $slot }}
         </main>
         <footer class="max-w-7xl mx-auto px-4 py-8 border-t border-[var(--color-secondary)]/10 text-sm text-[var(--color-text-muted)]">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-                <p>&copy; {{ date('Y') }} {{ config('app.name') }}</p>
+            @php $locale = app()->getLocale(); @endphp
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="text-center sm:text-start">
+                    <p>&copy; {{ date('Y') }} {{ config('app.name') }}</p>
+                    <div class="flex items-center justify-center sm:justify-start gap-3 mt-2 text-xs">
+                        <span class="inline-flex items-center gap-1">
+                            <svg class="h-4 w-4 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span>{{ $locale === 'ar' ? 'دفع آمن' : 'Secure payments' }}</span>
+                        </span>
+                        <span>·</span>
+                        <span class="inline-flex items-center gap-1">
+                            <svg class="h-4 w-4 text-[var(--color-primary)]" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span>{{ $locale === 'ar' ? 'وصول فوري' : 'Instant access' }}</span>
+                        </span>
+                        <span>·</span>
+                        <span class="inline-flex items-center gap-1">
+                            <svg class="h-4 w-4 text-[var(--color-secondary)]" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l7 4v5c0 5-4 8-7 9-3-1-7-4-7-9V7l7-4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span>{{ $locale === 'ar' ? 'خصوصية أولاً' : 'Privacy‑first' }}</span>
+                        </span>
+                    </div>
+                </div>
                 <div class="flex items-center gap-4">
                     <a href="/terms" class="hover:text-[var(--color-text-primary)]">{{ __('Terms') }}</a>
                     <a href="/privacy" class="hover:text-[var(--color-text-primary)]">{{ __('Privacy') }}</a>
+                    <a href="/#contact" class="hover:text-[var(--color-text-primary)]">{{ __('Contact') }}</a>
                 </div>
             </div>
-            <p class="mt-3 text-center sm:text-start text-xs">
-                {{ __('Secure payments and instant course access after enrollment.') }}
-            </p>
         </footer>
+        @php
+            $waEnabled = (bool) (\App\Models\Setting::query()->where('key', 'contact.whatsapp.enabled')->value('value') ?? false);
+            $waPhoneRaw = (string) (\App\Models\Setting::query()->where('key', 'contact.whatsapp.phone')->value('value') ?? '');
+            $waMessageRaw = (string) (\App\Models\Setting::query()->where('key', 'contact.whatsapp.message')->value('value') ?? 'Hello! I have a question about your courses.');
+            $waPhone = preg_replace('/[^0-9]/', '', $waPhoneRaw);
+            $waMessage = trim($waMessageRaw);
+            $waLink = 'https://wa.me/'.$waPhone.'?text='.urlencode($waMessage);
+        @endphp
+        @if ($waEnabled && $waPhone !== '')
+            <a href="{{ $waLink }}"
+               class="fixed bottom-6 right-6 inline-flex items-center gap-2 px-4 py-3 rounded-full shadow-lg bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]"
+               aria-label="{{ __('Chat on WhatsApp') }}"
+               target="_blank"
+               rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.48A10 10 0 1 0 12 2zm5.2 14.24c-.22.62-1.28 1.18-1.78 1.23-.46.05-1.05.08-2.58-.54-2.16-.89-3.55-3.08-3.66-3.22-.1-.15-.87-1.15-.87-2.2 0-1.05.55-1.56.75-1.78.2-.22.48-.28.64-.28h.46c.15 0 .36-.06 .55 .41 .22 .54 .74 1.86 .81 1.99 .07 .13 .12 .3 .02 .48 -.09 .17 -.15 .27 -.29 .42 -.15 .16 -.31 .35 -.45 .47 -.15 .12 -.3 .26 -.13 .52 .17 .27 .76 1.23 1.65 1.99 1.14 .94 2.1 1.23 2.39 1.37 .29 .14 .46 .12 .63 -.07 .17 -.2 .72 -.84 .91 -1.13 .19 -.29 .39 -.24 .63 -.14 .24 .1 1.51 .71 1.77 .84 .26 .13 .43 .19 .5 .3 .06 .11 .06 .64 -.17 1.26 z"/></svg>
+                <span class="hidden sm:inline">{{ __('WhatsApp') }}</span>
+            </a>
+        @endif
+        @if (!empty($whatsappCta) && ($whatsappCta['enabled'] ?? false))
+            @php
+                $waPhone = preg_replace('/[^0-9]/', '', $whatsappCta['phone'] ?? '');
+                $waMessage = trim((string) ($whatsappCta['message'] ?? 'Hello! I have a question about your courses.'));
+                $waLink = 'https://wa.me/'.$waPhone.'?text='.urlencode($waMessage);
+            @endphp
+            <a href="{{ $waLink }}"
+               class="fixed bottom-6 right-6 inline-flex items-center gap-2 px-4 py-3 rounded-full shadow-lg bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]"
+               aria-label="{{ __('Chat on WhatsApp') }}"
+               target="_blank"
+               rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.48A10 10 0 1 0 12 2zm5.2 14.24c-.22.62-1.28 1.18-1.78 1.23-.46.05-1.05.08-2.58-.54-2.16-.89-3.55-3.08-3.66-3.22-.1-.15-.87-1.15-.87-2.2 0-1.05.55-1.56.75-1.78.2-.22.48-.28.64-.28h.46c.15 0 .36-.06.55.41.22.54.74 1.86.81 1.99.07.13.12.3.02.48-.09.17-.15.27-.29.42-.15.16-.31.35-.45.47-.15.12-.3.26-.13.52.17.27.76 1.23 1.65 1.99 1.14.94 2.1 1.23 2.39 1.37.29.14.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.63-.14.24.1 1.51.71 1.77.84.26.13.43.19.5.3.06.11.06.64-.17 1.26z"/></svg>
+                <span class="hidden sm:inline">{{ __('WhatsApp') }}</span>
+            </a>
+        @endif
     </body>
 </html>

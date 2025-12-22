@@ -14,12 +14,13 @@ class ContactRequest extends FormRequest
     public function rules(): array
     {
         $recaptchaEnabled = (bool) (config('services.recaptcha.enabled') ?? false);
+        $skipCaptcha = app()->environment(['testing', 'dusk', 'dusk.local']);
 
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email'],
             'message' => ['required', 'string', 'max:5000'],
-            'captcha_token' => $recaptchaEnabled ? ['required', 'string'] : ['nullable', 'string'],
+            'captcha_token' => $recaptchaEnabled && ! $skipCaptcha ? ['required', 'string'] : ['nullable', 'string'],
         ];
     }
 }

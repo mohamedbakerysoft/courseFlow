@@ -33,9 +33,9 @@ it('hides stripe checkout button when disabled', function () {
     $response = \Pest\Laravel\actingAs($user)->get(route('courses.show', $course));
 
     $response->assertOk();
-    $response->assertDontSee('Buy Course');
-    $response->assertSee('Pay with PayPal');
-    $response->assertSee('Manual Payment');
+    $response->assertDontSee('Pay securely with Card');
+    $response->assertSee('Checkout with PayPal');
+    $response->assertSee('Request manual payment');
 });
 
 it('hides paypal checkout button when disabled', function () {
@@ -51,9 +51,9 @@ it('hides paypal checkout button when disabled', function () {
     $response = \Pest\Laravel\actingAs($user)->get(route('courses.show', $course));
 
     $response->assertOk();
-    $response->assertSee('Buy Course');
-    $response->assertDontSee('Pay with PayPal');
-    $response->assertSee('Manual Payment');
+    $response->assertSee('Pay securely with Card');
+    $response->assertDontSee('Checkout with PayPal');
+    $response->assertSee('Request manual payment');
 });
 
 it('shows manual payment instructions on pending page when configured', function () {
@@ -87,8 +87,8 @@ it('shows disabled message when all payment methods are disabled', function () {
     $response = \Pest\Laravel\actingAs($user)->get(route('courses.show', $course));
 
     $response->assertOk();
-    $response->assertSee('Payments are currently disabled. Please contact the instructor.');
-    $response->assertDontSee('Buy Course');
-    $response->assertDontSee('Pay with PayPal');
-    $response->assertDontSee('Manual Payment');
+    $response->assertSee('Online payments are temporarily unavailable. Please contact the instructor.');
+    $response->assertDontSee('Pay securely with Card');
+    $response->assertDontSee('Checkout with PayPal');
+    $response->assertDontSee('Request manual payment');
 });

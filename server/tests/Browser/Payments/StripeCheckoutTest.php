@@ -47,8 +47,8 @@ class StripeCheckoutTest extends DuskTestCase
                 ->type('password', 'password')
                 ->click('button[type="submit"]')
                 ->visit('/courses/'.$course->slug)
-                ->waitForText('Buy Course', 10)
-                ->press('Buy Course');
+                ->waitForText('Pay securely with Card', 10)
+                ->press('Pay securely with Card');
 
             // Retrieve session id from DB (pending payment created)
             $payment = Payment::where('user_id', $user->id)->where('course_id', $course->id)->latest()->first();

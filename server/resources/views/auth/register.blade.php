@@ -7,7 +7,7 @@
             {{ __('Create your account to manage courses and lessons.') }}
         </p>
     </div>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" id="registerForm">
         @csrf
 
         <!-- Name -->
@@ -56,5 +56,34 @@
                 {{ __('Register') }}
             </x-primary-button>
         </div>
+        <input type="hidden" id="captcha_token" name="captcha_token" value="">
+        @php $siteKey = config('services.recaptcha.site_key'); @endphp
+        @if (!empty($siteKey))
+            <script src="https://www.google.com/recaptcha/api.js?render={{ $siteKey }}"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var form = document.getElementById('registerForm');
+                    if (!form) return;
+                    form.addEventListener('submit', function (e) {
+                        if (typeof grecaptcha === 'undefined') return;
+                        e.preventDefault();
+                        grecaptcha.ready(function () {
+                            grecaptcha.execute('{{ $siteKey }}', {action: 'register'}).then(function (token) {
+                                var input = document.getElementById('captcha_token');
+                                if (input) input.value = token;
+                                form.submit();
+                            });
+                        });
+                    }, { passive: false });
+                });
+            </script>
+        @endif
     </form>
+    @if (($googleLoginEnabled ?? false) === true)
+        <div class="mt-6">
+            <a href="{{ route('auth.google.redirect') }}" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-secondary)] text-white text-sm font-semibold hover:opacity-90">
+                {{ __('Continue with Google') }}
+            </a>
+        </div>
+    @endif
 </x-guest-layout>
