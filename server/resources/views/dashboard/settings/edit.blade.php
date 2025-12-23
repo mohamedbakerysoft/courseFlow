@@ -70,8 +70,7 @@
                 <p class="text-xs text-[var(--color-text-muted)]">
                     {{ __('Update brand colors used across buttons, CTAs and the landing page.') }}
                 </p>
-                <form method="POST" action="{{ route('dashboard.appearance.update') }}" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    @csrf
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-[var(--color-text-muted)] mb-1">{{ __('Primary Color') }}</label>
                         <input type="color" name="primary" value="{{ $theme['primary'] ?? '#3A5BA9' }}" class="h-10 w-16 border rounded">
@@ -88,14 +87,11 @@
                         <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Status badges and success.') }}</p>
                     </div>
                     <div class="md:col-span-3">
-                        <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                            {{ __('Save Appearance') }}
-                        </button>
                         <a href="{{ route('dashboard.appearance.edit') }}" class="ml-3 inline-flex items-center text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]">
                             {{ __('Open full Appearance settings') }}
                         </a>
                     </div>
-                </form>
+                </div>
             </section>
 
             <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">

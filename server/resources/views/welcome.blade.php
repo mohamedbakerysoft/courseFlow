@@ -2,14 +2,20 @@
     <div class="bg-white">
         <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 space-y-20 lg:space-y-24 py-10 lg:py-16">
             @if ($showHero)
-            <header id="hero" class="relative min-h-[85vh]">
-                <div class="relative w-full min-h-[85vh]">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 px-4 sm:px-6 lg:px-8">
-                        <div class="space-y-6">
+            <header id="hero" class="relative min-h-[75vh]">
+                <div class="relative w-full min-h-[75vh]">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-16 px-4 sm:px-6 lg:px-6">
+                        <div class="order-2 lg:order-1 space-y-6">
                             <div class="space-y-2">
-                                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[var(--color-text-primary)]">
-                                    {{ $instructorName }}
+                                <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">
+                                    {{ app()->getLocale() === 'ar' ? 'منصة دورات لمدرّس واحد' : 'Single‑Instructor Course Platform' }}
+                                </p>
+                                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-[var(--color-text-primary)]">
+                                    {{ $heroTitle }}
                                 </h1>
+                                <p class="text-xs sm:text-sm text-[var(--color-text-muted)]">
+                                    {{ $instructorName }}
+                                </p>
                                 @if (!empty($instructorTitle) && $showAboutInstructor)
                                     <p class="text-xs sm:text-sm text-[var(--color-text-muted)]">
                                         {{ $instructorTitle }}
@@ -17,11 +23,11 @@
                                 @endif
                             </div>
                             <div class="space-y-4">
-                                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[var(--color-text-primary)]">
-                                    {{ $heroTitle }}
-                                </h2>
                                 <p class="text-base sm:text-lg text-[var(--color-text-muted)]">
                                     {{ $heroSubtitle }}
+                                </p>
+                                <p class="text-sm text-[var(--color-text-muted)]">
+                                    {{ app()->getLocale() === 'ar' ? 'دروس منظّمة مع وصول يعتمد على التسجيل' : 'Structured lessons with enrollment‑based access.' }}
                                 </p>
                                 <p class="text-xs text-[var(--color-text-muted)]">
                                     {{ __('Designed for independent instructors and real students.') }}
@@ -38,9 +44,7 @@
                                     {{ app()->getLocale() === 'ar' ? 'احصل على وصول فوري' : 'Get instant access' }}
                                 </a>
                                 <p class="text-xs text-[var(--color-text-muted)]">
-                                    {{ app()->getLocale() === 'ar' ? 'لا اشتراك · دفع لمرة واحدة' : 'No subscription · One‑time payment' }}
-                                    ·
-                                    {{ app()->getLocale() === 'ar' ? 'وصول فوري · الدفع عبر سترايب وباي بال' : 'Instant access · Payments handled via Stripe & PayPal' }}
+                                    {{ app()->getLocale() === 'ar' ? 'بدون اشتراك · إعداد مرة واحدة' : 'No subscription · One‑time setup' }}
                                 </p>
                             </div>
                             @if (!empty($instructorLinks))
@@ -70,19 +74,14 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="flex justify-center lg:justify-end">
-                            <div
-                                x-data="{ show: false }"
-                                x-init="setTimeout(() => show = true, 50)"
-                                :class="show ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
-                                class="w-full max-w-xl lg:max-w-2xl transition-all duration-700 ease-out"
-                            >
-                                <div class="rounded-2xl shadow-lg ring-1 ring-[var(--color-secondary)]/10 bg-white p-2">
+                        <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
+                            <div class="w-full max-w-xl lg:max-w-3xl xl:max-w-4xl">
+                                <div class="rounded-2xl overflow-hidden shadow-lg ring-1 ring-[var(--color-secondary)]/10 bg-white p-0 lg:min-h-[28rem] xl:min-h-[32rem]">
                                     <img
                                         src="{{ $heroImageUrl ?? asset('images/demo/IMG_1700.JPG') }}"
                                         alt="{{ __('Hero Image') }}"
                                         style="object-position: {{ $heroImageFocus ?? 'center' }}; aspect-ratio: {{ $heroImageRatio ?? '16/9' }}"
-                                        class="w-full h-auto transition-transform duration-700 ease-out {{ $heroImageMode === 'contain' ? 'object-contain' : 'object-cover' }} rounded-xl"
+                                        class="block w-full h-full object-cover transition-transform duration-700 ease-out"
                                         loading="lazy"
                                     >
                                 </div>
