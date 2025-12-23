@@ -125,10 +125,10 @@ it('instructor settings override landing data', function () {
     $response->assertSee('Instructor Subheadline');
 });
 
-it('landing hero image mode defaults to contain', function () {
+it('landing hero image mode defaults to cover', function () {
     $response = \Pest\Laravel\get('/');
     $response->assertOk();
-    $response->assertSee('object-contain');
+    $response->assertSee('object-cover');
     $response->assertSee('transition-transform');
 });
 
@@ -291,7 +291,7 @@ it('admin removes hero image and fallback appears', function () {
 
     $response = \Pest\Laravel\get('/');
     $response->assertOk();
-    $response->assertSee('IMG_1700.JPG');
+    $response->assertSee('hero-formal-2.jpg');
 });
 
 it('injects default hero font CSS variables', function () {
@@ -325,4 +325,14 @@ it('clamps out-of-range hero font settings', function () {
     $response->assertSee('--hero-title-size: 96px', false);
     $response->assertSee('--hero-subtitle-size: 48px', false);
     $response->assertSee('--hero-description-size: 14px', false);
+});
+
+it('applies hero image width/height settings to image style', function () {
+    Setting::updateOrCreate(['key' => 'hero.image_width'], ['value' => 640]);
+    Setting::updateOrCreate(['key' => 'hero.image_height'], ['value' => 400]);
+
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('width: 640px', false);
+    $response->assertSee('height: 400px', false);
 });

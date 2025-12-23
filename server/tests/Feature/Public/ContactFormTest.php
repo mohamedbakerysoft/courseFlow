@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Public\SubmitContactMessageAction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -44,4 +45,18 @@ it('submits contact form successfully', function () {
     ]);
     $response->assertRedirect();
     $response->assertSessionHas('status', 'Message sent');
+});
+
+it('resolves the contact recipient to the current admin email', function () {
+    User::factory()->create([
+        'name' => 'Owner Admin',
+        'email' => 'owner@example.com',
+        'role' => User::ROLE_ADMIN,
+    ]);
+
+    config()->set('demo.admin_email', 'missing-admin@example.com');
+
+    $action = app(SubmitContactMessageAction::class);
+
+    expect($action->resolveRecipientAddress())->toBe('owner@example.com');
 });

@@ -27,7 +27,7 @@ class HeroImageSettingsTest extends DuskTestCase
                 ->visit('/dashboard/settings')
                 ->click('a[href="#landing"]')
                 ->waitFor('form[x-show="tab === \'landing\'"]', 5)
-                ->attach('hero_image', public_path('images/demo/Subject.png'))
+                ->attach('hero_image', public_path('images/demo/instructor-formal-alt.jpg'))
                 ->press('Save Landing Settings')
                 ->visit('/')
                 ->assertPresent('img[src*="storage/hero/"]')

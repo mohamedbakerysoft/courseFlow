@@ -1,10 +1,14 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-[var(--color-text-muted)]">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+    <div class="mb-6">
+        <span class="cf-kicker">{{ __('Email verification') }}</span>
+        <h1 class="mt-4 text-3xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Verify your email address') }}</h1>
+        <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">
+            {{ __('Before getting started, verify your email address by clicking the link we just sent. If it did not arrive, we can send another one right away.') }}
+        </p>
     </div>
 
     @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-[var(--color-accent)]">
+        <div class="mb-4 cf-status-message">
             {{ __('A new verification link has been sent to the email address you provided during registration.') }}
         </div>
     @endif

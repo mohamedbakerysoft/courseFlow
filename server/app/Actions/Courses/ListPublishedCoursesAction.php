@@ -11,6 +11,7 @@ class ListPublishedCoursesAction
     {
         return Course::published()
             ->with('instructor')
+            ->withCount('lessons')
             ->orderByDesc('created_at')
             ->select(['id', 'slug', 'title', 'description', 'thumbnail_path', 'price', 'currency', 'is_free', 'instructor_id'])
             ->paginate($perPage);

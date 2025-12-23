@@ -11,40 +11,54 @@ use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Storage;
-
 class DemoSeeder extends Seeder
 {
     public function run(): void
     {
+        $defaultYouTubeUrl = 'https://www.youtube.com/watch?v=M7lc1UVf-VE';
+
+        $demoCourseCovers = [
+            'images/demo/real/course-real-1.jpg',
+            'images/demo/real/course-real-2.jpg',
+            'images/demo/real/course-real-3.jpg',
+            'images/demo/real/course-real-4.jpg',
+            'images/demo/real/course-real-5.jpg',
+            'images/demo/real/course-real-6.jpg',
+            'images/demo/real/course-real-7.jpg',
+        ];
+
+        $demoAvatars = collect(range(1, 4))
+            ->map(fn (int $index) => 'images/demo/avatar-'.$index.'.svg')
+            ->all();
+
         $admin = User::where('email', config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL))->first();
         if (! $admin) {
             $admin = User::updateOrCreate(
                 ['email' => config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL)],
                 [
-                    'name' => 'Omar Khaled',
+                    'name' => 'Nour Khaled',
                     'password' => bcrypt('password'),
                     'role' => User::ROLE_ADMIN,
-                    'profile_image_path' => 'images/demo/instructor-omar.jpg',
-                    'bio' => 'Creator of CourseFlow and instructor for modern Laravel, Tailwind and course business workflows.',
+                    'profile_image_path' => 'images/demo/real/hero-formal-2.jpg',
+                    'bio' => 'Founder of CourseFlow and instructor focused on helping creators launch polished course businesses with stronger branding, trusted checkout, and premium student experiences.',
                     'social_links' => [
                         'website' => 'https://example.com',
-                        'twitter' => 'https://twitter.com/omar_codes',
-                        'github' => 'https://github.com/example',
-                        'youtube' => 'https://youtube.com/@omar-courseflow',
+                        'twitter' => 'https://twitter.com/courseflow',
+                        'linkedin' => 'https://linkedin.com/in/courseflow',
+                        'youtube' => $defaultYouTubeUrl,
                     ],
                 ]
             );
         } else {
             $admin->update([
-                'name' => 'Omar Khaled',
-                'profile_image_path' => $admin->profile_image_path ?: 'images/demo/instructor-omar.jpg',
-                'bio' => $admin->bio ?: 'Creator of CourseFlow and instructor for modern Laravel, Tailwind and course business workflows.',
+                'name' => 'Nour Khaled',
+                'profile_image_path' => (! $admin->profile_image_path || str_contains((string) $admin->profile_image_path, 'instructor-omar.jpg') || str_contains((string) $admin->profile_image_path, 'instructor-owner.jpg')) ? 'images/demo/real/hero-formal-2.jpg' : $admin->profile_image_path,
+                'bio' => (! $admin->bio || $admin->bio === 'Instructor bio') ? 'Founder of CourseFlow and instructor focused on helping creators launch polished course businesses with stronger branding, trusted checkout, and premium student experiences.' : $admin->bio,
                 'social_links' => $admin->social_links ?: [
                     'website' => 'https://example.com',
-                    'twitter' => 'https://twitter.com/omar_codes',
-                    'github' => 'https://github.com/example',
-                    'youtube' => 'https://youtube.com/@omar-courseflow',
+                    'twitter' => 'https://twitter.com/courseflow',
+                    'linkedin' => 'https://linkedin.com/in/courseflow',
+                    'youtube' => $defaultYouTubeUrl,
                 ],
             ]);
         }
@@ -52,11 +66,11 @@ class DemoSeeder extends Seeder
         $instructor = User::updateOrCreate(
             ['email' => 'instructor@demo.com'],
             [
-                'name' => 'CourseFlow Instructor',
+                'name' => 'Maya Hassan',
                 'password' => bcrypt('password'),
                 'role' => User::ROLE_ADMIN,
-                'profile_image_path' => 'images/demo/instructor-omar.jpg',
-                'bio' => 'Hands-on instructor teaching how to launch, sell and scale your courses with CourseFlow.',
+                'profile_image_path' => 'images/demo/real/hero-formal-1.jpg',
+                'bio' => 'Hands-on instructor teaching how to position, launch, and sell professional online courses with CourseFlow.',
                 'social_links' => [
                     'twitter' => 'https://twitter.com/courseflow_demo',
                     'linkedin' => 'https://linkedin.com/in/courseflow-demo',
@@ -74,30 +88,30 @@ class DemoSeeder extends Seeder
         );
 
         $studentProfiles = [
-            ['name' => 'Sara Ahmed', 'email' => 'sara@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1544723795-3fb6469f70f2?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Mohamed Ali', 'email' => 'mohamed@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Lina Youssef', 'email' => 'lina@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1554151228-14d9def5b725?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Karim Hassan', 'email' => 'karim@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Nour El-Deen', 'email' => 'nour@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Layla Ibrahim', 'email' => 'layla@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1531123414780-fd9f06f3d0b3?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Hassan Omar', 'email' => 'hassan@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Amina Salah', 'email' => 'amina@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1544005311-94ddf0286df2?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Yousef Tarek', 'email' => 'yousef@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Omar Farouk', 'email' => 'omar.farouk@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1545996124-0501ebae84d0?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Maya Nasser', 'email' => 'maya.nasser@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1546525848-3ce03ca516f6?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Ziad Mostafa', 'email' => 'ziad.mostafa@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1519340240031-4da6f06b74f5?q=80&w=640&auto=format&fit=crop'],
-            ['name' => 'Rana Ismail', 'email' => 'rana.ismail@demo.com', 'avatar' => 'https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=640&auto=format&fit=crop'],
+            ['name' => 'Sara Ahmed', 'email' => 'sara@demo.com'],
+            ['name' => 'Mohamed Ali', 'email' => 'mohamed@demo.com'],
+            ['name' => 'Lina Youssef', 'email' => 'lina@demo.com'],
+            ['name' => 'Karim Hassan', 'email' => 'karim@demo.com'],
+            ['name' => 'Nour El-Deen', 'email' => 'nour@demo.com'],
+            ['name' => 'Layla Ibrahim', 'email' => 'layla@demo.com'],
+            ['name' => 'Hassan Omar', 'email' => 'hassan@demo.com'],
+            ['name' => 'Amina Salah', 'email' => 'amina@demo.com'],
+            ['name' => 'Yousef Tarek', 'email' => 'yousef@demo.com'],
+            ['name' => 'Omar Farouk', 'email' => 'omar.farouk@demo.com'],
+            ['name' => 'Maya Nasser', 'email' => 'maya.nasser@demo.com'],
+            ['name' => 'Ziad Mostafa', 'email' => 'ziad.mostafa@demo.com'],
+            ['name' => 'Rana Ismail', 'email' => 'rana.ismail@demo.com'],
         ];
 
         $students = [$primaryStudent];
-        foreach ($studentProfiles as $profile) {
+        foreach ($studentProfiles as $index => $profile) {
             $students[] = User::updateOrCreate(
                 ['email' => $profile['email']],
                 [
                     'name' => $profile['name'],
                     'password' => bcrypt('password'),
                     'role' => User::ROLE_STUDENT,
-                    'profile_image_path' => $profile['avatar'] ?? null,
+                    'profile_image_path' => $demoAvatars[$index % count($demoAvatars)],
                 ]
             );
         }
@@ -110,7 +124,7 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 129,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[0],
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -120,7 +134,7 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 49,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[1],
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -130,7 +144,7 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 39,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[2],
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -140,7 +154,7 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 89,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[3],
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -150,7 +164,7 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 29,
                 'language' => 'ar',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1504270997636-07ddfbd48945?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[4],
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -160,7 +174,7 @@ class DemoSeeder extends Seeder
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1513151233091-8a9bcbc2aba4?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[5],
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -170,7 +184,7 @@ class DemoSeeder extends Seeder
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1492724441997-5dc865305da7?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[6],
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -180,7 +194,7 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 59,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[0],
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -190,7 +204,7 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 69,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1524253482453-3fed8d2fe12b?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[1],
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -200,7 +214,7 @@ class DemoSeeder extends Seeder
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1518310958081-86aa83c67bb2?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[2],
                 'status' => Course::STATUS_DRAFT,
             ],
             [
@@ -210,7 +224,7 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 79,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[3],
                 'status' => Course::STATUS_DRAFT,
             ],
             [
@@ -220,7 +234,7 @@ class DemoSeeder extends Seeder
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
-                'thumbnail_path' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop',
+                'thumbnail_path' => $demoCourseCovers[4],
                 'status' => Course::STATUS_DRAFT,
             ],
         ];
@@ -789,11 +803,22 @@ class DemoSeeder extends Seeder
             );
         }
 
-        $publicHeroSource = public_path('images/demo/Subject.png');
-        $storageHeroPath = 'images/demo/Subject.png';
-        if (file_exists($publicHeroSource) && ! Storage::disk('public')->exists($storageHeroPath)) {
-            Storage::disk('public')->put($storageHeroPath, file_get_contents($publicHeroSource));
-        }
+        $storageHeroPath = 'images/demo/real/hero-formal-2.jpg';
+        Setting::updateOrCreate(['key' => 'hero.image'], ['value' => $storageHeroPath]);
         Setting::updateOrCreate(['key' => 'hero.image_path'], ['value' => $storageHeroPath]);
+        Setting::updateOrCreate(['key' => 'hero.image_fit'], ['value' => 'cover']);
+        Setting::updateOrCreate(['key' => 'hero.image_focus'], ['value' => 'center']);
+        Setting::updateOrCreate(['key' => 'hero.image_ratio'], ['value' => '4:5']);
+        Setting::updateOrCreate(['key' => 'landing.show_contact_form'], ['value' => true]);
+        Setting::updateOrCreate(['key' => 'typography.english_font'], ['value' => 'Poppins']);
+        Setting::updateOrCreate(['key' => 'instructor.social.youtube'], ['value' => $defaultYouTubeUrl]);
+        Setting::updateOrCreate(['key' => 'hero.title.en'], ['value' => 'Launch courses with a storefront learners trust']);
+        Setting::updateOrCreate(['key' => 'hero.subtitle.en'], ['value' => 'Sell digital courses with secure checkout, instant access, and structured lessons inside one clean experience.']);
+        Setting::updateOrCreate(['key' => 'landing.feature_1_title'], ['value' => 'Secure checkout']);
+        Setting::updateOrCreate(['key' => 'landing.feature_1_description'], ['value' => 'Offer card, PayPal, or manual payments without confusing the learner.']);
+        Setting::updateOrCreate(['key' => 'landing.feature_2_title'], ['value' => 'Structured delivery']);
+        Setting::updateOrCreate(['key' => 'landing.feature_2_description'], ['value' => 'Guide students through lessons with protected access and saved progress.']);
+        Setting::updateOrCreate(['key' => 'landing.feature_3_title'], ['value' => 'Stronger instructor trust']);
+        Setting::updateOrCreate(['key' => 'landing.feature_3_description'], ['value' => 'Show a real instructor, clear course cards, and a buying flow that feels trustworthy.']);
     }
 }

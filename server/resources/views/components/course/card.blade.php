@@ -1,70 +1,93 @@
 @props(['course', 'ctaLabel' => 'View course', 'ctaUrl' => null])
-@php($ctaUrl = $ctaUrl ?? route('courses.show', $course))
-@php($thumb = $course->thumbnail_path
-    ? (\Illuminate\Support\Str::startsWith($course->thumbnail_path, ['http://', 'https://'])
-        ? $course->thumbnail_path
-        : asset($course->thumbnail_path))
-    : null)
-<article class="group relative bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 overflow-hidden transition transform hover:-translate-y-1 hover:shadow-md">
-    <a href="{{ $ctaUrl }}" class="block h-full">
-        <div class="relative aspect-video overflow-hidden">
-            @if ($thumb)
-                <img src="{{ $thumb }}" alt="{{ $course->title }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
-            @else
-                <div class="w-full h-full bg-gradient-to-br from-[var(--color-primary)]/10 via-white to-[var(--color-primary)]/5 flex items-center justify-center text-[var(--color-text-muted)] text-sm">
-                    {{ __('Course preview') }}
-                </div>
-            @endif
-            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent opacity-60 group-hover:opacity-75 transition"></div>
-            <div class="absolute top-3 start-3 flex items-center gap-2">
-                @if ($course->is_free || (float)$course->price == 0.0)
-                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-semibold">
-                        {{ __('Free') }}
-                    </span>
-                @else
-                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-semibold">
-                        {{ number_format((float)$course->price, 2) }} {{ $course->currency }}
-                    </span>
-                @endif
+
+@php
+    $ctaUrl = $ctaUrl ?? route('courses.show', $course);
+    $thumb = $course->thumbnail_url;
+    $thumbFallback = $course->thumbnail_fallback_url;
+    $instructorName = $course->instructor?->name ?? __('Instructor');
+    $instructorAvatar = $course->instructor?->profile_image_url ?? \App\Support\MediaAsset::avatarFallback($instructorName);
+    $instructorAvatarFallback = $course->instructor?->profile_image_fallback_url ?? \App\Support\MediaAsset::avatarFallback($instructorName);
+    $price = $course->is_free || (float) $course->price == 0.0
+        ? __('Free')
+        : number_format((float) $course->price, 2).' '.$course->currency;
+    $lessonsCount = (int) ($course->lessons_count ?? 0);
+    $lessonLabel = app()->getLocale() === 'ar'
+        ? 'دروس'
+        : Str::plural('lesson', $lessonsCount);
+    $language = strtoupper($course->language ?? 'EN');
+@endphp
+
+<article class="cf-course-card group">
+    <a href="{{ $ctaUrl }}" class="flex h-full flex-col">
+        <div class="cf-course-media">
+            <img
+                src="{{ $thumb }}"
+                alt="{{ $course->title }}"
+                class="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='{{ $thumbFallback }}';"
+            >
+            <div class="cf-course-overlay"></div>
+            <div class="absolute inset-x-0 top-0 flex items-start justify-between p-4">
+                <span class="cf-price-pill">
+                    {{ $price }}
+                </span>
+                <span class="rounded-full border border-white/18 bg-white/88 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-primary)]">
+                    {{ $language }}
+                </span>
             </div>
         </div>
-        <div class="p-4 flex flex-col h-full space-y-3">
-            <h3 class="font-semibold text-base text-[var(--color-text-primary)] line-clamp-2">
-                {{ $course->title }}
-            </h3>
-            <p class="text-xs text-[var(--color-text-muted)]">
-                {{ __('Course access provided after enrollment') }}
-            </p>
-            @if (!empty($course->description))
-                <p class="text-sm text-[var(--color-text-muted)] line-clamp-2">
-                    {{ str($course->description)->limit(120) }}
-                </p>
-            @endif
-            <div class="flex items-center justify-between text-xs text-[var(--color-text-muted)]">
-                <div class="flex flex-col">
-                    @if ($course->instructor)
-                        <span class="font-medium text-[var(--color-text-primary)]">
-                            {{ $course->instructor->name }}
-                        </span>
-                    @else
-                        <span class="font-medium text-[var(--color-text-primary)]">
-                            {{ __('Instructor') }}
+
+        <div class="cf-course-content">
+            <div class="cf-course-instructor">
+                <img
+                    src="{{ $instructorAvatar }}"
+                    alt="{{ $instructorName }}"
+                    class="h-12 w-12 rounded-2xl object-cover ring-2 ring-[rgba(193,18,31,0.08)]"
+                    loading="lazy"
+                    onerror="this.onerror=null;this.src='{{ $instructorAvatarFallback }}';"
+                >
+                <div class="min-w-0">
+                    <p class="truncate text-sm font-semibold text-[var(--color-text-primary)]">{{ $instructorName }}</p>
+                    <p class="truncate text-xs text-[var(--color-text-muted)]">{{ __('Instructor-led learning') }}</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex flex-wrap gap-2">
+                    @if (isset($course->lessons_count))
+                        <span class="cf-chip !py-1 !text-[11px] !font-semibold">
+                            {{ $lessonsCount }} {{ $lessonLabel }}
                         </span>
                     @endif
-                    <div class="flex items-center gap-2 text-[var(--color-text-muted)] mt-1">
-                        @if (isset($course->lessons_count))
-                            <span>
-                                {{ $course->lessons_count }} {{ ($appLocale ?? app()->getLocale()) === 'ar' ? 'دروس' : Str::plural(__('lesson'), $course->lessons_count) }}
-                            </span>
-                        @endif
-                        <span>
-                            {{ strtoupper($course->language ?? 'en') }}
-                        </span>
-                    </div>
+                    <span class="cf-chip !py-1 !text-[11px] !font-semibold">{{ __('Instant access') }}</span>
                 </div>
-                <span class="inline-flex items-center rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-3 py-1 font-medium">
-                    {{ $ctaLabel }}
-                </span>
+                <h3 class="text-[1.55rem] font-bold leading-[1.15] tracking-[-0.045em] text-[var(--color-text-primary)] line-clamp-2">
+                    {{ $course->title }}
+                </h3>
+                @if (!empty($course->description))
+                    <p class="text-[15px] leading-7 text-[var(--color-text-muted)] line-clamp-3">
+                        {{ str($course->description)->limit(158) }}
+                    </p>
+                @endif
+            </div>
+
+            <div class="cf-course-meta">
+                <span class="cf-course-meta-pill">{{ __('Lifetime access') }}</span>
+                <span class="cf-course-meta-pill">{{ __('Secure checkout') }}</span>
+                <span class="cf-course-meta-pill">{{ __('Self-paced') }}</span>
+            </div>
+
+            <div class="cf-course-footer">
+                <div class="space-y-1">
+                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-primary)]">
+                        {{ __('Ready to start') }}
+                    </p>
+                    <p class="cf-course-summary">
+                        {{ __('Clear pricing, structured lessons, and a direct path into the course.') }}
+                    </p>
+                </div>
+                <span class="cf-course-cta">{{ __($ctaLabel) }}</span>
             </div>
         </div>
     </a>

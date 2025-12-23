@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Services\SettingsService;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,8 +26,10 @@ class ApplySettings
 
         $isRtl = in_array($locale, ['ar'], true);
 
-        $logoPath = $this->settings->get('site.logo_path');
-        $logoUrl = $logoPath ? asset('storage/'.$logoPath) : null;
+        $logoPath = (string) $this->settings->get('site.logo_path', '');
+        $logoUrl = $logoPath !== '' && Storage::disk('public')->exists($logoPath)
+            ? asset('storage/'.$logoPath)
+            : null;
 
         View::share([
             'appLocale' => $locale,

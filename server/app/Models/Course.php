@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\MediaAsset;
+
 class Course extends \Illuminate\Database\Eloquent\Model
 {
     protected $fillable = [
@@ -51,5 +53,15 @@ class Course extends \Illuminate\Database\Eloquent\Model
     public function instructor()
     {
         return $this->belongsTo(User::class, 'instructor_id');
+    }
+
+    public function getThumbnailUrlAttribute(): string
+    {
+        return MediaAsset::url($this->thumbnail_path, MediaAsset::courseFallbackPath($this->slug ?: $this->title));
+    }
+
+    public function getThumbnailFallbackUrlAttribute(): string
+    {
+        return MediaAsset::courseFallback($this->slug ?: $this->title);
     }
 }

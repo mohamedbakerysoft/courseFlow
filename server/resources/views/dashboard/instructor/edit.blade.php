@@ -68,7 +68,7 @@
                         @enderror
                         @if (!empty($instructorImageUrl))
                             <div class="mt-3 flex items-center gap-3">
-                                <img src="{{ $instructorImageUrl }}" alt="{{ $instructorName }}" class="w-20 h-20 rounded-full object-cover ring-4 ring-[var(--color-primary)]/10">
+                                <img src="{{ $instructorImageUrl }}" alt="{{ $instructorName }}" class="w-20 h-20 rounded-full object-cover ring-4 ring-[var(--color-primary)]/10" onerror="this.onerror=null;this.src='{{ \App\Support\MediaAsset::avatarFallback($instructorName) }}';">
                                 <div class="text-xs text-[var(--color-text-muted)]">
                                     {{ __('Current profile image preview') }}
                                 </div>
@@ -154,7 +154,7 @@
                             {{ __('YouTube') }}
                         </label>
                         <input id="social_youtube" name="social_youtube" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                               value="{{ old('social_youtube', $socialYouTube) }}" placeholder="https://youtube.com/@channel">
+                               value="{{ old('social_youtube', $socialYouTube) }}" placeholder="https://www.youtube.com/watch?v=M7lc1UVf-VE">
                         @error('social_youtube')
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror

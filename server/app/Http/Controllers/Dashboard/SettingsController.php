@@ -7,6 +7,7 @@ use App\Actions\Payments\ValidateStripeConfigAction;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Services\SettingsService;
+use App\Support\MediaAsset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -28,8 +29,8 @@ class SettingsController extends Controller
         $logoUrl = $logoPath ? asset('storage/'.$logoPath) : null;
 
         $instructorName = (string) $settings->get('instructor.name', '');
-        $landingHeroTitle = (string) $settings->get('landing.hero_title', 'Teach and sell your courses with CourseFlow');
-        $landingHeroSubtitle = (string) $settings->get('landing.hero_subtitle', 'Launch a clean, modern course platform in minutes.');
+        $landingHeroTitle = (string) $settings->get('landing.hero_title', 'Launch courses with a storefront learners trust');
+        $landingHeroSubtitle = (string) $settings->get('landing.hero_subtitle', 'Sell digital courses with secure checkout, instant access, and structured lessons.');
         $landingHeroTitleEn = (string) $settings->get('landing.hero_title_en', '');
         $landingHeroTitleAr = (string) $settings->get('landing.hero_title_ar', '');
         $landingHeroSubtitleEn = (string) $settings->get('landing.hero_subtitle_en', '');
@@ -38,23 +39,23 @@ class SettingsController extends Controller
         $heroTitleAr = (string) $settings->get('hero.title.ar', '');
         $heroSubtitleEn = (string) $settings->get('hero.subtitle.en', '');
         $heroSubtitleAr = (string) $settings->get('hero.subtitle.ar', '');
-        $landingFeature1Title = (string) $settings->get('landing.feature_1_title', 'Launch quickly');
-        $landingFeature1Description = (string) $settings->get('landing.feature_1_description', 'Ship a polished learning platform without building everything from scratch.');
-        $landingFeature2Title = (string) $settings->get('landing.feature_2_title', 'Sell courses with confidence');
-        $landingFeature2Description = (string) $settings->get('landing.feature_2_description', 'Stripe, PayPal and manual payments are ready for production.');
-        $landingFeature3Title = (string) $settings->get('landing.feature_3_title', 'Delight your students');
-        $landingFeature3Description = (string) $settings->get('landing.feature_3_description', 'Clean lessons, progress tracking and RTL-ready layouts out of the box.');
+        $landingFeature1Title = (string) $settings->get('landing.feature_1_title', 'Secure checkout');
+        $landingFeature1Description = (string) $settings->get('landing.feature_1_description', 'Offer card, PayPal, or manual payments without confusing the learner.');
+        $landingFeature2Title = (string) $settings->get('landing.feature_2_title', 'Structured delivery');
+        $landingFeature2Description = (string) $settings->get('landing.feature_2_description', 'Guide students through lessons with protected access and saved progress.');
+        $landingFeature3Title = (string) $settings->get('landing.feature_3_title', 'Stronger instructor trust');
+        $landingFeature3Description = (string) $settings->get('landing.feature_3_description', 'Show a real instructor, clear course cards, and a buying flow that feels premium.');
         $landingInstructorImagePath = $settings->get('landing.instructor_image');
-        $landingInstructorImageUrl = $landingInstructorImagePath ? asset('storage/'.$landingInstructorImagePath) : null;
+        $landingInstructorImageUrl = MediaAsset::url($landingInstructorImagePath, MediaAsset::avatarFallbackPath($instructorName));
         $currentHeroImagePath = (string) $settings->get('hero.image', '');
-        $heroImageUrl = $currentHeroImagePath !== '' ? asset('storage/'.$currentHeroImagePath) : null;
+        $heroImageUrl = MediaAsset::url($currentHeroImagePath, 'images/demo/real/hero-formal-2.jpg');
         $landingShowHero = (bool) $settings->get('landing.show_hero', true);
-        $landingShowContactForm = (bool) $settings->get('landing.show_contact_form', false);
+        $landingShowContactForm = (bool) $settings->get('landing.show_contact_form', true);
         $landingShowAbout = (bool) $settings->get('landing.show_about', true);
         $landingShowCoursesPreview = (bool) $settings->get('landing.show_courses_preview', true);
         $landingShowTestimonials = (bool) $settings->get('landing.show_testimonials', true);
         $landingShowFooterCta = (bool) $settings->get('landing.show_footer_cta', true);
-        $landingHeroImageMode = (string) $settings->get('landing.hero_image_mode', 'contain');
+        $landingHeroImageMode = (string) $settings->get('landing.hero_image_mode', 'cover');
         $landingHeroImageFocus = (string) $settings->get('landing.hero_image_focus', 'center');
         $socialTwitter = (string) $settings->get('instructor.social.twitter', '');
         $socialInstagram = (string) $settings->get('instructor.social.instagram', '');
@@ -64,6 +65,8 @@ class SettingsController extends Controller
         $heroFontTitle = (int) $settings->get('hero.font.title', 56);
         $heroFontSubtitle = (int) $settings->get('hero.font.subtitle', 24);
         $heroFontDescription = (int) $settings->get('hero.font.description', 18);
+        $heroImageWidth = (int) $settings->get('hero.image_width', 0);
+        $heroImageHeight = (int) $settings->get('hero.image_height', 0);
 
         $googleLoginEnabled = (bool) $settings->get('auth.google.enabled', false);
         $googleClientId = (string) $settings->get('auth.google.client_id', '');
@@ -205,6 +208,8 @@ class SettingsController extends Controller
             'heroFontTitle',
             'heroFontSubtitle',
             'heroFontDescription',
+            'heroImageWidth',
+            'heroImageHeight',
         ));
     }
 
@@ -286,6 +291,8 @@ class SettingsController extends Controller
                 'landing_show_footer_cta' => ['nullable', 'boolean'],
                 'landing_hero_image_mode' => ['nullable', 'in:contain,cover'],
                 'landing_hero_image_focus' => ['nullable', 'in:center,top,bottom,left,right'],
+                'hero_image_width' => ['nullable', 'integer', 'between:100,3000'],
+                'hero_image_height' => ['nullable', 'integer', 'between:100,2000'],
                 'social_twitter' => ['nullable', 'url'],
                 'social_instagram' => ['nullable', 'url'],
                 'social_youtube' => ['nullable', 'url'],
@@ -441,7 +448,7 @@ class SettingsController extends Controller
                     : (bool) $settings->get('landing.show_hero', true),
                 'landing.show_contact_form' => $request->has('landing_show_contact_form')
                     ? $request->boolean('landing_show_contact_form')
-                    : (bool) $settings->get('landing.show_contact_form', false),
+                    : (bool) $settings->get('landing.show_contact_form', true),
                 'landing.show_about' => $request->has('landing_show_about')
                     ? $request->boolean('landing_show_about')
                     : (bool) $settings->get('landing.show_about', true),
@@ -454,13 +461,19 @@ class SettingsController extends Controller
                 'landing.show_footer_cta' => $request->has('landing_show_footer_cta')
                     ? $request->boolean('landing_show_footer_cta')
                     : (bool) $settings->get('landing.show_footer_cta', true),
-                'landing.hero_image_mode' => $validated['landing_hero_image_mode'] ?? (string) $settings->get('landing.hero_image_mode', 'contain'),
+                'landing.hero_image_mode' => $validated['landing_hero_image_mode'] ?? (string) $settings->get('landing.hero_image_mode', 'cover'),
                 'landing.hero_image_focus' => $validated['landing_hero_image_focus'] ?? (string) $settings->get('landing.hero_image_focus', 'center'),
                 'instructor.social.twitter' => $validated['social_twitter'] ?? (string) $settings->get('instructor.social.twitter', ''),
                 'instructor.social.instagram' => $validated['social_instagram'] ?? (string) $settings->get('instructor.social.instagram', ''),
                 'instructor.social.youtube' => $validated['social_youtube'] ?? (string) $settings->get('instructor.social.youtube', ''),
                 'instructor.social.linkedin' => $validated['social_linkedin'] ?? (string) $settings->get('instructor.social.linkedin', ''),
             ]);
+            if (array_key_exists('hero_image_width', $validated)) {
+                $values['hero.image_width'] = (int) $validated['hero_image_width'];
+            }
+            if (array_key_exists('hero_image_height', $validated)) {
+                $values['hero.image_height'] = (int) $validated['hero_image_height'];
+            }
             if (array_key_exists('hero_font_title', $validated)) {
                 $values['hero.font.title'] = (int) $validated['hero_font_title'];
             }

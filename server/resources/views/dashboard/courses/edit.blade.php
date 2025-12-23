@@ -43,7 +43,7 @@
                     @error('thumbnail')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
                     <div class="mt-2">
                         @if ($course->thumbnail_path)
-                            <img src="{{ asset($course->thumbnail_path) }}" alt="Current thumbnail" class="w-40 h-24 object-cover rounded border border-[var(--color-secondary)]/20" x-show="!thumbPreview">
+                            <img src="{{ $course->thumbnail_url }}" alt="Current thumbnail" class="w-40 h-24 object-cover rounded border border-[var(--color-secondary)]/20" x-show="!thumbPreview" onerror="this.onerror=null;this.src='{{ $course->thumbnail_fallback_url }}';">
                         @endif
                         <template x-if="thumbPreview">
                             <img :src="thumbPreview" alt="Thumbnail preview" class="w-40 h-24 object-cover rounded border border-[var(--color-secondary)]/20">

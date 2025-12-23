@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\MediaAsset;
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -98,5 +100,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Lesson::class, 'lesson_user_progress')
             ->withPivot('completed_at')
             ->withTimestamps();
+    }
+
+    public function getProfileImageUrlAttribute(): string
+    {
+        return MediaAsset::url($this->profile_image_path, MediaAsset::avatarFallbackPath($this->email ?: $this->name));
+    }
+
+    public function getProfileImageFallbackUrlAttribute(): string
+    {
+        return MediaAsset::avatarFallback($this->email ?: $this->name);
     }
 }

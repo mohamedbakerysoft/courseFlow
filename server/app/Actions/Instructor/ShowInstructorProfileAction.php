@@ -16,6 +16,7 @@ class ShowInstructorProfileAction
         $courses = Course::query()
             ->published()
             ->with('instructor')
+            ->withCount('lessons')
             ->select(['id', 'slug', 'title', 'description', 'thumbnail_path', 'price', 'currency', 'is_free', 'language', 'instructor_id'])
             ->get();
 

@@ -1,1 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><rect width="100%" height="100%" fill="#e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#374151" font-family="sans-serif" font-size="24">Course 4</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" fill="none">
+  <rect width="1600" height="1000" rx="48" fill="#F8FAFC"/>
+  <rect x="86" y="86" width="1428" height="828" rx="40" fill="url(#a)"/>
+  <circle cx="1334" cy="254" r="202" fill="#A855F7" fill-opacity=".12"/>
+  <circle cx="230" cy="826" r="210" fill="#2563EB" fill-opacity=".16"/>
+  <rect x="164" y="172" width="1272" height="656" rx="34" fill="#fff" fill-opacity=".82"/>
+  <rect x="218" y="228" width="382" height="544" rx="28" fill="#E2E8F0"/>
+  <rect x="654" y="252" width="506" height="30" rx="15" fill="#0F172A"/>
+  <rect x="654" y="304" width="394" height="18" rx="9" fill="#475569"/>
+  <rect x="654" y="392" width="228" height="250" rx="28" fill="#DBEAFE"/>
+  <rect x="910" y="392" width="228" height="250" rx="28" fill="#EDE9FE"/>
+  <rect x="1166" y="392" width="216" height="250" rx="28" fill="#E0F2FE"/>
+  <rect x="654" y="688" width="200" height="54" rx="18" fill="#0F172A"/>
+  <text x="252" y="718" fill="#0F172A" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="58" font-weight="700">Arabic & RTL</text>
+  <text x="252" y="772" fill="#475569" font-family="Alexandria, Arial, sans-serif" font-size="30">واجهة احترافية جاهزة للعربية</text>
+  <defs>
+    <linearGradient id="a" x1="86" y1="86" x2="1514" y2="914" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#E0EAFF"/>
+    </linearGradient>
+  </defs>
+</svg>

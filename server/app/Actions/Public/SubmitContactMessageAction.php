@@ -2,6 +2,7 @@
 
 namespace App\Actions\Public;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 class SubmitContactMessageAction
@@ -32,7 +33,7 @@ class SubmitContactMessageAction
             }
         }
 
-        $to = config('demo.admin_email', 'admin@example.com');
+        $to = $this->resolveRecipientAddress();
         Mail::raw(
             "Contact message\n\nFrom: {$name} <{$email}>\n\n{$message}",
             function ($m) use ($to, $email, $name) {
@@ -41,5 +42,24 @@ class SubmitContactMessageAction
         );
 
         return true;
+    }
+
+    public function resolveRecipientAddress(): string
+    {
+        $configuredAddress = (string) config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL);
+
+        $admin = User::query()
+            ->where('email', $configuredAddress)
+            ->first()
+            ?: User::query()
+                ->where('role', User::ROLE_ADMIN)
+                ->orderBy('id')
+                ->first();
+
+        if ($admin?->email) {
+            return $admin->email;
+        }
+
+        return $configuredAddress !== '' ? $configuredAddress : User::PROTECTED_ADMIN_EMAIL;
     }
 }

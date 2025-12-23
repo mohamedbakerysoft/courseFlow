@@ -103,10 +103,6 @@ Route::get('/favicon.png', function () {
             return response()->file($stored, ['Content-Type' => 'image/png']);
         }
     }
-    $demo = public_path('images/demo/Subject.png');
-    if (file_exists($demo)) {
-        return response()->file($demo, ['Content-Type' => 'image/png']);
-    }
     $ico = public_path('favicon.ico');
     if (file_exists($ico)) {
         return response()->file($ico, ['Content-Type' => 'image/x-icon']);

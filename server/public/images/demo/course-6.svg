@@ -1,1 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><rect width="100%" height="100%" fill="#e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#374151" font-family="sans-serif" font-size="24">Course 6</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" fill="none">
+  <rect width="1600" height="1000" rx="48" fill="#F8FAFC"/>
+  <rect x="90" y="90" width="1420" height="820" rx="40" fill="url(#a)"/>
+  <circle cx="1258" cy="190" r="210" fill="#22C55E" fill-opacity=".14"/>
+  <rect x="166" y="172" width="1268" height="656" rx="36" fill="#fff" fill-opacity=".86"/>
+  <rect x="226" y="238" width="334" height="120" rx="24" fill="#DCFCE7"/>
+  <rect x="226" y="386" width="334" height="120" rx="24" fill="#DBEAFE"/>
+  <rect x="226" y="534" width="334" height="120" rx="24" fill="#FEF3C7"/>
+  <rect x="608" y="238" width="760" height="30" rx="15" fill="#052E16"/>
+  <rect x="608" y="292" width="420" height="18" rx="9" fill="#166534"/>
+  <rect x="608" y="390" width="760" height="244" rx="30" fill="#F0FDF4"/>
+  <rect x="608" y="676" width="188" height="58" rx="20" fill="#166534"/>
+  <text x="658" y="514" fill="#052E16" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="66" font-weight="700">Quickstart</text>
+  <text x="658" y="584" fill="#166534" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="30">A polished onboarding course flow</text>
+  <defs>
+    <linearGradient id="a" x1="90" y1="90" x2="1510" y2="910" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0FDF4"/>
+      <stop offset="1" stop-color="#DCFCE7"/>
+    </linearGradient>
+  </defs>
+</svg>

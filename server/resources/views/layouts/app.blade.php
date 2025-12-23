@@ -6,65 +6,75 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="icon" type="image/png" sizes="any" href="{{ url('/favicon.png') }}">
         <link rel="apple-touch-icon" sizes="180x180" href="{{ url('/favicon.png') }}">
-
         <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
+        <script>
+            (function () {
+                try {
+                    var storedTheme = window.localStorage.getItem('courseflow-theme');
+                    var theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                    document.documentElement.classList.toggle('theme-dark', theme === 'dark');
+                    document.documentElement.dataset.theme = theme;
+                } catch (error) {
+                    document.documentElement.dataset.theme = 'light';
+                }
+            })();
+        </script>
         @php
             $googleFonts = [
-                'Cairo' => 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap',
-                'Tajawal' => 'https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap',
-                'IBM Plex Arabic' => 'https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@400;600;700&display=swap',
-                'Inter' => 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap',
-                'Poppins' => 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap',
+                'Cairo' => 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap',
+                'Tajawal' => 'https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap',
+                'IBM Plex Arabic' => 'https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@400;500;600;700&display=swap',
+                'Alexandria' => 'https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&display=swap',
+                'Noto Sans Arabic' => 'https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap',
+                'Inter' => 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap',
+                'Poppins' => 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap',
                 'Roboto' => 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap',
+                'Plus Jakarta Sans' => 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap',
+                'Manrope' => 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap',
+                'Instrument Sans' => 'https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap',
             ];
-            $arabicFont = $typography['arabic_font'] ?? 'Cairo';
-            $englishFont = $typography['english_font'] ?? 'Inter';
-            $arabicFontUrl = $googleFonts[$arabicFont] ?? $googleFonts['Cairo'];
-            $englishFontUrl = $googleFonts[$englishFont] ?? $googleFonts['Inter'];
+            $arabicFont = $typography['arabic_font'] ?? 'Alexandria';
+            $englishFont = 'Poppins';
+            $arabicFontUrl = $googleFonts[$arabicFont] ?? $googleFonts['Alexandria'];
+            $englishFontUrl = $googleFonts['Poppins'];
         @endphp
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="{{ $englishFontUrl }}" rel="stylesheet" />
         <link href="{{ $arabicFontUrl }}" rel="stylesheet" />
-
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>
             :root {
-                --color-primary: {{ $theme['primary'] ?? '#4F46E5' }};
-                --color-primary-hover: {{ $theme['primary_hover'] ?? '#4338CA' }};
-                --color-secondary: {{ $theme['secondary'] ?? '#334155' }};
-                --color-accent: {{ $theme['accent'] ?? '#10B981' }};
-                --color-bg: {{ $theme['bg'] ?? '#F8FAFC' }};
-                --color-background: {{ $theme['bg'] ?? '#F8FAFC' }};
-                --color-text: {{ $theme['text'] ?? '#0F172A' }};
-                --color-text-primary: {{ $theme['text'] ?? '#0F172A' }};
-                --color-text-muted: {{ $theme['text_muted'] ?? '#64748B' }};
-                --color-error: {{ $theme['error'] ?? '#EF4444' }};
-                --font-arabic: {{ $typographyCss['arabic_stack'] ?? "'Cairo', sans-serif" }};
-                --font-english: {{ $typographyCss['english_stack'] ?? "'Inter', system-ui, sans-serif" }};
+                --color-primary: {{ $theme['primary'] ?? '#F5B800' }};
+                --color-primary-hover: {{ $theme['primary_hover'] ?? '#D8A100' }};
+                --color-secondary: {{ $theme['secondary'] ?? '#0B0B0B' }};
+                --color-accent: {{ $theme['accent'] ?? '#F7F7F7' }};
+                --color-bg: {{ $theme['bg'] ?? '#FFFFFF' }};
+                --color-background: {{ $theme['bg'] ?? '#FFFFFF' }};
+                --color-text: {{ $theme['text'] ?? '#0B0B0B' }};
+                --color-text-primary: {{ $theme['text'] ?? '#0B0B0B' }};
+                --color-text-muted: {{ $theme['text_muted'] ?? '#4A4A4A' }};
+                --color-error: {{ $theme['error'] ?? '#DC2626' }};
+                --font-arabic: {{ $typographyCss['arabic_stack'] ?? "'Alexandria', sans-serif" }};
+                --font-english: 'Poppins', system-ui, sans-serif;
             }
             html { font-family: var(--font-english); }
             html[lang="ar"], .rtl { font-family: var(--font-arabic); }
         </style>
     </head>
     <body class="antialiased" @if(isset($rightClickEnabled) && ! $rightClickEnabled) oncontextmenu="return false" @endif data-right-click-enabled="{{ isset($rightClickEnabled) && $rightClickEnabled ? '1' : '0' }}">
-        <div class="min-h-screen bg-[var(--color-background)]">
+        <div class="cf-app-shell">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+            <main class="cf-shell py-8 sm:py-10 lg:py-12">
+                @isset($header)
+                    <header class="cf-page-header mb-8 text-white">
+                        <div class="relative z-10">
+                            {{ $header }}
+                        </div>
+                    </header>
+                @endisset
 
-            <!-- Page Content -->
-            <main>
                 {{ $slot }}
             </main>
         </div>

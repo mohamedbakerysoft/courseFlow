@@ -43,13 +43,13 @@ class AppServiceProvider extends ServiceProvider
 
         // Theme (colors)
         $defaults = [
-            'primary' => '#3A5BA9',
-            'secondary' => '#2F3C4F',
-            'accent' => '#0FA3A4',
-            'bg' => '#F3F5F9',
-            'text' => '#0B1221',
-            'text_muted' => '#5C6E86',
-            'primary_hover' => '#2F4F97',
+            'primary' => '#C1121F',
+            'secondary' => '#0B0B0F',
+            'accent' => '#E85D04',
+            'bg' => '#F7F2F3',
+            'text' => '#111113',
+            'text_muted' => '#5F5B62',
+            'primary_hover' => '#9B0F1A',
         ];
         $theme = $defaults;
         try {
@@ -66,8 +66,8 @@ class AppServiceProvider extends ServiceProvider
 
         // Typography (fonts)
         $typographyDefaults = [
-            'arabic_font' => 'Cairo',
-            'english_font' => 'Inter',
+            'arabic_font' => 'Alexandria',
+            'english_font' => 'Plus Jakarta Sans',
         ];
         $typography = $typographyDefaults;
         try {
@@ -85,14 +85,19 @@ class AppServiceProvider extends ServiceProvider
             'Cairo' => "'Cairo', sans-serif",
             'Tajawal' => "'Tajawal', sans-serif",
             'IBM Plex Arabic' => "'IBM Plex Arabic', sans-serif",
+            'Alexandria' => "'Alexandria', sans-serif",
+            'Noto Sans Arabic' => "'Noto Sans Arabic', sans-serif",
             // English stacks
             'Inter' => "'Inter', system-ui, sans-serif",
             'Poppins' => "'Poppins', system-ui, sans-serif",
             'Roboto' => "'Roboto', system-ui, sans-serif",
+            'Plus Jakarta Sans' => "'Plus Jakarta Sans', system-ui, sans-serif",
+            'Manrope' => "'Manrope', system-ui, sans-serif",
+            'Instrument Sans' => "'Instrument Sans', system-ui, sans-serif",
         ];
         $typographyCss = [
-            'arabic_stack' => $fontStacks[$typography['arabic_font']] ?? $fontStacks['Cairo'],
-            'english_stack' => $fontStacks[$typography['english_font']] ?? $fontStacks['Inter'],
+            'arabic_stack' => $fontStacks[$typography['arabic_font']] ?? $fontStacks['Alexandria'],
+            'english_stack' => $fontStacks[$typography['english_font']] ?? $fontStacks['Plus Jakarta Sans'],
         ];
         View::share('typography', $typography);
         View::share('typographyCss', $typographyCss);

@@ -9,6 +9,7 @@ use App\Actions\Courses\ShowCourseAction;
 use App\Actions\Progress\CalculateCourseProgressAction;
 use App\Models\Course;
 use App\Services\SettingsService;
+use App\Support\MediaAsset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -44,7 +45,7 @@ class CourseController extends Controller
         $instructorName = (string) ($settings->get('instructor.name') ?: ($course->instructor?->name ?? ''));
         $instructorBio = (string) ($settings->get('instructor.bio') ?: ($course->instructor?->bio ?? ''));
         $instructorImagePath = (string) $settings->get('landing.instructor_image', '');
-        $instructorImageUrl = $instructorImagePath !== '' ? asset('storage/'.$instructorImagePath) : null;
+        $instructorImageUrl = MediaAsset::url($instructorImagePath, MediaAsset::avatarFallbackPath($instructorName));
 
         return view('courses.show', compact(
             'course',

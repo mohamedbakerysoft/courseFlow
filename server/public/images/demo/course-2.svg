@@ -1,1 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><rect width="100%" height="100%" fill="#e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#374151" font-family="sans-serif" font-size="24">Course 2</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" fill="none">
+  <rect width="1600" height="1000" rx="48" fill="#FFF7ED"/>
+  <rect x="82" y="82" width="1436" height="836" rx="36" fill="url(#a)"/>
+  <circle cx="1308" cy="760" r="238" fill="#F97316" fill-opacity=".18"/>
+  <circle cx="304" cy="150" r="188" fill="#FB923C" fill-opacity=".22"/>
+  <rect x="136" y="142" width="460" height="716" rx="34" fill="#fff" fill-opacity=".84"/>
+  <rect x="184" y="198" width="362" height="212" rx="26" fill="#0F172A"/>
+  <rect x="184" y="452" width="220" height="18" rx="9" fill="#0F172A"/>
+  <rect x="184" y="492" width="310" height="18" rx="9" fill="#475569"/>
+  <rect x="184" y="532" width="282" height="18" rx="9" fill="#CBD5E1"/>
+  <rect x="184" y="632" width="180" height="60" rx="20" fill="#EA580C"/>
+  <rect x="650" y="188" width="680" height="36" rx="18" fill="#7C2D12"/>
+  <rect x="650" y="260" width="526" height="20" rx="10" fill="#9A3412"/>
+  <rect x="650" y="344" width="612" height="150" rx="30" fill="#fff" fill-opacity=".52"/>
+  <rect x="650" y="532" width="612" height="150" rx="30" fill="#fff" fill-opacity=".52"/>
+  <rect x="650" y="720" width="612" height="104" rx="30" fill="#fff" fill-opacity=".52"/>
+  <text x="698" y="475" fill="#7C2D12" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="62" font-weight="700">Growth Playbook</text>
+  <text x="698" y="560" fill="#9A3412" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="30">Conversion-focused course marketing</text>
+  <defs>
+    <linearGradient id="a" x1="82" y1="82" x2="1518" y2="918" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF7ED"/>
+      <stop offset="1" stop-color="#FED7AA"/>
+    </linearGradient>
+  </defs>
+</svg>

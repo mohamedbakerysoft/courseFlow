@@ -64,7 +64,7 @@
         <form x-cloak x-show="tab === 'general'" method="POST" action="{{ route('dashboard.settings.update') }}" enctype="multipart/form-data" class="space-y-8 mt-6">
             @csrf
             <input type="hidden" name="settings_group" value="general">
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('General Settings') }}</h2>
                 <div class="grid grid-cols-1 gap-6">
                     <div>
@@ -115,7 +115,7 @@
         <form x-cloak x-show="tab === 'payments'" method="POST" action="{{ route('dashboard.settings.update') }}" class="space-y-8 mt-6">
             @csrf
             <input type="hidden" name="settings_group" value="payments">
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('Payments') }}</h2>
                 <div class="space-y-5">
                     <div class="rounded-md border border-[var(--color-secondary)]/20 bg-white p-3">
@@ -310,7 +310,7 @@
         <form x-cloak x-show="tab === 'authentication'" method="POST" action="{{ route('dashboard.settings.update') }}" class="space-y-8 mt-6">
             @csrf
             <input type="hidden" name="settings_group" value="authentication">
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('Authentication') }}</h2>
                 <div class="space-y-4">
                     <div class="flex items-start justify-between gap-4">
@@ -348,7 +348,7 @@
         <form x-cloak x-show="tab === 'security'" method="POST" action="{{ route('dashboard.settings.update') }}" class="space-y-8 mt-6">
             @csrf
             <input type="hidden" name="settings_group" value="security">
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('Security') }}</h2>
                 <div class="space-y-4">
                     <div class="flex items-start justify-between gap-4">
@@ -419,7 +419,7 @@
         <form x-cloak x-show="tab === 'notifications'" method="POST" action="{{ route('dashboard.settings.update') }}" class="space-y-8 mt-6">
             @csrf
             <input type="hidden" name="settings_group" value="notifications">
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('Notifications') }}</h2>
                 <div class="space-y-4">
                     <div class="flex items-start justify-between gap-4">
@@ -454,7 +454,7 @@
         <form x-cloak x-show="tab === 'landing'" method="POST" action="{{ route('dashboard.settings.update') }}" enctype="multipart/form-data" class="space-y-8 mt-6">
             @csrf
             <input type="hidden" name="settings_group" value="landing">
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('Landing Page') }}</h2>
                 <div class="space-y-5">
                     <div>
@@ -508,7 +508,7 @@
                             <input type="checkbox" name="landing_show_footer_cta" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowFooterCta)>
                         </label>
                     </div>
-                    <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+                    <section class="cf-admin-form-card space-y-5">
                         <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('Hero Title') }}</h3>
                         <p class="text-xs text-[var(--color-text-muted)]">{{ __('Used as the main headline in the landing page hero section.') }}</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -522,7 +522,7 @@
                             </div>
                         </div>
                     </section>
-                    <section x-data="{ fontTitle: {{ (int) (old('hero_font_title', $heroFontTitle ?? 56)) }}, fontSubtitle: {{ (int) (old('hero_font_subtitle', $heroFontSubtitle ?? 24)) }}, fontDescription: {{ (int) (old('hero_font_description', $heroFontDescription ?? 18)) }} }" class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+                    <section x-data="{ fontTitle: {{ (int) (old('hero_font_title', $heroFontTitle ?? 56)) }}, fontSubtitle: {{ (int) (old('hero_font_subtitle', $heroFontSubtitle ?? 24)) }}, fontDescription: {{ (int) (old('hero_font_description', $heroFontDescription ?? 18)) }} }" class="cf-admin-form-card space-y-5">
                         <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('Hero Typography Settings') }}</h3>
                         <div class="grid grid-cols-1 gap-5">
                             <div class="space-y-2">
@@ -548,7 +548,7 @@
                             </div>
                         </div>
                     </section>
-                    <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+                    <section class="cf-admin-form-card space-y-5">
                         <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('Hero Subtitle') }}</h3>
                         <p class="text-xs text-[var(--color-text-muted)]">{{ __('Used as the supporting text in the landing page hero section.') }}</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -566,11 +566,11 @@
                         <span class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero Image Display Mode') }}</span>
                         <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <label class="flex items-center gap-2 rounded-md border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_hero_image_mode" value="contain" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'contain') === 'contain' ? 'checked' : '' }}>
+                                <input type="radio" name="landing_hero_image_mode" value="contain" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'cover') === 'contain' ? 'checked' : '' }}>
                                 <span class="text-sm text-[var(--color-text-primary)]">{{ __('Fit (Show Full Image)') }}</span>
                             </label>
                             <label class="flex items-center gap-2 rounded-md border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_hero_image_mode" value="cover" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'contain') === 'cover' ? 'checked' : '' }}>
+                                <input type="radio" name="landing_hero_image_mode" value="cover" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'cover') === 'cover' ? 'checked' : '' }}>
                                 <span class="text-sm text-[var(--color-text-primary)]">{{ __('Fill (Crop to Container)') }}</span>
                             </label>
                         </div>
@@ -606,7 +606,7 @@
                         </div>
                         <div>
                             <label for="social_youtube" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('YouTube') }}</label>
-                            <input id="social_youtube" name="social_youtube" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_youtube', $socialYouTube ?? '') }}" placeholder="https://youtube.com/@channel">
+                            <input id="social_youtube" name="social_youtube" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_youtube', $socialYouTube ?? '') }}" placeholder="https://www.youtube.com/watch?v=M7lc1UVf-VE">
                         </div>
                         <div>
                             <label for="social_linkedin" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('LinkedIn') }}</label>
@@ -623,7 +623,7 @@
                             <div class="mt-3">
                                 <p class="text-xs font-medium text-[var(--color-text-muted)] mb-1">{{ __('Current hero image') }}</p>
                                 <div class="overflow-hidden rounded-xl ring-1 ring-[var(--color-secondary)]/20 shadow-sm">
-                                    <img src="{{ $landingInstructorImageUrl }}" alt="Instructor hero" class="w-48 h-48 object-cover">
+                                    <img src="{{ $landingInstructorImageUrl }}" alt="Instructor hero" class="w-48 h-48 object-cover" onerror="this.onerror=null;this.src='{{ \App\Support\MediaAsset::avatarFallback($instructorName ?: 'Instructor') }}';">
                                 </div>
                             </div>
                         @endif
@@ -640,7 +640,7 @@
                             <div class="inline-flex items-center justify-center rounded-xl border border-[var(--color-secondary)]/20 bg-white shadow-sm p-3">
                                 <img x-show="previewUrl" :src="previewUrl" alt="Hero Image" class="h-32 w-64 object-cover rounded-lg">
                                 @if ($heroImageUrl)
-                                    <img x-show="!previewUrl" src="{{ $heroImageUrl }}" alt="Hero Image" class="h-32 w-64 object-cover rounded-lg">
+                                    <img x-show="!previewUrl" src="{{ $heroImageUrl }}" alt="Hero Image" class="h-32 w-64 object-cover rounded-lg" onerror="this.onerror=null;this.src='{{ asset('images/demo/real/hero-formal-2.jpg') }}';">
                                 @endif
                             </div>
                         </div>
@@ -649,6 +649,22 @@
                                 <input type="checkbox" name="remove_hero_image" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]">
                                 {{ __('Remove Hero Image (reset to default)') }}
                             </label>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <label for="hero_image_width" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero image width (px)') }}</label>
+                                <input id="hero_image_width" name="hero_image_width" type="number" min="100" max="3000" step="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('hero_image_width', $heroImageWidth ?: '') }}">
+                                @error('hero_image_width')
+                                    <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="hero_image_height" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero image height (px)') }}</label>
+                                <input id="hero_image_height" name="hero_image_height" type="number" min="100" max="2000" step="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('hero_image_height', $heroImageHeight ?: '') }}">
+                                @error('hero_image_height')
+                                    <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -663,7 +679,7 @@
         <form x-cloak x-show="false" method="POST" action="{{ route('dashboard.settings.update') }}" enctype="multipart/form-data" class="space-y-8">
             @csrf
 
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('General Settings') }}
                 </h2>
@@ -701,7 +717,7 @@
                 </div>
             </section>
 
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('Appearance') }}
                 </h2>
@@ -732,7 +748,7 @@
                 </div>
             </section>
 
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('Legal Pages') }}
                 </h2>
@@ -776,7 +792,7 @@
                 </div>
             </section>
 
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('Payment Methods') }}
                 </h2>
@@ -969,7 +985,7 @@
                 </div>
             </section>
 
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('Authentication') }}
                 </h2>
@@ -1000,7 +1016,7 @@
                 </div>
             </section>
 
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('Security') }}
                 </h2>
@@ -1031,7 +1047,7 @@
                 </div>
             </section>
 
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('Contact') }}
                 </h2>
@@ -1059,7 +1075,7 @@
                 </div>
             </section>
 
-            <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
+            <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('Landing Page') }}
                 </h2>
@@ -1206,11 +1222,11 @@
                         <span class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero Image Display Mode') }}</span>
                         <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <label class="flex items-center gap-2 rounded-md border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_hero_image_mode" value="contain" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'contain') === 'contain' ? 'checked' : '' }}>
+                                <input type="radio" name="landing_hero_image_mode" value="contain" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'cover') === 'contain' ? 'checked' : '' }}>
                                 <span class="text-sm text-[var(--color-text-primary)]">{{ __('Fit (Show Full Image)') }}</span>
                             </label>
                             <label class="flex items-center gap-2 rounded-md border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_hero_image_mode" value="cover" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'contain') === 'cover' ? 'checked' : '' }}>
+                                <input type="radio" name="landing_hero_image_mode" value="cover" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'cover') === 'cover' ? 'checked' : '' }}>
                                 <span class="text-sm text-[var(--color-text-primary)]">{{ __('Fill (Crop to Container)') }}</span>
                             </label>
                         </div>
@@ -1267,7 +1283,7 @@
                             <label for="social_youtube" class="block text-sm font-medium text-[var(--color-text-muted)]">
                                 {{ __('YouTube') }}
                             </label>
-                            <input id="social_youtube" name="social_youtube" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_youtube', $socialYouTube ?? '') }}" placeholder="https://youtube.com/@channel">
+                            <input id="social_youtube" name="social_youtube" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_youtube', $socialYouTube ?? '') }}" placeholder="https://www.youtube.com/watch?v=M7lc1UVf-VE">
                         </div>
                         <div>
                             <label for="social_linkedin" class="block text-sm font-medium text-[var(--color-text-muted)]">

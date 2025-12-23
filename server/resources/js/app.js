@@ -6,6 +6,55 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+const THEME_KEY = 'courseflow-theme';
+
+function _currentTheme() {
+    return document.documentElement.classList.contains('theme-dark') ? 'dark' : 'light';
+}
+
+function _syncThemeControls(theme) {
+    const label = theme === 'dark' ? 'Light mode' : 'Dark mode';
+
+    document.querySelectorAll('[data-theme-icon="light"]').forEach((icon) => {
+        icon.classList.toggle('hidden', theme === 'dark');
+    });
+
+    document.querySelectorAll('[data-theme-icon="dark"]').forEach((icon) => {
+        icon.classList.toggle('hidden', theme !== 'dark');
+    });
+
+    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+        button.setAttribute('aria-label', label);
+        button.setAttribute('title', label);
+    });
+}
+
+function _applyTheme(theme) {
+    const resolvedTheme = theme === 'dark' ? 'dark' : 'light';
+    document.documentElement.classList.toggle('theme-dark', resolvedTheme === 'dark');
+    document.documentElement.dataset.theme = resolvedTheme;
+
+    try {
+        window.localStorage.setItem(THEME_KEY, resolvedTheme);
+    } catch (error) {
+        // noop
+    }
+
+    _syncThemeControls(resolvedTheme);
+}
+
+function _initThemeToggle() {
+    _syncThemeControls(_currentTheme());
+
+    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+        button.addEventListener('click', () => {
+            _applyTheme(_currentTheme() === 'dark' ? 'light' : 'dark');
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', _initThemeToggle);
+
 function _mix(a, b, t) {
     return Math.round(a + (b - a) * t);
 }

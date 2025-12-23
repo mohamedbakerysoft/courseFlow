@@ -34,7 +34,7 @@ class InstructorProfileImageUploadTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($admin) {
             $browser->loginAs($admin)
                 ->visit('/dashboard/instructor/profile')
-                ->attach('instructor_image', '/var/www/html/public/images/demo/Subject.png')
+                ->attach('instructor_image', public_path('images/demo/instructor-formal-alt.jpg'))
                 ->press('Save Profile')
                 ->assertPresent('img.rounded-full.object-cover')
                 ->visit('/courses/upload-course')

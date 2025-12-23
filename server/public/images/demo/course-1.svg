@@ -1,1 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><rect width="100%" height="100%" fill="#e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#374151" font-family="sans-serif" font-size="24">Course 1</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" fill="none">
+  <rect width="1600" height="1000" rx="48" fill="#071226"/>
+  <circle cx="1324" cy="176" r="224" fill="#2563EB" fill-opacity=".32"/>
+  <circle cx="260" cy="844" r="286" fill="#0EA5E9" fill-opacity=".2"/>
+  <rect x="92" y="92" width="1416" height="816" rx="38" fill="url(#a)"/>
+  <rect x="144" y="154" width="430" height="520" rx="30" fill="#F8FBFF" fill-opacity=".08"/>
+  <rect x="620" y="196" width="516" height="28" rx="14" fill="#F8FBFF" fill-opacity=".9"/>
+  <rect x="620" y="248" width="400" height="20" rx="10" fill="#BFDBFE"/>
+  <rect x="620" y="328" width="228" height="188" rx="28" fill="#F8FBFF" fill-opacity=".08"/>
+  <rect x="876" y="328" width="228" height="188" rx="28" fill="#F8FBFF" fill-opacity=".08"/>
+  <rect x="1132" y="328" width="228" height="188" rx="28" fill="#F8FBFF" fill-opacity=".08"/>
+  <rect x="620" y="566" width="740" height="18" rx="9" fill="#F8FBFF" fill-opacity=".72"/>
+  <rect x="620" y="608" width="680" height="18" rx="9" fill="#CBD5E1"/>
+  <rect x="620" y="650" width="534" height="18" rx="9" fill="#CBD5E1"/>
+  <rect x="620" y="736" width="180" height="64" rx="22" fill="#2563EB"/>
+  <rect x="820" y="736" width="180" height="64" rx="22" fill="#F8FBFF" fill-opacity=".1"/>
+  <text x="182" y="762" fill="#E2E8F0" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="70" font-weight="700">Launch</text>
+  <text x="182" y="830" fill="#93C5FD" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="34">Premium course storefront</text>
+  <defs>
+    <linearGradient id="a" x1="145" y1="120" x2="1410" y2="876" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,72 +1,97 @@
 <x-app-layout>
-    <div class="py-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mb-6 flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-[var(--color-text-primary)]">
-                {{ __('My Courses') }}
-            </h1>
-            <a href="{{ route('dashboard.courses.create') }}" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-sm font-semibold text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                {{ __('Add Course') }}
-            </a>
+    <x-slot name="header">
+        <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+                <p class="cf-dark-muted text-sm font-semibold uppercase tracking-[0.24em]">{{ __('Instructor workspace') }}</p>
+                <h1 class="cf-dark-title mt-3 text-3xl font-bold tracking-[-0.04em] sm:text-4xl">{{ __('Manage every course from one organized table') }}</h1>
+                <p class="cf-dark-copy mt-3 max-w-2xl text-sm leading-7">{{ __('Review publishing status, open lessons, and update the catalog without leaving the instructor workspace.') }}</p>
+            </div>
+            <a href="{{ route('dashboard.courses.create') }}" class="cf-button-primary">{{ __('Add Course') }}</a>
         </div>
+    </x-slot>
+
+    <div class="space-y-6">
         <x-breadcrumbs :items="[
             ['label' => __('Dashboard'), 'url' => route('dashboard')],
             ['label' => __('Courses')]
         ]" />
-        <div class="mt-4 bg-white rounded-xl shadow-sm border border-[var(--color-secondary)]/10 overflow-hidden">
-            <table class="min-w-full divide-y divide-[var(--color-secondary)]/20 text-sm">
+
+        <div class="grid gap-5 sm:grid-cols-3">
+            <div class="cf-stat-card">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('Total courses') }}</p>
+                <p class="mt-3 text-4xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $courses->count() }}</p>
+            </div>
+            <div class="cf-stat-card">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('Drafts') }}</p>
+                <p class="mt-3 text-4xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $courses->where('status', \App\Models\Course::STATUS_DRAFT)->count() }}</p>
+            </div>
+            <div class="cf-stat-card">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('Published') }}</p>
+                <p class="mt-3 text-4xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $courses->where('status', \App\Models\Course::STATUS_PUBLISHED)->count() }}</p>
+            </div>
+        </div>
+
+        <div class="cf-table-shell">
+            <table class="cf-table">
                 <thead>
                     <tr>
-                        <th class="px-4 py-3 text-left font-medium text-[var(--color-text-muted)] uppercase tracking-wider text-xs">Title</th>
-                        <th class="px-4 py-3 text-left font-medium text-[var(--color-text-muted)] uppercase tracking-wider text-xs">Slug</th>
-                        <th class="px-4 py-3 text-left font-medium text-[var(--color-text-muted)] uppercase tracking-wider text-xs">Status</th>
-                        <th class="px-4 py-3 text-left font-medium text-[var(--color-text-muted)] uppercase tracking-wider text-xs">Actions</th>
+                        <th>{{ __('Title') }}</th>
+                        <th>{{ __('Slug') }}</th>
+                        <th>{{ __('Status') }}</th>
+                        <th>{{ __('Actions') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-[var(--color-secondary)]/10">
-                @forelse($courses as $course)
-                    <tr>
-                        <td class="px-4 py-3 text-[var(--color-text-primary)]">{{ $course->title }}</td>
-                        <td class="px-4 py-3 text-[var(--color-text-muted)]">{{ $course->slug }}</td>
-                        <td class="px-4 py-3">
-                            @if($course->status === \App\Models\Course::STATUS_DRAFT)
-                                <span class="inline-flex items-center px-2 py-1 rounded bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-xs">Draft</span>
-                            @else
-                                <span class="inline-flex items-center px-2 py-1 rounded bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-xs">Published</span>
-                            @endif
-                        </td>
-                        <td class="px-4 py-3 space-x-3 whitespace-nowrap text-sm">
-                            <a href="{{ route('dashboard.courses.edit', $course) }}" class="text-[var(--color-secondary)] hover:underline">Edit</a>
-                            <a href="{{ route('dashboard.courses.lessons.index', $course) }}" class="text-[var(--color-secondary)] hover:underline">Lessons</a>
-                            @if($course->status === \App\Models\Course::STATUS_DRAFT)
-                                <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.publish', $course) }}" method="POST" class="inline">
-                                    @csrf
-                                    <button :disabled="isSubmitting" class="text-[var(--color-accent)] hover:underline">Publish</button>
-                                </form>
-                            @else
-                                <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.unpublish', $course) }}" method="POST" class="inline">
-                                    @csrf
-                                    <button :disabled="isSubmitting" class="text-[var(--color-text-muted)] hover:underline">Unpublish</button>
-                                </form>
-                            @endif
-                            <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.destroy', $course) }}" method="POST" class="inline" onsubmit="return confirm('Delete course?')">
-                                @csrf
-                                @method('DELETE')
-                                <button :disabled="isSubmitting" class="text-[var(--color-accent)] hover:underline">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="px-4 py-10 text-center text-[var(--color-text-primary)]">
-                            <div class="text-3xl mb-3">📚</div>
-                            <p class="mb-1">{{ __('You have not created any courses yet.') }}</p>
-                            <p class="mb-4 text-sm text-[var(--color-text-muted)]">{{ __('Create your first course to start selling.') }}</p>
-                            <a href="{{ route('dashboard.courses.create') }}" class="inline-flex items-center px-5 py-2.5 rounded-md bg-[var(--color-primary)] text-sm font-semibold text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                {{ __('Add Course') }}
-                            </a>
-                        </td>
-                    </tr>
-                @endforelse
+                <tbody class="divide-y divide-[rgba(15,23,42,0.08)]">
+                    @forelse($courses as $course)
+                        <tr>
+                            <td>
+                                <div>
+                                    <p class="font-semibold text-[var(--color-text-primary)]">{{ $course->title }}</p>
+                                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('Course overview and learning flow') }}</p>
+                                </div>
+                            </td>
+                            <td class="text-[var(--color-text-muted)]">{{ $course->slug }}</td>
+                            <td>
+                                @if($course->status === \App\Models\Course::STATUS_DRAFT)
+                                    <span class="cf-badge-muted">{{ __('Draft') }}</span>
+                                @else
+                                    <span class="cf-badge">{{ __('Published') }}</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="{{ route('dashboard.courses.edit', $course) }}" class="cf-button-ghost !px-4 !py-2">{{ __('Edit') }}</a>
+                                    <a href="{{ route('dashboard.courses.lessons.index', $course) }}" class="cf-button-ghost !px-4 !py-2">{{ __('Lessons') }}</a>
+                                    @if($course->status === \App\Models\Course::STATUS_DRAFT)
+                                        <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.publish', $course) }}" method="POST" class="inline-flex">
+                                            @csrf
+                                            <button :disabled="isSubmitting" class="cf-button-primary !px-4 !py-2">{{ __('Publish') }}</button>
+                                        </form>
+                                    @else
+                                        <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.unpublish', $course) }}" method="POST" class="inline-flex">
+                                            @csrf
+                                            <button :disabled="isSubmitting" class="cf-button-secondary !px-4 !py-2 !text-[var(--color-text-primary)]">{{ __('Unpublish') }}</button>
+                                        </form>
+                                    @endif
+                                    <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.destroy', $course) }}" method="POST" class="inline-flex" onsubmit="return confirm('Delete course?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button :disabled="isSubmitting" class="inline-flex items-center rounded-full bg-[var(--color-accent)]/12 px-4 py-2 text-sm font-semibold text-[var(--color-accent)] hover:bg-[var(--color-accent)]/16">{{ __('Delete') }}</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-14 text-center">
+                                <p class="text-2xl font-semibold text-[var(--color-text-primary)]">{{ __('You have not created any courses yet.') }}</p>
+                                <p class="mt-3 text-sm text-[var(--color-text-muted)]">{{ __('Create your first course to start selling.') }}</p>
+                                <div class="mt-6">
+                                    <a href="{{ route('dashboard.courses.create') }}" class="cf-button-primary">{{ __('Add Course') }}</a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

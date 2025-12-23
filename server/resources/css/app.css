@@ -1,3 +1,1357 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        color-scheme: light;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        text-size-adjust: 100%;
+    }
+
+    body {
+        min-height: 100vh;
+        font-size: 17.25px;
+        line-height: 1.72;
+        letter-spacing: -0.01em;
+        text-rendering: optimizeLegibility;
+        background:
+            radial-gradient(circle at top left, rgba(245, 184, 0, 0.18), transparent 24%),
+            radial-gradient(circle at bottom right, rgba(11, 11, 11, 0.04), transparent 30%),
+            #ffffff;
+        color: var(--color-text-primary);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font: inherit;
+    }
+
+    img {
+        display: block;
+    }
+
+    html.theme-dark {
+        color-scheme: dark;
+        --color-background: #0b0b0b;
+        --color-bg: #0b0b0b;
+        --color-text: #f4f4f4;
+        --color-text-primary: #f4f4f4;
+        --color-text-muted: #b9b9b9;
+    }
+
+    html.theme-dark body {
+        background:
+            radial-gradient(circle at top left, rgba(245, 184, 0, 0.14), transparent 22%),
+            radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.04), transparent 30%),
+            #0b0b0b;
+    }
+
+    ::selection {
+        background: rgba(245, 184, 0, 0.35);
+        color: #0b0b0b;
+    }
+}
+
+@layer components {
+    .cf-shell {
+        @apply mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8;
+    }
+
+    .cf-section {
+        @apply py-16 sm:py-20 lg:py-24;
+    }
+
+    .cf-kicker {
+        @apply inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.22em];
+        color: #0b0b0b;
+        border-color: rgba(11, 11, 11, 0.1);
+        background: #ffffff;
+    }
+
+    .cf-kicker::before {
+        content: "";
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 9999px;
+        background: #f5b800;
+        flex-shrink: 0;
+    }
+
+    .cf-display {
+        font-size: clamp(3.85rem, 6.2vw, 5.35rem);
+        font-weight: 800;
+        letter-spacing: -0.072em;
+        color: var(--color-text-primary);
+        line-height: 0.94;
+    }
+
+    .cf-heading {
+        font-size: clamp(2.45rem, 3.8vw, 3.4rem);
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        color: var(--color-text-primary);
+        line-height: 1.02;
+    }
+
+    .cf-subheading {
+        font-size: clamp(1.08rem, 1.7vw, 1.24rem);
+        font-weight: 500;
+        color: var(--color-text-muted);
+        line-height: 1.74;
+    }
+
+    .cf-muted {
+        color: var(--color-text-muted);
+    }
+
+    .cf-panel {
+        @apply rounded-[28px] border;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+        box-shadow: 0 10px 30px rgba(11, 11, 11, 0.04);
+    }
+
+    .cf-panel-soft {
+        @apply rounded-[24px] border;
+        border-color: rgba(11, 11, 11, 0.06);
+        background: #f7f7f7;
+    }
+
+    .cf-panel-dark {
+        @apply rounded-[30px] border text-white;
+        border-color: rgba(255, 255, 255, 0.08);
+        background:
+            radial-gradient(circle at top right, rgba(245, 184, 0, 0.16), transparent 24%),
+            #0b0b0b;
+    }
+
+    .cf-dark-kicker {
+        @apply inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.22em];
+        color: #0b0b0b;
+        background: #ffffff;
+        border: 1px solid transparent;
+    }
+
+    .cf-dark-kicker::before {
+        content: "";
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 9999px;
+        background: #f5b800;
+        flex-shrink: 0;
+    }
+
+    .cf-dark-title {
+        color: #ffffff;
+    }
+
+    .cf-dark-copy {
+        color: rgba(255, 255, 255, 0.92);
+    }
+
+    .cf-dark-muted {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .cf-dark-soft-card {
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.06);
+        color: #ffffff;
+    }
+
+    .cf-dark-chip {
+        @apply inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold;
+        color: #0b0b0b;
+        background: #ffffff;
+        border: 1px solid transparent;
+    }
+
+    .cf-dark-link-card {
+        display: block;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 1rem 1.25rem;
+        font-size: 15px;
+        font-weight: 600;
+        color: #ffffff;
+        transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .cf-dark-link-card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+    }
+
+    .cf-card-grid {
+        @apply grid grid-cols-1 gap-6 lg:grid-cols-2;
+    }
+
+    .cf-metric {
+        @apply rounded-[22px] border px-5 py-5;
+        border-color: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    .cf-chip {
+        @apply inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12px] font-semibold;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #f7f7f7;
+        color: var(--color-text-primary);
+    }
+
+    .cf-floating-pill {
+        @apply rounded-full border px-3 py-1.5 text-[12px] font-medium;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+        color: var(--color-text-primary);
+    }
+
+    .cf-floating-surface {
+        @apply rounded-[22px] border;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+        box-shadow: 0 12px 24px rgba(11, 11, 11, 0.04);
+    }
+
+    .cf-trust-card {
+        @apply flex items-start gap-4 rounded-[22px] border px-5 py-5;
+        border-color: rgba(11, 11, 11, 0.07);
+        background: #ffffff;
+    }
+
+    .cf-button-primary,
+    .cf-button-secondary,
+    .cf-button-ghost {
+        @apply inline-flex items-center justify-center rounded-full px-6 py-3.5 font-semibold transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+        font-size: 16px;
+        letter-spacing: -0.015em;
+    }
+
+    .cf-button-primary {
+        color: #0b0b0b;
+        background: #f5b800;
+        border: 1px solid #f5b800;
+        box-shadow: none;
+        --tw-ring-color: rgba(245, 184, 0, 0.4);
+    }
+
+    .cf-button-primary:hover {
+        background: #dfaa00;
+        border-color: #dfaa00;
+        transform: translateY(-1px);
+    }
+
+    .cf-button-secondary {
+        color: #0b0b0b;
+        background: #ffffff;
+        border: 1px solid rgba(11, 11, 11, 0.12);
+        --tw-ring-color: rgba(11, 11, 11, 0.14);
+    }
+
+    .cf-button-secondary:hover {
+        background: #f7f7f7;
+        border-color: rgba(11, 11, 11, 0.2);
+    }
+
+    .cf-button-ghost {
+        color: #0b0b0b;
+        background: transparent;
+        border: 1px solid transparent;
+        --tw-ring-color: rgba(11, 11, 11, 0.12);
+    }
+
+    .cf-button-ghost:hover {
+        background: #f7f7f7;
+    }
+
+    .cf-input {
+        @apply w-full rounded-[18px] border px-4 py-3.5 outline-none transition;
+        min-height: 3.35rem;
+        font-size: 16px;
+        font-weight: 500;
+        border-color: rgba(11, 11, 11, 0.1);
+        background: #ffffff;
+        color: var(--color-text-primary);
+        box-shadow: none;
+    }
+
+    .cf-input:focus {
+        border-color: rgba(245, 184, 0, 0.9);
+        box-shadow: 0 0 0 4px rgba(245, 184, 0, 0.12);
+    }
+
+    .cf-input::placeholder {
+        color: rgba(74, 74, 74, 0.74);
+    }
+
+    .cf-divider {
+        @apply border-t;
+        border-color: rgba(11, 11, 11, 0.08);
+    }
+
+    .cf-nav {
+        @apply sticky top-0 z-40 border-b;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(14px);
+    }
+
+    .cf-nav-link {
+        @apply inline-flex items-center rounded-full px-4 py-2 text-[16px] font-semibold transition;
+        color: rgba(11, 11, 11, 0.7);
+    }
+
+    .cf-nav-link:hover,
+    .cf-nav-link.is-active {
+        color: #0b0b0b;
+        background: #f7f7f7;
+    }
+
+    .cf-mobile-link {
+        @apply block rounded-[18px] px-4 py-3 text-[16px] font-semibold transition;
+        color: rgba(11, 11, 11, 0.74);
+    }
+
+    .cf-mobile-link:hover,
+    .cf-mobile-link.is-active {
+        color: #0b0b0b;
+        background: #f7f7f7;
+    }
+
+    .cf-nav-logo {
+        @apply flex h-11 w-11 items-center justify-center rounded-2xl text-black;
+        background: #f5b800;
+    }
+
+    .cf-nav-surface {
+        @apply inline-flex items-center gap-3 rounded-full border px-4 py-2.5 transition;
+        font-size: 16px;
+        border-color: rgba(11, 11, 11, 0.1);
+        background: #ffffff;
+        color: var(--color-text-primary);
+    }
+
+    .cf-nav-surface:hover {
+        background: #f7f7f7;
+    }
+
+    .cf-nav-brand-eyebrow {
+        color: rgba(11, 11, 11, 0.45);
+    }
+
+    .cf-mobile-shell {
+        @apply border-t lg:hidden;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: rgba(255, 255, 255, 0.97);
+        backdrop-filter: blur(14px);
+    }
+
+    .cf-theme-toggle {
+        @apply inline-flex items-center gap-3 rounded-full border px-4 py-2.5 font-semibold transition;
+        font-size: 16px;
+        border-color: rgba(11, 11, 11, 0.1);
+        background: #ffffff;
+        color: #0b0b0b;
+    }
+
+    .cf-theme-toggle:hover {
+        background: #f7f7f7;
+    }
+
+    .cf-theme-icon-shell {
+        @apply flex h-8 w-8 items-center justify-center rounded-full;
+        background: #f5b800;
+        color: #0b0b0b;
+    }
+
+    .cf-hero-shell {
+        @apply rounded-[34px] border px-6 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12;
+        border-color: rgba(11, 11, 11, 0.08);
+        background:
+            radial-gradient(circle at top left, rgba(245, 184, 0, 0.2), transparent 24%),
+            radial-gradient(circle at bottom right, rgba(11, 11, 11, 0.03), transparent 28%),
+            #ffffff;
+    }
+
+    .cf-hero-shell::after {
+        content: "";
+        display: block;
+        width: 96px;
+        height: 4px;
+        margin-top: 2rem;
+        border-radius: 9999px;
+        background: #f5b800;
+    }
+
+    .cf-hero-copy {
+        position: relative;
+        z-index: 1;
+    }
+
+    .cf-hero-main {
+        display: grid;
+        align-items: stretch;
+        gap: 2.5rem;
+    }
+
+    .cf-hero-instructor {
+        @apply inline-flex items-center gap-3 rounded-full border px-4 py-2.5;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #f7f7f7;
+        max-width: 36rem;
+    }
+
+    .cf-hero-pill {
+        @apply inline-flex items-center rounded-full border px-3 py-2 text-[12px] font-semibold;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #f7f7f7;
+        color: rgba(11, 11, 11, 0.76);
+    }
+
+    .cf-hero-stat {
+        @apply rounded-[24px] border px-5 py-5;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+    }
+
+    .cf-hero-visual {
+        position: relative;
+        z-index: 1;
+    }
+
+    .cf-hero-media {
+        @apply relative overflow-hidden rounded-[28px] border;
+        min-height: 690px;
+        padding: 1rem;
+        border-color: rgba(11, 11, 11, 0.08);
+        background:
+            linear-gradient(180deg, #f7f7f7 0%, #fcfcfc 100%);
+    }
+
+    .cf-hero-accent {
+        width: clamp(92px, 18vw, 138px);
+        height: 6px;
+        border-radius: 9999px;
+        background: linear-gradient(90deg, #f5b800 0%, rgba(245, 184, 0, 0.28) 100%);
+    }
+
+    .cf-hero-video-stack {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .cf-hero-video-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.9rem;
+        padding: 0.25rem 0.25rem 0 0.25rem;
+    }
+
+    .cf-hero-video-copy {
+        max-width: 30rem;
+    }
+
+    .cf-hero-video-copy p:first-child {
+        margin: 0;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+    }
+
+    .cf-hero-video-copy p:last-child {
+        margin: 0.45rem 0 0;
+        font-size: 1.06rem;
+        font-weight: 600;
+        line-height: 1.62;
+        color: var(--color-text-primary);
+    }
+
+    .cf-hero-video-stage {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(11, 11, 11, 0.08);
+        background: #0b0b0b;
+    }
+
+    .cf-hero-video-poster {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.26;
+        filter: saturate(0.9) contrast(1.04);
+        transform: scale(1.02);
+    }
+
+    .cf-hero-video-frame {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        aspect-ratio: 16 / 8;
+        background: linear-gradient(180deg, rgba(11, 11, 11, 0.16), rgba(11, 11, 11, 0.3));
+    }
+
+    .cf-hero-video-frame iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+
+    .cf-hero-video-footer {
+        display: grid;
+        gap: 0.85rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cf-hero-video-note {
+        border: 1px solid rgba(11, 11, 11, 0.08);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.96);
+        padding: 1rem 1rem 1rem 1.1rem;
+    }
+
+    .cf-hero-video-note p:first-child {
+        margin: 0;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+    }
+
+    .cf-hero-video-note p:last-child {
+        margin: 0.5rem 0 0;
+        font-size: 1.02rem;
+        font-weight: 600;
+        line-height: 1.62;
+        color: var(--color-text-primary);
+    }
+
+    .cf-hero-footer-band {
+        margin-top: 1.75rem;
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .cf-hero-footer-card {
+        border: 1px solid rgba(11, 11, 11, 0.08);
+        border-radius: 22px;
+        background: #ffffff;
+        padding: 1.15rem 1.1rem;
+    }
+
+    .cf-hero-footer-card p:first-child {
+        margin: 0;
+        font-size: 0.84rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+    }
+
+    .cf-hero-footer-card p:last-child {
+        margin: 0.5rem 0 0;
+        font-size: 1.3rem;
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--color-text-primary);
+    }
+
+    .cf-hero-footer-note {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid rgba(11, 11, 11, 0.08);
+        border-radius: 22px;
+        background:
+            linear-gradient(135deg, rgba(245, 184, 0, 0.12), rgba(255, 255, 255, 0.94));
+        padding: 1.15rem 1.2rem;
+    }
+
+    .cf-hero-footer-note p:first-child {
+        margin: 0;
+        font-size: 0.84rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+    }
+
+    .cf-hero-footer-note p:last-child {
+        margin: 0.55rem 0 0;
+        font-size: 1.04rem;
+        font-weight: 600;
+        line-height: 1.65;
+        color: var(--color-text-primary);
+    }
+
+    .cf-lesson-layout {
+        display: grid;
+        gap: 1.5rem;
+        align-items: start;
+        grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.82fr);
+    }
+
+    .cf-lesson-main,
+    .cf-lesson-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .cf-lesson-header {
+        @apply rounded-[30px] border px-6 py-6 sm:px-8 sm:py-7;
+        border-color: rgba(11, 11, 11, 0.08);
+        background:
+            radial-gradient(circle at top left, rgba(245, 184, 0, 0.14), transparent 20%),
+            #ffffff;
+    }
+
+    .cf-lesson-kicker {
+        @apply inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.2em];
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+        color: var(--color-text-primary);
+    }
+
+    .cf-lesson-kicker::before {
+        content: "";
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 9999px;
+        background: #f5b800;
+        flex-shrink: 0;
+    }
+
+    .cf-lesson-video-shell {
+        @apply overflow-hidden rounded-[30px] border;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #0b0b0b;
+    }
+
+    .cf-lesson-video-shell iframe {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        min-height: 420px;
+        border: 0;
+    }
+
+    .cf-lesson-progress {
+        height: 0.6rem;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 9999px;
+        background: rgba(11, 11, 11, 0.08);
+    }
+
+    .cf-lesson-progress > span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #f5b800 0%, #ffd451 100%);
+    }
+
+    .cf-lesson-richtext {
+        color: var(--color-text-muted);
+        font-size: 1.02rem;
+        line-height: 1.9;
+    }
+
+    .cf-lesson-richtext p {
+        margin: 0;
+    }
+
+    .cf-lesson-richtext p + p {
+        margin-top: 1rem;
+    }
+
+    .cf-lesson-sidebar-card {
+        @apply rounded-[26px] border p-6;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+    }
+
+    .cf-lesson-sidebar-sticky {
+        position: sticky;
+        top: 6.5rem;
+    }
+
+    .cf-lesson-nav-grid {
+        display: grid;
+        gap: 0.85rem;
+    }
+
+    .cf-lesson-inline-stat {
+        @apply rounded-[20px] border px-4 py-4;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #f7f7f7;
+    }
+
+    .cf-hero-image-shell {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cf-hero-image {
+        width: min(100%, 470px);
+        height: 100%;
+        min-height: 580px;
+        border-radius: 24px;
+        object-fit: cover;
+    }
+
+    .cf-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0) 45%, rgba(11, 11, 11, 0.06) 100%);
+        pointer-events: none;
+    }
+
+    .cf-hero-floating-card {
+        @apply absolute rounded-[22px] border px-5 py-4;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: rgba(255, 255, 255, 0.96);
+        max-width: 20rem;
+    }
+
+    .cf-hero-floating-card-bottom {
+        left: 1rem;
+        bottom: 1rem;
+    }
+
+    .cf-auth-shell {
+        @apply relative rounded-[30px] border p-8;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+    }
+
+    .cf-app-shell {
+        min-height: 100vh;
+        background:
+            radial-gradient(circle at top left, rgba(245, 184, 0, 0.12), transparent 22%),
+            #ffffff;
+    }
+
+    .cf-page-header {
+        @apply relative overflow-hidden rounded-[30px] border px-6 py-8 sm:px-8 sm:py-10;
+        border-color: rgba(255, 255, 255, 0.08);
+        background:
+            radial-gradient(circle at top right, rgba(245, 184, 0, 0.14), transparent 22%),
+            #0b0b0b;
+    }
+
+    .cf-page-header::before {
+        content: "";
+        position: absolute;
+        left: 2rem;
+        top: 2rem;
+        width: 72px;
+        height: 4px;
+        border-radius: 9999px;
+        background: #f5b800;
+    }
+
+    .cf-stat-card {
+        @apply rounded-[24px] border px-5 py-5;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+    }
+
+    .cf-table-shell {
+        @apply overflow-hidden rounded-[26px] border;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+    }
+
+    .cf-table {
+        @apply min-w-full divide-y text-sm;
+        --cf-divider: rgba(11, 11, 11, 0.08);
+        border-color: var(--cf-divider);
+    }
+
+    .cf-table thead {
+        background: #f7f7f7;
+    }
+
+    .cf-table th {
+        @apply px-4 py-4 text-left text-[13px] font-semibold uppercase tracking-[0.16em];
+        color: var(--color-text-muted);
+    }
+
+    .cf-table td {
+        @apply px-4 py-4 align-middle;
+        color: var(--color-text-primary);
+    }
+
+    .cf-badge {
+        @apply inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em];
+        background: rgba(245, 184, 0, 0.18);
+        color: #0b0b0b;
+    }
+
+    .cf-badge-muted {
+        @apply inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em];
+        background: #f7f7f7;
+        color: var(--color-text-primary);
+    }
+
+    .cf-course-card {
+        @apply overflow-hidden rounded-[28px] border transition duration-200;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+    }
+
+    .cf-course-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(11, 11, 11, 0.16);
+    }
+
+    .cf-course-media {
+        @apply relative overflow-hidden;
+        background: #f7f7f7;
+    }
+
+    .cf-course-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(11, 11, 11, 0.04) 0%, rgba(11, 11, 11, 0.28) 100%);
+        pointer-events: none;
+    }
+
+    .cf-price-pill {
+        @apply rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em];
+        background: #f5b800;
+        color: #0b0b0b;
+    }
+
+    .cf-course-content {
+        @apply flex h-full flex-col gap-5 p-6;
+    }
+
+    .cf-course-instructor {
+        @apply flex items-center gap-3 rounded-[18px] border px-4 py-3;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #f7f7f7;
+    }
+
+    .cf-course-meta {
+        @apply flex flex-wrap gap-2;
+    }
+
+    .cf-course-meta-pill {
+        @apply inline-flex items-center rounded-full border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em];
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+        color: rgba(11, 11, 11, 0.74);
+    }
+
+    .cf-course-footer {
+        @apply mt-auto flex items-center justify-between gap-4 border-t pt-5;
+        border-color: rgba(11, 11, 11, 0.08);
+    }
+
+    .cf-course-summary {
+        @apply max-w-[18rem] text-sm;
+        color: var(--color-text-muted);
+        line-height: 1.7;
+    }
+
+    .cf-course-cta {
+        @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition;
+        background: #f5b800;
+        color: #0b0b0b;
+    }
+
+    .cf-course-cta:hover {
+        background: #dfaa00;
+    }
+
+    .cf-admin-form-card {
+        @apply rounded-[24px] border p-6;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+    }
+
+    .cf-check-list {
+        @apply space-y-3 text-sm;
+        color: var(--color-text-muted);
+        line-height: 1.8;
+    }
+
+    .cf-check-list li {
+        position: relative;
+        padding-left: 1.5rem;
+    }
+
+    .cf-check-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.68rem;
+        width: 0.42rem;
+        height: 0.42rem;
+        border-radius: 9999px;
+        background: #f5b800;
+    }
+
+    .cf-faq-item {
+        @apply rounded-[24px] border px-5 py-4;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+    }
+
+    .cf-faq-summary {
+        @apply cursor-pointer list-none text-base font-semibold;
+        color: var(--color-text-primary);
+    }
+
+    .cf-faq-summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .cf-status-message {
+        @apply rounded-[18px] border px-4 py-3 text-sm font-medium;
+        border-color: rgba(245, 184, 0, 0.22);
+        background: rgba(245, 184, 0, 0.12);
+        color: var(--color-text-primary);
+    }
+
+    .cf-panel-dark [class*="text-white/50"],
+    .cf-panel-dark [class*="text-white/55"],
+    .cf-page-header [class*="text-white/50"],
+    .cf-page-header [class*="text-white/55"] {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    .cf-panel-dark [class*="text-white/58"],
+    .cf-panel-dark [class*="text-white/70"],
+    .cf-panel-dark [class*="text-white/72"],
+    .cf-panel-dark [class*="text-white/74"],
+    .cf-page-header [class*="text-white/58"],
+    .cf-page-header [class*="text-white/70"],
+    .cf-page-header [class*="text-white/72"],
+    .cf-page-header [class*="text-white/74"] {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .cf-panel-dark [class*="text-white/88"],
+    .cf-page-header [class*="text-white/88"] {
+        color: #ffffff !important;
+    }
+
+    .cf-panel-dark [class*="bg-white/5"],
+    .cf-panel-dark [class*="bg-white/6"],
+    .cf-panel-dark [class*="bg-white/8"],
+    .cf-page-header [class*="bg-white/5"],
+    .cf-page-header [class*="bg-white/6"],
+    .cf-page-header [class*="bg-white/8"] {
+        background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .cf-panel-dark [class*="border-white/10"],
+    .cf-panel-dark [class*="border-white/12"],
+    .cf-panel-dark [class*="border-white/14"],
+    .cf-panel-dark [class*="border-white/16"],
+    .cf-page-header [class*="border-white/10"],
+    .cf-page-header [class*="border-white/12"],
+    .cf-page-header [class*="border-white/14"],
+    .cf-page-header [class*="border-white/16"] {
+        border-color: rgba(255, 255, 255, 0.16) !important;
+    }
+
+    .cf-select,
+    .cf-app-shell select:not([multiple]),
+    .cf-auth-shell select:not([multiple]),
+    .cf-app-shell input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+    .cf-app-shell textarea,
+    .cf-auth-shell input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+    .cf-auth-shell textarea {
+        border-radius: 18px;
+        border: 1px solid rgba(11, 11, 11, 0.1);
+        background: #ffffff;
+        color: var(--color-text-primary);
+        min-height: 3.25rem;
+        padding: 0.85rem 1rem;
+        font-size: 15px;
+        font-weight: 500;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .cf-app-shell textarea,
+    .cf-auth-shell textarea {
+        min-height: 7rem;
+    }
+
+    .cf-select:focus,
+    .cf-app-shell select:not([multiple]):focus,
+    .cf-auth-shell select:not([multiple]):focus,
+    .cf-app-shell input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]):focus,
+    .cf-app-shell textarea:focus,
+    .cf-auth-shell input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]):focus,
+    .cf-auth-shell textarea:focus {
+        outline: none;
+        border-color: rgba(245, 184, 0, 0.9);
+        box-shadow: 0 0 0 4px rgba(245, 184, 0, 0.12);
+    }
+
+    nav[role="navigation"] > div:first-child {
+        @apply hidden;
+    }
+
+    nav[role="navigation"] > div:last-child {
+        @apply flex items-center justify-between gap-4;
+        color: var(--color-text-muted);
+    }
+
+    nav[role="navigation"] a,
+    nav[role="navigation"] span {
+        @apply rounded-full border px-4 py-2 text-sm font-medium;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+    }
+
+    nav[role="navigation"] span[aria-current="page"] {
+        background: #f5b800;
+        color: #0b0b0b;
+        border-color: #f5b800;
+    }
+
+    html.theme-dark .cf-kicker {
+        color: #f4f4f4;
+        border-color: rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    html.theme-dark .cf-panel,
+    html.theme-dark .cf-auth-shell,
+    html.theme-dark .cf-admin-form-card,
+    html.theme-dark .cf-stat-card,
+    html.theme-dark .cf-table-shell,
+    html.theme-dark .cf-faq-item,
+    html.theme-dark .cf-trust-card,
+    html.theme-dark .cf-course-card,
+    html.theme-dark .cf-hero-shell,
+    html.theme-dark .cf-hero-media {
+        border-color: rgba(255, 255, 255, 0.08);
+        background: #111111;
+        box-shadow: none;
+    }
+
+    html.theme-dark .cf-panel-soft,
+    html.theme-dark .cf-hero-instructor,
+    html.theme-dark .cf-hero-pill,
+    html.theme-dark .cf-hero-stat,
+    html.theme-dark .cf-course-instructor,
+    html.theme-dark .cf-mobile-shell,
+    html.theme-dark .cf-nav,
+    html.theme-dark .cf-nav-surface,
+    html.theme-dark .cf-theme-toggle,
+    html.theme-dark .cf-floating-pill,
+    html.theme-dark .cf-floating-surface,
+    html.theme-dark .cf-course-meta-pill {
+        border-color: rgba(255, 255, 255, 0.08);
+        background: #171717;
+        color: var(--color-text-primary);
+    }
+
+    html.theme-dark .cf-nav-link,
+    html.theme-dark .cf-mobile-link,
+    html.theme-dark .cf-nav-brand-eyebrow,
+    html.theme-dark .cf-subheading,
+    html.theme-dark .cf-muted,
+    html.theme-dark .cf-course-summary,
+    html.theme-dark .cf-badge-muted {
+        color: var(--color-text-muted);
+    }
+
+    html.theme-dark .cf-nav-link:hover,
+    html.theme-dark .cf-nav-link.is-active,
+    html.theme-dark .cf-mobile-link:hover,
+    html.theme-dark .cf-mobile-link.is-active,
+    html.theme-dark .cf-nav-surface:hover,
+    html.theme-dark .cf-theme-toggle:hover,
+    html.theme-dark .cf-button-secondary:hover,
+    html.theme-dark .cf-button-ghost:hover {
+        background: #1d1d1d;
+        color: #ffffff;
+    }
+
+    html.theme-dark .cf-page-header,
+    html.theme-dark .cf-panel-dark {
+        border-color: rgba(255, 255, 255, 0.08);
+        background:
+            radial-gradient(circle at top right, rgba(245, 184, 0, 0.14), transparent 22%),
+            #090909;
+    }
+
+    html.theme-dark .cf-input,
+    html.theme-dark .cf-select,
+    html.theme-dark .cf-app-shell input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+    html.theme-dark .cf-app-shell select,
+    html.theme-dark .cf-app-shell textarea {
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        background: #141414 !important;
+        color: #f4f4f4 !important;
+    }
+
+    html.theme-dark .cf-auth-shell input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+    html.theme-dark .cf-auth-shell select,
+    html.theme-dark .cf-auth-shell textarea {
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        background: #141414 !important;
+        color: #f4f4f4 !important;
+    }
+
+    html.theme-dark .cf-input::placeholder,
+    html.theme-dark .cf-app-shell input::placeholder,
+    html.theme-dark .cf-app-shell textarea::placeholder,
+    html.theme-dark .cf-auth-shell input::placeholder,
+    html.theme-dark .cf-auth-shell textarea::placeholder {
+        color: rgba(244, 244, 244, 0.56) !important;
+    }
+
+    html.theme-dark .cf-app-shell .bg-white,
+    html.theme-dark .cf-app-shell .bg-white\/70,
+    html.theme-dark .cf-app-shell .bg-white\/78,
+    html.theme-dark .cf-app-shell .bg-white\/82,
+    html.theme-dark .cf-app-shell .bg-white\/90,
+    html.theme-dark .cf-app-shell .bg-white\/94,
+    html.theme-dark .cf-app-shell .rounded-md.border,
+    html.theme-dark .cf-app-shell .rounded-lg.border,
+    html.theme-dark .cf-app-shell .rounded-xl.border {
+        background: #171717 !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    html.theme-dark .cf-app-shell .text-\[var\(--color-text-muted\)\] {
+        color: rgba(244, 244, 244, 0.74) !important;
+    }
+
+    html.theme-dark .cf-app-shell .text-\[var\(--color-text-primary\)\] {
+        color: #f4f4f4 !important;
+    }
+
+    html.theme-dark .cf-auth-shell .text-\[var\(--color-text-muted\)\],
+    html.theme-dark .cf-auth-shell .text-gray-600 {
+        color: rgba(244, 244, 244, 0.74) !important;
+    }
+
+    html.theme-dark .cf-auth-shell .text-\[var\(--color-text-primary\)\] {
+        color: #f4f4f4 !important;
+    }
+
+    html.theme-dark .cf-app-shell .border-\[var\(--color-secondary\)\]\/10,
+    html.theme-dark .cf-app-shell .border-\[var\(--color-secondary\)\]\/20,
+    html.theme-dark .cf-app-shell .border-\[var\(--color-secondary\)\]\/30,
+    html.theme-dark .cf-divider,
+    html.theme-dark .cf-course-footer {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    html.theme-dark .cf-app-shell code {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+        background: #1a1a1a !important;
+        color: #f4f4f4 !important;
+    }
+
+    html.theme-dark .cf-status-message {
+        border-color: rgba(245, 184, 0, 0.22);
+        background: rgba(245, 184, 0, 0.12);
+        color: #f4f4f4;
+    }
+
+    html.theme-dark .cf-hero-shell {
+        background:
+            radial-gradient(circle at top left, rgba(245, 184, 0, 0.16), transparent 24%),
+            radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.04), transparent 28%),
+            #111111;
+    }
+
+    html.theme-dark .cf-hero-video-stage,
+    html.theme-dark .cf-hero-video-note {
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    html.theme-dark .cf-hero-video-note {
+        background: rgba(23, 23, 23, 0.95);
+    }
+
+    html.theme-dark .cf-hero-footer-card {
+        border-color: rgba(255, 255, 255, 0.08);
+        background: #171717;
+    }
+
+    html.theme-dark .cf-hero-footer-note {
+        border-color: rgba(255, 255, 255, 0.08);
+        background: linear-gradient(135deg, rgba(245, 184, 0, 0.12), rgba(23, 23, 23, 0.96));
+    }
+
+    html.theme-dark .cf-lesson-header,
+    html.theme-dark .cf-lesson-sidebar-card {
+        border-color: rgba(255, 255, 255, 0.08);
+        background:
+            radial-gradient(circle at top left, rgba(245, 184, 0, 0.08), transparent 22%),
+            #111111;
+    }
+
+    html.theme-dark .cf-lesson-kicker,
+    html.theme-dark .cf-lesson-inline-stat {
+        border-color: rgba(255, 255, 255, 0.08);
+        background: #171717;
+        color: #f4f4f4;
+    }
+
+    html.theme-dark .cf-lesson-progress {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    html.theme-dark .cf-lesson-richtext {
+        color: rgba(244, 244, 244, 0.82);
+    }
+
+    html.theme-dark [class*="bg-white/"],
+    html.theme-dark .bg-white {
+        color: #f4f4f4;
+    }
+
+    html.theme-dark .shadow,
+    html.theme-dark .shadow-sm,
+    html.theme-dark .shadow-lg,
+    html.theme-dark .shadow-xl {
+        box-shadow: none !important;
+    }
+
+    html.theme-dark .text-gray-600,
+    html.theme-dark .text-gray-500 {
+        color: rgba(244, 244, 244, 0.72) !important;
+    }
+
+    html.theme-dark .border-white\/70,
+    html.theme-dark .border-white\/80 {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    html.theme-dark .bg-white\/88,
+    html.theme-dark .bg-white\/90 {
+        background: rgba(17, 17, 17, 0.94) !important;
+    }
+
+    html.theme-dark nav[role="navigation"] a,
+    html.theme-dark nav[role="navigation"] span {
+        border-color: rgba(255, 255, 255, 0.08);
+        background: #171717;
+        color: var(--color-text-primary);
+    }
+
+    html.theme-dark nav[role="navigation"] span[aria-current="page"] {
+        color: #0b0b0b;
+        background: #f5b800;
+        border-color: #f5b800;
+    }
+
+    @media (max-width: 1023px) {
+        .cf-hero-media {
+            min-height: auto;
+        }
+
+        .cf-lesson-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .cf-lesson-sidebar-sticky {
+            position: static;
+        }
+
+        .cf-hero-footer-band {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .cf-hero-video-footer {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 639px) {
+        body {
+            font-size: 15.5px;
+        }
+
+        .cf-section {
+            @apply py-14;
+        }
+
+        .cf-display {
+            font-size: clamp(3.3rem, 12vw, 4.05rem);
+            line-height: 1;
+        }
+
+        .cf-heading {
+            font-size: clamp(2.25rem, 9vw, 2.7rem);
+        }
+
+        .cf-hero-shell::after {
+            margin-top: 1.5rem;
+        }
+
+        .cf-hero-media {
+            min-height: auto;
+            padding: 0.75rem;
+        }
+
+        .cf-hero-copy .cf-button-primary,
+        .cf-hero-copy .cf-button-secondary,
+        .cf-auth-shell .cf-button-primary,
+        .cf-auth-shell .cf-button-secondary,
+        .cf-auth-shell .cf-button-ghost {
+            width: 100%;
+        }
+
+        .cf-hero-video-header {
+            align-items: flex-start;
+        }
+
+        .cf-hero-video-copy p:last-child {
+            font-size: 1.04rem;
+        }
+
+        .cf-hero-video-frame {
+            aspect-ratio: 16 / 9;
+        }
+
+        .cf-lesson-video-shell iframe {
+            min-height: 260px;
+        }
+
+        .cf-hero-footer-band {
+            grid-template-columns: 1fr;
+        }
+
+        nav[role="navigation"] > div:last-child {
+            @apply flex-col items-start;
+        }
+    }
+}

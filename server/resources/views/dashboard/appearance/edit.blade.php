@@ -42,6 +42,8 @@
                     <div>
                         <label for="arabic_font" class="block text-sm font-medium mb-1">Arabic Font</label>
                         <select id="arabic_font" name="arabic_font" class="mt-1 block w-64 rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
+                            <option value="Alexandria" @selected($arabicFont==='Alexandria')>Alexandria</option>
+                            <option value="Noto Sans Arabic" @selected($arabicFont==='Noto Sans Arabic')>Noto Sans Arabic</option>
                             <option value="Cairo" @selected($arabicFont==='Cairo')>Cairo</option>
                             <option value="Tajawal" @selected($arabicFont==='Tajawal')>Tajawal</option>
                             <option value="IBM Plex Arabic" @selected($arabicFont==='IBM Plex Arabic')>IBM Plex Arabic</option>
@@ -52,6 +54,9 @@
                     <div>
                         <label for="english_font" class="block text-sm font-medium mb-1">English Font</label>
                         <select id="english_font" name="english_font" class="mt-1 block w-64 rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
+                            <option value="Plus Jakarta Sans" @selected($englishFont==='Plus Jakarta Sans')>Plus Jakarta Sans</option>
+                            <option value="Manrope" @selected($englishFont==='Manrope')>Manrope</option>
+                            <option value="Instrument Sans" @selected($englishFont==='Instrument Sans')>Instrument Sans</option>
                             <option value="Inter" @selected($englishFont==='Inter')>Inter</option>
                             <option value="Poppins" @selected($englishFont==='Poppins')>Poppins</option>
                             <option value="Roboto" @selected($englishFont==='Roboto')>Roboto</option>
@@ -68,7 +73,7 @@
                             <div class="mt-3">
                                 <p class="text-xs text-[var(--color-text-muted)] mb-1">Current Image</p>
                                 <div class="rounded-xl ring-1 ring-[var(--color-secondary)]/20 shadow-sm overflow-hidden w-64">
-                                    <img src="{{ $heroImageUrl }}" alt="Hero" class="w-64 h-40 object-cover">
+                                    <img src="{{ $heroImageUrl }}" alt="Hero" class="w-64 h-40 object-cover" onerror="this.onerror=null;this.src='{{ asset('images/demo/real/hero-formal-2.jpg') }}';">
                                 </div>
                             </div>
                         @endif

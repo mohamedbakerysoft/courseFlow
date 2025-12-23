@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Services\SettingsService;
+use App\Support\MediaAsset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,14 +17,14 @@ class InstructorProfileController extends Controller
         $instructorTitle = (string) $settings->get('instructor.title', '');
         $instructorBio = (string) $settings->get('instructor.bio', '');
         $instructorImagePath = (string) $settings->get('landing.instructor_image', '');
-        $instructorImageUrl = $instructorImagePath !== '' ? asset('storage/'.$instructorImagePath) : null;
-        $heroHeadline = (string) $settings->get('instructor.hero_headline', (string) $settings->get('landing.hero_title', 'Teach and sell your courses with CourseFlow'));
-        $heroSubheadline = (string) $settings->get('instructor.hero_subheadline', (string) $settings->get('landing.hero_subtitle', 'Launch a clean, modern course platform in minutes.'));
+        $instructorImageUrl = MediaAsset::url($instructorImagePath, MediaAsset::avatarFallbackPath($instructorName));
+        $heroHeadline = (string) $settings->get('instructor.hero_headline', (string) $settings->get('landing.hero_title', 'Launch courses with a storefront learners trust'));
+        $heroSubheadline = (string) $settings->get('instructor.hero_subheadline', (string) $settings->get('landing.hero_subtitle', 'Sell digital courses with secure checkout, instant access, and structured lessons.'));
         $socialTwitter = (string) $settings->get('instructor.social.twitter', '');
         $socialInstagram = (string) $settings->get('instructor.social.instagram', '');
         $socialYouTube = (string) $settings->get('instructor.social.youtube', '');
         $socialLinkedIn = (string) $settings->get('instructor.social.linkedin', '');
-        $heroImageFitSetting = (string) ($settings->get('hero.image_fit') ?: $settings->get('landing.hero_image_mode', 'contain'));
+        $heroImageFitSetting = (string) ($settings->get('hero.image_fit') ?: $settings->get('landing.hero_image_mode', 'cover'));
         $heroImageMode = in_array($heroImageFitSetting, ['contain', 'cover'], true) ? $heroImageFitSetting : 'contain';
 
         return view('dashboard.instructor.edit', compact(

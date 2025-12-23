@@ -1,234 +1,360 @@
 <x-public-layout :title="$course->title" :metaDescription="str($course->description)->limit(160)">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    @php
+        $isArabic = app()->getLocale() === 'ar';
+        $displayPrice = $course->is_free || (float) $course->price == 0.0
+            ? __('Free')
+            : number_format((float) $course->price, 2).' '.$course->currency;
+        $displayName = $instructorName !== '' ? $instructorName : ($course->instructor->name ?? '');
+        $displayBio = $instructorBio !== '' ? $instructorBio : ($course->instructor->bio ?? '');
+        $profileImage = !empty($instructorImageUrl)
+            ? $instructorImageUrl
+            : ($course->instructor?->profile_image_url ?? \App\Support\MediaAsset::avatarFallback($displayName));
+        $profileImageFallback = $course->instructor?->profile_image_fallback_url ?? \App\Support\MediaAsset::avatarFallback($displayName);
+        $thumbnail = $course->thumbnail_url;
+        $thumbnailFallback = $course->thumbnail_fallback_url;
+        $courseSignal = Str::lower($course->slug.' '.$course->title.' '.$course->description);
+        $courseBlueprint = match (true) {
+            Str::contains($courseSignal, ['arabic', 'rtl', 'localization']) => [
+                'outcomes' => [
+                    __('Build an Arabic-ready learner experience with clearer RTL structure.'),
+                    __('Translate the storefront and course flow without losing clarity.'),
+                    __('Ship a localized experience that still feels clear and easy to navigate.'),
+                ],
+                'audience' => [
+                    __('Creators serving Arabic-speaking students.'),
+                    __('Teams adapting an English course business to RTL.'),
+                    __('Instructors improving bilingual clarity and trust.'),
+                ],
+                'requirements' => [
+                    __('Basic familiarity with CourseFlow or Laravel project setup.'),
+                    __('A clear idea of the audience you want to localize for.'),
+                    __('Willingness to test layout, content, and lesson flow carefully.'),
+                ],
+                'faq' => [
+                    [
+                        'question' => __('Will this help with both translation and layout?'),
+                        'answer' => __('Yes. The lessons focus on language adaptation, RTL layout, and a smoother learner experience together.'),
+                    ],
+                    [
+                        'question' => __('Is it suitable for an existing course business?'),
+                        'answer' => __('Yes. It works well for creators expanding into Arabic without rebuilding their whole storefront.'),
+                    ],
+                    [
+                        'question' => __('Do I need advanced coding experience?'),
+                        'answer' => __('Intermediate familiarity is enough if you can follow structured lessons and test each change carefully.'),
+                    ],
+                ],
+            ],
+            Str::contains($courseSignal, ['launch', 'marketing', 'sales']) => [
+                'outcomes' => [
+                    __('Clarify the offer, positioning, and sales story behind your course.'),
+                    __('Prepare a smoother launch path from landing page to checkout.'),
+                    __('Turn course ideas into a more focused enrollment campaign.'),
+                ],
+                'audience' => [
+                    __('Creators planning a new paid course launch.'),
+                    __('Instructors improving weak positioning or unclear sales pages.'),
+                    __('Course businesses that want a simpler path to purchase.'),
+                ],
+                'requirements' => [
+                    __('A course topic, outline, or offer you want to launch.'),
+                    __('Basic understanding of your target student.'),
+                    __('Willingness to revise messaging, pricing, and launch assets.'),
+                ],
+                'faq' => [
+                    [
+                        'question' => __('Is this focused on strategy or setup?'),
+                        'answer' => __('It combines positioning, offer clarity, and practical steps that support a clearer sales journey.'),
+                    ],
+                    [
+                        'question' => __('Will this help if I already have a course?'),
+                        'answer' => __('Yes. It is useful both for fresh launches and for improving an existing course offer.'),
+                    ],
+                    [
+                        'question' => __('Do I need a large audience first?'),
+                        'answer' => __('No. The goal is to help you present and sell more clearly, even with a small but relevant audience.'),
+                    ],
+                ],
+            ],
+            default => [
+                'outcomes' => [
+                    __('Move through the topic with a clearer lesson sequence and practical next steps.'),
+                    __('Understand how the course connects to real implementation, not just theory.'),
+                    __('Finish with a repeatable workflow you can apply in your own projects.'),
+                ],
+                'audience' => [
+                    __('Beginners who want a guided path instead of scattered resources.'),
+                    __('Creators looking for a clearer way to learn and apply the topic.'),
+                    __('Students who value structure, clarity, and faster confidence.'),
+                ],
+                'requirements' => [
+                    __('A laptop, internet connection, and time to work through the lessons.'),
+                    __('Willingness to learn step by step and follow the curriculum in order.'),
+                    __('Curiosity to test ideas inside your own project or workflow.'),
+                ],
+                'faq' => [
+                    [
+                        'question' => __('Can I take this course at my own pace?'),
+                        'answer' => __('Yes. The course is designed for self-paced learning, with lesson order and progress tracking built in.'),
+                    ],
+                    [
+                        'question' => __('What happens after I enroll?'),
+                        'answer' => __('You get immediate access to the available lessons and can continue from where you left off later.'),
+                    ],
+                    [
+                        'question' => __('Is this suitable for first-time learners?'),
+                        'answer' => __('Yes. The storefront and curriculum are designed to help new learners feel oriented from the start.'),
+                    ],
+                ],
+            ],
+        };
+        $courseIncludes = [
+            $lessons->count() > 0
+                ? __(':count structured lessons', ['count' => $lessons->count()])
+                : __('Structured curriculum preview'),
+            $course->is_free || (float) $course->price == 0.0 ? __('Free enrollment') : __('One-time payment'),
+            __('Instant access after enrollment'),
+            __('Saved progress while learning'),
+        ];
+    @endphp
+
+    <section class="cf-shell cf-section pt-10 sm:pt-14">
         <x-breadcrumbs :items="[
             ['label' => __('Home'), 'url' => url('/')],
             ['label' => __('Courses'), 'url' => route('courses.index')],
             ['label' => $course->title],
         ]" />
-        <x-public.demo-notice />
 
-        <div class="flex items-center justify-between gap-4">
-            <a href="{{ route('courses.index') }}" class="inline-flex items-center text-sm font-medium text-[var(--color-primary)] hover:underline">
-                {{ __('Back to courses') }}
-            </a>
-        </div>
+        <div class="mt-6 space-y-6">
+            <x-public.demo-notice />
 
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-            <div class="space-y-4">
-                <div class="space-y-3">
-                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--color-text-primary)]">
-                        {{ $course->title }}
-                    </h1>
-                    @if (!empty($course->description))
-                        <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-2xl">
-                            {{ str($course->description)->limit(180) }}
-                        </p>
-                    @endif
-                    <div class="flex flex-wrap items-center gap-3 text-sm text-[var(--color-text-muted)]">
-                        @if ($course->instructor)
-                            <span class="font-medium text-[var(--color-text-primary)]">
-                                {{ $course->instructor->name }}
-                            </span>
-                        @elseif (!empty($instructorName))
-                            <span class="font-medium text-[var(--color-text-primary)]">
-                                {{ $instructorName }}
-                            </span>
-                        @endif
-                        <span class="inline-flex items-center rounded-full bg-[var(--color-secondary)]/10 px-3 py-1 text-xs font-medium text-[var(--color-text-muted)]">
-                            {{ $lessons->count() }} {{ ($appLocale ?? app()->getLocale()) === 'ar' ? 'دروس' : Str::plural(__('lesson'), $lessons->count()) }}
-                        </span>
-                        <span class="inline-flex items-center rounded-full bg-[var(--color-secondary)]/10 px-3 py-1 text-xs font-medium text-[var(--color-text-muted)]">
-                            {{ strtoupper($course->language) }}
-                        </span>
-                        @if ($course->is_free || (float)$course->price == 0.0)
-                            <span class="inline-flex items-center rounded-full bg-[var(--color-primary)] text-white px-3 py-1 text-xs font-semibold">
-                                {{ __('Free') }}
-                            </span>
-                        @else
-                            <span class="inline-flex items-center rounded-full bg-[var(--color-primary)] text-white px-3 py-1 text-xs font-semibold">
-                                {{ number_format((float)$course->price, 2) }} {{ $course->currency }}
-                            </span>
+            <div class="grid gap-6 lg:grid-cols-[1.08fr,0.92fr] lg:items-center">
+                <div class="space-y-5">
+                    <a href="{{ route('courses.index') }}" class="cf-button-ghost !px-4 !py-2">{{ __('Back to courses') }}</a>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="cf-chip">{{ $displayPrice }}</span>
+                        <span class="cf-chip">{{ $lessons->count() }} {{ $isArabic ? 'دروس' : Str::plural('lessons', $lessons->count()) }}</span>
+                        <span class="cf-chip">{{ strtoupper($course->language) }}</span>
+                    </div>
+                    <div class="space-y-4">
+                        <h1 class="cf-display text-4xl sm:text-5xl">{{ $course->title }}</h1>
+                        @if (!empty($course->description))
+                            <p class="cf-subheading max-w-3xl">{{ str($course->description)->limit(220) }}</p>
                         @endif
                     </div>
-                </div>
-
-                <div class="mt-2">
+                    <div class="flex flex-wrap gap-4 text-sm">
+                        <div class="cf-panel-soft px-4 py-3">
+                            <p class="font-semibold text-[var(--color-text-primary)]">{{ $course->instructor?->name ?? $instructorName }}</p>
+                            <p class="mt-1 text-[var(--color-text-muted)]">{{ __('Instructor') }}</p>
+                        </div>
+                        <div class="cf-panel-soft px-4 py-3">
+                            <p class="font-semibold text-[var(--color-text-primary)]">{{ __('Self-paced format') }}</p>
+                            <p class="mt-1 text-[var(--color-text-muted)]">{{ __('Learn through a focused curriculum at your own pace') }}</p>
+                        </div>
+                        <div class="cf-panel-soft px-4 py-3">
+                            <p class="font-semibold text-[var(--color-text-primary)]">{{ __('Enrollment ready') }}</p>
+                            <p class="mt-1 text-[var(--color-text-muted)]">{{ __('Card, PayPal, or manual payment support') }}</p>
+                        </div>
+                    </div>
                     @auth
                         @if ($isEnrolled)
-                            <p class="text-sm text-[var(--color-accent)] font-medium">
-                                {{ __('You are enrolled') }}
-                            </p>
-                            <p class="text-sm text-[var(--color-text-muted)]">
-                                {{ __('Progress') }}: {{ $progressPercent }}%
-                            </p>
+                            <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                                {{ __('You are enrolled') }}. {{ __('Progress') }}: {{ $progressPercent }}%
+                            </div>
                         @endif
                     @endauth
                 </div>
 
-            </div>
-
-            <div class="space-y-4">
-                <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-[var(--color-secondary)]/10">
-                    <div class="relative aspect-video">
-                        @if ($course->thumbnail_path)
-                            <img src="{{ asset($course->thumbnail_path) }}" alt="{{ $course->title }}" class="w-full h-full object-cover">
-                        @else
-                            <div class="w-full h-full bg-gradient-to-br from-[var(--color-primary)]/10 via-white to-[var(--color-primary)]/5 flex items-center justify-center text-sm text-[var(--color-text-muted)]">
-                                {{ __('Course preview') }}
-                            </div>
-                        @endif
+                <div class="cf-panel overflow-hidden">
+                    <div class="relative">
+                        <img
+                            src="{{ $thumbnail }}"
+                            alt="{{ $course->title }}"
+                            class="aspect-[16/11] w-full object-cover"
+                            loading="lazy"
+                            onerror="this.onerror=null;this.src='{{ $thumbnailFallback }}';"
+                        >
+                        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(7,10,20,0)_35%,rgba(7,10,20,0.18)_100%)]"></div>
                     </div>
                 </div>
             </div>
-        </section>
-        <x-public.trust-bar />
+        </div>
+    </section>
 
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            <div class="lg:col-span-2 space-y-6">
-                <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 space-y-4">
-                    <h2 class="text-xl font-semibold text-[var(--color-text-primary)]">
-                        {{ __('What you will learn') }}
-                    </h2>
-                    <ul class="space-y-2 text-sm text-[var(--color-text-muted)]">
-                        <li class="flex items-start gap-2">
-                            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]"></span>
-                            <span>{{ __('Understand the key concepts covered in this course.') }}</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]"></span>
-                            <span>{{ __('Follow the lessons step by step at your own pace.') }}</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]"></span>
-                            <span>{{ __('Apply what you learn directly inside your own projects.') }}</span>
-                        </li>
-                    </ul>
+    <section class="cf-shell pb-8">
+        <x-public.trust-bar />
+    </section>
+
+    <section class="cf-shell pb-14 sm:pb-16 lg:pb-20">
+        <div class="grid gap-8 lg:grid-cols-[1.12fr,0.88fr]">
+            <div class="space-y-6">
+                <div class="cf-panel px-6 py-6 sm:px-8">
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <div>
+                            <span class="cf-kicker">{{ __('What you will learn') }}</span>
+                            <ul class="cf-check-list mt-5">
+                                @foreach ($courseBlueprint['outcomes'] as $outcome)
+                                    <li>{{ $outcome }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="cf-panel-soft px-5 py-5">
+                            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('This course includes') }}</p>
+                            <ul class="cf-check-list mt-4">
+                                @foreach ($courseIncludes as $courseInclude)
+                                    <li>{{ $courseInclude }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+
                     @if (!empty($course->description))
-                        <div class="pt-4 border-t border-[var(--color-secondary)]/10">
-                            <h3 class="text-sm font-semibold text-[var(--color-text-primary)] mb-2">
-                                {{ __('About this course') }}
-                            </h3>
-                            <div class="text-sm text-[var(--color-text-muted)] leading-relaxed">
+                        <div class="cf-divider mt-6 pt-6">
+                            <h2 class="text-xl font-bold text-[var(--color-text-primary)]">{{ __('About this course') }}</h2>
+                            <div class="mt-4 text-sm leading-8 text-[var(--color-text-muted)]">
                                 {!! nl2br(e($course->description)) !!}
                             </div>
                         </div>
                     @endif
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6">
-                    <h2 class="text-xl font-semibold text-[var(--color-text-primary)] mb-3">
-                        {{ __('Lessons preview') }}
-                    </h2>
-                    @if (!empty($lessons) && $lessons->count())
-                        <ul class="divide-y divide-[var(--color-secondary)]/20">
-                            @foreach ($lessons as $l)
-                                <li class="py-3 flex items-center justify-between gap-4">
-                                    @auth
-                                        @if ($isEnrolled)
-                                            <a href="{{ route('lessons.show', [$course, $l]) }}" class="text-sm text-[var(--color-secondary)] hover:underline">
-                                                {{ $l->title }}
-                                            </a>
-                                        @else
-                                            <div class="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-                                                <svg class="h-4 w-4 text-[var(--color-text-muted)]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                    <path d="M8 11V9a4 4 0 118 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                                    <rect x="6" y="11" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.5" />
-                                                </svg>
-                                                <span>{{ $l->title }}</span>
-                                            </div>
-                                        @endif
-                                    @endauth
-                                    @guest
-                                        <div class="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-                                            <svg class="h-4 w-4 text-[var(--color-text-muted)]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                <path d="M8 11V9a4 4 0 118 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                                <rect x="6" y="11" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.5" />
-                                            </svg>
-                                            <span>{{ $l->title }}</span>
-                                        </div>
-                                    @endguest
-                                    <span class="text-xs text-[var(--color-text-muted)]">
-                                        #{{ $l->position }}
-                                    </span>
-                                </li>
+                <div class="grid gap-5 md:grid-cols-3">
+                    <article class="cf-panel px-5 py-5">
+                        <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Who this is for') }}</p>
+                        <ul class="cf-check-list mt-4">
+                            @foreach ($courseBlueprint['audience'] as $audience)
+                                <li>{{ $audience }}</li>
                             @endforeach
                         </ul>
+                    </article>
+                    <article class="cf-panel px-5 py-5">
+                        <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Requirements') }}</p>
+                        <ul class="cf-check-list mt-4">
+                            @foreach ($courseBlueprint['requirements'] as $requirement)
+                                <li>{{ $requirement }}</li>
+                            @endforeach
+                        </ul>
+                    </article>
+                    <article class="cf-panel px-5 py-5">
+                        <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('What to expect') }}</p>
+                        <ul class="cf-check-list mt-4">
+                            <li>{{ __('A clear lesson path instead of scattered resources.') }}</li>
+                            <li>{{ __('A clear decision journey from course page to enrollment.') }}</li>
+                            <li>{{ __('A storefront that keeps the instructor visible and credible.') }}</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <div class="cf-panel px-6 py-6 sm:px-8">
+                    <div class="flex items-center justify-between gap-4">
+                        <div>
+                            <span class="cf-kicker">{{ __('Curriculum') }}</span>
+                            <h2 class="mt-3 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Curriculum preview') }}</h2>
+                        </div>
+                        @auth
+                            @if ($isEnrolled)
+                                <span class="cf-chip">{{ __('Progress') }}: {{ $progressPercent }}%</span>
+                            @endif
+                        @endauth
+                    </div>
+
+                    @if (!empty($lessons) && $lessons->count())
+                        <div class="mt-6 space-y-3">
+                            @foreach ($lessons as $l)
+                                <div class="cf-panel-soft flex items-center justify-between gap-4 px-5 py-4">
+                                    <div class="flex min-w-0 items-center gap-3">
+                                        <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[var(--color-primary)]/10 text-sm font-semibold text-[var(--color-primary)]">
+                                            {{ $l->position }}
+                                        </div>
+                                        @auth
+                                            @if ($isEnrolled)
+                                                <a href="{{ route('lessons.show', [$course, $l]) }}" class="truncate text-sm font-medium text-[var(--color-text-primary)] hover:text-[var(--color-primary)]">
+                                                    {{ $l->title }}
+                                                </a>
+                                            @else
+                                                <span class="truncate text-sm text-[var(--color-text-muted)]">{{ $l->title }}</span>
+                                            @endif
+                                        @else
+                                            <span class="truncate text-sm text-[var(--color-text-muted)]">{{ $l->title }}</span>
+                                        @endauth
+                                    </div>
+                                    <span class="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+                                        @auth
+                                            {{ $isEnrolled ? __('Open') : __('Locked') }}
+                                        @else
+                                            {{ __('Locked') }}
+                                        @endauth
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
                     @else
-                        <div class="rounded-lg border border-dashed p-6 text-center">
-                            <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-text-muted)]">
-                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5" />
-                                    <path d="M8 9h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                </svg>
-                            </div>
-                            <p class="text-[var(--color-text-muted)] font-medium">
-                                {{ __('Lessons will appear once the course is published.') }}
-                            </p>
-                            <p class="text-[var(--color-text-muted)] text-sm">
-                                {{ __('Once published, lessons will appear here.') }}
-                            </p>
+                        <div class="mt-6 cf-panel-soft px-6 py-8 text-center">
+                            <p class="font-medium text-[var(--color-text-primary)]">{{ __('Lessons will appear once the course is published.') }}</p>
+                            <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('Once published, the curriculum preview will appear here.') }}</p>
                         </div>
                     @endif
-                    @auth
-                        @if ($isEnrolled)
-                            <p class="mt-4 text-xs text-[var(--color-text-muted)]">
-                                {{ __('Your course progress') }}: {{ $progressPercent }}%
-                            </p>
+                </div>
+
+                <div class="cf-panel px-6 py-6 sm:px-8">
+                    <div class="grid gap-5 sm:grid-cols-[auto,1fr] sm:items-start">
+                        @if (!empty($profileImage))
+                            <img
+                                src="{{ $profileImage }}"
+                                alt="{{ $displayName }}"
+                                class="h-20 w-20 rounded-[24px] object-cover ring-4 ring-[var(--color-primary)]/10"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='{{ $profileImageFallback }}';"
+                            >
+                        @else
+                            <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-lg font-semibold text-[var(--color-primary)]">
+                                {{ Str::substr($displayName ?? '', 0, 1) }}
+                            </div>
                         @endif
-                    @endauth
+                        <div>
+                            <span class="cf-kicker">{{ __('Instructor') }}</span>
+                            <h2 class="mt-3 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $displayName }}</h2>
+                            @if (!empty($displayBio))
+                                <p class="mt-4 text-sm leading-7 text-[var(--color-text-muted)]">{{ $displayBio }}</p>
+                            @endif
+                            <div class="mt-5">
+                                <a href="{{ route('instructor.show') }}" class="cf-button-secondary !px-4 !py-2">
+                                    {{ __('View instructor profile') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-1">
-                <div class="sticky lg:top-24 space-y-4">
-                    <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-1">
-                                <p class="text-sm font-semibold text-[var(--color-text-primary)]">
-                                    {{ $course->title }}
-                                </p>
-                                <p class="text-xs text-[var(--color-text-muted)]">
-                                    {{ __('Instant access to all lessons after enrollment.') }}
-                                </p>
+            <div class="space-y-6">
+                <div class="cf-panel sticky top-28 px-6 py-6 sm:px-8">
+                    <div class="space-y-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $course->title }}</p>
+                                <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('Review the curriculum, choose a payment method, and start learning right away.') }}</p>
                             </div>
                             <div class="text-right">
-                                @if ($course->is_free || (float)$course->price == 0.0)
-                                    <p class="text-lg font-semibold text-[var(--color-primary)]">
-                                        {{ __('Free') }}
-                                    </p>
-                                @else
-                                    <p class="text-lg font-semibold text-[var(--color-text-primary)]">
-                                        {{ number_format((float)$course->price, 2) }} {{ $course->currency }}
-                                    </p>
-                                @endif
-                                <p class="text-xs text-[var(--color-text-muted)]">
-                                    {{ $lessons->count() }} {{ ($appLocale ?? app()->getLocale()) === 'ar' ? 'دروس' : Str::plural(__('lesson'), $lessons->count()) }}
-                                </p>
+                                <p class="text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $displayPrice }}</p>
+                                <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $lessons->count() }} {{ $isArabic ? 'دروس' : Str::plural('lessons', $lessons->count()) }}</p>
                             </div>
                         </div>
-                        <x-public.trust-bar />
-                        <div class="space-y-2">
-                @guest
-                    <a href="{{ route('login') }}" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                        {{ __('Login to Enroll') }}
-                    </a>
+
+                        <div class="grid gap-2">
+                            @guest
+                                <a href="{{ route('login') }}" class="cf-button-primary w-full">{{ __('Login to enroll') }}</a>
                             @else
                                 @if ($isEnrolled)
                                     @if (!empty($firstLesson))
-                                        <a href="{{ route('lessons.show', [$course, $firstLesson]) }}" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                            {{ __('Continue learning') }}
-                                        </a>
+                                        <a href="{{ route('lessons.show', [$course, $firstLesson]) }}" class="cf-button-primary w-full">{{ __('Continue learning') }}</a>
                                     @endif
-                                    <p class="text-xs text-gray-600 text-center">
-                                        {{ __('You are already enrolled in this course.') }}
-                                    </p>
+                                    <p class="text-center text-sm text-[var(--color-text-muted)]">{{ __('You are already enrolled in this course.') }}</p>
                                 @else
                                     @if ($course->is_free || (float)$course->price == 0.0)
                                         <form action="{{ route('courses.enroll', $course) }}" method="POST" class="w-full">
                                             @csrf
-                                            <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                                {{ app()->getLocale() === 'ar' ? 'احصل على وصول فوري' : 'Get instant access' }}
-                                            </button>
+                                            <button type="submit" class="cf-button-primary w-full">{{ __('Get instant access') }}</button>
                                         </form>
                                     @else
                                         @if ($hasAnyPaymentMethod)
@@ -247,106 +373,93 @@
                                                 $hasAnyAvailable = $stripeAvailable || $paypalAvailable || $hasManualPayment;
                                                 $hasSomeUnavailable = ($isStripeEnabled && ! $stripeAvailable) || ($isPayPalEnabled && ! $paypalAvailable);
                                             @endphp
+
                                             @if ($hasAnyAvailable)
                                                 @if ($stripeAvailable)
-                                                <form action="{{ route('payments.checkout', $course) }}" method="POST" class="w-full">
-                                                    @csrf
-                                                    <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                                        {{ __('Pay securely with Card') }}
-                                                    </button>
-                                                </form>
+                                                    <form action="{{ route('payments.checkout', $course) }}" method="POST" class="w-full">
+                                                        @csrf
+                                                        <button type="submit" class="cf-button-primary w-full">{{ __('Pay securely with Card') }}</button>
+                                                    </form>
                                                 @endif
+
                                                 @if ($paypalAvailable)
-                                                <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="w-full">
-                                                    @csrf
-                                                    <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)]">
-                                                        {{ __('Checkout with PayPal') }}
-                                                    </button>
-                                                </form>
-                                                <div id="paypal-button-container" class="mt-3" data-course-id="{{ (int) $course->id }}"></div>
-                                                @php
-                                                    $ppClientId = (string) app(\App\Services\SettingsService::class)->get('paypal.client_id', '');
-                                                    $ppCurrency = $course->currency ?? 'USD';
-                                                @endphp
-                                                @if ($ppClientId !== '')
-                                                    <script src="https://www.paypal.com/sdk/js?client-id={{ $ppClientId }}&currency={{ $ppCurrency }}&intent=capture"></script>
-                                                    <script>
-                                                        (function () {
-                                                            var csrfMeta = document.querySelector('meta[name="csrf-token"]');
-                                                            var csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
-                                                            var container = document.getElementById('paypal-button-container');
-                                                            var courseId = container ? parseInt(container.getAttribute('data-course-id') || '0', 10) : 0;
-                                                            function callCreateOrder() {
-                                                                return fetch('{{ route('payments.paypal.create_order') }}', {
-                                                                    method: 'POST',
-                                                                    headers: {
-                                                                        'Content-Type': 'application/json',
-                                                                        'X-CSRF-TOKEN': csrf
-                                                                    },
-                                                                    body: JSON.stringify({ course_id: courseId })
-                                                                }).then(function (r) { return r.json(); }).then(function (d) { return d.order_id; });
-                                                            }
-                                                            function callCapture(orderId) {
-                                                                return fetch('{{ route('payments.paypal.capture') }}', {
-                                                                    method: 'POST',
-                                                                    headers: {
-                                                                        'Content-Type': 'application/json',
-                                                                        'X-CSRF-TOKEN': csrf
-                                                                    },
-                                                                    body: JSON.stringify({ order_id: orderId })
-                                                                }).then(function (r) { return r.json(); });
-                                                            }
-                                                            if (window.paypal && container) {
-                                                                var funding = [paypal.FUNDING.PAYPAL, paypal.FUNDING.CARD];
-                                                                funding.forEach(function (source) {
-                                                                    paypal.Buttons({
-                                                                        fundingSource: source,
-                                                                        createOrder: function () { return callCreateOrder(); },
-                                                                        onApprove: function (data) {
-                                                                            return callCapture(data.orderID).then(function () {
-                                                                                container.innerHTML = '<div class="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-green-700">{{ __('Payment successful. You are enrolled.') }}</div>';
-                                                                                var forms = container.parentElement.querySelectorAll('form');
-                                                                                forms.forEach(function (f) { f.style.display = 'none'; });
-                                                                            });
+                                                    <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="w-full">
+                                                        @csrf
+                                                        <button type="submit" class="cf-button-secondary w-full">{{ __('Checkout with PayPal') }}</button>
+                                                    </form>
+                                                    <div id="paypal-button-container" class="mt-3" data-course-id="{{ (int) $course->id }}"></div>
+                                                    @php
+                                                        $ppClientId = (string) app(\App\Services\SettingsService::class)->get('paypal.client_id', '');
+                                                        $ppCurrency = $course->currency ?? 'USD';
+                                                    @endphp
+                                                    @if ($ppClientId !== '')
+                                                        <script src="https://www.paypal.com/sdk/js?client-id={{ $ppClientId }}&currency={{ $ppCurrency }}&intent=capture"></script>
+                                                        <script>
+                                                            (function () {
+                                                                var csrfMeta = document.querySelector('meta[name="csrf-token"]');
+                                                                var csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
+                                                                var container = document.getElementById('paypal-button-container');
+                                                                var courseId = container ? parseInt(container.getAttribute('data-course-id') || '0', 10) : 0;
+                                                                function callCreateOrder() {
+                                                                    return fetch('{{ route('payments.paypal.create_order') }}', {
+                                                                        method: 'POST',
+                                                                        headers: {
+                                                                            'Content-Type': 'application/json',
+                                                                            'X-CSRF-TOKEN': csrf
                                                                         },
-                                                                        onError: function () {}
-                                                                    }).render('#paypal-button-container');
-                                                                });
-                                                            }
-                                                        })();
-                                                    </script>
+                                                                        body: JSON.stringify({ course_id: courseId })
+                                                                    }).then(function (r) { return r.json(); }).then(function (d) { return d.order_id; });
+                                                                }
+                                                                function callCapture(orderId) {
+                                                                    return fetch('{{ route('payments.paypal.capture') }}', {
+                                                                        method: 'POST',
+                                                                        headers: {
+                                                                            'Content-Type': 'application/json',
+                                                                            'X-CSRF-TOKEN': csrf
+                                                                        },
+                                                                        body: JSON.stringify({ order_id: orderId })
+                                                                    }).then(function (r) { return r.json(); });
+                                                                }
+                                                                if (window.paypal && container) {
+                                                                    var funding = [paypal.FUNDING.PAYPAL, paypal.FUNDING.CARD];
+                                                                    funding.forEach(function (source) {
+                                                                        paypal.Buttons({
+                                                                            fundingSource: source,
+                                                                            createOrder: function () { return callCreateOrder(); },
+                                                                            onApprove: function (data) {
+                                                                                return callCapture(data.orderID).then(function () {
+                                                                                    container.innerHTML = '<div class="rounded-2xl border border-green-200 bg-green-50 p-3 text-sm text-green-700">{{ __('Payment successful. You are enrolled.') }}</div>';
+                                                                                    var forms = container.parentElement.querySelectorAll('form');
+                                                                                    forms.forEach(function (f) { f.style.display = 'none'; });
+                                                                                });
+                                                                            },
+                                                                            onError: function () {}
+                                                                        }).render('#paypal-button-container');
+                                                                    });
+                                                                }
+                                                            })();
+                                                        </script>
+                                                    @endif
                                                 @endif
-                                                @endif
+
                                                 @if ($hasManualPayment)
-                                                <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="w-full">
-                                                    @csrf
-                                                    <button type="submit" class="inline-flex w-full justify-center items-center px-6 py-3 rounded-full bg-[var(--color-secondary)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-secondary)]">
-                                                        {{ __('Request manual payment') }}
-                                                    </button>
-                                                </form>
+                                                    <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="w-full">
+                                                        @csrf
+                                                        <button type="submit" class="cf-button-secondary w-full">{{ __('Request manual payment') }}</button>
+                                                    </form>
                                                 @endif
+
                                                 @if ($hasSomeUnavailable)
-                                                    <p class="text-xs text-[var(--color-text-muted)] text-center">
-                                                        {{ __('Some payment methods are currently unavailable.') }}
-                                                    </p>
+                                                    <p class="text-center text-xs text-[var(--color-text-muted)]">{{ __('Some payment methods are currently unavailable.') }}</p>
                                                 @endif
-                                                <div class="rounded-md border border-[var(--color-secondary)]/20 bg-white p-3">
-                                                    <p class="text-xs text-[var(--color-text-muted)] text-center">
-                                                        {{ app()->getLocale() === 'ar' ? 'شراء لمرة واحدة · وصول مدى الحياة · بدون رسوم شهرية' : 'One‑time purchase. Lifetime access. No monthly fees.' }}
-                                                    </p>
-                                                </div>
                                             @else
-                                                <div class="rounded-md border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/10 p-3">
-                                                    <p class="text-xs text-[var(--color-text-muted)] text-center">
-                                                        {{ __('Online payments are temporarily unavailable. Please contact the instructor.') }}
-                                                    </p>
+                                                <div class="rounded-2xl border border-[rgba(15,23,42,0.08)] bg-[rgba(15,23,42,0.04)] px-4 py-3 text-center text-sm text-[var(--color-text-muted)]">
+                                                    {{ __('Online payments are temporarily unavailable. Please contact the instructor.') }}
                                                 </div>
                                             @endif
                                         @else
-                                            <div class="rounded-md border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/10 p-3">
-                                                <p class="text-xs text-[var(--color-text-muted)] text-center">
-                                                    {{ __('Online payments are temporarily unavailable. Please contact the instructor.') }}
-                                                </p>
+                                            <div class="rounded-2xl border border-[rgba(15,23,42,0.08)] bg-[rgba(15,23,42,0.04)] px-4 py-3 text-center text-sm text-[var(--color-text-muted)]">
+                                                {{ __('Online payments are temporarily unavailable. Please contact the instructor.') }}
                                             </div>
                                         @endif
                                     @endif
@@ -354,58 +467,33 @@
                             @endguest
                         </div>
 
-                        @php $ar = app()->getLocale() === 'ar'; @endphp
-                        <div class="space-y-1">
-                            <p class="text-xs text-[var(--color-text-muted)] text-center">
-                                {{ $ar ? 'لا اشتراك · دفع لمرة واحدة' : 'No subscription · One‑time payment' }}
-                            </p>
-                            <p class="text-xs text-[var(--color-text-muted)] text-center">
-                                {{ $ar ? 'الدفع عبر سترايب وباي بال · وصول فوري' : 'Payments handled via Stripe & PayPal · Instant access' }}
-                            </p>
+                        <div class="cf-divider pt-4 text-sm text-[var(--color-text-muted)]">
+                            <p>{{ __('One-time purchase, no monthly subscription, and instant access after enrollment.') }}</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <section class="bg-white rounded-xl shadow-sm ring-1 ring-gray-100 p-6 sm:p-8 space-y-4">
-            <h2 class="text-xl font-semibold text-gray-900">
-                {{ __('Instructor') }}
-            </h2>
-                <div class="space-y-2 text-center sm:text-start">
-                @php
-                    $profileImage = null;
-                    if (!empty($instructorImageUrl)) {
-                        $profileImage = $instructorImageUrl;
-                    } elseif ($course->instructor && !empty($course->instructor->profile_image_path)) {
-                        $p = $course->instructor->profile_image_path;
-                        if (\Illuminate\Support\Str::startsWith($p, ['http://', 'https://'])) {
-                            $profileImage = $p;
-                        } else {
-                            $profileImage = asset(\Illuminate\Support\Str::startsWith($p, ['storage/']) ? $p : ('storage/'.$p));
-                        }
-                    }
-                    $displayName = $instructorName !== '' ? $instructorName : ($course->instructor->name ?? '');
-                    $displayBio = $instructorBio !== '' ? $instructorBio : ($course->instructor->bio ?? '');
-                @endphp
-                @if (!empty($profileImage))
-                    <img src="{{ $profileImage }}" alt="{{ $displayName }}" class="w-20 h-20 rounded-full object-cover ring-4 ring-[var(--color-primary)]/10">
-                @else
-                    <div class="w-20 h-20 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] text-lg">
-                        {{ Str::substr($displayName ?? '', 0, 1) }}
+                <div class="cf-panel-soft px-6 py-6">
+                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Enrollment details') }}</p>
+                    <ul class="cf-check-list mt-4">
+                        @foreach ($courseIncludes as $courseInclude)
+                            <li>{{ $courseInclude }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <div class="cf-panel-soft px-6 py-6">
+                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Quick answers') }}</p>
+                    <div class="mt-4 space-y-4">
+                        @foreach ($courseBlueprint['faq'] as $faqItem)
+                            <div class="rounded-[22px] border border-[rgba(17,17,19,0.08)] px-4 py-4">
+                                <p class="font-medium text-[var(--color-text-primary)]">{{ $faqItem['question'] }}</p>
+                                <p class="mt-2 text-sm leading-7 text-[var(--color-text-muted)]">{{ $faqItem['answer'] }}</p>
+                            </div>
+                        @endforeach
                     </div>
-                @endif
-                <div class="space-y-2 text-center sm:text-start">
-                    <p class="text-base font-semibold text-gray-900">
-                        {{ $displayName }}
-                    </p>
-                    @if (!empty($displayBio))
-                        <p class="text-sm text-gray-600">
-                            {{ $displayBio }}
-                        </p>
-                    @endif
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 </x-public-layout>
