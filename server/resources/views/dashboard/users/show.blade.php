@@ -24,7 +24,7 @@
                         @if ($user->is_disabled)
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[var(--color-error)]/10 text-[var(--color-error)] text-xs font-semibold">{{ __('Disabled') }}</span>
                         @else
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-xs font-semibold">{{ __('Active') }}</span>
+                            <span class="cf-badge">{{ __('Active') }}</span>
                         @endif
                     </div>
                 </div>
@@ -33,11 +33,11 @@
                         @csrf
                         <input type="hidden" name="is_disabled" value="{{ $user->is_disabled ? 0 : 1 }}">
                         @if ($user->is_disabled)
-                            <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)]">
+                            <button type="submit" class="cf-button-primary">
                                 {{ __('Activate') }}
                             </button>
                         @else
-                            <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-error)] text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-error)]">
+                            <button type="submit" class="cf-button-secondary">
                                 {{ __('Deactivate') }}
                             </button>
                         @endif
@@ -84,13 +84,13 @@
                         @csrf
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-[var(--color-text-primary)] mb-1">{{ __('Grant Access to Course') }}</label>
-                            <select name="course_id" class="w-full rounded-md border border-[var(--color-secondary)]/30 text-sm text-[var(--color-text-primary)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
+                            <select name="course_id" class="cf-select w-full">
                                 @foreach ($courses as $course)
                                     <option value="{{ $course->id }}">{{ $course->title }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                        <button type="submit" class="cf-button-primary">
                             {{ __('Grant Access') }}
                         </button>
                     </form>

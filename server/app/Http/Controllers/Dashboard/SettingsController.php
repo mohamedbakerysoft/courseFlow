@@ -7,6 +7,7 @@ use App\Actions\Payments\ValidateStripeConfigAction;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Services\SettingsService;
+use App\Support\LandingContent;
 use App\Support\MediaAsset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class SettingsController extends Controller
     {
         $defaultLanguage = $settings->get('site.default_language', 'en');
         $defaultTheme = (string) $settings->get('ui.theme.default', 'system');
+        $demoEnabled = filter_var($settings->get('demo.enabled', config('demo.enabled')), FILTER_VALIDATE_BOOL);
         $logoPath = $settings->get('site.logo_path');
         $securityRightClickEnabled = (bool) $settings->get('security.right_click.enabled', true);
 
@@ -61,6 +63,10 @@ class SettingsController extends Controller
         $socialInstagram = (string) $settings->get('instructor.social.instagram', '');
         $socialYouTube = (string) $settings->get('instructor.social.youtube', '');
         $socialLinkedIn = (string) $settings->get('instructor.social.linkedin', '');
+        $heroVideoUrl = (string) $settings->get('landing.hero_video_url', $socialYouTube);
+        $landingCopy = LandingContent::copy($settings);
+        $landingTestimonials = LandingContent::testimonials($settings);
+        $landingFaqs = LandingContent::faqs($settings);
 
         $heroFontTitle = (int) $settings->get('hero.font.title', 56);
         $heroFontSubtitle = (int) $settings->get('hero.font.subtitle', 24);
@@ -139,6 +145,7 @@ class SettingsController extends Controller
         return view('dashboard.settings.edit', compact(
             'defaultLanguage',
             'defaultTheme',
+            'demoEnabled',
             'logoUrl',
             'paymentsStripeEnabled',
             'paymentsPaypalEnabled',
@@ -173,6 +180,10 @@ class SettingsController extends Controller
             'socialInstagram',
             'socialYouTube',
             'socialLinkedIn',
+            'heroVideoUrl',
+            'landingCopy',
+            'landingTestimonials',
+            'landingFaqs',
             'legalTermsEn',
             'legalTermsAr',
             'legalPrivacyEn',
@@ -222,6 +233,7 @@ class SettingsController extends Controller
                 'default_language' => ['required', 'in:en,ar'],
                 'logo' => ['nullable', 'image', 'max:2048'],
                 'default_theme' => ['required', 'in:light,dark,system'],
+                'demo_enabled' => ['nullable', 'boolean'],
                 'primary' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
                 'secondary' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
                 'accent' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
@@ -300,6 +312,16 @@ class SettingsController extends Controller
                 'social_instagram' => ['nullable', 'url'],
                 'social_youtube' => ['nullable', 'url'],
                 'social_linkedin' => ['nullable', 'url'],
+                'hero_video_url' => ['nullable', 'url'],
+                'landing_copy' => ['nullable', 'array'],
+                'landing_copy.*' => ['nullable', 'string', 'max:2000'],
+                'landing_testimonials' => ['nullable', 'array'],
+                'landing_testimonials.*.name' => ['nullable', 'string', 'max:255'],
+                'landing_testimonials.*.role' => ['nullable', 'string', 'max:255'],
+                'landing_testimonials.*.quote' => ['nullable', 'string', 'max:1000'],
+                'landing_faqs' => ['nullable', 'array'],
+                'landing_faqs.*.question' => ['nullable', 'string', 'max:255'],
+                'landing_faqs.*.answer' => ['nullable', 'string', 'max:1000'],
                 'hero_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
                 'remove_hero_image' => ['nullable', 'boolean'],
             ]);
@@ -308,6 +330,7 @@ class SettingsController extends Controller
                 'default_language' => ['required', 'in:en,ar'],
                 'logo' => ['nullable', 'image', 'max:2048'],
                 'default_theme' => ['nullable', 'in:light,dark,system'],
+                'demo_enabled' => ['nullable', 'boolean'],
                 'primary' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
                 'secondary' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
                 'accent' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
@@ -344,6 +367,16 @@ class SettingsController extends Controller
                 'social_instagram' => ['nullable', 'url'],
                 'social_youtube' => ['nullable', 'url'],
                 'social_linkedin' => ['nullable', 'url'],
+                'hero_video_url' => ['nullable', 'url'],
+                'landing_copy' => ['nullable', 'array'],
+                'landing_copy.*' => ['nullable', 'string', 'max:2000'],
+                'landing_testimonials' => ['nullable', 'array'],
+                'landing_testimonials.*.name' => ['nullable', 'string', 'max:255'],
+                'landing_testimonials.*.role' => ['nullable', 'string', 'max:255'],
+                'landing_testimonials.*.quote' => ['nullable', 'string', 'max:1000'],
+                'landing_faqs' => ['nullable', 'array'],
+                'landing_faqs.*.question' => ['nullable', 'string', 'max:255'],
+                'landing_faqs.*.answer' => ['nullable', 'string', 'max:1000'],
                 'legal_terms_en' => ['nullable', 'string'],
                 'legal_terms_ar' => ['nullable', 'string'],
                 'legal_privacy_en' => ['nullable', 'string'],
@@ -417,6 +450,9 @@ class SettingsController extends Controller
             $values = array_merge($values, [
                 'site.default_language' => $validated['default_language'] ?? $settings->get('site.default_language', 'en'),
                 'ui.theme.default' => ($validated['default_theme'] ?? $settings->get('ui.theme.default', 'system')),
+                'demo.enabled' => $request->has('demo_enabled')
+                    ? $request->boolean('demo_enabled')
+                    : filter_var($settings->get('demo.enabled', config('demo.enabled')), FILTER_VALIDATE_BOOL),
                 'theme.primary' => $validated['primary'] ?? (string) $settings->get('theme.primary', '#F5B800'),
                 'theme.secondary' => $validated['secondary'] ?? (string) $settings->get('theme.secondary', '#0B0B0B'),
                 'theme.accent' => $validated['accent'] ?? (string) $settings->get('theme.accent', '#F7F7F7'),
@@ -476,6 +512,7 @@ class SettingsController extends Controller
                 'instructor.social.instagram' => $validated['social_instagram'] ?? (string) $settings->get('instructor.social.instagram', ''),
                 'instructor.social.youtube' => $validated['social_youtube'] ?? (string) $settings->get('instructor.social.youtube', ''),
                 'instructor.social.linkedin' => $validated['social_linkedin'] ?? (string) $settings->get('instructor.social.linkedin', ''),
+                'landing.hero_video_url' => $validated['hero_video_url'] ?? (string) $settings->get('landing.hero_video_url', ''),
             ]);
             if (array_key_exists('hero_image_width', $validated)) {
                 $values['hero.image_width'] = (int) $validated['hero_image_width'];
@@ -522,6 +559,23 @@ class SettingsController extends Controller
             $values['landing.hero_title_ar'] = null;
             $values['landing.hero_subtitle_en'] = null;
             $values['landing.hero_subtitle_ar'] = null;
+
+            foreach (array_keys(LandingContent::COPY_DEFAULTS) as $copyKey) {
+                $values["landing.copy.{$copyKey}"] = (string) data_get($validated, "landing_copy.{$copyKey}", $settings->get("landing.copy.{$copyKey}", LandingContent::COPY_DEFAULTS[$copyKey]));
+            }
+
+            foreach (LandingContent::TESTIMONIAL_DEFAULTS as $index => $testimonialDefaults) {
+                $number = $index + 1;
+                $values["landing.testimonials.{$number}.name"] = (string) data_get($validated, "landing_testimonials.{$index}.name", $settings->get("landing.testimonials.{$number}.name", $testimonialDefaults['name']));
+                $values["landing.testimonials.{$number}.role"] = (string) data_get($validated, "landing_testimonials.{$index}.role", $settings->get("landing.testimonials.{$number}.role", $testimonialDefaults['role']));
+                $values["landing.testimonials.{$number}.quote"] = (string) data_get($validated, "landing_testimonials.{$index}.quote", $settings->get("landing.testimonials.{$number}.quote", $testimonialDefaults['quote']));
+            }
+
+            foreach (LandingContent::FAQ_DEFAULTS as $index => $faqDefaults) {
+                $number = $index + 1;
+                $values["landing.faqs.{$number}.question"] = (string) data_get($validated, "landing_faqs.{$index}.question", $settings->get("landing.faqs.{$number}.question", $faqDefaults['question']));
+                $values["landing.faqs.{$number}.answer"] = (string) data_get($validated, "landing_faqs.{$index}.answer", $settings->get("landing.faqs.{$number}.answer", $faqDefaults['answer']));
+            }
         }
         if ($group === 'authentication' || $group === '') {
             $values = array_merge($values, [

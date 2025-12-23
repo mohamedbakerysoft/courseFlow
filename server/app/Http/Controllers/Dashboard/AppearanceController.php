@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Services\SettingsService;
-use App\Support\MediaAsset;
 use Illuminate\Http\Request;
 
 class AppearanceController extends Controller
@@ -16,13 +15,8 @@ class AppearanceController extends Controller
         $secondary = optional(Setting::where('key', 'theme.secondary')->first())->value ?: '#0B0B0B';
         $accent = optional(Setting::where('key', 'theme.accent')->first())->value ?: '#F7F7F7';
         $arabicFont = optional(Setting::where('key', 'typography.arabic_font')->first())->value ?: 'Alexandria';
-        $englishFont = optional(Setting::where('key', 'typography.english_font')->first())->value ?: 'Plus Jakarta Sans';
+        $englishFont = optional(Setting::where('key', 'typography.english_font')->first())->value ?: 'Poppins';
 
-        $heroImagePath = (string) $settings->get('hero.image_path', (string) $settings->get('landing.instructor_image', ''));
-        $heroImageUrl = MediaAsset::url($heroImagePath, 'images/demo/real/hero-formal-2.jpg');
-        $heroImageFit = (string) $settings->get('hero.image_fit', 'cover');
-        $heroImageFocus = (string) $settings->get('hero.image_focus', 'center');
-        $heroImageRatio = (string) $settings->get('hero.image_ratio', '4:5');
         $landingLayout = (string) $settings->get('landing.layout', 'default');
 
         return view('dashboard.appearance.edit', compact(
@@ -31,10 +25,6 @@ class AppearanceController extends Controller
             'accent',
             'arabicFont',
             'englishFont',
-            'heroImageUrl',
-            'heroImageFit',
-            'heroImageFocus',
-            'heroImageRatio',
             'landingLayout',
         ));
     }
@@ -47,10 +37,6 @@ class AppearanceController extends Controller
             'accent' => ['required', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
             'arabic_font' => ['required', 'in:Cairo,Tajawal,IBM Plex Arabic,Alexandria,Noto Sans Arabic'],
             'english_font' => ['required', 'in:Inter,Poppins,Roboto,Plus Jakarta Sans,Manrope,Instrument Sans'],
-            'hero_image' => ['nullable', 'image', 'max:4096'],
-            'hero_image_fit' => ['nullable', 'in:contain,cover'],
-            'hero_image_focus' => ['nullable', 'in:center,top,bottom,left,right'],
-            'hero_image_ratio' => ['nullable', 'in:16:9,4:5,1:1'],
             'landing_layout' => ['nullable', 'in:default,layout_v2,layout_v3'],
         ]);
         $settings->set([
@@ -59,16 +45,8 @@ class AppearanceController extends Controller
             'theme.accent' => $validated['accent'],
             'typography.arabic_font' => $validated['arabic_font'],
             'typography.english_font' => $validated['english_font'],
-            'hero.image_fit' => $validated['hero_image_fit'] ?? 'cover',
-            'hero.image_focus' => $validated['hero_image_focus'] ?? 'center',
-            'hero.image_ratio' => $validated['hero_image_ratio'] ?? '4:5',
             'landing.layout' => $validated['landing_layout'] ?? 'default',
         ]);
-
-        if ($request->hasFile('hero_image')) {
-            $path = $request->file('hero_image')->store('landing', 'public');
-            $settings->set(['hero.image_path' => $path]);
-        }
 
         return back()->with('status', 'Appearance updated.');
     }

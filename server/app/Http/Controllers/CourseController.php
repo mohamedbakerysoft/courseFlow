@@ -31,6 +31,10 @@ class CourseController extends Controller
         CalculateCourseProgressAction $progressAction,
         SettingsService $settings
     ): View {
+        if (($course->product_type ?? Course::TYPE_COURSE) !== Course::TYPE_COURSE) {
+            abort(404);
+        }
+
         $course = $action->execute($course);
         $isEnrolled = $checker->execute($request->user(), $course);
         $progressPercent = $isEnrolled ? $progressAction->execute($request->user(), $course) : 0;

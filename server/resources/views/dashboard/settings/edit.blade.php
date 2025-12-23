@@ -16,12 +16,6 @@
         </div>
         <x-public.demo-notice />
 
-        @if (session('status'))
-            <div class="mb-4 rounded-lg border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 px-4 py-2 text-sm text-[var(--color-accent)]">
-                {{ session('status') }}
-            </div>
-        @endif
-
         <div class="border-b border-[var(--color-secondary)]/10">
             <nav class="-mb-[1px] flex flex-wrap gap-6" aria-label="{{ __('Settings tabs') }}">
                 <a href="#general" @click.prevent="tab = 'general'; location.hash = 'general'"
@@ -88,6 +82,13 @@
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                    <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-4">
+                        <div class="space-y-1">
+                            <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Enable demo mode') }}</p>
+                            <p class="text-xs text-[var(--color-text-muted)]">{{ __('When enabled, visitors can use quick login buttons for the demo admin and demo instructor accounts.') }}</p>
+                        </div>
+                        <input type="checkbox" name="demo_enabled" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($demoEnabled)>
+                    </label>
                     <div>
                         <label for="logo" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Site Logo') }}</label>
                         <input id="logo" name="logo" type="file" accept="image/*" class="mt-1 block w-full text-sm text-[var(--color-text-primary)] border-[var(--color-secondary)]/30 rounded-md shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
@@ -106,7 +107,7 @@
                 </div>
             </section>
             <div class="mt-4 flex items-center justify-end">
-                <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                <button type="submit" class="cf-button-primary">
                     {{ __('Save General Settings') }}
                 </button>
             </div>
@@ -301,7 +302,7 @@
                 </div>
             </section>
             <div class="mt-4 flex items-center justify-end">
-                <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                <button type="submit" class="cf-button-primary">
                     {{ __('Save Payments Settings') }}
                 </button>
             </div>
@@ -339,7 +340,7 @@
                 </div>
             </section>
             <div class="mt-4 flex items-center justify-end">
-                <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                <button type="submit" class="cf-button-primary">
                     {{ __('Save Authentication Settings') }}
                 </button>
             </div>
@@ -410,7 +411,7 @@
                 </div>
             </section>
             <div class="mt-4 flex items-center justify-end">
-                <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                <button type="submit" class="cf-button-primary">
                     {{ __('Save Security Settings') }}
                 </button>
             </div>
@@ -445,7 +446,7 @@
                 </div>
             </section>
             <div class="mt-4 flex items-center justify-end">
-                <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                <button type="submit" class="cf-button-primary">
                     {{ __('Save Notifications Settings') }}
                 </button>
             </div>
@@ -605,14 +606,130 @@
                             <input id="social_instagram" name="social_instagram" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_instagram', $socialInstagram ?? '') }}" placeholder="https://instagram.com/username">
                         </div>
                         <div>
-                            <label for="social_youtube" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('YouTube') }}</label>
+                            <label for="social_youtube" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Instructor YouTube') }}</label>
                             <input id="social_youtube" name="social_youtube" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_youtube', $socialYouTube ?? '') }}" placeholder="https://www.youtube.com/watch?v=M7lc1UVf-VE">
                         </div>
                         <div>
                             <label for="social_linkedin" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('LinkedIn') }}</label>
                             <input id="social_linkedin" name="social_linkedin" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_linkedin', $socialLinkedIn ?? '') }}" placeholder="https://www.linkedin.com/in/username">
                         </div>
+                        <div class="md:col-span-2">
+                            <label for="hero_video_url" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero YouTube Video URL') }}</label>
+                            <input id="hero_video_url" name="hero_video_url" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('hero_video_url', $heroVideoUrl ?? '') }}" placeholder="https://www.youtube.com/watch?v=M7lc1UVf-VE">
+                            <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('This video appears inside the homepage hero preview.') }}</p>
+                        </div>
                     </div>
+                    <section class="cf-admin-form-card space-y-5">
+                        <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('Hero copy') }}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="md:col-span-2">
+                                <label for="landing_copy_hero_kicker" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero kicker') }}</label>
+                                <input id="landing_copy_hero_kicker" name="landing_copy[hero_kicker]" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('landing_copy.hero_kicker', $landingCopy['hero_kicker'] ?? '') }}">
+                            </div>
+                            @foreach (['hero_highlight_1' => 'Highlight 1', 'hero_highlight_2' => 'Highlight 2', 'hero_highlight_3' => 'Highlight 3'] as $copyKey => $copyLabel)
+                                <div>
+                                    <label for="landing_copy_{{ $copyKey }}" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __($copyLabel) }}</label>
+                                    <input id="landing_copy_{{ $copyKey }}" name="landing_copy[{{ $copyKey }}]" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_copy.$copyKey", $landingCopy[$copyKey] ?? '') }}">
+                                </div>
+                            @endforeach
+                            @foreach (['hero_video_eyebrow' => 'Video eyebrow', 'hero_video_badge' => 'Video badge', 'hero_video_title' => 'Video title', 'hero_note_1_title' => 'Note 1 title', 'hero_note_1_body' => 'Note 1 body', 'hero_note_2_title' => 'Note 2 title', 'hero_note_2_body' => 'Note 2 body'] as $copyKey => $copyLabel)
+                                <div class="{{ str_contains($copyKey, 'body') || $copyKey === 'hero_video_title' ? 'md:col-span-2' : '' }}">
+                                    <label for="landing_copy_{{ $copyKey }}" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __($copyLabel) }}</label>
+                                    @if (str_contains($copyKey, 'body') || $copyKey === 'hero_video_title')
+                                        <textarea id="landing_copy_{{ $copyKey }}" name="landing_copy[{{ $copyKey }}]" rows="3" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old("landing_copy.$copyKey", $landingCopy[$copyKey] ?? '') }}</textarea>
+                                    @else
+                                        <input id="landing_copy_{{ $copyKey }}" name="landing_copy[{{ $copyKey }}]" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_copy.$copyKey", $landingCopy[$copyKey] ?? '') }}">
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+                    <section class="cf-admin-form-card space-y-5">
+                        <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('Homepage section copy') }}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @foreach ([
+                                'courses_kicker' => 'Courses kicker',
+                                'courses_title' => 'Courses title',
+                                'courses_subtitle' => 'Courses subtitle',
+                                'problem_kicker' => 'Problem kicker',
+                                'problem_title' => 'Problem title',
+                                'problem_subtitle' => 'Problem subtitle',
+                                'trust_1_title' => 'Trust card 1 title',
+                                'trust_1_body' => 'Trust card 1 body',
+                                'trust_2_title' => 'Trust card 2 title',
+                                'trust_2_body' => 'Trust card 2 body',
+                                'trust_3_title' => 'Trust card 3 title',
+                                'trust_3_body' => 'Trust card 3 body',
+                                'trust_4_title' => 'Trust card 4 title',
+                                'trust_4_body' => 'Trust card 4 body',
+                                'flow_kicker' => 'How it works kicker',
+                                'flow_title' => 'How it works title',
+                                'flow_subtitle' => 'How it works subtitle',
+                                'flow_step_1_title' => 'Step 1 title',
+                                'flow_step_1_body' => 'Step 1 body',
+                                'flow_step_2_title' => 'Step 2 title',
+                                'flow_step_2_body' => 'Step 2 body',
+                                'flow_step_3_title' => 'Step 3 title',
+                                'flow_step_3_body' => 'Step 3 body',
+                                'instructor_kicker' => 'Instructor kicker',
+                                'instructor_card_1_title' => 'Instructor card 1 title',
+                                'instructor_card_1_body' => 'Instructor card 1 body',
+                                'instructor_card_2_title' => 'Instructor card 2 title',
+                                'instructor_card_2_body' => 'Instructor card 2 body',
+                                'instructor_card_3_title' => 'Instructor card 3 title',
+                                'instructor_card_3_body' => 'Instructor card 3 body',
+                                'testimonials_kicker' => 'Testimonials kicker',
+                                'testimonials_title' => 'Testimonials title',
+                                'testimonials_subtitle' => 'Testimonials subtitle',
+                                'faq_kicker' => 'FAQ kicker',
+                                'faq_title' => 'FAQ title',
+                                'faq_subtitle' => 'FAQ subtitle',
+                                'contact_kicker' => 'Contact kicker',
+                                'contact_title' => 'Contact title',
+                                'contact_subtitle' => 'Contact subtitle',
+                                'footer_kicker' => 'Footer kicker',
+                                'footer_title' => 'Footer title',
+                                'footer_body' => 'Footer body',
+                            ] as $copyKey => $copyLabel)
+                                <div class="{{ str_contains($copyKey, 'subtitle') || str_contains($copyKey, '_body') || str_contains($copyKey, '_title') && in_array($copyKey, ['problem_title', 'testimonials_title', 'faq_title', 'contact_title', 'footer_title'], true) ? 'md:col-span-2' : '' }}">
+                                    <label for="landing_copy_{{ $copyKey }}_section" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __($copyLabel) }}</label>
+                                    @if (str_contains($copyKey, 'subtitle') || str_contains($copyKey, '_body'))
+                                        <textarea id="landing_copy_{{ $copyKey }}_section" name="landing_copy[{{ $copyKey }}]" rows="3" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old("landing_copy.$copyKey", $landingCopy[$copyKey] ?? '') }}</textarea>
+                                    @else
+                                        <input id="landing_copy_{{ $copyKey }}_section" name="landing_copy[{{ $copyKey }}]" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_copy.$copyKey", $landingCopy[$copyKey] ?? '') }}">
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+                    <section class="cf-admin-form-card space-y-5">
+                        <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('Testimonials') }}</h3>
+                        <div class="grid gap-5 lg:grid-cols-3">
+                            @foreach (($landingTestimonials ?? []) as $index => $testimonial)
+                                <div class="rounded-2xl border border-[var(--color-secondary)]/10 p-4 space-y-3">
+                                    <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Name') }}</label>
+                                    <input type="text" name="landing_testimonials[{{ $index }}][name]" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_testimonials.$index.name", $testimonial['name']) }}">
+                                    <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Role') }}</label>
+                                    <input type="text" name="landing_testimonials[{{ $index }}][role]" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_testimonials.$index.role", $testimonial['role']) }}">
+                                    <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Quote') }}</label>
+                                    <textarea name="landing_testimonials[{{ $index }}][quote]" rows="4" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old("landing_testimonials.$index.quote", $testimonial['quote']) }}</textarea>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+                    <section class="cf-admin-form-card space-y-5">
+                        <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('FAQ items') }}</h3>
+                        <div class="grid gap-5 lg:grid-cols-3">
+                            @foreach (($landingFaqs ?? []) as $index => $faq)
+                                <div class="rounded-2xl border border-[var(--color-secondary)]/10 p-4 space-y-3">
+                                    <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Question') }}</label>
+                                    <input type="text" name="landing_faqs[{{ $index }}][question]" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_faqs.$index.question", $faq['question']) }}">
+                                    <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Answer') }}</label>
+                                    <textarea name="landing_faqs[{{ $index }}][answer]" rows="4" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old("landing_faqs.$index.answer", $faq['answer']) }}</textarea>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
                     <div>
                         <label for="landing_instructor_image" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Instructor hero image') }}</label>
                         <input id="landing_instructor_image" name="landing_instructor_image" type="file" accept="image/*" class="mt-1 block w-full text-sm text-[var(--color-text-primary)] border-[var(--color-secondary)]/30 rounded-md shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
@@ -670,7 +787,7 @@
                 </div>
             </section>
             <div class="mt-4 flex items-center justify-end">
-                <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md bg-[var(--color-primary)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                <button type="submit" class="cf-button-primary">
                     {{ __('Save Landing Settings') }}
                 </button>
             </div>

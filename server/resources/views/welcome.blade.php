@@ -2,43 +2,14 @@
     @php
         $instructorAvatar = $instructor?->profile_image_url ?? \App\Support\MediaAsset::avatarFallback($instructorName ?? 'Instructor');
         $instructorAvatarFallback = $instructor?->profile_image_fallback_url ?? \App\Support\MediaAsset::avatarFallback($instructorName ?? 'Instructor');
-        $heroHighlights = [
-            __('One-time pricing and fast checkout'),
-            __('Instant lesson access after enrollment'),
-            __('Protected curriculum with saved progress'),
-        ];
-        $testimonials = [
-            [
-                'name' => 'Sara Mitchell',
-                'role' => 'Product designer',
-                'quote' => 'The entire experience feels premium and clear. I knew exactly what I was buying before checkout.',
-            ],
-            [
-                'name' => 'Omar Farouk',
-                'role' => 'Independent creator',
-                'quote' => 'The course cards are simple to compare, and the purchase flow feels much more trustworthy than most demos.',
-            ],
-            [
-                'name' => 'Lina Hassan',
-                'role' => 'Marketing consultant',
-                'quote' => 'The product feels like a real course business, not a generic template. That matters a lot for trust.',
-            ],
-        ];
-        $faqItems = [
-            [
-                'question' => __('How do students access lessons after they enroll?'),
-                'answer' => __('Each course unlocks its structured lessons immediately after free enrollment or payment approval, so the first next step is always clear.'),
-            ],
-            [
-                'question' => __('What payment methods are supported?'),
-                'answer' => __('CourseFlow supports Stripe, PayPal, and manual payment flows so instructors can sell in the way that fits their business.'),
-            ],
-            [
-                'question' => __('Is this experience suitable for a solo instructor?'),
-                'answer' => __('Yes. The storefront, checkout flow, course pages, and instructor profile are designed to help one creator present courses clearly and professionally.'),
-            ],
-        ];
-        $heroVideoSource = trim((string) ($instructorLinks['youtube'] ?? ''));
+        $heroHighlights = array_values(array_filter([
+            $landingCopy['hero_highlight_1'] ?? null,
+            $landingCopy['hero_highlight_2'] ?? null,
+            $landingCopy['hero_highlight_3'] ?? null,
+        ]));
+        $testimonials = $landingTestimonials ?? [];
+        $faqItems = $landingFaqs ?? [];
+        $heroVideoSource = trim((string) ($heroVideoUrl ?? ($instructorLinks['youtube'] ?? '')));
         $heroVideoId = null;
 
         if ($heroVideoSource !== '') {
@@ -64,7 +35,7 @@
                     <div class="cf-hero-copy space-y-8">
                         <div class="space-y-5">
                             <span class="cf-kicker">
-                                {{ __('Independent course business platform') }}
+                                {{ $landingCopy['hero_kicker'] ?? __('Independent course business platform') }}
                             </span>
 
                             @if (!empty($instructorName))
@@ -123,11 +94,11 @@
                         <div class="cf-hero-media">
                             <div class="cf-hero-video-stack">
                                 <div class="cf-hero-video-header">
-                                    <div class="cf-hero-video-copy">
-                                        <p>{{ __('Platform walkthrough') }}</p>
-                                        <p>{{ __('See the storefront, course page, and enrollment flow together in one clean preview.') }}</p>
+                                <div class="cf-hero-video-copy">
+                                        <p>{{ $landingCopy['hero_video_eyebrow'] ?? __('Platform walkthrough') }}</p>
+                                        <p>{{ $landingCopy['hero_video_title'] ?? __('See the storefront, course page, and enrollment flow together in one clean preview.') }}</p>
                                     </div>
-                                    <span class="cf-floating-pill">{{ __('YouTube-ready showcase') }}</span>
+                                    <span class="cf-floating-pill">{{ $landingCopy['hero_video_badge'] ?? __('YouTube-ready showcase') }}</span>
                                 </div>
 
                                 <div class="cf-hero-video-stage">
@@ -156,12 +127,12 @@
 
                                 <div class="cf-hero-video-footer">
                                     <div class="cf-hero-video-note">
-                                        <p>{{ __('What users notice') }}</p>
-                                        <p>{{ __('A clearer hero, stronger hierarchy, and immediate proof of the product in action.') }}</p>
+                                        <p>{{ $landingCopy['hero_note_1_title'] ?? __('What users notice') }}</p>
+                                        <p>{{ $landingCopy['hero_note_1_body'] ?? __('A clearer hero, stronger hierarchy, and immediate proof of the product in action.') }}</p>
                                     </div>
                                     <div class="cf-hero-video-note">
-                                        <p>{{ __('Why it converts') }}</p>
-                                        <p>{{ __('Visitors understand the offer faster when the story and the interface line up in the first screen.') }}</p>
+                                        <p>{{ $landingCopy['hero_note_2_title'] ?? __('Why it converts') }}</p>
+                                        <p>{{ $landingCopy['hero_note_2_body'] ?? __('Visitors understand the offer faster when the story and the interface line up in the first screen.') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -170,33 +141,50 @@
                 </div>
 
                 <div class="cf-hero-footer-band">
-                    @foreach ($platformStats as $stat)
-                        <div class="cf-hero-footer-card">
-                            <p>{{ $stat['label'] }}</p>
-                            <p>{{ $stat['value'] }}</p>
-                        </div>
-                    @endforeach
-
-                    <div class="cf-hero-footer-note">
-                        <p>{{ __('Storefront proof') }}</p>
-                        <p>{{ __('Clear pricing, structured lessons, and a working product preview help the first screen feel complete instead of empty.') }}</p>
-                    </div>
+                    @forelse (($heroCourses ?? collect())->take(4) as $heroCourse)
+                        <a href="{{ route('courses.show', $heroCourse) }}" class="cf-hero-course-card">
+                            <div class="cf-hero-course-media">
+                                <img
+                                    src="{{ $heroCourse->thumbnail_url }}"
+                                    alt="{{ $heroCourse->title }}"
+                                    loading="lazy"
+                                    onerror="this.onerror=null;this.src='{{ $heroCourse->thumbnail_fallback_url }}';"
+                                >
+                            </div>
+                            <div class="cf-hero-course-copy">
+                                <p>{{ $heroCourse->language === 'ar' ? __('Arabic course') : __('Latest course') }}</p>
+                                <h3>{{ $heroCourse->title }}</h3>
+                                <span>
+                                    {{ $heroCourse->is_free ? __('Free download-ready access') : number_format((float) $heroCourse->price, 2).' '.strtoupper($heroCourse->currency ?? 'USD') }}
+                                    ·
+                                    {{ trans_choice(':count lessons', $heroCourse->lessons_count ?? 0, ['count' => $heroCourse->lessons_count ?? 0]) }}
+                                </span>
+                            </div>
+                        </a>
+                    @empty
+                        @foreach ($platformStats as $stat)
+                            <div class="cf-hero-footer-card">
+                                <p>{{ $stat['label'] }}</p>
+                                <p>{{ $stat['value'] }}</p>
+                            </div>
+                        @endforeach
+                    @endforelse
                 </div>
             </div>
         </section>
     @endif
 
     <section id="platform-proof" class="cf-shell pb-8 sm:pb-10">
-        <x-public.trust-bar />
+        <x-public.trust-bar :copy="$landingCopy" />
     </section>
 
     @if ($showCoursesPreview)
         <section class="cf-shell cf-section pt-8">
             <div class="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                 <div class="max-w-2xl space-y-3">
-                    <span class="cf-kicker">{{ __('Course catalog') }}</span>
-                    <h2 class="cf-heading">{{ __('Featured courses') }}</h2>
-                    <p class="cf-subheading">{{ __('Pick a flagship program, a focused quickstart, or a practical specialty course from one clear catalog.') }}</p>
+                    <span class="cf-kicker">{{ $landingCopy['courses_kicker'] ?? __('Course catalog') }}</span>
+                    <h2 class="cf-heading">{{ $landingCopy['courses_title'] ?? __('Featured courses') }}</h2>
+                    <p class="cf-subheading">{{ $landingCopy['courses_subtitle'] ?? __('Pick a flagship program, a focused quickstart, or a practical specialty course from one clear catalog.') }}</p>
                 </div>
                 <div class="flex flex-wrap gap-2">
                     <span class="cf-chip">{{ __('Self-paced learning') }}</span>
@@ -220,9 +208,9 @@
     <section class="cf-shell cf-section">
         <div class="grid gap-6 lg:grid-cols-[0.82fr,1.18fr] lg:items-start">
             <div class="space-y-4">
-                <span class="cf-kicker">{{ __('Problem to solution') }}</span>
-                <h2 class="cf-heading">{{ __('Turn a scattered course storefront into a focused buying and learning experience') }}</h2>
-                <p class="cf-subheading">{{ __('The platform brings your catalog, checkout, curriculum, and instructor credibility into one clear journey.') }}</p>
+                <span class="cf-kicker">{{ $landingCopy['problem_kicker'] ?? __('Problem to solution') }}</span>
+                <h2 class="cf-heading">{{ $landingCopy['problem_title'] ?? __('Turn a scattered course storefront into a focused buying and learning experience') }}</h2>
+                <p class="cf-subheading">{{ $landingCopy['problem_subtitle'] ?? __('The platform brings your catalog, checkout, curriculum, and instructor credibility into one clear journey.') }}</p>
             </div>
             <div class="grid gap-5 sm:grid-cols-3">
                 @foreach ($features as $feature)
@@ -239,7 +227,7 @@
     </section>
 
     <section class="cf-shell pb-6">
-        <x-public.social-proof />
+        <x-public.social-proof :copy="$landingCopy" />
     </section>
 
     <section class="cf-shell cf-section pt-6">
@@ -254,7 +242,7 @@
                         onerror="this.onerror=null;this.src='{{ $instructorAvatarFallback }}';"
                     >
                     <div>
-                        <span class="cf-kicker">{{ __('Instructor credibility') }}</span>
+                        <span class="cf-kicker">{{ $landingCopy['instructor_kicker'] ?? __('Instructor credibility') }}</span>
                         <h2 class="mt-3 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $instructorName }}</h2>
                         <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ $instructorTitle !== '' ? $instructorTitle : __('Independent course creator') }}</p>
                     </div>
@@ -269,16 +257,16 @@
             </div>
             <div class="grid gap-4 sm:grid-cols-3">
                 <article class="cf-panel-soft px-5 py-5">
-                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Premium presentation') }}</p>
-                    <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ __('A cleaner public identity improves the first impression and supports conversion.') }}</p>
+                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $landingCopy['instructor_card_1_title'] ?? __('Premium presentation') }}</p>
+                    <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ $landingCopy['instructor_card_1_body'] ?? __('A cleaner public identity improves the first impression and supports conversion.') }}</p>
                 </article>
                 <article class="cf-panel-soft px-5 py-5">
-                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Direct call to action') }}</p>
-                    <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ __('Students can move from discovery to enrollment without dead ends or clutter.') }}</p>
+                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $landingCopy['instructor_card_2_title'] ?? __('Direct call to action') }}</p>
+                    <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ $landingCopy['instructor_card_2_body'] ?? __('Students can move from discovery to enrollment without dead ends or clutter.') }}</p>
                 </article>
                 <article class="cf-panel-soft px-5 py-5">
-                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Consistent experience') }}</p>
-                    <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ __('The same visual system carries from landing page to course page to dashboard.') }}</p>
+                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $landingCopy['instructor_card_3_title'] ?? __('Consistent experience') }}</p>
+                    <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ $landingCopy['instructor_card_3_body'] ?? __('The same visual system carries from landing page to course page to dashboard.') }}</p>
                 </article>
             </div>
         </div>
@@ -287,9 +275,9 @@
     @if ($showTestimonials)
         <section class="cf-shell cf-section">
             <div class="mb-8 max-w-2xl space-y-3">
-                <span class="cf-kicker">{{ __('Testimonials') }}</span>
-                <h2 class="cf-heading">{{ __('What users notice when the storefront finally feels premium') }}</h2>
-                <p class="cf-subheading">{{ __('These signals matter because strong visual clarity improves trust before users commit to payment or enrollment.') }}</p>
+                <span class="cf-kicker">{{ $landingCopy['testimonials_kicker'] ?? __('Testimonials') }}</span>
+                <h2 class="cf-heading">{{ $landingCopy['testimonials_title'] ?? __('What users notice when the storefront finally feels premium') }}</h2>
+                <p class="cf-subheading">{{ $landingCopy['testimonials_subtitle'] ?? __('These signals matter because strong visual clarity improves trust before users commit to payment or enrollment.') }}</p>
             </div>
             <div class="grid gap-5 md:grid-cols-3">
                 @foreach ($testimonials as $testimonial)
@@ -313,9 +301,9 @@
     <section class="cf-shell cf-section pt-6">
         <div class="grid gap-6 lg:grid-cols-[0.82fr,1.18fr]">
             <div class="space-y-4">
-                <span class="cf-kicker">{{ __('Frequently asked questions') }}</span>
-                <h2 class="cf-heading">{{ __('Remove friction before users reach the buy decision') }}</h2>
-                <p class="cf-subheading">{{ __('A premium course product answers practical questions early, keeps pricing clear, and makes the next step obvious.') }}</p>
+                <span class="cf-kicker">{{ $landingCopy['faq_kicker'] ?? __('Frequently asked questions') }}</span>
+                <h2 class="cf-heading">{{ $landingCopy['faq_title'] ?? __('Remove friction before users reach the buy decision') }}</h2>
+                <p class="cf-subheading">{{ $landingCopy['faq_subtitle'] ?? __('A premium course product answers practical questions early, keeps pricing clear, and makes the next step obvious.') }}</p>
             </div>
             <div class="space-y-4">
                 @foreach ($faqItems as $faqItem)
@@ -342,9 +330,9 @@
             @enderror
             <div class="grid gap-6 lg:grid-cols-[0.8fr,1.2fr]">
                 <div class="space-y-4">
-                    <span class="cf-kicker">{{ __('Get in touch') }}</span>
-                    <h2 class="cf-heading">{{ __('Ask a question before you enroll') }}</h2>
-                    <p class="cf-subheading">{{ __('Use this section for support, custom requests, or questions about which course to start with.') }}</p>
+                    <span class="cf-kicker">{{ $landingCopy['contact_kicker'] ?? __('Get in touch') }}</span>
+                    <h2 class="cf-heading">{{ $landingCopy['contact_title'] ?? __('Ask a question before you enroll') }}</h2>
+                    <p class="cf-subheading">{{ $landingCopy['contact_subtitle'] ?? __('Use this section for support, custom requests, or questions about which course to start with.') }}</p>
                 </div>
                 <form id="contactForm" method="POST" action="{{ route('contact.submit') }}" class="cf-panel space-y-5 px-6 py-6 sm:px-8 sm:py-8">
                     @csrf
@@ -399,13 +387,13 @@
                 <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                     <div class="max-w-2xl space-y-3">
                         <span class="cf-dark-kicker">
-                            {{ __('Your next step') }}
+                            {{ $landingCopy['footer_kicker'] ?? __('Your next step') }}
                         </span>
                         <h2 class="cf-dark-title text-3xl font-bold tracking-[-0.04em] sm:text-4xl">
-                            {{ __('Present your courses like a premium product and make the next action obvious') }}
+                            {{ $landingCopy['footer_title'] ?? __('Present your courses like a premium product and make the next action obvious') }}
                         </h2>
                         <p class="cf-dark-copy text-base leading-7">
-                            {{ __('Clear messaging, stronger hierarchy, and a simpler CTA structure help this platform feel much closer to a sellable product.') }}
+                            {{ $landingCopy['footer_body'] ?? __('Clear messaging, stronger hierarchy, and a simpler CTA structure help this platform feel much closer to a sellable product.') }}
                         </p>
                     </div>
                     <div class="flex flex-col gap-3 sm:flex-row">

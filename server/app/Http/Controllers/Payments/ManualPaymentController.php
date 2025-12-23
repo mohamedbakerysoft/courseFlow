@@ -38,6 +38,9 @@ class ManualPaymentController extends Controller
         }
         $action->execute($payment, $approver);
 
-        return redirect()->route('courses.show', $payment->course);
+        return redirect()->route(
+            ($payment->course?->product_type ?? Course::TYPE_COURSE) === Course::TYPE_BOOK ? 'books.show' : 'courses.show',
+            $payment->course
+        );
     }
 }

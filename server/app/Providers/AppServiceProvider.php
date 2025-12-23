@@ -95,7 +95,7 @@ class AppServiceProvider extends ServiceProvider
         // Typography (fonts)
         $typographyDefaults = [
             'arabic_font' => 'Alexandria',
-            'english_font' => 'Plus Jakarta Sans',
+            'english_font' => 'Poppins',
         ];
         $typography = $typographyDefaults;
         try {
@@ -125,7 +125,7 @@ class AppServiceProvider extends ServiceProvider
         ];
         $typographyCss = [
             'arabic_stack' => $fontStacks[$typography['arabic_font']] ?? $fontStacks['Alexandria'],
-            'english_stack' => $fontStacks[$typography['english_font']] ?? $fontStacks['Plus Jakarta Sans'],
+            'english_stack' => $fontStacks[$typography['english_font']] ?? $fontStacks['Poppins'],
         ];
         View::share('typography', $typography);
         View::share('typographyCss', $typographyCss);
@@ -202,6 +202,20 @@ class AppServiceProvider extends ServiceProvider
                 'services.paypal.client_secret' => $clientSecret,
                 'services.paypal.webhook_secret' => $webhookSecret,
                 'services.paypal.base_url' => $baseUrl,
+            ]);
+        } catch (\Throwable $e) {
+            // noop
+        }
+
+        try {
+            $demoEnabled = filter_var(
+                Setting::query()->where('key', 'demo.enabled')->value('value') ?? config('demo.enabled'),
+                FILTER_VALIDATE_BOOL,
+                FILTER_NULL_ON_FAILURE
+            );
+
+            config([
+                'demo.enabled' => $demoEnabled ?? (bool) config('demo.enabled'),
             ]);
         } catch (\Throwable $e) {
             // noop

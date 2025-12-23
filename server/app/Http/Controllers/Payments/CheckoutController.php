@@ -18,7 +18,10 @@ class CheckoutController extends Controller
     public function checkout(Request $request, Course $course, CreateStripeCheckoutSessionAction $action): RedirectResponse
     {
         if ($course->is_free || (float) $course->price <= 0.0) {
-            return redirect()->route('courses.show', $course);
+            return redirect()->route(
+                ($course->product_type ?? Course::TYPE_COURSE) === Course::TYPE_BOOK ? 'books.show' : 'courses.show',
+                $course
+            );
         }
 
         $session = $action->execute($request->user(), $course);

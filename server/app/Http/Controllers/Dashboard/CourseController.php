@@ -17,7 +17,7 @@ class CourseController extends Controller
 {
     public function index(Request $request, ListInstructorCoursesAction $list)
     {
-        $courses = $list->execute($request->user(), 20);
+        $courses = $list->executeByType($request->user(), Course::TYPE_COURSE, 20);
 
         return view('dashboard.courses.index', compact('courses'));
     }
@@ -46,6 +46,8 @@ class CourseController extends Controller
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail_path'] = $upload->execute($request->file('thumbnail'));
         }
+
+        $validated['product_type'] = Course::TYPE_COURSE;
 
         $course = $create->execute($request->user(), $validated);
 
@@ -78,6 +80,8 @@ class CourseController extends Controller
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail_path'] = $upload->execute($request->file('thumbnail'));
         }
+
+        $validated['product_type'] = Course::TYPE_COURSE;
 
         $update->execute($course, $validated);
 

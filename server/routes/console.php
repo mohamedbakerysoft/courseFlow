@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -27,7 +28,9 @@ Artisan::command('demo:reseed-after-tests {--force-testing}', function () {
         } catch (\Throwable $e) {
             // ignore
         }
-        $this->call('migrate', ['--force' => true]);
+        DB::purge('sqlite');
+        DB::reconnect('sqlite');
+        $this->call('migrate:fresh', ['--force' => true]);
         $this->call(\Database\Seeders\DemoSeeder::class);
 
         return;

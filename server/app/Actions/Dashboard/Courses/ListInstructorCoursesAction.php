@@ -14,4 +14,12 @@ class ListInstructorCoursesAction
             ->orderByDesc('created_at')
             ->paginate($perPage);
     }
+
+    public function executeByType(User $user, string $productType, int $perPage = 12): LengthAwarePaginator
+    {
+        return Course::where('instructor_id', $user->id)
+            ->where('product_type', $productType)
+            ->orderByDesc('created_at')
+            ->paginate($perPage);
+    }
 }

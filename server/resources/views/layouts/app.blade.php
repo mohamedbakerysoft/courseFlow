@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="referrer" content="strict-origin-when-cross-origin">
         <link rel="icon" type="image/png" sizes="any" href="{{ url('/favicon.png') }}">
         <link rel="apple-touch-icon" sizes="180x180" href="{{ url('/favicon.png') }}">
         <title>{{ config('app.name', 'Laravel') }}</title>
@@ -66,6 +67,27 @@
         </style>
     </head>
     <body class="antialiased" @if(isset($rightClickEnabled) && ! $rightClickEnabled) oncontextmenu="return false" @endif data-right-click-enabled="{{ isset($rightClickEnabled) && $rightClickEnabled ? '1' : '0' }}">
+        @if (session('status'))
+            <div
+                x-data="{ visible: true }"
+                x-init="setTimeout(() => visible = false, 3600)"
+                x-show="visible"
+                x-transition.opacity.duration.250ms
+                class="fixed right-4 top-4 z-[90] sm:right-6 sm:top-6"
+            >
+                <div class="cf-admin-toast">
+                    <div class="cf-admin-toast-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Saved successfully') }}</p>
+                        <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ session('status') }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="cf-app-shell">
             @include('layouts.navigation')
 

@@ -18,6 +18,8 @@ class CreateCourseAction
             'currency' => $data['currency'] ?? 'USD',
             'is_free' => (bool) ($data['is_free'] ?? true),
             'status' => Course::STATUS_DRAFT,
+            'product_type' => $data['product_type'] ?? Course::TYPE_COURSE,
+            'download_file_path' => $data['download_file_path'] ?? null,
             'language' => $data['language'] ?? 'en',
             'instructor_id' => $user->id,
         ];

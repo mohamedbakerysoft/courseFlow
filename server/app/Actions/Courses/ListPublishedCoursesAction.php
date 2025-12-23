@@ -10,10 +10,11 @@ class ListPublishedCoursesAction
     public function execute(int $perPage = 12): LengthAwarePaginator
     {
         return Course::published()
+            ->courses()
             ->with('instructor')
             ->withCount('lessons')
             ->orderByDesc('created_at')
-            ->select(['id', 'slug', 'title', 'description', 'thumbnail_path', 'price', 'currency', 'is_free', 'instructor_id'])
+            ->select(['id', 'slug', 'title', 'description', 'thumbnail_path', 'price', 'currency', 'is_free', 'instructor_id', 'product_type'])
             ->paginate($perPage);
     }
 }

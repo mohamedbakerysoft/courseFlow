@@ -51,7 +51,10 @@ class PayPalCheckoutController extends Controller
             return redirect()->route('courses.index');
         }
 
-        return redirect()->route('courses.show', $payment->course);
+        return redirect()->route(
+            ($payment->course?->product_type ?? Course::TYPE_COURSE) === Course::TYPE_BOOK ? 'books.show' : 'courses.show',
+            $payment->course
+        );
     }
 
     public function cancel(Request $request, Course $course, MarkPaymentFailedAction $fail): RedirectResponse
@@ -65,6 +68,9 @@ class PayPalCheckoutController extends Controller
             $fail->execute($payment);
         }
 
-        return redirect()->route('courses.show', $course);
+        return redirect()->route(
+            ($course->product_type ?? Course::TYPE_COURSE) === Course::TYPE_BOOK ? 'books.show' : 'courses.show',
+            $course
+        );
     }
 }

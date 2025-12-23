@@ -11,11 +11,14 @@ use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
+
 class DemoSeeder extends Seeder
 {
     public function run(): void
     {
         $defaultYouTubeUrl = 'https://www.youtube.com/watch?v=M7lc1UVf-VE';
+        $demoBookFiles = $this->ensureDemoBookFiles();
 
         $demoCourseCovers = [
             'images/demo/real/course-real-1.jpg',
@@ -247,6 +250,7 @@ class DemoSeeder extends Seeder
                     'title' => $c['title'],
                     'description' => $c['description'],
                     'thumbnail_path' => $c['thumbnail_path'] ?? 'images/demo/course-'.($i + 1).'.svg',
+                    'product_type' => Course::TYPE_COURSE,
                     'price' => $c['price'],
                     'currency' => 'USD',
                     'is_free' => $c['is_free'],
@@ -642,6 +646,43 @@ class DemoSeeder extends Seeder
             }
         }
 
+        $booksData = [
+            [
+                'slug' => 'courseflow-launch-playbook-book',
+                'title' => 'CourseFlow Launch Playbook',
+                'description' => 'A polished downloadable guide that helps solo instructors structure offers, plan launch assets, and improve checkout clarity before going live.',
+                'thumbnail_path' => $demoCourseCovers[5],
+                'download_file_path' => $demoBookFiles['playbook'],
+                'price' => 19,
+                'currency' => 'USD',
+                'is_free' => false,
+                'language' => 'en',
+                'status' => Course::STATUS_PUBLISHED,
+            ],
+            [
+                'slug' => 'courseflow-free-workbook',
+                'title' => 'CourseFlow Free Workbook',
+                'description' => 'A free workbook with planning prompts, launch checklists, and storefront review notes that visitors can download instantly.',
+                'thumbnail_path' => $demoCourseCovers[6],
+                'download_file_path' => $demoBookFiles['workbook'],
+                'price' => 0,
+                'currency' => 'USD',
+                'is_free' => true,
+                'language' => 'en',
+                'status' => Course::STATUS_PUBLISHED,
+            ],
+        ];
+
+        foreach ($booksData as $bookData) {
+            Course::updateOrCreate(
+                ['slug' => $bookData['slug']],
+                array_merge($bookData, [
+                    'product_type' => Course::TYPE_BOOK,
+                    'instructor_id' => $admin->id,
+                ])
+            );
+        }
+
         $enroll = new EnrollUserInCourseAction;
         $markLessonCompleted = new MarkLessonCompletedAction;
 
@@ -820,7 +861,9 @@ class DemoSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'theme.primary_hover'], ['value' => '#D8A100']);
         Setting::updateOrCreate(['key' => 'theme.error'], ['value' => '#DC2626']);
         Setting::updateOrCreate(['key' => 'typography.english_font'], ['value' => 'Poppins']);
+        Setting::updateOrCreate(['key' => 'demo.enabled'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'instructor.social.youtube'], ['value' => $defaultYouTubeUrl]);
+        Setting::updateOrCreate(['key' => 'landing.hero_video_url'], ['value' => $defaultYouTubeUrl]);
         Setting::updateOrCreate(['key' => 'hero.title.en'], ['value' => 'Launch courses with a storefront learners trust']);
         Setting::updateOrCreate(['key' => 'hero.subtitle.en'], ['value' => 'Sell digital courses with secure checkout, instant access, and structured lessons inside one clean experience.']);
         Setting::updateOrCreate(['key' => 'landing.feature_1_title'], ['value' => 'Secure checkout']);
@@ -829,5 +872,70 @@ class DemoSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'landing.feature_2_description'], ['value' => 'Guide students through lessons with protected access and saved progress.']);
         Setting::updateOrCreate(['key' => 'landing.feature_3_title'], ['value' => 'Stronger instructor trust']);
         Setting::updateOrCreate(['key' => 'landing.feature_3_description'], ['value' => 'Show a real instructor, clear course cards, and a buying flow that feels trustworthy.']);
+    }
+
+    private function ensureDemoBookFiles(): array
+    {
+        Storage::disk('public')->makeDirectory('books');
+
+        $playbookPath = 'books/courseflow-launch-playbook.pdf';
+        $workbookPath = 'books/courseflow-free-workbook.pdf';
+
+        $pdf = <<<'PDF'
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 1 /Kids [3 0 R] >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 132 >>
+stream
+BT
+/F1 20 Tf
+72 760 Td
+(CourseFlow Demo Download) Tj
+0 -34 Td
+/F1 12 Tf
+(This is a seeded downloadable resource for demo and testing purposes.) Tj
+0 -24 Td
+(Replace it from the admin Books section with your real ebook or workbook.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000424 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+494
+%%EOF
+PDF;
+
+        if (! Storage::disk('public')->exists($playbookPath)) {
+            Storage::disk('public')->put($playbookPath, $pdf);
+        }
+
+        if (! Storage::disk('public')->exists($workbookPath)) {
+            Storage::disk('public')->put($workbookPath, $pdf);
+        }
+
+        return [
+            'playbook' => $playbookPath,
+            'workbook' => $workbookPath,
+        ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Actions\Landing;
 use App\Models\Course;
 use App\Models\User;
 use App\Services\SettingsService;
+use App\Support\LandingContent;
 use App\Support\MediaAsset;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -87,6 +88,10 @@ class ShowLandingPageAction
         foreach (['twitter', 'instagram', 'youtube', 'linkedin'] as $key) {
             $instructorLinks[$key] = $settingsLinks[$key] ?: ($userLinks[$key] ?? '');
         }
+        $landingCopy = LandingContent::copy($this->settings);
+        $landingTestimonials = LandingContent::testimonials($this->settings);
+        $landingFaqs = LandingContent::faqs($this->settings);
+        $heroVideoUrl = (string) $this->settings->get('landing.hero_video_url', $instructorLinks['youtube'] ?? '');
 
         $features = [
             [
@@ -108,13 +113,15 @@ class ShowLandingPageAction
 
         $featuredCourses = Course::query()
             ->published()
+            ->where('product_type', Course::TYPE_COURSE)
             ->with('instructor')
             ->withCount('lessons')
             ->orderByDesc('created_at')
             ->limit(6)
             ->get();
+        $heroCourses = $featuredCourses->take(4)->values();
 
-        $publishedCoursesCount = Course::query()->published()->count();
+        $publishedCoursesCount = Course::query()->published()->where('product_type', Course::TYPE_COURSE)->count();
         $publishedLessonsCount = DB::table('lessons')
             ->join('courses', 'courses.id', '=', 'lessons.course_id')
             ->where('courses.status', Course::STATUS_PUBLISHED)
@@ -158,7 +165,12 @@ class ShowLandingPageAction
             'showContactForm' => $showContactForm,
             'features' => $features,
             'featuredCourses' => $featuredCourses,
+            'heroCourses' => $heroCourses,
             'platformStats' => $platformStats,
+            'landingCopy' => $landingCopy,
+            'landingTestimonials' => $landingTestimonials,
+            'landingFaqs' => $landingFaqs,
+            'heroVideoUrl' => $heroVideoUrl,
         ];
 
         $layoutSetting = (string) ($this->settings->get('landing.layout') ?? 'default');

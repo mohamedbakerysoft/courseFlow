@@ -14,9 +14,11 @@ class DemoLoginAction
             abort(404);
         }
 
-        $email = $who === 'student'
-            ? 'student@demo.com'
-            : config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL);
+        $email = match ($who) {
+            'student' => 'student@demo.com',
+            'instructor' => 'instructor@demo.com',
+            default => config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL),
+        };
 
         $user = User::where('email', $email)->firstOrFail();
 

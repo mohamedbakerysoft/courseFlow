@@ -9,8 +9,8 @@ it('shows demo login buttons when demo enabled', function () {
     $response = get('/login');
     $response->assertStatus(200);
     $response->assertSee('Login as Admin');
-    $response->assertSee('Login as Student');
-    $response->assertSee('Demo credentials are pre-filled for quick exploration.');
+    $response->assertSee('Login as Instructor');
+    $response->assertSee('Demo mode keeps one-click access available for visitors exploring the admin and instructor flows.');
 });
 
 it('hides demo login buttons when demo disabled', function () {
@@ -18,5 +18,5 @@ it('hides demo login buttons when demo disabled', function () {
     $response = get('/login');
     $response->assertStatus(200);
     $response->assertDontSee('Login as Admin');
-    $response->assertDontSee('Login as Student');
+    $response->assertDontSee('Login as Instructor');
 });

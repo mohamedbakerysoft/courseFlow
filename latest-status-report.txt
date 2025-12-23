@@ -1,0 +1,157 @@
+CourseFlow Latest Status Report
+Generated: 2026-03-18
+
+Overview
+- Product: CourseFlow
+- Type: Single-instructor course platform with storefront, checkout, lessons, progress tracking, downloadable books, legal pages, and admin dashboard
+- Stack: Laravel 12, PHP 8.2+, Blade, Tailwind CSS, Alpine.js, Vite, SQLite (local demo)
+
+Current Product Features
+- Public landing page with:
+  - configurable hero title/subtitle
+  - configurable hero YouTube video URL
+  - configurable hero highlights
+  - latest course thumbnails in hero footer area
+  - configurable trust cards
+  - configurable “how it works” section
+  - configurable course section headings
+  - configurable testimonials
+  - configurable FAQ
+  - configurable contact CTA copy
+  - configurable final CTA copy
+- Public course catalog and course detail pages
+- Lesson viewing with progress tracking and embedded video
+- Instructor public profile
+- Contact form with current admin email resolution
+- Stripe, PayPal, and manual payment flows
+- Google login toggle
+- WhatsApp CTA toggle
+- Theme controls: colors, typography, default theme mode
+- Demo mode toggle from admin settings
+- Demo login buttons for:
+  - Admin
+  - Instructor
+- Books system added:
+  - admin books list/create/edit/publish/delete
+  - public books list/detail
+  - free download support
+  - paid book support through existing payment/enrollment system
+  - protected download route for paid books
+
+Admin-Controlled Homepage Content
+- Hero content
+- Hero YouTube URL
+- Hero labels, notes, and highlight pills
+- Trust section cards
+- “How it works” section headings and step copy
+- Featured courses section headings
+- Problem/solution section headings
+- Instructor credibility card copy
+- Testimonials section title/subtitle and 3 testimonials
+- FAQ section title/subtitle and 3 FAQs
+- Contact section title/subtitle
+- Footer CTA title/subtitle/body
+
+Important UI / UX Improvements Completed
+- Removed hero controls from Appearance tab to reduce duplication and confusion
+- Kept landing/hero control centralized in Settings > Landing
+- Added professional save toast in admin layout
+- Fixed breadcrumb visibility in light mode
+- Replaced old hero footer stat boxes with latest course thumbnails and captions
+- Unified default font fallback to Poppins
+- Seeded hero video URL and demo mode into settings
+- Added Books navigation in public and admin menus
+- Improved admin consistency by replacing several old button styles with shared button classes
+- Added meta referrer policy in shared layouts to improve embedded video behavior
+
+Composer Packages in Use
+- laravel/framework ^12.0
+- laravel/socialite ^5.24
+- laravel/tinker ^2.10.1
+- stripe/stripe-php ^12.0
+
+Dev Packages in Use
+- fakerphp/faker ^1.23
+- laravel/breeze ^2.3
+- laravel/dusk ^8.3
+- laravel/pail ^1.2.2
+- laravel/pint ^1.24
+- laravel/sail ^1.41
+- mockery/mockery ^1.6
+- nunomaduro/collision ^8.6
+- pestphp/pest ^4.2
+- pestphp/pest-plugin-laravel ^4.0
+
+Frontend Packages in Use
+- @tailwindcss/forms ^0.5.2
+- @tailwindcss/vite ^4.0.0
+- alpinejs ^3.4.2
+- autoprefixer ^10.4.2
+- axios ^1.11.0
+- concurrently ^9.0.1
+- laravel-vite-plugin ^2.0.0
+- postcss ^8.4.31
+- tailwindcss ^3.1.0
+- vite ^7.0.7
+
+Seeded Demo Defaults
+- Default theme mode: light
+- Primary color: #F5B800
+- Secondary color: #0B0B0B
+- Accent color: #F7F7F7
+- Text color: #0B0B0B
+- Muted text color: #4A4A4A
+- English font: Poppins
+- Demo mode: enabled
+- Hero YouTube URL: https://www.youtube.com/watch?v=M7lc1UVf-VE
+- Demo books created with downloadable PDF files
+
+Verification Completed
+- php artisan migrate --force
+- php artisan db:seed --force
+- npm run build
+- php artisan test
+
+Verification Result
+- Tests: 148 passed
+- Build: success
+- Smoke checks:
+  - / returned 200
+  - /books returned 200
+  - /books/courseflow-free-workbook returned 200
+  - /books/courseflow-free-workbook/download returned 200 and application/pdf
+  - /login shows Admin and Instructor demo buttons when demo mode is enabled
+
+Reviewer-Style Assessment (Envato / CodeCanyon Perspective)
+Current score estimate: 8.4/10
+
+What is strong now
+- The product reads more like a sellable SaaS/course product than a basic Laravel starter
+- The homepage is much more configurable and less hardcoded
+- The visual system is far more consistent than earlier versions
+- Demo mode is easier for reviewers to explore
+- Books add clear product breadth and perceived value
+- Payment, lesson, and public/admin flows remain intact
+
+What still needs polish before strongest possible submission
+- Some admin pages still feel older than the refined landing/settings/books experience
+- Course create/edit pages still look more utilitarian than premium
+- The dashboard overall should get one more page-by-page visual QA pass
+- A few public/internal pages still use generic functional copy instead of sharper conversion copy
+- The product would benefit from dedicated screenshots and item-page assets matching the new design language
+- Real browser QA should still be done on mobile widths and dark mode page-by-page
+
+Most Important Remaining Tasks
+1. Redesign dashboard course create/edit pages to match the newer premium admin styling.
+2. Audit all admin secondary pages (finance, users, profile, updates, lessons create/edit) for spacing, buttons, and dark-mode readability.
+3. Add tests for books public/admin flows and download protection.
+4. Add a more polished public books CTA/marketing block on the homepage if books are part of the marketplace positioning.
+5. Review all copy with an “Envato buyer” lens and remove any remaining demo-like wording.
+6. Prepare product screenshots and thumbnails for CodeCanyon listing.
+7. Upgrade local Node to 20.19+ to remove the Vite warning during build.
+
+Honest Envato Reviewer Opinion
+- This version is significantly closer to approval than the earlier revisions.
+- I would no longer reject it for obvious low-effort frontend quality.
+- I could still reject it if I saw inconsistent polish across deeper admin pages and concluded the quality drops after the homepage/demo path.
+- The best next investment is one final admin polish pass plus marketplace presentation assets.

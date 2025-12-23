@@ -1,3 +1,5 @@
+@props(['copy' => []])
+
 <section aria-label="{{ __('Platform proof') }}">
     <div class="cf-panel px-5 py-5 sm:px-6">
         <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -9,8 +11,8 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Fast, familiar checkout') }}</p>
-                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('Card, PayPal, and manual payment options are presented in one clean flow.') }}</p>
+                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $copy['trust_1_title'] ?? __('Fast, familiar checkout') }}</p>
+                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $copy['trust_1_body'] ?? __('Card, PayPal, and manual payment options are presented in one clean flow.') }}</p>
                 </div>
             </div>
             <div class="cf-trust-card">
@@ -20,8 +22,8 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Instant enrollment access') }}</p>
-                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('The moment enrollment is complete, the next lesson is ready to open.') }}</p>
+                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $copy['trust_2_title'] ?? __('Instant enrollment access') }}</p>
+                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $copy['trust_2_body'] ?? __('The moment enrollment is complete, the next lesson is ready to open.') }}</p>
                 </div>
             </div>
             <div class="cf-trust-card">
@@ -32,8 +34,8 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Structured student journey') }}</p>
-                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('Lessons stay ordered, progress stays visible, and the platform stays easy to follow.') }}</p>
+                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $copy['trust_3_title'] ?? __('Structured student journey') }}</p>
+                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $copy['trust_3_body'] ?? __('Lessons stay ordered, progress stays visible, and the platform stays easy to follow.') }}</p>
                 </div>
             </div>
             <div class="cf-trust-card">
@@ -44,8 +46,8 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Trust before purchase') }}</p>
-                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('A visible instructor, clear pricing, and protected access make the offer feel credible.') }}</p>
+                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $copy['trust_4_title'] ?? __('Trust before purchase') }}</p>
+                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $copy['trust_4_body'] ?? __('A visible instructor, clear pricing, and protected access make the offer feel credible.') }}</p>
                 </div>
             </div>
         </div>

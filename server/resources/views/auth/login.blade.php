@@ -10,9 +10,9 @@
             <div class="mb-6 cf-panel-soft px-4 py-4">
                 <div class="flex flex-col gap-3 sm:flex-row">
                     <a href="{{ route('demo.login', ['who' => 'admin']) }}" data-test="demo-admin" class="cf-button-primary">{{ __('Login as Admin') }}</a>
-                    <a href="{{ route('demo.login', ['who' => 'student']) }}" data-test="demo-student" class="cf-button-secondary">{{ __('Login as Student') }}</a>
+                    <a href="{{ route('demo.login', ['who' => 'instructor']) }}" data-test="demo-instructor" class="cf-button-secondary">{{ __('Login as Instructor') }}</a>
                 </div>
-                <p class="mt-3 text-xs text-[var(--color-text-muted)]">{{ __('Demo credentials are pre-filled for quick exploration.') }}</p>
+                <p class="mt-3 text-xs text-[var(--color-text-muted)]">{{ __('Demo mode keeps one-click access available for visitors exploring the admin and instructor flows.') }}</p>
             </div>
         @endif
 

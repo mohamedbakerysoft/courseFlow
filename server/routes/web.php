@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\LandingController;
@@ -121,6 +122,10 @@ Route::get('/courses/{course:slug}/lessons/{lesson:slug}', [LessonController::cl
     ->scopeBindings()
     ->name('lessons.show');
 
+Route::get('/books', [BookController::class, 'index'])->name('books.index');
+Route::get('/books/{book:slug}', [BookController::class, 'show'])->name('books.show');
+Route::get('/books/{book:slug}/download', [BookController::class, 'download'])->name('books.download');
+
 Route::middleware('auth')->group(function () {
     Route::post('/courses/{course:slug}/checkout', [\App\Http\Controllers\Payments\CheckoutController::class, 'checkout'])->name('payments.checkout');
     Route::get('/payments/success', [\App\Http\Controllers\Payments\CheckoutController::class, 'success'])->name('payments.success');
@@ -151,6 +156,7 @@ Route::post('/webhooks/paypal', [\App\Http\Controllers\Payments\PayPalWebhookCon
 
 Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/courses', [\App\Http\Controllers\Dashboard\CourseController::class, 'index'])->name('courses.index');
+    Route::get('/books', [\App\Http\Controllers\Dashboard\BookController::class, 'index'])->name('books.index');
     $approveRoute = Route::post('/payments/{payment}/approve', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'approve'])->name('payments.approve');
     if (! app()->environment('production')) {
         $approveRoute->withoutMiddleware([
@@ -175,6 +181,14 @@ Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.
     Route::delete('/courses/{course:slug}', [\App\Http\Controllers\Dashboard\CourseController::class, 'destroy'])->name('courses.destroy');
     Route::post('/courses/{course:slug}/publish', [\App\Http\Controllers\Dashboard\CourseController::class, 'publish'])->name('courses.publish');
     Route::post('/courses/{course:slug}/unpublish', [\App\Http\Controllers\Dashboard\CourseController::class, 'unpublish'])->name('courses.unpublish');
+
+    Route::get('/books/create', [\App\Http\Controllers\Dashboard\BookController::class, 'create'])->name('books.create');
+    Route::post('/books', [\App\Http\Controllers\Dashboard\BookController::class, 'store'])->name('books.store');
+    Route::get('/books/{book:slug}/edit', [\App\Http\Controllers\Dashboard\BookController::class, 'edit'])->name('books.edit');
+    Route::put('/books/{book:slug}', [\App\Http\Controllers\Dashboard\BookController::class, 'update'])->name('books.update');
+    Route::delete('/books/{book:slug}', [\App\Http\Controllers\Dashboard\BookController::class, 'destroy'])->name('books.destroy');
+    Route::post('/books/{book:slug}/publish', [\App\Http\Controllers\Dashboard\BookController::class, 'publish'])->name('books.publish');
+    Route::post('/books/{book:slug}/unpublish', [\App\Http\Controllers\Dashboard\BookController::class, 'unpublish'])->name('books.unpublish');
 
     Route::get('/courses/{course:slug}/lessons', [\App\Http\Controllers\Dashboard\LessonController::class, 'index'])->name('courses.lessons.index');
     Route::get('/courses/{course:slug}/lessons/create', [\App\Http\Controllers\Dashboard\LessonController::class, 'create'])->name('courses.lessons.create');
