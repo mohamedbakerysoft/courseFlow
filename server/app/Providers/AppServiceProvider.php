@@ -153,6 +153,27 @@ class AppServiceProvider extends ServiceProvider
             // noop
         }
 
+        // Payments: PayPal settings -> config override
+        try {
+            $paypalModeRow = Setting::query()->where('key', 'paypal.mode')->first();
+            $paypalClientIdRow = Setting::query()->where('key', 'paypal.client_id')->first();
+            $paypalClientSecretRow = Setting::query()->where('key', 'paypal.client_secret')->first();
+            $paypalWebhookSecretRow = Setting::query()->where('key', 'paypal.webhook_secret')->first();
+            $mode = (string) ($paypalModeRow?->value ?? 'sandbox');
+            $clientId = (string) ($paypalClientIdRow?->value ?? config('services.paypal.client_id'));
+            $clientSecret = (string) ($paypalClientSecretRow?->value ?? config('services.paypal.client_secret'));
+            $webhookSecret = (string) ($paypalWebhookSecretRow?->value ?? config('services.paypal.webhook_secret'));
+            $baseUrl = $mode === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com';
+            config([
+                'services.paypal.client_id' => $clientId,
+                'services.paypal.client_secret' => $clientSecret,
+                'services.paypal.webhook_secret' => $webhookSecret,
+                'services.paypal.base_url' => $baseUrl,
+            ]);
+        } catch (\Throwable $e) {
+            // noop
+        }
+
         // Contact: WhatsApp CTA shared to public layout
         try {
             $waEnabled = (bool) (Setting::query()->where('key', 'contact.whatsapp.enabled')->value('value') ?? false);

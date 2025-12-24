@@ -69,6 +69,31 @@ class PayPalService
         return ['id' => $orderId, 'approve_url' => $approveUrl];
     }
 
+    public function captureOrder(string $orderId): array
+    {
+        if (
+            app()->runningUnitTests()
+            || app()->environment(['local', 'testing', 'dusk', 'dusk.local'])
+            || config('demo.enabled')
+        ) {
+            return ['id' => $orderId, 'status' => 'COMPLETED'];
+        }
+
+        $clientId = config('services.paypal.client_id');
+        $clientSecret = config('services.paypal.client_secret');
+        $baseUrl = rtrim(config('services.paypal.base_url'), '/');
+        $tokenResp = Http::asForm()->withBasicAuth($clientId, $clientSecret)
+            ->post($baseUrl.'/v1/oauth2/token', [
+                'grant_type' => 'client_credentials',
+            ]);
+        $accessToken = (string) ($tokenResp->json('access_token') ?? '');
+
+        $resp = Http::withToken($accessToken)->post($baseUrl.'/v2/checkout/orders/'.$orderId.'/capture', []);
+        $status = (string) ($resp->json('status') ?? '');
+
+        return ['id' => $orderId, 'status' => $status];
+    }
+
     public function verifyOrder(string $orderId, ?string $ts = null, ?string $sig = null): bool
     {
         if (

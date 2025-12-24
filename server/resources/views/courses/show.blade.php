@@ -260,6 +260,59 @@
                                                         {{ __('Checkout with PayPal') }}
                                                     </button>
                                                 </form>
+                                                <div id="paypal-button-container" class="mt-3" data-course-id="{{ (int) $course->id }}"></div>
+                                                @php
+                                                    $ppClientId = (string) config('services.paypal.client_id', '');
+                                                    $ppCurrency = $course->currency ?? 'USD';
+                                                @endphp
+                                                @if ($ppClientId !== '')
+                                                    <script src="https://www.paypal.com/sdk/js?client-id={{ $ppClientId }}&currency={{ $ppCurrency }}&intent=capture"></script>
+                                                    <script>
+                                                        (function () {
+                                                            var csrfMeta = document.querySelector('meta[name="csrf-token"]');
+                                                            var csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
+                                                            var courseId = container ? parseInt(container.getAttribute('data-course-id') || '0', 10) : 0;
+                                                            function callCreateOrder() {
+                                                                return fetch('{{ route('payments.paypal.create_order') }}', {
+                                                                    method: 'POST',
+                                                                    headers: {
+                                                                        'Content-Type': 'application/json',
+                                                                        'X-CSRF-TOKEN': csrf
+                                                                    },
+                                                                    body: JSON.stringify({ course_id: courseId })
+                                                                }).then(function (r) { return r.json(); }).then(function (d) { return d.order_id; });
+                                                            }
+                                                            function callCapture(orderId) {
+                                                                return fetch('{{ route('payments.paypal.capture') }}', {
+                                                                    method: 'POST',
+                                                                    headers: {
+                                                                        'Content-Type': 'application/json',
+                                                                        'X-CSRF-TOKEN': csrf
+                                                                    },
+                                                                    body: JSON.stringify({ order_id: orderId })
+                                                                }).then(function (r) { return r.json(); });
+                                                            }
+                                                            var container = document.getElementById('paypal-button-container');
+                                                            if (window.paypal && container) {
+                                                                var funding = [paypal.FUNDING.PAYPAL, paypal.FUNDING.CARD];
+                                                                funding.forEach(function (source) {
+                                                                    paypal.Buttons({
+                                                                        fundingSource: source,
+                                                                        createOrder: function () { return callCreateOrder(); },
+                                                                        onApprove: function (data) {
+                                                                            return callCapture(data.orderID).then(function () {
+                                                                                container.innerHTML = '<div class="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-green-700">{{ __('Payment successful. You are enrolled.') }}</div>';
+                                                                                var forms = container.parentElement.querySelectorAll('form');
+                                                                                forms.forEach(function (f) { f.style.display = 'none'; });
+                                                                            });
+                                                                        },
+                                                                        onError: function () {}
+                                                                    }).render('#paypal-button-container');
+                                                                });
+                                                            }
+                                                        })();
+                                                    </script>
+                                                @endif
                                                 @endif
                                                 @if ($hasManualPayment)
                                                 <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="w-full">

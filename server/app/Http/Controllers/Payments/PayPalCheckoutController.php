@@ -3,16 +3,36 @@
 namespace App\Http\Controllers\Payments;
 
 use App\Actions\Payments\CreatePayPalCheckoutAction;
+use App\Actions\Payments\CapturePayPalOrderAction;
 use App\Actions\Payments\HandlePayPalPaymentSuccessAction;
 use App\Actions\Payments\MarkPaymentFailedAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Payments\CreatePayPalOrderRequest;
+use App\Http\Requests\Payments\CapturePayPalOrderRequest;
 use App\Models\Course;
 use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PayPalCheckoutController extends Controller
 {
+    public function createOrder(CreatePayPalOrderRequest $request, CreatePayPalCheckoutAction $action): Response
+    {
+        $course = \App\Models\Course::findOrFail((int) $request->input('course_id'));
+        $order = $action->execute($request->user(), $course);
+
+        return response(['order_id' => $order['id']], 200);
+    }
+
+    public function capture(CapturePayPalOrderRequest $request, CapturePayPalOrderAction $action): Response
+    {
+        $orderId = (string) $request->input('order_id');
+        $action->execute($orderId);
+
+        return response(['ok' => true], 200);
+    }
+
     public function checkout(Request $request, Course $course, CreatePayPalCheckoutAction $action): RedirectResponse
     {
         $order = $action->execute($request->user(), $course);

@@ -89,6 +89,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/courses/{course:slug}/manual/start', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'start'])->name('payments.manual.start');
     Route::get('/payments/manual/pending/{payment}', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'pending'])->name('payments.manual.pending');
 
+    Route::post('/payments/paypal/create-order', [\App\Http\Controllers\Payments\PayPalCheckoutController::class, 'createOrder'])->name('payments.paypal.create_order');
+    Route::post('/payments/paypal/capture', [\App\Http\Controllers\Payments\PayPalCheckoutController::class, 'capture'])->name('payments.paypal.capture');
+
     if (! app()->environment('production')) {
         $paypalSuccessRoute->withoutMiddleware([
             'auth',
@@ -100,6 +103,9 @@ Route::middleware('auth')->group(function () {
 Route::post('/webhooks/stripe', [\App\Http\Controllers\Payments\StripeWebhookController::class, 'handle'])
     ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
     ->name('payments.webhook.stripe');
+Route::post('/webhooks/paypal', [\App\Http\Controllers\Payments\PayPalWebhookController::class, 'handle'])
+    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+    ->name('payments.webhook.paypal');
 
 Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/courses', [\App\Http\Controllers\Dashboard\CourseController::class, 'index'])->name('courses.index');

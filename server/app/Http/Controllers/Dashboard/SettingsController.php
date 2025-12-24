@@ -114,6 +114,7 @@ class SettingsController extends Controller
         $paypalClientId = (string) $settings->get('paypal.client_id', '');
         $paypalHasSecret = (string) $settings->get('paypal.client_secret', '') !== '';
         $paypalMode = (string) $settings->get('paypal.mode', 'sandbox');
+        $paypalWebhookSecretExists = (string) $settings->get('paypal.webhook_secret', '') !== '';
         $paypalStatusLabel = 'Disabled';
         $paypalStatusVariant = 'gray';
         $paypalStatusMessage = null;
@@ -201,6 +202,7 @@ class SettingsController extends Controller
             'paypalStatusLabel',
             'paypalStatusVariant',
             'paypalStatusMessage',
+            'paypalWebhookSecretExists',
             'heroImageUrl',
             'heroFontTitle',
             'heroFontSubtitle',
@@ -230,6 +232,7 @@ class SettingsController extends Controller
                 'paypal_client_id' => ['nullable', 'string'],
                 'paypal_client_secret' => ['nullable', 'string'],
                 'paypal_mode' => ['nullable', 'in:sandbox,live'],
+                'paypal_webhook_secret' => ['nullable', 'string'],
             ]);
         } elseif ($group === 'authentication') {
             $validated = $request->validate([
@@ -549,6 +552,12 @@ class SettingsController extends Controller
         }
         if (array_key_exists('paypal_client_secret', $validated) && trim((string) $validated['paypal_client_secret']) !== '') {
             $values['paypal.client_secret'] = (string) $validated['paypal_client_secret'];
+        }
+        if (array_key_exists('paypal_webhook_secret', $validated)) {
+            $whsec = trim((string) $validated['paypal_webhook_secret']);
+            if ($whsec !== '') {
+                $values['paypal.webhook_secret'] = $whsec;
+            }
         }
         if (array_key_exists('legal_terms_en', $validated)) {
             $values['legal.terms.en'] = $validated['legal_terms_en'];

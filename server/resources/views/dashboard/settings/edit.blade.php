@@ -874,6 +874,31 @@
                                     <input id="paypal_client_secret" name="paypal_client_secret" type="password" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="E...">
                                 </div>
                             </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                                <div class="sm:col-span-2">
+                                    <label for="paypal_webhook_endpoint" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('PayPal Webhook Endpoint') }}</label>
+                                    <div x-data="{ copied: false }" class="mt-1 relative">
+                                        <input id="paypal_webhook_endpoint" type="text" readonly class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm pr-10 focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ url('/webhooks/paypal') }}">
+                                        <button type="button" class="absolute inset-y-0 right-0 px-3 flex items-center text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]" aria-label="{{ __('Copy') }}"
+                                            @click="navigator.clipboard.writeText(document.getElementById('paypal_webhook_endpoint').value); copied = true">
+                                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 9V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-4M7 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        </button>
+                                    </div>
+                                    <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Add this URL to PayPal → Webhooks') }}</p>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label for="paypal_webhook_secret" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('PayPal Webhook Secret') }}</label>
+                                    <input id="paypal_webhook_secret" name="paypal_webhook_secret" type="password" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="whsec_..." value="{{ ! empty($paypalWebhookSecretExists) ? '••••••••' : '' }}">
+                                    <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Store your PayPal signing secret. For local dev, you can set a test value.') }}</p>
+                                </div>
+                                @if (! empty($paymentsPaypalEnabled))
+                                    @if (! empty($paypalWebhookSecretExists))
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs">{{ __('Webhook ready') }}</span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-error)]/20 bg-[var(--color-error)]/10 text-[var(--color-error)] text-xs">{{ __('Webhook not configured') }}</span>
+                                    @endif
+                                @endif
+                            </div>
                             <div class="rounded-md border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/5 p-3">
                                 <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Where do I get these PayPal credentials?') }}</p>
                                 <ul class="mt-2 text-xs text-[var(--color-text-muted)] space-y-1">

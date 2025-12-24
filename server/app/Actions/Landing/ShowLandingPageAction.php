@@ -21,27 +21,21 @@ class ShowLandingPageAction
             ?: User::query()->where('role', User::ROLE_ADMIN)->first();
 
         $locale = app()->getLocale();
-        $heroTitle = (string) (
-            $this->settings->get("instructor.hero_headline_{$locale}")
-            ?: $this->settings->get('instructor.hero_headline')
-            ?: $this->settings->get("hero.title.{$locale}")
-            ?: $this->settings->get("landing.hero_title_{$locale}")
-            ?: $this->settings->get('landing.hero_title', 'Single‑Instructor LMS for Selling Courses')
-        );
-        $heroSubtitle = (string) (
-            $this->settings->get("instructor.hero_subheadline_{$locale}")
-            ?: $this->settings->get('instructor.hero_subheadline')
-            ?: $this->settings->get("hero.subtitle.{$locale}")
-            ?: $this->settings->get("landing.hero_subtitle_{$locale}")
-            ?: $this->settings->get('landing.hero_subtitle', 'For solo creators: sell courses with Stripe/PayPal, manual payments, and track student progress.')
-        );
+        $heroTitleLocal = (string) ($this->settings->get("instructor.hero_headline_{$locale}") ?: $this->settings->get('instructor.hero_headline') ?: $this->settings->get("hero.title.{$locale}") ?: $this->settings->get("landing.hero_title_{$locale}") ?: '');
+        $heroSubtitleLocal = (string) ($this->settings->get("instructor.hero_subheadline_{$locale}") ?: $this->settings->get('instructor.hero_subheadline') ?: $this->settings->get("hero.subtitle.{$locale}") ?: $this->settings->get("landing.hero_subtitle_{$locale}") ?: '');
+        $heroTitleFallback = (string) ($locale === 'ar' ? ($this->settings->get('hero.title.en') ?: $this->settings->get('landing.hero_title_en') ?: '') : ($this->settings->get('hero.title.ar') ?: $this->settings->get('landing.hero_title_ar') ?: ''));
+        $heroSubtitleFallback = (string) ($locale === 'ar' ? ($this->settings->get('hero.subtitle.en') ?: $this->settings->get('landing.hero_subtitle_en') ?: '') : ($this->settings->get('hero.subtitle.ar') ?: $this->settings->get('landing.hero_subtitle_ar') ?: ''));
+        $heroTitleDefault = (string) $this->settings->get('landing.hero_title', 'Single‑Instructor LMS for Selling Courses');
+        $heroSubtitleDefault = (string) $this->settings->get('landing.hero_subtitle', 'For solo creators: sell courses with Stripe/PayPal, manual payments, and track student progress.');
+        $heroTitle = $heroTitleLocal !== '' ? $heroTitleLocal : ($heroTitleFallback !== '' ? $heroTitleFallback : $heroTitleDefault);
+        $heroSubtitle = $heroSubtitleLocal !== '' ? $heroSubtitleLocal : ($heroSubtitleFallback !== '' ? $heroSubtitleFallback : $heroSubtitleDefault);
 
         $instructorName = (string) ($this->settings->get('instructor.name') ?: ($instructor?->name ?? 'Instructor'));
         $instructorTitle = (string) ($this->settings->get('instructor.title') ?: '');
         $instructorBio = (string) ($this->settings->get('instructor.bio') ?: ($instructor?->bio ?? ''));
 
         $heroImagePath = (string) (
-            $this->settings->get('hero.image_path')
+            $this->settings->get('hero.image')
             ?: $this->settings->get('landing.instructor_image', '')
         );
         $heroImageUrl = $heroImagePath !== '' ? asset('storage/'.$heroImagePath) : null;
