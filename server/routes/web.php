@@ -15,6 +15,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', LandingController::class);
 Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.submit');
 
+Route::middleware([\App\Http\Middleware\EnsureNotInstalled::class])->group(function () {
+    Route::get('/install', [\App\Http\Controllers\InstallController::class, 'show'])->name('install.show');
+    Route::post('/install/check', [\App\Http\Controllers\InstallController::class, 'check'])->name('install.check');
+    Route::post('/install/database', [\App\Http\Controllers\InstallController::class, 'database'])->name('install.database');
+    Route::post('/install/migrate', [\App\Http\Controllers\InstallController::class, 'migrate'])->name('install.migrate');
+    Route::post('/install/admin', [\App\Http\Controllers\InstallController::class, 'admin'])->name('install.admin');
+    Route::get('/install/finish', [\App\Http\Controllers\InstallController::class, 'finish'])->name('install.finish');
+});
+
 Route::get('/dashboard', function () {
     $user = User::find(Auth::id());
     $enrolledCourses = $user ? $user->courses()->get() : collect();
