@@ -161,7 +161,7 @@
                             </div>
                             <div class="sm:col-span-2">
                                 <label for="stripe_secret_key" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Stripe Secret Key') }}</label>
-                                <input id="stripe_secret_key" name="stripe_secret_key" type="password" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="sk_test_...">
+                                <input id="stripe_secret_key" name="stripe_secret_key" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('stripe_secret_key', $stripeSecretKey) }}" placeholder="sk_test_...">
                             </div>
                             <div class="sm:col-span-2">
                                 <label for="stripe_webhook_endpoint" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Stripe Webhook Endpoint') }}</label>
@@ -811,7 +811,7 @@
                                 </div>
                                 <div class="sm:col-span-2">
                                     <label for="stripe_secret_key" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Stripe Secret Key') }}</label>
-                                    <input id="stripe_secret_key" name="stripe_secret_key" type="password" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="sk_test_...">
+                                    <input id="stripe_secret_key" name="stripe_secret_key" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('stripe_secret_key', $stripeSecretKey) }}" placeholder="sk_test_...">
                                 </div>
                                 <div class="sm:col-span-2">
                                     <label for="stripe_webhook_endpoint" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Stripe Webhook Endpoint') }}</label>

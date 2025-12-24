@@ -23,15 +23,38 @@ class CreatePayPalCheckoutAction
             $cancelUrl = route('payments.paypal.cancel', ['course' => $course->slug]);
             $order = $this->paypal->createOrder($user, $course, $successUrl, $cancelUrl);
 
-            Payment::create([
-                'user_id' => $user->id,
-                'course_id' => $course->id,
-                'provider' => 'paypal',
-                'amount' => (float) $course->price,
-                'currency' => $course->currency ?? 'USD',
-                'status' => Payment::STATUS_PENDING,
-                'external_reference' => $order['id'],
-            ]);
+            $existingPending = Payment::where('user_id', $user->id)
+                ->where('course_id', $course->id)
+                ->where('status', Payment::STATUS_PENDING)
+                ->first();
+            if ($existingPending) {
+                if ($existingPending->provider === 'paypal') {
+                    $existingPending->external_reference = $order['id'];
+                    $existingPending->save();
+                } else {
+                    $existingPending->status = Payment::STATUS_FAILED;
+                    $existingPending->save();
+                    Payment::create([
+                        'user_id' => $user->id,
+                        'course_id' => $course->id,
+                        'provider' => 'paypal',
+                        'amount' => (float) $course->price,
+                        'currency' => $course->currency ?? 'USD',
+                        'status' => Payment::STATUS_PENDING,
+                        'external_reference' => $order['id'],
+                    ]);
+                }
+            } else {
+                Payment::create([
+                    'user_id' => $user->id,
+                    'course_id' => $course->id,
+                    'provider' => 'paypal',
+                    'amount' => (float) $course->price,
+                    'currency' => $course->currency ?? 'USD',
+                    'status' => Payment::STATUS_PENDING,
+                    'external_reference' => $order['id'],
+                ]);
+            }
 
             return $order;
         });

@@ -17,6 +17,18 @@ class CreateManualPaymentAction
         }
 
         return DB::transaction(function () use ($user, $course) {
+            $existingPending = Payment::where('user_id', $user->id)
+                ->where('course_id', $course->id)
+                ->where('status', Payment::STATUS_PENDING)
+                ->first();
+            if ($existingPending) {
+                if ($existingPending->provider === 'manual') {
+                    return $existingPending;
+                }
+                $existingPending->status = Payment::STATUS_FAILED;
+                $existingPending->save();
+            }
+
             return Payment::create([
                 'user_id' => $user->id,
                 'course_id' => $course->id,

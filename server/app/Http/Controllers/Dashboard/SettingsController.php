@@ -82,6 +82,7 @@ class SettingsController extends Controller
         $legalPrivacyAr = (string) $settings->get('legal.privacy.ar', "1. المعلومات التي نجمعها\nنقوم بجمع معلومات الحساب الأساسية، بيانات الدفع عند الحاجة، وبيانات الاستخدام لتحسين الخدمة.\n\n2. كيفية استخدام المعلومات\nنستخدم البيانات لتقديم الخدمة، تحسين التجربة، وضمان الأمان وإبلاغك بالتحديثات.\n\n3. ملفات تعريف الارتباط\nنستخدم ملفات تعريف الارتباط لتذكر تفضيلاتك وتحليل الاستخدام. يمكنك تعطيلها من إعدادات المتصفح.\n\n4. الخدمات الخارجية\nقد نستخدم موفري الدفع والتحليلات وخدمات استضافة الفيديو. تخضع بياناتك لسياسات هذه الخدمات.\n\n5. أمان البيانات\nنتخذ تدابير معقولة لحماية البيانات، دون ضمان حماية مطلقة.\n\n6. حقوق المستخدم\nيمكنك طلب تحديث أو حذف بياناتك وفقاً للقانون المعمول به.\n\n7. الاتصال\nيرجى استخدام نموذج الاتصال داخل الموقع للتواصل.");
 
         $stripePublishableKey = (string) $settings->get('stripe.publishable_key', '');
+        $stripeSecretKey = (string) $settings->get('stripe.secret_key', '');
         $stripeMode = (string) $settings->get('stripe.mode', 'test');
         $stripeHasSecret = (string) $settings->get('stripe.secret_key', '') !== '';
         $stripeStatusLabel = 'Disabled';
@@ -185,6 +186,7 @@ class SettingsController extends Controller
             'stripeStatusVariant',
             'stripeStatusMessage',
             'stripePublishableKey',
+            'stripeSecretKey',
             'stripePublishableKeyMasked',
             'stripeMode',
             'stripeHasSecret',
