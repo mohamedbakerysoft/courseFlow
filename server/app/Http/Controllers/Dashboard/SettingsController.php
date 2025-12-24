@@ -112,21 +112,15 @@ class SettingsController extends Controller
         }
 
         $paypalClientId = (string) $settings->get('paypal.client_id', '');
-        $paypalHasSecret = (string) $settings->get('paypal.client_secret', '') !== '';
+        $paypalClientSecret = (string) $settings->get('paypal.client_secret', '');
+        $paypalHasSecret = $paypalClientSecret !== '';
         $paypalMode = (string) $settings->get('paypal.mode', 'sandbox');
         $paypalWebhookSecretExists = (string) $settings->get('paypal.webhook_secret', '') !== '';
         $paypalStatusLabel = 'Disabled';
         $paypalStatusVariant = 'gray';
         $paypalStatusMessage = null;
-        $paypalClientIdMasked = $paypalClientId !== '' && strlen($paypalClientId) > 12
-            ? substr($paypalClientId, 0, 8).'…'.substr($paypalClientId, -4)
-            : $paypalClientId;
         if ($paymentsPaypalEnabled) {
-            $clientId = (string) config('services.paypal.client_id', '');
-            $clientSecret = (string) config('services.paypal.client_secret', '');
-            $baseUrl = (string) config('services.paypal.base_url', '');
-            $mode = str_contains(strtolower($baseUrl), 'sandbox') ? 'sandbox' : 'live';
-            $paypalResult = $paypalValidator->execute($clientId, $clientSecret, $mode);
+            $paypalResult = $paypalValidator->execute($paypalClientId, $paypalClientSecret, $paypalMode);
             if ($paypalResult['valid']) {
                 $paypalStatusLabel = 'Connected';
                 $paypalStatusVariant = 'green';
@@ -196,7 +190,7 @@ class SettingsController extends Controller
             'stripeHasSecret',
             'stripeWebhookSecretExists',
             'paypalClientId',
-            'paypalClientIdMasked',
+            'paypalClientSecret',
             'paypalHasSecret',
             'paypalMode',
             'paypalStatusLabel',
@@ -373,14 +367,12 @@ class SettingsController extends Controller
             }
         }
         if (($group === 'payments' || $group === '') && $paypalEnabled && ! app()->environment(['testing', 'dusk', 'dusk.local'])) {
-            $clientId = (string) config('services.paypal.client_id');
-            $clientSecret = (string) config('services.paypal.client_secret');
-            $baseUrl = (string) config('services.paypal.base_url', '');
-            $mode = str_contains(strtolower($baseUrl), 'sandbox') ? 'sandbox' : 'live';
-
-            $result = $paypalValidator->execute($clientId, $clientSecret, $mode);
+            $paypalModeInput = (string) ($validated['paypal_mode'] ?? (string) $settings->get('paypal.mode', 'sandbox'));
+            $paypalClientIdInput = (string) ($validated['paypal_client_id'] ?? (string) $settings->get('paypal.client_id', ''));
+            $paypalSecretInput = (string) ($validated['paypal_client_secret'] ?? (string) $settings->get('paypal.client_secret', ''));
+            $result = $paypalValidator->execute($paypalClientIdInput, $paypalSecretInput, $paypalModeInput);
             if (! ($result['valid'] ?? false)) {
-                return back()->withErrors(['paypal' => (string) ($result['message'] ?? 'PayPal configuration is invalid.')]);
+                return back()->withErrors(['paypal' => (string) ($result['message'] ?? 'PayPal configuration is invalid.')])->withInput();
             }
         }
 

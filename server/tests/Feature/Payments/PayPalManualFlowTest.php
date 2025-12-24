@@ -8,7 +8,7 @@ use App\Models\Payment;
 use App\Models\User;
 
 it('paypal payment success enrolls user', function () {
-    config()->set('services.paypal.webhook_secret', 'whsec_test');
+    app(\App\Services\SettingsService::class)->set(['paypal.webhook_secret' => 'whsec_test']);
     $user = User::factory()->create(['role' => User::ROLE_STUDENT]);
     $course = Course::create([
         'title' => 'Paid PP',
@@ -25,7 +25,7 @@ it('paypal payment success enrolls user', function () {
     expect($payment)->not->toBeNull();
     expect($payment->status)->toBe(Payment::STATUS_PENDING);
     $ts = (string) time();
-    $sig = hash_hmac('sha256', $ts.'.'.$orderId, config('services.paypal.webhook_secret'));
+    $sig = hash_hmac('sha256', $ts.'.'.$orderId, (string) app(\App\Services\SettingsService::class)->get('paypal.webhook_secret', ''));
     $resp = $this->actingAs($user)->get(route('payments.paypal.success', ['order_id' => $orderId, 't' => $ts, 'sig' => $sig]));
     $resp->assertRedirect(route('courses.show', $course));
     $payment->refresh();
@@ -76,7 +76,7 @@ it('manual payment stays pending and approves enroll', function () {
 });
 
 it('duplicate payments prevented for paypal and manual', function () {
-    config()->set('services.paypal.webhook_secret', 'whsec_test');
+    app(\App\Services\SettingsService::class)->set(['paypal.webhook_secret' => 'whsec_test']);
     $student = User::factory()->create(['role' => User::ROLE_STUDENT]);
     $instructor = User::factory()->create(['role' => User::ROLE_ADMIN]);
     $course = Course::create([
@@ -91,7 +91,7 @@ it('duplicate payments prevented for paypal and manual', function () {
     $order = app(CreatePayPalCheckoutAction::class)->execute($student, $course);
     $orderId = $order['id'];
     $ts = (string) time();
-    $sig = hash_hmac('sha256', $ts.'.'.$orderId, config('services.paypal.webhook_secret'));
+    $sig = hash_hmac('sha256', $ts.'.'.$orderId, (string) app(\App\Services\SettingsService::class)->get('paypal.webhook_secret', ''));
     $this->actingAs($student)->get(route('payments.paypal.success', ['order_id' => $orderId, 't' => $ts, 'sig' => $sig]))->assertRedirect();
     // Approving manual after paid should not create another paid record
     $manual = app(CreateManualPaymentAction::class)->execute($student, $course);

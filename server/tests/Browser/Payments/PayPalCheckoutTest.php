@@ -14,7 +14,7 @@ class PayPalCheckoutTest extends DuskTestCase
     public function test_paypal_checkout_enrolls_on_success(): void
     {
         Artisan::call('migrate:fresh', ['--force' => true]);
-        config()->set('services.paypal.webhook_secret', 'test_webhook_secret');
+        app(\App\Services\SettingsService::class)->set(['paypal.webhook_secret' => 'test_webhook_secret']);
 
         app(\App\Services\SettingsService::class)->set([
             'payments.stripe.enabled' => false,
@@ -51,7 +51,7 @@ class PayPalCheckoutTest extends DuskTestCase
             $payment = Payment::where('user_id', $user->id)->where('course_id', $course->id)->where('provider', 'paypal')->latest()->first();
             $orderId = $payment?->external_reference ?? ($order['id'] ?? 'order_fake');
             $ts = (string) time();
-            $sig = hash_hmac('sha256', $ts.'.'.$orderId, (string) config('services.paypal.webhook_secret'));
+            $sig = hash_hmac('sha256', $ts.'.'.$orderId, (string) app(\App\Services\SettingsService::class)->get('paypal.webhook_secret', ''));
 
             // Simulate success callback
             $base = rtrim(config('app.url'), '/');

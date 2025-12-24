@@ -17,7 +17,7 @@ function paypalSignature(string $payload, string $secret): string
 }
 
 it('webhook signature verified for paypal', function () {
-    config()->set('services.paypal.webhook_secret', 'whsec_test');
+    app(\App\Services\SettingsService::class)->set(['paypal.webhook_secret' => 'whsec_test']);
     $payload = json_encode(['type' => 'PAYMENT.CAPTURE.COMPLETED', 'data' => ['object' => ['id' => 'order_x']]], JSON_THROW_ON_ERROR);
     \Pest\Laravel\postJson(route('payments.webhook.paypal'), [], ['PayPal-Signature' => 't=0,v1=invalid'])
         ->assertStatus(400);
@@ -27,7 +27,7 @@ it('webhook signature verified for paypal', function () {
 });
 
 it('webhook enrolls user idempotently', function () {
-    config()->set('services.paypal.webhook_secret', 'whsec_test');
+    app(\App\Services\SettingsService::class)->set(['paypal.webhook_secret' => 'whsec_test']);
     $user = User::factory()->create(['role' => User::ROLE_STUDENT]);
     $course = Course::create([
         'title' => 'PP Webhook',

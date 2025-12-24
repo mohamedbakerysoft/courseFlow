@@ -238,15 +238,38 @@
                             </div>
                             <div class="sm:col-span-2">
                                 <label for="paypal_client_id" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('PayPal Client ID') }}</label>
-                                @if (! empty($paypalClientIdMasked))
-                                    <p class="text-xs text-[var(--color-text-muted)]">{{ __('Current') }}: <code class="px-1 py-0.5 rounded bg-white border border-[var(--color-secondary)]/30">{{ $paypalClientIdMasked }}</code></p>
-                                @endif
                                 <input id="paypal_client_id" name="paypal_client_id" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('paypal_client_id', $paypalClientId) }}" placeholder="A...">
                             </div>
                             <div class="sm:col-span-2">
                                 <label for="paypal_client_secret" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('PayPal Client Secret') }}</label>
-                                <input id="paypal_client_secret" name="paypal_client_secret" type="password" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="E...">
+                                <input id="paypal_client_secret" name="paypal_client_secret" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('paypal_client_secret', $paypalClientSecret) }}" placeholder="E...">
                             </div>
+                        </div>
+                        <div class="mt-4 sm:col-span-2">
+                            <label for="paypal_webhook_endpoint" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('PayPal Webhook Endpoint') }}</label>
+                            <div x-data="{ copied: false }" class="mt-1 relative">
+                                <input id="paypal_webhook_endpoint" type="text" readonly class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm pr-20 focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ url('/webhooks/paypal') }}">
+                                <div class="absolute inset-y-0 right-0 flex items-center gap-2 pr-3">
+                                    <button type="button" class="px-3 py-1 rounded-md border border-[var(--color-secondary)]/30 bg-white text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]" aria-label="{{ __('Copy') }}"
+                                        @click="navigator.clipboard.writeText(document.getElementById('paypal_webhook_endpoint').value); copied = true">
+                                        {{ __('Copy') }}
+                                    </button>
+                                    <span x-show="copied" class="inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-xs">{{ __('Copied') }}</span>
+                                </div>
+                            </div>
+                            <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Add this URL in PayPal Developer Dashboard → Webhooks') }}</p>
+                            <div class="mt-2 text-xs text-[var(--color-text-muted)]">
+                                <p class="font-medium">{{ __('Required events:') }}</p>
+                                <ul class="list-disc ml-4 space-y-0.5">
+                                    <li><code>CHECKOUT.ORDER.APPROVED</code></li>
+                                    <li><code>PAYMENT.CAPTURE.COMPLETED</code></li>
+                                </ul>
+                            </div>
+                            @if (! empty($paymentsPaypalEnabled))
+                                <span class="mt-2 inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs">{{ __('Webhook ready') }}</span>
+                            @else
+                                <span class="mt-2 inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-error)]/20 bg-[var(--color-error)]/10 text-[var(--color-error)] text-xs">{{ __('Webhook not configured') }}</span>
+                            @endif
                         </div>
                         <div class="rounded-md border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/5 p-3">
                             <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Where do I get these PayPal credentials?') }}</p>

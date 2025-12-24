@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 
 class PayPalService
 {
+    public function __construct(private SettingsService $settings) {}
+
     public function createOrder(User $user, Course $course, string $successUrl, string $cancelUrl): array
     {
         if (
@@ -17,7 +19,7 @@ class PayPalService
             || config('demo.enabled')
         ) {
             $orderId = 'order_'.Str::random(12);
-            $secret = config('services.paypal.webhook_secret');
+            $secret = (string) $this->settings->get('paypal.webhook_secret', '');
             $ts = (string) time();
             $payload = $orderId;
             $sig = hash_hmac('sha256', $ts.'.'.$payload, (string) $secret);
@@ -26,9 +28,10 @@ class PayPalService
             return ['id' => $orderId, 'approve_url' => $approveUrl];
         }
 
-        $clientId = config('services.paypal.client_id');
-        $clientSecret = config('services.paypal.client_secret');
-        $baseUrl = rtrim(config('services.paypal.base_url'), '/');
+        $clientId = (string) $this->settings->get('paypal.client_id', '');
+        $clientSecret = (string) $this->settings->get('paypal.client_secret', '');
+        $mode = (string) $this->settings->get('paypal.mode', 'sandbox');
+        $baseUrl = rtrim($mode === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com', '/');
         if (! $clientId || ! $clientSecret) {
             throw new \RuntimeException('PayPal credentials not configured');
         }
@@ -79,9 +82,10 @@ class PayPalService
             return ['id' => $orderId, 'status' => 'COMPLETED'];
         }
 
-        $clientId = config('services.paypal.client_id');
-        $clientSecret = config('services.paypal.client_secret');
-        $baseUrl = rtrim(config('services.paypal.base_url'), '/');
+        $clientId = (string) $this->settings->get('paypal.client_id', '');
+        $clientSecret = (string) $this->settings->get('paypal.client_secret', '');
+        $mode = (string) $this->settings->get('paypal.mode', 'sandbox');
+        $baseUrl = rtrim($mode === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com', '/');
         $tokenResp = Http::asForm()->withBasicAuth($clientId, $clientSecret)
             ->post($baseUrl.'/v1/oauth2/token', [
                 'grant_type' => 'client_credentials',
@@ -101,7 +105,7 @@ class PayPalService
             || app()->environment(['local', 'testing', 'dusk', 'dusk.local'])
             || config('demo.enabled')
         ) {
-            $secret = config('services.paypal.webhook_secret');
+            $secret = (string) $this->settings->get('paypal.webhook_secret', '');
             if (! $ts || ! $sig) {
                 return false;
             }
@@ -110,9 +114,10 @@ class PayPalService
             return hash_equals($expected, $sig);
         }
 
-        $clientId = config('services.paypal.client_id');
-        $clientSecret = config('services.paypal.client_secret');
-        $baseUrl = rtrim(config('services.paypal.base_url'), '/');
+        $clientId = (string) $this->settings->get('paypal.client_id', '');
+        $clientSecret = (string) $this->settings->get('paypal.client_secret', '');
+        $mode = (string) $this->settings->get('paypal.mode', 'sandbox');
+        $baseUrl = rtrim($mode === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com', '/');
         $tokenResp = Http::asForm()->withBasicAuth($clientId, $clientSecret)
             ->post($baseUrl.'/v1/oauth2/token', [
                 'grant_type' => 'client_credentials',

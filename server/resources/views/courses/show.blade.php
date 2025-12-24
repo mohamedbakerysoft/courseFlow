@@ -235,9 +235,12 @@
                                             @php
                                                 $envOk = app()->environment(['production']) ? true : false;
                                                 $stripeConfigValid = !$envOk || ((string) config('services.stripe.publishable_key') !== '' && (string) config('services.stripe.secret') !== '');
-                                                $paypalClientOk = (string) config('services.paypal.client_id') !== '' && (string) config('services.paypal.client_secret') !== '';
-                                                $paypalBase = (string) config('services.paypal.base_url', '');
-                                                $paypalModeOk = str_contains(strtolower($paypalBase), 'sandbox') || str_contains(strtolower($paypalBase), 'paypal.com');
+                                                $settingsSvc = app(\App\Services\SettingsService::class);
+                                                $paypalClientIdVal = (string) $settingsSvc->get('paypal.client_id', '');
+                                                $paypalSecretVal = (string) $settingsSvc->get('paypal.client_secret', '');
+                                                $paypalModeVal = (string) $settingsSvc->get('paypal.mode', 'sandbox');
+                                                $paypalClientOk = $paypalClientIdVal !== '' && $paypalSecretVal !== '';
+                                                $paypalModeOk = in_array(strtolower($paypalModeVal), ['sandbox', 'live'], true);
                                                 $paypalConfigValid = !$envOk || ($paypalClientOk && $paypalModeOk);
                                                 $stripeAvailable = $isStripeEnabled && $stripeConfigValid;
                                                 $paypalAvailable = $isPayPalEnabled && $paypalConfigValid;
@@ -262,7 +265,7 @@
                                                 </form>
                                                 <div id="paypal-button-container" class="mt-3" data-course-id="{{ (int) $course->id }}"></div>
                                                 @php
-                                                    $ppClientId = (string) config('services.paypal.client_id', '');
+                                                    $ppClientId = (string) app(\App\Services\SettingsService::class)->get('paypal.client_id', '');
                                                     $ppCurrency = $course->currency ?? 'USD';
                                                 @endphp
                                                 @if ($ppClientId !== '')
@@ -271,6 +274,7 @@
                                                         (function () {
                                                             var csrfMeta = document.querySelector('meta[name="csrf-token"]');
                                                             var csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
+                                                            var container = document.getElementById('paypal-button-container');
                                                             var courseId = container ? parseInt(container.getAttribute('data-course-id') || '0', 10) : 0;
                                                             function callCreateOrder() {
                                                                 return fetch('{{ route('payments.paypal.create_order') }}', {
@@ -292,7 +296,6 @@
                                                                     body: JSON.stringify({ order_id: orderId })
                                                                 }).then(function (r) { return r.json(); });
                                                             }
-                                                            var container = document.getElementById('paypal-button-container');
                                                             if (window.paypal && container) {
                                                                 var funding = [paypal.FUNDING.PAYPAL, paypal.FUNDING.CARD];
                                                                 funding.forEach(function (source) {

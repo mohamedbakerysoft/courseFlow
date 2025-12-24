@@ -9,13 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PayPalWebhookController extends Controller
 {
-    public function __construct(private CapturePayPalOrderAction $captureAction) {}
+    public function __construct(private CapturePayPalOrderAction $captureAction, private \App\Services\SettingsService $settings) {}
 
     public function handle(Request $request): Response
     {
         $payload = $request->getContent();
         $sigHeader = $request->header('PayPal-Signature', '');
-        $secret = (string) config('services.paypal.webhook_secret');
+        $secret = (string) $this->settings->get('paypal.webhook_secret', '');
 
         try {
             $parts = [];
