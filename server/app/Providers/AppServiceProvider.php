@@ -97,6 +97,28 @@ class AppServiceProvider extends ServiceProvider
         View::share('typography', $typography);
         View::share('typographyCss', $typographyCss);
 
+        // Hero typography (font sizes)
+        try {
+            $titleRow = Setting::query()->where('key', 'hero.font.title')->first();
+            $subtitleRow = Setting::query()->where('key', 'hero.font.subtitle')->first();
+            $descriptionRow = Setting::query()->where('key', 'hero.font.description')->first();
+            $titleVal = is_numeric($titleRow?->value) ? (int) $titleRow->value : 56;
+            $subtitleVal = is_numeric($subtitleRow?->value) ? (int) $subtitleRow->value : 24;
+            $descriptionVal = is_numeric($descriptionRow?->value) ? (int) $descriptionRow->value : 18;
+            $heroTypography = [
+                'title' => max(28, min(96, $titleVal)).'px',
+                'subtitle' => max(18, min(48, $subtitleVal)).'px',
+                'description' => max(14, min(28, $descriptionVal)).'px',
+            ];
+        } catch (\Throwable $e) {
+            $heroTypography = [
+                'title' => '56px',
+                'subtitle' => '24px',
+                'description' => '18px',
+            ];
+        }
+        View::share('heroTypography', $heroTypography);
+
         // Security: reCAPTCHA settings -> config override
         try {
             $recaptchaEnabledRow = Setting::query()->where('key', 'security.recaptcha.enabled')->first();

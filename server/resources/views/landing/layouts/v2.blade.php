@@ -2,15 +2,15 @@
     <div class="bg-white">
         <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 space-y-20 lg:space-y-24 py-10 lg:py-16">
             @if ($showHero)
-            <header id="hero" class="relative min-h-[75vh]">
-                <div class="relative w-full">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-14">
-                        <div class="order-2 lg:order-1 space-y-6">
-                            <div class="space-y-2">
-                                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-[var(--color-text-primary)]">
+            <header id="hero" class="relative min-h-screen">
+                <div class="relative w-full h-full">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 items-stretch gap-10 lg:gap-14">
+                        <div class="order-2 lg:order-1 space-y-6 lg:space-y-7 self-center">
+                            <div class="space-y-3">
+                                <h1 class="text-6xl sm:text-7xl font-extrabold leading-tight tracking-tight text-[var(--color-text-primary)]">
                                     {{ $heroTitle }}
                                 </h1>
-                                <p class="text-base sm:text-lg text-[var(--color-text-muted)]">
+                                <p class="text-2xl sm:text-3xl text-[var(--color-text-muted)]">
                                     {{ $heroSubtitle }}
                                 </p>
                             </div>
@@ -18,16 +18,16 @@
                                 <div class="rounded-xl ring-1 ring-[var(--color-secondary)]/10 bg-white p-4 flex items-center gap-4">
                                     <div class="h-10 w-10 rounded-full bg-[var(--color-primary)]/10"></div>
                                     <div class="space-y-1">
-                                        <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $instructorName }}</p>
+                                        <p class="text-base font-semibold text-[var(--color-text-primary)]">{{ $instructorName }}</p>
                                         @if (!empty($instructorTitle))
                                             <p class="text-xs text-[var(--color-text-muted)]">{{ $instructorTitle }}</p>
                                         @endif
                                     </div>
                                 </div>
                             @endif
-                            <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
+                            <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-4">
                                 <a href="{{ route('courses.index') }}"
-                                   class="inline-flex justify-center items-center w-full sm:w-auto px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                                   class="inline-flex justify-center items-center w-full sm:w-auto px-5 py-2.5 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
                                     {{ app()->getLocale() === 'ar' ? 'احصل على وصول فوري' : 'Get instant access' }}
                                 </a>
                                 <p class="text-xs text-[var(--color-text-muted)]">
@@ -38,13 +38,13 @@
                             </div>
                         </div>
                         <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
-                            <div class="w-full max-w-xl lg:max-w-2xl transition-all duration-700 ease-out">
-                                <div class="rounded-3xl shadow-lg ring-1 ring-[var(--color-primary)]/20 bg-white p-3">
+                            <div class="w-full lg:max-w-2xl h-full transition-all duration-700 ease-out">
+                                <div class="relative h-full overflow-hidden rounded-3xl shadow-lg ring-1 ring-[var(--color-primary)]/20 bg-white">
                                     <img
                                         src="{{ $heroImageUrl ?? asset('images/demo/IMG_1701.PNG') }}"
                                         alt="{{ __('Hero Image') }}"
-                                        style="object-position: {{ $heroImageFocus ?? 'center' }}; aspect-ratio: {{ $heroImageRatio ?? '16/9' }}"
-                                        class="w-full h-auto transition-transform duration-700 ease-out {{ $heroImageMode === 'contain' ? 'object-contain' : 'object-cover' }} rounded-2xl"
+                                        style="object-position: {{ $heroImageFocus ?? 'center' }}"
+                                        class="block w-full h-full transition-transform duration-700 ease-out {{ $heroImageMode === 'contain' ? 'object-contain' : 'object-cover' }}"
                                         loading="lazy"
                                     >
                                 </div>

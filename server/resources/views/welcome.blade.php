@@ -1,51 +1,65 @@
 <x-public-layout :title="$heroTitle" :metaDescription="$heroSubtitle">
     <div class="bg-white">
-        <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 space-y-20 lg:space-y-24 py-10 lg:py-16">
+        <style>
+            a[href*="wa.me"] {
+                z-index: 50;
+                transition: transform 150ms ease, box-shadow 150ms ease;
+            }
+            a[href*="wa.me"]:hover {
+                transform: scale(1.05);
+                box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
+            }
+        </style>
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 lg:pr-0 space-y-12 lg:space-y-16 py-10 lg:py-16">
             @if ($showHero)
-            <header id="hero" class="relative min-h-[75vh]">
-                <div class="relative w-full min-h-[75vh]">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-16 px-4 sm:px-6 lg:px-6">
-                        <div class="order-2 lg:order-1 space-y-6">
+            <header id="hero" class="relative min-h-screen">
+                <div class="relative w-full min-h-screen bg-gradient-to-br from-[var(--color-primary)]/5 via-transparent to-transparent">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-6 lg:gap-8 px-4 sm:px-6 lg:px-8 lg:pr-0">
+                        <div class="order-2 lg:order-1 self-center space-y-4 sm:space-y-5">
                             <div class="space-y-2">
-                                <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">
+                                <p class="text-sm font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">
                                     {{ app()->getLocale() === 'ar' ? 'منصة دورات لمدرّس واحد' : 'Single‑Instructor Course Platform' }}
                                 </p>
-                                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-[var(--color-text-primary)]">
+                                
+                                <h2 class="font-extrabold leading-tight tracking-tight text-[var(--color-text-primary)]" style="font-size: var(--hero-title-size);">
                                     {{ $heroTitle }}
-                                </h1>
-                                <p class="text-xs sm:text-sm text-[var(--color-text-muted)]">
-                                    {{ $instructorName }}
-                                </p>
+                                </h2>
+                                
+                                @if (!empty($instructorName) && $showAboutInstructor)
+                                    <p class="text-[var(--color-text-primary)] font-semibold" style="font-size: var(--hero-description-size);">
+                                        {{ $instructorName }}
+                                    </p>
+                                @endif
                                 @if (!empty($instructorTitle) && $showAboutInstructor)
-                                    <p class="text-xs sm:text-sm text-[var(--color-text-muted)]">
+                                    <p class="text-[var(--color-text-muted)]" style="font-size: var(--hero-description-size);">
                                         {{ $instructorTitle }}
                                     </p>
                                 @endif
                             </div>
                             <div class="space-y-4">
-                                <p class="text-base sm:text-lg text-[var(--color-text-muted)]">
+                                <p class="text-[var(--color-text-muted)]" style="font-size: var(--hero-subtitle-size);">
                                     {{ $heroSubtitle }}
                                 </p>
-                                <p class="text-sm text-[var(--color-text-muted)]">
+                                <p class="text-[var(--color-text-muted)]" style="font-size: var(--hero-description-size);">
                                     {{ app()->getLocale() === 'ar' ? 'دروس منظّمة مع وصول يعتمد على التسجيل' : 'Structured lessons with enrollment‑based access.' }}
                                 </p>
-                                <p class="text-xs text-[var(--color-text-muted)]">
+                                <p class="text-[var(--color-text-muted)]" style="font-size: var(--hero-description-size);">
                                     {{ __('Designed for independent instructors and real students.') }}
                                 </p>
                                 @if (!empty($instructorBio) && $showAboutInstructor)
-                                    <p class="text-sm sm:text-base text-[var(--color-text-muted)]">
+                                    <p class="text-[var(--color-text-muted)]" style="font-size: var(--hero-description-size);">
                                         {{ $instructorBio }}
                                     </p>
                                 @endif
-                            </div>
-                            <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
+                                <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 pt-1">
                                 <a href="{{ route('courses.index') }}"
-                                   class="inline-flex justify-center items-center w-full sm:w-auto px-4 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                                   class="inline-flex justify-center items-center w-full sm:w-auto px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-base font-semibold shadow-sm hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
                                     {{ app()->getLocale() === 'ar' ? 'احصل على وصول فوري' : 'Get instant access' }}
                                 </a>
-                                <p class="text-xs text-[var(--color-text-muted)]">
+                                <p class="text-sm text-[var(--color-text-muted)]">
                                     {{ app()->getLocale() === 'ar' ? 'بدون اشتراك · إعداد مرة واحدة' : 'No subscription · One‑time setup' }}
                                 </p>
+                                </div>
                             </div>
                             @if (!empty($instructorLinks))
                                 <div class="flex items-center gap-4 pt-1">
@@ -75,13 +89,13 @@
                             @endif
                         </div>
                         <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
-                            <div class="w-full max-w-xl lg:max-w-3xl xl:max-w-4xl">
-                                <div class="rounded-2xl overflow-hidden shadow-lg ring-1 ring-[var(--color-secondary)]/10 bg-white p-0 lg:min-h-[28rem] xl:min-h-[32rem]">
+                            <div class="w-full h-full">
+                                <div class="group relative h-[100vh] sm:h-[110vh] lg:h-screen overflow-hidden rounded-t-3xl shadow-xl ring-1 ring-[var(--color-secondary)]/10 bg-gradient-to-br from-[var(--color-primary)]/10 via-white to-[var(--color-primary)]/5">
                                     <img
                                         src="{{ $heroImageUrl ?? asset('images/demo/IMG_1700.JPG') }}"
                                         alt="{{ __('Hero Image') }}"
-                                        style="object-position: {{ $heroImageFocus ?? 'center' }}; aspect-ratio: {{ $heroImageRatio ?? '16/9' }}"
-                                        class="block w-full h-full object-cover transition-transform duration-700 ease-out"
+                                        style="object-position: {{ $heroImageFocus ?? 'center' }}; aspect-ratio: {{ $heroImageRatio ?? '16/9' }}; object-fit: cover;"
+                                        class="absolute inset-0 h-full w-full {{ $heroImageMode === 'contain' ? 'object-contain' : 'object-cover' }} rounded-3xl transition-transform duration-300 ease-out group-hover:scale-[1.01] group-hover:shadow-2xl"
                                         loading="lazy"
                                     >
                                 </div>
@@ -92,9 +106,142 @@
             </header>
             @endif
             <x-public.trust-bar />
+            @if ($showCoursesPreview)
+            <section aria-label="{{ __('Featured courses') }}" class="space-y-8">
+                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                    <div class="space-y-2">
+                        <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
+                            {{ __('Courses') }}
+                        </p>
+                        <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
+                            {{ __('Featured courses') }}
+                        </h2>
+                        <p class="text-xs text-[var(--color-text-muted)]">
+                            {{ __('Showing') }} {{ $featuredCourses->count() }} {{ __('courses') }}
+                        </p>
+                    </div>
+                    <a href="{{ route('courses.index') }}" class="inline-flex items-center text-sm font-semibold text-[var(--color-primary)] hover:underline">
+                        {{ __('View all courses') }}
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+                    @forelse ($featuredCourses as $course)
+                        <x-course.card :course="$course" />
+                    @empty
+                        <p class="text-sm text-[var(--color-text-muted)]">{{ __('No courses available yet') }}</p>
+                    @endforelse
+                </div>
+            </section>
+            @endif
+            <x-public.social-proof />
+
+
+            <section aria-label="{{ __('Why this platform') }}" class="space-y-8">
+                <div class="space-y-3 text-center">
+                    <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">{{ __('Built for real outcomes') }}</p>
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">{{ __('Why this platform works') }}</h2>
+                    <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-2xl mx-auto">{{ __('Clear frameworks, practical lessons, and focused programs designed for busy professionals who want confidence and results.') }}</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col items-start gap-4">
+                        <div class="relative w-full">
+                            <div class="mx-auto h-28 w-full rounded-xl overflow-hidden ring-1 ring-[var(--color-secondary)]/10 bg-gradient-to-tr from-[var(--color-primary)]/10 via-white to-[var(--color-accent)]/10 flex items-center justify-center">
+                                <svg class="h-16 w-16 text-[var(--color-primary)]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('Actionable, step‑by‑step content') }}</h3>
+                            <p class="text-sm text-[var(--color-text-muted)]">{{ __('Lessons focus on scripts, checklists, and real scenarios you can apply immediately.') }}</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col items-start gap-4">
+                        <div class="relative w-full">
+                            <div class="mx-auto h-28 w-full rounded-xl overflow-hidden ring-1 ring-[var(--color-secondary)]/10 bg-gradient-to-tr from-[var(--color-primary)]/20 via-white to-[var(--color-primary)]/10 flex items-center justify-center">
+                                <svg class="h-16 w-16 text-[var(--color-primary)]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 3v10m0 0l-3-3m3 3l3-3M4 21h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('One‑time purchase, instant access') }}</h3>
+                            <p class="text-sm text-[var(--color-text-muted)]">{{ __('No subscriptions. Buy once, own it forever, and learn at your pace.') }}</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col items-start gap-4">
+                        <div class="relative w-full">
+                            <div class="mx-auto h-28 w-full rounded-xl overflow-hidden ring-1 ring-[var(--color-secondary)]/10 bg-gradient-to-tr from-[var(--color-accent)]/15 via-white to-[var(--color-primary)]/10 flex items-center justify-center">
+                                <svg class="h-16 w-16 text-[var(--color-secondary)]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 6v6l4 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('Designed for busy schedules') }}</h3>
+                            <p class="text-sm text-[var(--color-text-muted)]">{{ __('Short lessons with strong outcomes, so progress fits around your work and life.') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            @if ($showTestimonials)
+            <section aria-label="{{ __('Testimonials') }}" class="space-y-8">
+                <div class="space-y-3 text-center">
+                    <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
+                        {{ __('Student results') }}
+                    </p>
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
+                        {{ __('What people say after working together') }}
+                    </h2>
+                    <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-2xl mx-auto">
+                        {{ __('These are examples of the type of transformations and clarity you can expect when you commit to the work.') }}
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-4">
+                        <div class="flex items-center gap-3">
+                            <img src="https://ui-avatars.com/api/?name=Sara&background=random" alt="{{ __('Sara avatar') }}" class="h-10 w-10 rounded-full ring-1 ring-[var(--color-secondary)]/20" loading="lazy">
+                            <div>
+                                <p class="text-xs font-semibold text-[var(--color-text-primary)]">{{ __('Sara') }}</p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Freelance designer') }}</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-[var(--color-text-muted)]">
+                            {{ __('"I went from avoiding sales calls to actually looking forward to them. The scripts and mindset shifts changed everything for me."') }}
+                        </p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-4">
+                        <div class="flex items-center gap-3">
+                            <img src="https://ui-avatars.com/api/?name=Omar&background=random" alt="{{ __('Omar avatar') }}" class="h-10 w-10 rounded-full ring-1 ring-[var(--color-secondary)]/20" loading="lazy">
+                            <div>
+                                <p class="text-xs font-semibold text-[var(--color-text-primary)]">{{ __('Omar') }}</p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Sales representative') }}</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-[var(--color-text-muted)]">
+                            {{ __('"After our interview prep, I received two offers in the same week. I finally knew how to talk about my experience clearly."') }}
+                        </p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-4">
+                        <div class="flex items-center gap-3">
+                            <img src="https://ui-avatars.com/api/?name=Laila&background=random" alt="{{ __('Laila avatar') }}" class="h-10 w-10 rounded-full ring-1 ring-[var(--color-secondary)]/20" loading="lazy">
+                            <div>
+                                <p class="text-xs font-semibold text-[var(--color-text-primary)]">{{ __('Laila') }}</p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Startup founder') }}</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-[var(--color-text-muted)]">
+                            {{ __('"The frameworks are simple but powerful. I used them with my team and we closed our biggest month so far."') }}
+                        </p>
+                    </div>
+                </div>
+            </section>
+            @endif
 
             @if ($showContactForm === true)
-            <section aria-label="{{ __('Contact') }}" class="space-y-8">
+            <section id="contact" aria-label="{{ __('Contact') }}" class="space-y-8">
                 @if (session('status'))
                     <div class="rounded-lg border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 px-4 py-2 text-sm text-[var(--color-accent)]">
                         {{ session('status') }}
@@ -160,327 +307,6 @@
                         });
                     </script>
                 @endif
-            </section>
-            @endif
-            @if ($showCoursesPreview)
-            <section aria-label="{{ __('Featured courses') }}" class="space-y-8">
-                <x-public.trust-bar />
-                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-                    <div class="space-y-2">
-                        <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
-                            {{ __('Courses') }}
-                        </p>
-                        <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
-                            {{ __('Featured courses') }}
-                        </h2>
-                        <p class="text-xs text-[var(--color-text-muted)]">
-                            {{ __('Showing') }} {{ $featuredCourses->count() }} {{ __('courses') }}
-                        </p>
-                    </div>
-                    <a href="{{ route('courses.index') }}" class="inline-flex items-center text-sm font-semibold text-[var(--color-primary)] hover:underline">
-                        {{ __('View all courses') }}
-                    </a>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @forelse ($featuredCourses as $course)
-                        <x-course.card :course="$course" />
-                    @empty
-                        <p class="text-sm text-[var(--color-text-muted)]">{{ __('No courses available yet') }}</p>
-                    @endforelse
-                </div>
-            </section>
-            @endif
-            <x-public.social-proof />
-
-
-            <section aria-label="{{ __('How I can help you') }}" class="space-y-8">
-                <div class="space-y-3 text-center">
-                    <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
-                        {{ __('Work with a clear plan') }}
-                    </p>
-                    <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
-                        {{ __('Choose the support that fits your next step') }}
-                    </h2>
-                    <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-2xl mx-auto">
-                        {{ __('Whether you are just starting or already closing deals, you will find a focused path to upgrade your skills and confidence.') }}
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-3">
-                        <div class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
-                            <span class="text-sm font-semibold">01</span>
-                        </div>
-                        <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
-                            {{ __('Sales Fundamentals Lab') }}
-                        </h3>
-                        <p class="text-sm text-[var(--color-text-muted)]">
-                            {{ __('Master the basics of prospecting, discovery calls, and objection handling with simple scripts and checklists.') }}
-                        </p>
-                    </div>
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-primary)]/20 p-6 flex flex-col gap-3">
-                        <div class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-primary)] text-white">
-                            <span class="text-sm font-semibold">02</span>
-                        </div>
-                        <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
-                            {{ __('Career & Interview Coaching') }}
-                        </h3>
-                        <p class="text-sm text-[var(--color-text-muted)]">
-                            {{ __('Position yourself for sales roles, practice interviews, and tell your story in a confident, structured way.') }}
-                        </p>
-                    </div>
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-3">
-                        <div class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
-                            <span class="text-sm font-semibold">03</span>
-                        </div>
-                        <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
-                            {{ __('1:1 Strategy Sessions') }}
-                        </h3>
-                        <p class="text-sm text-[var(--color-text-muted)]">
-                            {{ __('Bring your real deals, offers, or presentations and leave with a clear action plan for the next 30 days.') }}
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <section aria-label="{{ __('Featured programs') }}" class="space-y-8">
-                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-                    <div class="space-y-2">
-                        <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
-                            {{ __('Programs & courses') }}
-                        </p>
-                        <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
-                            {{ __('Start with a clear, focused program') }}
-                        </h2>
-                        <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-xl">
-                            {{ __('Each program is designed to be practical, compact, and easy to apply around your work schedule.') }}
-                        </p>
-                    </div>
-                    <a href="{{ route('courses.index') }}" class="inline-flex items-center text-sm font-semibold text-[var(--color-primary)] hover:underline">
-                        {{ __('View all courses') }}
-                    </a>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <article class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 overflow-hidden flex flex-col">
-                        <div class="h-40 bg-[var(--color-background)] overflow-hidden">
-                            <img
-                                src="{{ asset('images/demo/course-1.svg') }}"
-                                alt="{{ __('Sales fundamentals course illustration') }}"
-                                class="w-full h-full object-contain"
-                                loading="lazy"
-                            >
-                        </div>
-                        <div class="p-5 flex flex-col flex-1 gap-3">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]/80">
-                                {{ __('Foundations') }}
-                            </p>
-                            <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
-                                {{ __('Sales Fundamentals: From First Call to First Deal') }}
-                            </h3>
-                            <p class="text-sm text-[var(--color-text-muted)] flex-1">
-                                {{ __('Build a solid base in prospecting, discovery, and closing so you can start selling with confidence.') }}
-                            </p>
-                            <div class="flex items-center justify-between text-xs mt-1">
-                                <span class="font-semibold text-[var(--color-text-primary)]">{{ __('Beginner friendly') }}</span>
-                                <span class="rounded-full bg-[var(--color-accent)]/10 px-2.5 py-1 text-[11px] font-medium text-[var(--color-accent)]">
-                                    {{ __('Self-paced') }}
-                                </span>
-                            </div>
-                            <div class="mt-3 flex items-center justify-between">
-                                <span class="text-sm font-semibold text-[var(--color-primary)]">
-                                    {{ __('Coming soon') }}
-                                </span>
-                                <a href="{{ route('courses.index') }}" class="text-xs font-semibold text-[var(--color-primary)] hover:underline">
-                                    {{ __('Learn more') }}
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 overflow-hidden flex flex-col">
-                        <div class="h-40 bg-[var(--color-background)] overflow-hidden">
-                            <img
-                                src="{{ asset('images/demo/course-2.svg') }}"
-                                alt="{{ __('Interview coaching course illustration') }}"
-                                class="w-full h-full object-contain"
-                                loading="lazy"
-                            >
-                        </div>
-                        <div class="p-5 flex flex-col flex-1 gap-3">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]/80">
-                                {{ __('Career') }}
-                            </p>
-                            <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
-                                {{ __('Sales Interview & Role-Play Bootcamp') }}
-                            </h3>
-                            <p class="text-sm text-[var(--color-text-muted)] flex-1">
-                                {{ __('Practice real interview scenarios, structure your answers, and show up as the obvious choice for the role.') }}
-                            </p>
-                            <div class="flex items-center justify-between text-xs mt-1">
-                                <span class="font-semibold text-[var(--color-text-primary)]">{{ __('Job seekers') }}</span>
-                                <span class="rounded-full bg-[var(--color-primary)]/10 px-2.5 py-1 text-[11px] font-medium text-[var(--color-primary)]">
-                                    {{ __('Live cohort') }}
-                                </span>
-                            </div>
-                            <div class="mt-3 flex items-center justify-between">
-                                <span class="text-sm font-semibold text-[var(--color-primary)]">
-                                    {{ __('Waitlist open') }}
-                                </span>
-                                <a href="{{ route('courses.index') }}" class="text-xs font-semibold text-[var(--color-primary)] hover:underline">
-                                    {{ __('Join waitlist') }}
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 overflow-hidden flex flex-col">
-                        <div class="h-40 bg-[var(--color-background)] overflow-hidden">
-                            <img
-                                src="{{ asset('images/demo/course-3.svg') }}"
-                                alt="{{ __('Personal brand course illustration') }}"
-                                class="w-full h-full object-contain"
-                                loading="lazy"
-                            >
-                        </div>
-                        <div class="p-5 flex flex-col flex-1 gap-3">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]/80">
-                                {{ __('Brand') }}
-                            </p>
-                            <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
-                                {{ __('Personal Brand for Sales Professionals') }}
-                            </h3>
-                            <p class="text-sm text-[var(--color-text-muted)] flex-1">
-                                {{ __('Create a clear positioning, LinkedIn profile, and content plan that brings opportunities to you.') }}
-                            </p>
-                            <div class="flex items-center justify-between text-xs mt-1">
-                                <span class="font-semibold text-[var(--color-text-primary)]">{{ __('Intermediate') }}</span>
-                                <span class="rounded-full bg-[var(--color-secondary)]/10 px-2.5 py-1 text-[11px] font-medium text-[var(--color-secondary)]">
-                                    {{ __('Templates included') }}
-                                </span>
-                            </div>
-                            <div class="mt-3 flex items-center justify-between">
-                                <span class="text-sm font-semibold text-[var(--color-primary)]">
-                                    {{ __('Coming soon') }}
-                                </span>
-                                <a href="{{ route('courses.index') }}" class="text-xs font-semibold text-[var(--color-primary)] hover:underline">
-                                    {{ __('Learn more') }}
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </section>
-
-            @if ($showTestimonials)
-            <section aria-label="{{ __('Testimonials') }}" class="space-y-8">
-                <div class="space-y-3 text-center">
-                    <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
-                        {{ __('Student results') }}
-                    </p>
-                    <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
-                        {{ __('What people say after working together') }}
-                    </h2>
-                    <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-2xl mx-auto">
-                        {{ __('These are examples of the type of transformations and clarity you can expect when you commit to the work.') }}
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-3">
-                        <p class="text-sm text-[var(--color-text-muted)]">
-                            {{ __('"I went from avoiding sales calls to actually looking forward to them. The scripts and mindset shifts changed everything for me."') }}
-                        </p>
-                        <p class="text-xs font-semibold text-[var(--color-text-primary)]">
-                            {{ __('Sara, Freelance designer') }}
-                        </p>
-                    </div>
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-3">
-                        <p class="text-sm text-[var(--color-text-muted)]">
-                            {{ __('"After our interview prep, I received two offers in the same week. I finally knew how to talk about my experience clearly."') }}
-                        </p>
-                        <p class="text-xs font-semibold text-[var(--color-text-primary)]">
-                            {{ __('Omar, Sales representative') }}
-                        </p>
-                    </div>
-                    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 flex flex-col gap-3">
-                        <p class="text-sm text-[var(--color-text-muted)]">
-                            {{ __('"The frameworks are simple but powerful. I used them with my team and we closed our biggest month so far."') }}
-                        </p>
-                        <p class="text-xs font-semibold text-[var(--color-text-primary)]">
-                            {{ __('Laila, Startup founder') }}
-                        </p>
-                    </div>
-                </div>
-            </section>
-            @endif
-
-            @if ($showContactForm)
-            <section id="contact" aria-label="{{ __('Contact form') }}" class="space-y-8">
-                <div class="space-y-3 text-center">
-                    <p class="text-xs font-semibold text-[var(--color-primary)]/80 tracking-wide uppercase">
-                        {{ __('Get in touch') }}
-                    </p>
-                    <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)]">
-                        {{ __('Tell me about your goals') }}
-                    </h2>
-                    <p class="text-sm sm:text-base text-[var(--color-text-muted)] max-w-xl mx-auto">
-                        {{ __('Share a few details about where you are right now and what you want to achieve. I will get back to you with the best next step.') }}
-                    </p>
-                </div>
-                <div class="bg-white rounded-3xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 sm:p-8 lg:p-10">
-                    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-8">
-                        <form class="space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">
-                                        {{ __('Full name') }}
-                                    </label>
-                                    <input type="text" class="block w-full rounded-xl border-[var(--color-secondary)]/30 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">
-                                        {{ __('Email') }}
-                                    </label>
-                                    <input type="email" class="block w-full rounded-xl border-[var(--color-secondary)]/30 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">
-                                        {{ __('Current role') }}
-                                    </label>
-                                    <input type="text" class="block w-full rounded-xl border-[var(--color-secondary)]/30 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">
-                                        {{ __('Main goal') }}
-                                    </label>
-                                    <input type="text" class="block w-full rounded-xl border-[var(--color-secondary)]/30 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""/>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">
-                                    {{ __('What would you like help with?') }}
-                                </label>
-                                <textarea rows="4" class="block w-full rounded-xl border-[var(--color-secondary)]/30 text-sm shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder=""></textarea>
-                            </div>
-                            <div class="pt-2">
-                                <button type="button" class="inline-flex justify-center items-center px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                                    {{ __('Submit request') }}
-                                </button>
-                            </div>
-                        </form>
-                        <div class="space-y-4 text-sm text-[var(--color-text-muted)]">
-                            <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">
-                                {{ __('What happens after you send this?') }}
-                            </h3>
-                            <p>
-                                {{ __('You will receive a short email with a suggested next step: a course, a live program, or a 1:1 session, depending on what fits you best.') }}
-                            </p>
-                            <p>
-                                {{ __('You are not committing to anything by sending this form. It is simply a way to get personalized guidance instead of guessing your next move.') }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
             </section>
             @endif
 

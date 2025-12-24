@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Course;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -133,8 +134,9 @@ it('landing hero image mode defaults to contain', function () {
 
 it('admin can switch hero image mode to cover', function () {
     $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
-    \Pest\Laravel\actingAs($admin)->post(route('dashboard.instructor_profile.update'), [
-        'hero_image_mode' => 'cover',
+    \Pest\Laravel\actingAs($admin)->post(route('dashboard.settings.update'), [
+        'default_language' => 'en',
+        'landing_hero_image_mode' => 'cover',
     ])->assertRedirect();
 
     $response = \Pest\Laravel\get('/');
@@ -200,7 +202,127 @@ it('hero text settings render by locale', function () {
     \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.ar'], ['value' => 'وصف قصير للبطل']);
 
     $response = \Pest\Laravel\get('/');
+
     $response->assertOk();
     $response->assertSee('عنوان البطل');
     $response->assertSee('وصف قصير للبطل');
+});
+
+it('falls back to EN when AR is empty', function () {
+    \App\Models\Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'ar']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.title.en'], ['value' => 'English Hero']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.title.ar'], ['value' => '']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.en'], ['value' => 'English Subtitle']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.ar'], ['value' => '']);
+
+    $response = \Pest\Laravel\get('/');
+
+    $response->assertOk();
+    $response->assertSee('English Hero');
+    $response->assertSee('English Subtitle');
+});
+
+it('falls back to AR when EN is empty', function () {
+    \App\Models\Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'en']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.title.en'], ['value' => '']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.title.ar'], ['value' => 'عنوان عربي']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.en'], ['value' => '']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.ar'], ['value' => 'وصف عربي']);
+
+    $response = \Pest\Laravel\get('/');
+
+    $response->assertOk();
+    $response->assertSee('عنوان عربي');
+    $response->assertSee('وصف عربي');
+});
+
+it('shows WhatsApp CTA when enabled with phone', function () {
+    Setting::updateOrCreate(['key' => 'contact.whatsapp.enabled'], ['value' => true]);
+    Setting::updateOrCreate(['key' => 'contact.whatsapp.phone'], ['value' => '+201234567890']);
+    Setting::updateOrCreate(['key' => 'contact.whatsapp.message'], ['value' => 'Hello from test']);
+
+    $response = \Pest\Laravel\get('/');
+
+    $response->assertOk();
+    $response->assertSee('Chat on WhatsApp');
+});
+
+it('hides WhatsApp CTA when disabled', function () {
+    Setting::updateOrCreate(['key' => 'contact.whatsapp.enabled'], ['value' => false]);
+    Setting::updateOrCreate(['key' => 'contact.whatsapp.phone'], ['value' => '+201234567890']);
+    Setting::updateOrCreate(['key' => 'contact.whatsapp.message'], ['value' => 'Hello from test']);
+
+    $response = \Pest\Laravel\get('/');
+
+    $response->assertOk();
+    $response->assertDontSee('Chat on WhatsApp');
+});
+
+it('admin uploads hero image and landing shows it', function () {
+    $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+    $file = \Illuminate\Http\UploadedFile::fake()->image('hero.webp', 1920, 1080)->size(500);
+
+    \Pest\Laravel\actingAs($admin)->post(route('dashboard.settings.update'), [
+        'settings_group' => 'landing',
+        'default_language' => 'en',
+        'hero_image' => $file,
+    ])->assertRedirect();
+
+    $path = Setting::where('key', 'hero.image')->value('value');
+    expect($path)->toBeString()->and($path)->toStartWith('hero/');
+
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('storage/hero/', false);
+});
+
+it('admin removes hero image and fallback appears', function () {
+    Setting::updateOrCreate(['key' => 'hero.image'], ['value' => 'hero/existing.webp']);
+
+    $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+    \Pest\Laravel\actingAs($admin)->post(route('dashboard.settings.update'), [
+        'settings_group' => 'landing',
+        'default_language' => 'en',
+        'remove_hero_image' => true,
+    ])->assertRedirect();
+
+    $exists = Setting::where('key', 'hero.image')->exists();
+    expect($exists)->toBeFalse();
+
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('IMG_1700.JPG');
+});
+
+it('injects default hero font CSS variables', function () {
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('--hero-title-size: 56px', false);
+    $response->assertSee('--hero-subtitle-size: 24px', false);
+    $response->assertSee('--hero-description-size: 18px', false);
+    $response->assertSee('style="font-size: var(--hero-title-size);"', false);
+});
+
+it('applies saved hero font settings to CSS variables', function () {
+    Setting::updateOrCreate(['key' => 'hero.font.title'], ['value' => 72]);
+    Setting::updateOrCreate(['key' => 'hero.font.subtitle'], ['value' => 32]);
+    Setting::updateOrCreate(['key' => 'hero.font.description'], ['value' => 20]);
+
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('--hero-title-size: 72px', false);
+    $response->assertSee('--hero-subtitle-size: 32px', false);
+    $response->assertSee('--hero-description-size: 20px', false);
+});
+
+it('clamps out-of-range hero font settings', function () {
+    Setting::updateOrCreate(['key' => 'hero.font.title'], ['value' => 200]);
+    Setting::updateOrCreate(['key' => 'hero.font.subtitle'], ['value' => 100]);
+    Setting::updateOrCreate(['key' => 'hero.font.description'], ['value' => 5]);
+
+    $response = \Pest\Laravel\get('/');
+    $response->assertOk();
+    $response->assertSee('--hero-title-size: 96px', false);
+    $response->assertSee('--hero-subtitle-size: 48px', false);
+    $response->assertSee('--hero-description-size: 14px', false);
 });

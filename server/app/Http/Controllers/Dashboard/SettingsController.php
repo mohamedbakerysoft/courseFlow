@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Dashboard;
 use App\Actions\Payments\ValidatePayPalConfigAction;
 use App\Actions\Payments\ValidateStripeConfigAction;
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Services\SettingsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class SettingsController extends Controller
@@ -15,6 +17,7 @@ class SettingsController extends Controller
     public function edit(SettingsService $settings, ValidateStripeConfigAction $stripeValidator, ValidatePayPalConfigAction $paypalValidator): View
     {
         $defaultLanguage = $settings->get('site.default_language', 'en');
+        $defaultTheme = (string) $settings->get('ui.theme.default', 'system');
         $logoPath = $settings->get('site.logo_path');
 
         $paymentsStripeEnabled = (bool) $settings->get('payments.stripe.enabled', true);
@@ -42,6 +45,8 @@ class SettingsController extends Controller
         $landingFeature3Description = (string) $settings->get('landing.feature_3_description', 'Clean lessons, progress tracking and RTL-ready layouts out of the box.');
         $landingInstructorImagePath = $settings->get('landing.instructor_image');
         $landingInstructorImageUrl = $landingInstructorImagePath ? asset('storage/'.$landingInstructorImagePath) : null;
+        $currentHeroImagePath = (string) $settings->get('hero.image', '');
+        $heroImageUrl = $currentHeroImagePath !== '' ? asset('storage/'.$currentHeroImagePath) : null;
         $landingShowHero = (bool) $settings->get('landing.show_hero', true);
         $landingShowContactForm = (bool) $settings->get('landing.show_contact_form', false);
         $landingShowAbout = (bool) $settings->get('landing.show_about', true);
@@ -54,6 +59,10 @@ class SettingsController extends Controller
         $socialInstagram = (string) $settings->get('instructor.social.instagram', '');
         $socialYouTube = (string) $settings->get('instructor.social.youtube', '');
         $socialLinkedIn = (string) $settings->get('instructor.social.linkedin', '');
+
+        $heroFontTitle = (int) $settings->get('hero.font.title', 56);
+        $heroFontSubtitle = (int) $settings->get('hero.font.subtitle', 24);
+        $heroFontDescription = (int) $settings->get('hero.font.description', 18);
 
         $googleLoginEnabled = (bool) $settings->get('auth.google.enabled', false);
         $googleClientId = (string) $settings->get('auth.google.client_id', '');
@@ -72,9 +81,16 @@ class SettingsController extends Controller
         $legalPrivacyEn = (string) $settings->get('legal.privacy.en', "1. Information We Collect\nWe collect basic account details, payment data when required, and usage data to improve the service.\n\n2. How We Use Information\nWe use data to provide the service, enhance the experience, ensure security, and communicate updates.\n\n3. Cookies\nWe use cookies to remember preferences and analyze usage. You can disable cookies in your browser settings.\n\n4. Third-Party Services\nWe may use payment providers, analytics, and video hosting. Your data is subject to their policies.\n\n5. Data Security\nWe take reasonable measures to protect data without guaranteeing absolute security.\n\n6. User Rights\nYou may request to update or delete your data, subject to applicable law.\n\n7. Contact\nPlease use the site’s contact form to reach us.");
         $legalPrivacyAr = (string) $settings->get('legal.privacy.ar', "1. المعلومات التي نجمعها\nنقوم بجمع معلومات الحساب الأساسية، بيانات الدفع عند الحاجة، وبيانات الاستخدام لتحسين الخدمة.\n\n2. كيفية استخدام المعلومات\nنستخدم البيانات لتقديم الخدمة، تحسين التجربة، وضمان الأمان وإبلاغك بالتحديثات.\n\n3. ملفات تعريف الارتباط\nنستخدم ملفات تعريف الارتباط لتذكر تفضيلاتك وتحليل الاستخدام. يمكنك تعطيلها من إعدادات المتصفح.\n\n4. الخدمات الخارجية\nقد نستخدم موفري الدفع والتحليلات وخدمات استضافة الفيديو. تخضع بياناتك لسياسات هذه الخدمات.\n\n5. أمان البيانات\nنتخذ تدابير معقولة لحماية البيانات، دون ضمان حماية مطلقة.\n\n6. حقوق المستخدم\nيمكنك طلب تحديث أو حذف بياناتك وفقاً للقانون المعمول به.\n\n7. الاتصال\nيرجى استخدام نموذج الاتصال داخل الموقع للتواصل.");
 
+        $stripePublishableKey = (string) $settings->get('stripe.publishable_key', '');
+        $stripeMode = (string) $settings->get('stripe.mode', 'test');
+        $stripeHasSecret = (string) $settings->get('stripe.secret_key', '') !== '';
         $stripeStatusLabel = 'Disabled';
         $stripeStatusVariant = 'gray';
         $stripeStatusMessage = null;
+        $stripeWebhookSecretExists = (string) $settings->get('stripe.webhook_secret', '') !== '';
+        $stripePublishableKeyMasked = $stripePublishableKey !== '' && strlen($stripePublishableKey) > 12
+            ? substr($stripePublishableKey, 0, 8).'…'.substr($stripePublishableKey, -4)
+            : $stripePublishableKey;
         if ($paymentsStripeEnabled) {
             $pk = (string) config('services.stripe.publishable_key', '');
             $sk = (string) config('services.stripe.secret', '');
@@ -95,9 +111,15 @@ class SettingsController extends Controller
             }
         }
 
+        $paypalClientId = (string) $settings->get('paypal.client_id', '');
+        $paypalHasSecret = (string) $settings->get('paypal.client_secret', '') !== '';
+        $paypalMode = (string) $settings->get('paypal.mode', 'sandbox');
         $paypalStatusLabel = 'Disabled';
         $paypalStatusVariant = 'gray';
         $paypalStatusMessage = null;
+        $paypalClientIdMasked = $paypalClientId !== '' && strlen($paypalClientId) > 12
+            ? substr($paypalClientId, 0, 8).'…'.substr($paypalClientId, -4)
+            : $paypalClientId;
         if ($paymentsPaypalEnabled) {
             $clientId = (string) config('services.paypal.client_id', '');
             $clientSecret = (string) config('services.paypal.client_secret', '');
@@ -116,6 +138,7 @@ class SettingsController extends Controller
 
         return view('dashboard.settings.edit', compact(
             'defaultLanguage',
+            'defaultTheme',
             'logoUrl',
             'paymentsStripeEnabled',
             'paymentsPaypalEnabled',
@@ -166,79 +189,187 @@ class SettingsController extends Controller
             'stripeStatusLabel',
             'stripeStatusVariant',
             'stripeStatusMessage',
+            'stripePublishableKey',
+            'stripePublishableKeyMasked',
+            'stripeMode',
+            'stripeHasSecret',
+            'stripeWebhookSecretExists',
+            'paypalClientId',
+            'paypalClientIdMasked',
+            'paypalHasSecret',
+            'paypalMode',
             'paypalStatusLabel',
             'paypalStatusVariant',
             'paypalStatusMessage',
+            'heroImageUrl',
+            'heroFontTitle',
+            'heroFontSubtitle',
+            'heroFontDescription',
         ));
     }
 
     public function update(Request $request, SettingsService $settings, ValidateStripeConfigAction $stripeValidator, ValidatePayPalConfigAction $paypalValidator): RedirectResponse
     {
-        $validated = $request->validate([
-            'default_language' => ['required', 'in:en,ar'],
-            'logo' => ['nullable', 'image', 'max:2048'],
-            'payments_stripe_enabled' => ['nullable', 'boolean'],
-            'payments_paypal_enabled' => ['nullable', 'boolean'],
-            'payments_manual_instructions' => ['nullable', 'string'],
-            'instructor_name' => ['nullable', 'string', 'max:255'],
-            'landing_hero_title' => ['nullable', 'string', 'max:255'],
-            'landing_hero_subtitle' => ['nullable', 'string', 'max:255'],
-            'landing_hero_title_en' => ['nullable', 'string', 'max:255'],
-            'landing_hero_title_ar' => ['nullable', 'string', 'max:255'],
-            'landing_hero_subtitle_en' => ['nullable', 'string', 'max:255'],
-            'landing_hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
-            'hero_title_en' => ['nullable', 'string', 'max:255'],
-            'hero_title_ar' => ['nullable', 'string', 'max:255'],
-            'hero_subtitle_en' => ['nullable', 'string', 'max:255'],
-            'hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
-            'landing_feature_1_title' => ['nullable', 'string', 'max:255'],
-            'landing_feature_1_description' => ['nullable', 'string'],
-            'landing_feature_2_title' => ['nullable', 'string', 'max:255'],
-            'landing_feature_2_description' => ['nullable', 'string'],
-            'landing_feature_3_title' => ['nullable', 'string', 'max:255'],
-            'landing_feature_3_description' => ['nullable', 'string'],
-            'landing_instructor_image' => ['nullable', 'image', 'max:2048'],
-            'landing_show_hero' => ['nullable', 'boolean'],
-            'landing_show_contact_form' => ['nullable', 'boolean'],
-            'landing_show_about' => ['nullable', 'boolean'],
-            'landing_show_courses_preview' => ['nullable', 'boolean'],
-            'landing_show_testimonials' => ['nullable', 'boolean'],
-            'landing_show_footer_cta' => ['nullable', 'boolean'],
-            'landing_hero_image_mode' => ['nullable', 'in:contain,cover'],
-            'landing_hero_image_focus' => ['nullable', 'in:center,top,bottom,left,right'],
-            'social_twitter' => ['nullable', 'url'],
-            'social_instagram' => ['nullable', 'url'],
-            'social_youtube' => ['nullable', 'url'],
-            'social_linkedin' => ['nullable', 'url'],
-            'legal_terms_en' => ['nullable', 'string'],
-            'legal_terms_ar' => ['nullable', 'string'],
-            'legal_privacy_en' => ['nullable', 'string'],
-            'legal_privacy_ar' => ['nullable', 'string'],
-            'auth_google_enabled' => ['nullable', 'boolean'],
-            'auth_google_client_id' => ['nullable', 'string'],
-            'auth_google_client_secret' => ['nullable', 'string'],
-            'security_recaptcha_enabled' => ['nullable', 'boolean'],
-            'security_recaptcha_site_key' => ['nullable', 'string'],
-            'security_recaptcha_secret_key' => ['nullable', 'string'],
-            'contact_whatsapp_enabled' => ['nullable', 'boolean'],
-            'contact_whatsapp_phone' => ['nullable', 'string', 'max:32'],
-            'contact_whatsapp_message' => ['nullable', 'string', 'max:500'],
-        ]);
+        $group = (string) $request->input('settings_group', '');
+
+        if ($group === 'general') {
+            $validated = $request->validate([
+                'default_language' => ['required', 'in:en,ar'],
+                'logo' => ['nullable', 'image', 'max:2048'],
+                'default_theme' => ['required', 'in:light,dark,system'],
+            ]);
+        } elseif ($group === 'payments') {
+            $validated = $request->validate([
+                'payments_stripe_enabled' => ['nullable', 'boolean'],
+                'payments_paypal_enabled' => ['nullable', 'boolean'],
+                'payments_manual_instructions' => ['nullable', 'string'],
+                'stripe_publishable_key' => ['nullable', 'string'],
+                'stripe_secret_key' => ['nullable', 'string'],
+                'stripe_mode' => ['nullable', 'in:test,live'],
+                'stripe_webhook_secret' => ['nullable', 'string'],
+                'paypal_client_id' => ['nullable', 'string'],
+                'paypal_client_secret' => ['nullable', 'string'],
+                'paypal_mode' => ['nullable', 'in:sandbox,live'],
+            ]);
+        } elseif ($group === 'authentication') {
+            $validated = $request->validate([
+                'auth_google_enabled' => ['nullable', 'boolean'],
+                'auth_google_client_id' => ['nullable', 'string'],
+                'auth_google_client_secret' => ['nullable', 'string'],
+            ]);
+        } elseif ($group === 'security') {
+            $validated = $request->validate([
+                'security_recaptcha_enabled' => ['nullable', 'boolean'],
+                'security_recaptcha_site_key' => ['nullable', 'string'],
+                'security_recaptcha_secret_key' => ['nullable', 'string'],
+                'legal_terms_en' => ['nullable', 'string'],
+                'legal_terms_ar' => ['nullable', 'string'],
+                'legal_privacy_en' => ['nullable', 'string'],
+                'legal_privacy_ar' => ['nullable', 'string'],
+            ]);
+        } elseif ($group === 'notifications') {
+            $validated = $request->validate([
+                'contact_whatsapp_enabled' => ['nullable', 'boolean'],
+                'contact_whatsapp_phone' => ['nullable', 'string', 'max:32'],
+                'contact_whatsapp_message' => ['nullable', 'string', 'max:500'],
+            ]);
+        } elseif ($group === 'landing') {
+            $validated = $request->validate([
+                'instructor_name' => ['nullable', 'string', 'max:255'],
+                'landing_hero_title' => ['nullable', 'string', 'max:255'],
+                'landing_hero_subtitle' => ['nullable', 'string', 'max:255'],
+                'landing_hero_title_en' => ['nullable', 'string', 'max:255'],
+                'landing_hero_title_ar' => ['nullable', 'string', 'max:255'],
+                'landing_hero_subtitle_en' => ['nullable', 'string', 'max:255'],
+                'landing_hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
+                'hero_title_en' => ['nullable', 'string', 'max:255'],
+                'hero_title_ar' => ['nullable', 'string', 'max:255'],
+                'hero_subtitle_en' => ['nullable', 'string', 'max:255'],
+                'hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
+                'hero_font_title' => ['nullable', 'integer', 'between:28,96'],
+                'hero_font_subtitle' => ['nullable', 'integer', 'between:18,48'],
+                'hero_font_description' => ['nullable', 'integer', 'between:14,28'],
+                'landing_feature_1_title' => ['nullable', 'string', 'max:255'],
+                'landing_feature_1_description' => ['nullable', 'string'],
+                'landing_feature_2_title' => ['nullable', 'string', 'max:255'],
+                'landing_feature_2_description' => ['nullable', 'string'],
+                'landing_feature_3_title' => ['nullable', 'string', 'max:255'],
+                'landing_feature_3_description' => ['nullable', 'string'],
+                'landing_instructor_image' => ['nullable', 'image', 'max:2048'],
+                'landing_show_hero' => ['nullable', 'boolean'],
+                'landing_show_contact_form' => ['nullable', 'boolean'],
+                'landing_show_about' => ['nullable', 'boolean'],
+                'landing_show_courses_preview' => ['nullable', 'boolean'],
+                'landing_show_testimonials' => ['nullable', 'boolean'],
+                'landing_show_footer_cta' => ['nullable', 'boolean'],
+                'landing_hero_image_mode' => ['nullable', 'in:contain,cover'],
+                'landing_hero_image_focus' => ['nullable', 'in:center,top,bottom,left,right'],
+                'social_twitter' => ['nullable', 'url'],
+                'social_instagram' => ['nullable', 'url'],
+                'social_youtube' => ['nullable', 'url'],
+                'social_linkedin' => ['nullable', 'url'],
+                'hero_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+                'remove_hero_image' => ['nullable', 'boolean'],
+            ]);
+        } else {
+            $validated = $request->validate([
+                'default_language' => ['required', 'in:en,ar'],
+                'logo' => ['nullable', 'image', 'max:2048'],
+                'default_theme' => ['nullable', 'in:light,dark,system'],
+                'payments_stripe_enabled' => ['nullable', 'boolean'],
+                'payments_paypal_enabled' => ['nullable', 'boolean'],
+                'payments_manual_instructions' => ['nullable', 'string'],
+                'instructor_name' => ['nullable', 'string', 'max:255'],
+                'landing_hero_title' => ['nullable', 'string', 'max:255'],
+                'landing_hero_subtitle' => ['nullable', 'string', 'max:255'],
+                'landing_hero_title_en' => ['nullable', 'string', 'max:255'],
+                'landing_hero_title_ar' => ['nullable', 'string', 'max:255'],
+                'landing_hero_subtitle_en' => ['nullable', 'string', 'max:255'],
+                'landing_hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
+                'hero_title_en' => ['nullable', 'string', 'max:255'],
+                'hero_title_ar' => ['nullable', 'string', 'max:255'],
+                'hero_subtitle_en' => ['nullable', 'string', 'max:255'],
+                'hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
+                'landing_feature_1_title' => ['nullable', 'string', 'max:255'],
+                'landing_feature_1_description' => ['nullable', 'string'],
+                'landing_feature_2_title' => ['nullable', 'string', 'max:255'],
+                'landing_feature_2_description' => ['nullable', 'string'],
+                'landing_feature_3_title' => ['nullable', 'string', 'max:255'],
+                'landing_feature_3_description' => ['nullable', 'string'],
+                'landing_instructor_image' => ['nullable', 'image', 'max:2048'],
+                'landing_show_hero' => ['nullable', 'boolean'],
+                'landing_show_contact_form' => ['nullable', 'boolean'],
+                'landing_show_about' => ['nullable', 'boolean'],
+                'landing_show_courses_preview' => ['nullable', 'boolean'],
+                'landing_show_testimonials' => ['nullable', 'boolean'],
+                'landing_show_footer_cta' => ['nullable', 'boolean'],
+                'landing_hero_image_mode' => ['nullable', 'in:contain,cover'],
+                'landing_hero_image_focus' => ['nullable', 'in:center,top,bottom,left,right'],
+                'social_twitter' => ['nullable', 'url'],
+                'social_instagram' => ['nullable', 'url'],
+                'social_youtube' => ['nullable', 'url'],
+                'social_linkedin' => ['nullable', 'url'],
+                'legal_terms_en' => ['nullable', 'string'],
+                'legal_terms_ar' => ['nullable', 'string'],
+                'legal_privacy_en' => ['nullable', 'string'],
+                'legal_privacy_ar' => ['nullable', 'string'],
+                'auth_google_enabled' => ['nullable', 'boolean'],
+                'auth_google_client_id' => ['nullable', 'string'],
+                'auth_google_client_secret' => ['nullable', 'string'],
+                'security_recaptcha_enabled' => ['nullable', 'boolean'],
+                'security_recaptcha_site_key' => ['nullable', 'string'],
+                'security_recaptcha_secret_key' => ['nullable', 'string'],
+                'contact_whatsapp_enabled' => ['nullable', 'boolean'],
+                'contact_whatsapp_phone' => ['nullable', 'string', 'max:32'],
+                'contact_whatsapp_message' => ['nullable', 'string', 'max:500'],
+                'stripe_publishable_key' => ['nullable', 'string'],
+                'stripe_secret_key' => ['nullable', 'string'],
+                'stripe_mode' => ['nullable', 'in:test,live'],
+                'stripe_webhook_secret' => ['nullable', 'string'],
+                'paypal_client_id' => ['nullable', 'string'],
+                'paypal_client_secret' => ['nullable', 'string'],
+                'paypal_mode' => ['nullable', 'in:sandbox,live'],
+            ]);
+        }
 
         $stripeEnabled = $request->boolean('payments_stripe_enabled');
-        if ($stripeEnabled && ! app()->environment(['testing', 'dusk', 'dusk.local'])) {
-            $publishableKey = (string) config('services.stripe.publishable_key');
-            $secretKey = (string) config('services.stripe.secret');
-            $webhookSecret = (string) config('services.stripe.webhook_secret');
-
-            $result = $stripeValidator->execute($publishableKey, $secretKey, $webhookSecret);
-            if (! ($result['valid'] ?? false)) {
-                return back()->withErrors(['stripe' => (string) ($result['message'] ?? 'Stripe configuration is invalid.')]);
+        if (($group === 'payments' || $group === '') && $stripeEnabled && ! app()->environment(['testing', 'dusk', 'dusk.local'])) {
+            $publishableKeyInput = (string) ($validated['stripe_publishable_key'] ?? '');
+            $secretKeyInput = (string) ($validated['stripe_secret_key'] ?? '');
+            if (! str_starts_with($publishableKeyInput, 'pk_') || ! str_starts_with($secretKeyInput, 'sk_')) {
+                return back()->withErrors(['stripe' => __('Publishable key must start with "pk_" and secret key must start with "sk_".')])->withInput();
             }
         }
 
         $paypalEnabled = $request->boolean('payments_paypal_enabled');
-        if ($paypalEnabled && ! app()->environment(['testing', 'dusk', 'dusk.local'])) {
+        if (($group === 'payments' || $group === '') && $paypalEnabled) {
+            $paypalClientIdInput = (string) ($validated['paypal_client_id'] ?? '');
+            $paypalSecretInput = (string) ($validated['paypal_client_secret'] ?? '');
+            if ($paypalClientIdInput === '' || $paypalSecretInput === '') {
+                return back()->withErrors(['paypal' => __('PayPal Client ID and Client Secret are required when PayPal is enabled.')])->withInput();
+            }
+        }
+        if (($group === 'payments' || $group === '') && $paypalEnabled && ! app()->environment(['testing', 'dusk', 'dusk.local'])) {
             $clientId = (string) config('services.paypal.client_id');
             $clientSecret = (string) config('services.paypal.client_secret');
             $baseUrl = (string) config('services.paypal.base_url', '');
@@ -251,7 +382,7 @@ class SettingsController extends Controller
         }
 
         $googleEnabled = $request->boolean('auth_google_enabled');
-        if ($googleEnabled) {
+        if (($group === 'authentication' || $group === '') && $googleEnabled) {
             $googleId = (string) ($validated['auth_google_client_id'] ?? '');
             $googleSecret = (string) ($validated['auth_google_client_secret'] ?? '');
             if ($googleId === '' || $googleSecret === '') {
@@ -260,7 +391,7 @@ class SettingsController extends Controller
         }
 
         $recaptchaToggle = $request->boolean('security_recaptcha_enabled');
-        if ($recaptchaToggle) {
+        if (($group === 'security' || $group === '') && $recaptchaToggle) {
             $siteKey = (string) ($validated['security_recaptcha_site_key'] ?? '');
             $secretKey = (string) ($validated['security_recaptcha_secret_key'] ?? '');
             if ($siteKey === '' || $secretKey === '') {
@@ -268,50 +399,157 @@ class SettingsController extends Controller
             }
         }
 
-        $values = [
-            'site.default_language' => $validated['default_language'],
-            'payments.stripe.enabled' => $stripeEnabled,
-            'payments.paypal.enabled' => $paypalEnabled,
-            'payments.manual.instructions' => $validated['payments_manual_instructions'] ?? '',
-            'instructor.name' => $validated['instructor_name'] ?? '',
-            'landing.hero_title' => $validated['landing_hero_title'] ?? '',
-            'landing.hero_subtitle' => $validated['landing_hero_subtitle'] ?? '',
-            'landing.hero_title_en' => $validated['landing_hero_title_en'] ?? '',
-            'landing.hero_title_ar' => $validated['landing_hero_title_ar'] ?? '',
-            'landing.hero_subtitle_en' => $validated['landing_hero_subtitle_en'] ?? '',
-            'landing.hero_subtitle_ar' => $validated['landing_hero_subtitle_ar'] ?? '',
-            'hero.title.en' => $validated['hero_title_en'] ?? '',
-            'hero.title.ar' => $validated['hero_title_ar'] ?? '',
-            'hero.subtitle.en' => $validated['hero_subtitle_en'] ?? '',
-            'hero.subtitle.ar' => $validated['hero_subtitle_ar'] ?? '',
-            'landing.feature_1_title' => $validated['landing_feature_1_title'] ?? '',
-            'landing.feature_1_description' => $validated['landing_feature_1_description'] ?? '',
-            'landing.feature_2_title' => $validated['landing_feature_2_title'] ?? '',
-            'landing.feature_2_description' => $validated['landing_feature_2_description'] ?? '',
-            'landing.feature_3_title' => $validated['landing_feature_3_title'] ?? '',
-            'landing.feature_3_description' => $validated['landing_feature_3_description'] ?? '',
-            'landing.show_hero' => $request->boolean('landing_show_hero'),
-            'landing.show_contact_form' => $request->boolean('landing_show_contact_form'),
-            'landing.show_about' => $request->boolean('landing_show_about'),
-            'landing.show_courses_preview' => $request->boolean('landing_show_courses_preview'),
-            'landing.show_testimonials' => $request->boolean('landing_show_testimonials'),
-            'landing.show_footer_cta' => $request->boolean('landing_show_footer_cta'),
-            'landing.hero_image_mode' => $validated['landing_hero_image_mode'] ?? 'contain',
-            'landing.hero_image_focus' => $validated['landing_hero_image_focus'] ?? 'center',
-            'instructor.social.twitter' => $validated['social_twitter'] ?? '',
-            'instructor.social.instagram' => $validated['social_instagram'] ?? '',
-            'instructor.social.youtube' => $validated['social_youtube'] ?? '',
-            'instructor.social.linkedin' => $validated['social_linkedin'] ?? '',
-            'auth.google.enabled' => $googleEnabled,
-            'auth.google.client_id' => (string) ($validated['auth_google_client_id'] ?? ''),
-            'auth.google.client_secret' => (string) ($validated['auth_google_client_secret'] ?? ''),
-            'security.recaptcha.enabled' => $recaptchaToggle,
-            'security.recaptcha.site_key' => (string) ($validated['security_recaptcha_site_key'] ?? ''),
-            'security.recaptcha.secret_key' => (string) ($validated['security_recaptcha_secret_key'] ?? ''),
-            'contact.whatsapp.enabled' => $request->boolean('contact_whatsapp_enabled'),
-            'contact.whatsapp.phone' => (string) ($validated['contact_whatsapp_phone'] ?? ''),
-            'contact.whatsapp.message' => (string) ($validated['contact_whatsapp_message'] ?? ''),
-        ];
+        $values = [];
+        if ($group === 'general' || $group === '') {
+            $values = array_merge($values, [
+                'site.default_language' => $validated['default_language'] ?? $settings->get('site.default_language', 'en'),
+                'ui.theme.default' => ($validated['default_theme'] ?? $settings->get('ui.theme.default', 'system')),
+            ]);
+        }
+        if ($group === 'payments' || $group === '') {
+            $values = array_merge($values, [
+                'payments.stripe.enabled' => $stripeEnabled,
+                'stripe.enabled' => $stripeEnabled,
+                'payments.paypal.enabled' => $paypalEnabled,
+                'paypal.enabled' => $paypalEnabled,
+                'payments.manual.instructions' => $validated['payments_manual_instructions'] ?? (string) $settings->get('payments.manual.instructions', ''),
+            ]);
+        }
+        if ($group === 'landing' || $group === '') {
+            $values = array_merge($values, [
+                'instructor.name' => $validated['instructor_name'] ?? (string) $settings->get('instructor.name', ''),
+                // Legacy fields retained for backward compatibility (input only)
+                'landing.hero_title' => $validated['landing_hero_title'] ?? (string) $settings->get('landing.hero_title', ''),
+                'landing.hero_subtitle' => $validated['landing_hero_subtitle'] ?? (string) $settings->get('landing.hero_subtitle', ''),
+                'landing.hero_title_en' => $validated['landing_hero_title_en'] ?? (string) $settings->get('landing.hero_title_en', ''),
+                'landing.hero_title_ar' => $validated['landing_hero_title_ar'] ?? (string) $settings->get('landing.hero_title_ar', ''),
+                'landing.hero_subtitle_en' => $validated['landing_hero_subtitle_en'] ?? (string) $settings->get('landing.hero_subtitle_en', ''),
+                'landing.hero_subtitle_ar' => $validated['landing_hero_subtitle_ar'] ?? (string) $settings->get('landing.hero_subtitle_ar', ''),
+                // New single source of truth
+                'hero.title.en' => $validated['hero_title_en'] ?? (string) $settings->get('hero.title.en', ''),
+                'hero.title.ar' => $validated['hero_title_ar'] ?? (string) $settings->get('hero.title.ar', ''),
+                'hero.subtitle.en' => $validated['hero_subtitle_en'] ?? (string) $settings->get('hero.subtitle.en', ''),
+                'hero.subtitle.ar' => $validated['hero_subtitle_ar'] ?? (string) $settings->get('hero.subtitle.ar', ''),
+                'landing.feature_1_title' => $validated['landing_feature_1_title'] ?? (string) $settings->get('landing.feature_1_title', ''),
+                'landing.feature_1_description' => $validated['landing_feature_1_description'] ?? (string) $settings->get('landing.feature_1_description', ''),
+                'landing.feature_2_title' => $validated['landing_feature_2_title'] ?? (string) $settings->get('landing.feature_2_title', ''),
+                'landing.feature_2_description' => $validated['landing_feature_2_description'] ?? (string) $settings->get('landing.feature_2_description', ''),
+                'landing.feature_3_title' => $validated['landing_feature_3_title'] ?? (string) $settings->get('landing.feature_3_title', ''),
+                'landing.feature_3_description' => $validated['landing_feature_3_description'] ?? (string) $settings->get('landing.feature_3_description', ''),
+                'landing.show_hero' => $request->has('landing_show_hero')
+                    ? $request->boolean('landing_show_hero')
+                    : (bool) $settings->get('landing.show_hero', true),
+                'landing.show_contact_form' => $request->has('landing_show_contact_form')
+                    ? $request->boolean('landing_show_contact_form')
+                    : (bool) $settings->get('landing.show_contact_form', false),
+                'landing.show_about' => $request->has('landing_show_about')
+                    ? $request->boolean('landing_show_about')
+                    : (bool) $settings->get('landing.show_about', true),
+                'landing.show_courses_preview' => $request->has('landing_show_courses_preview')
+                    ? $request->boolean('landing_show_courses_preview')
+                    : (bool) $settings->get('landing.show_courses_preview', true),
+                'landing.show_testimonials' => $request->has('landing_show_testimonials')
+                    ? $request->boolean('landing_show_testimonials')
+                    : (bool) $settings->get('landing.show_testimonials', true),
+                'landing.show_footer_cta' => $request->has('landing_show_footer_cta')
+                    ? $request->boolean('landing_show_footer_cta')
+                    : (bool) $settings->get('landing.show_footer_cta', true),
+                'landing.hero_image_mode' => $validated['landing_hero_image_mode'] ?? (string) $settings->get('landing.hero_image_mode', 'contain'),
+                'landing.hero_image_focus' => $validated['landing_hero_image_focus'] ?? (string) $settings->get('landing.hero_image_focus', 'center'),
+                'instructor.social.twitter' => $validated['social_twitter'] ?? (string) $settings->get('instructor.social.twitter', ''),
+                'instructor.social.instagram' => $validated['social_instagram'] ?? (string) $settings->get('instructor.social.instagram', ''),
+                'instructor.social.youtube' => $validated['social_youtube'] ?? (string) $settings->get('instructor.social.youtube', ''),
+                'instructor.social.linkedin' => $validated['social_linkedin'] ?? (string) $settings->get('instructor.social.linkedin', ''),
+            ]);
+            if (array_key_exists('hero_font_title', $validated)) {
+                $values['hero.font.title'] = (int) $validated['hero_font_title'];
+            }
+            if (array_key_exists('hero_font_subtitle', $validated)) {
+                $values['hero.font.subtitle'] = (int) $validated['hero_font_subtitle'];
+            }
+            if (array_key_exists('hero_font_description', $validated)) {
+                $values['hero.font.description'] = (int) $validated['hero_font_description'];
+            }
+            // Migrate legacy hero text inputs to the new keys
+            $values['hero.title.en'] = (string) (
+                $validated['hero_title_en']
+                ?? $validated['landing_hero_title_en']
+                ?? $validated['landing_hero_title']
+                ?? (string) $settings->get('hero.title.en', (string) $settings->get('landing.hero_title_en', (string) $settings->get('landing.hero_title', '')))
+            );
+            $values['hero.title.ar'] = (string) (
+                $validated['hero_title_ar']
+                ?? $validated['landing_hero_title_ar']
+                ?? (string) $settings->get('hero.title.ar', (string) $settings->get('landing.hero_title_ar', ''))
+            );
+            $values['hero.subtitle.en'] = (string) (
+                $validated['hero_subtitle_en']
+                ?? $validated['landing_hero_subtitle_en']
+                ?? $validated['landing_hero_subtitle']
+                ?? (string) $settings->get('hero.subtitle.en', (string) $settings->get('landing.hero_subtitle_en', (string) $settings->get('landing.hero_subtitle', '')))
+            );
+            $values['hero.subtitle.ar'] = (string) (
+                $validated['hero_subtitle_ar']
+                ?? $validated['landing_hero_subtitle_ar']
+                ?? (string) $settings->get('hero.subtitle.ar', (string) $settings->get('landing.hero_subtitle_ar', ''))
+            );
+            // Clean up legacy duplicates
+            $values['landing.hero_title'] = null;
+            $values['landing.hero_subtitle'] = null;
+            $values['landing.hero_title_en'] = null;
+            $values['landing.hero_title_ar'] = null;
+            $values['landing.hero_subtitle_en'] = null;
+            $values['landing.hero_subtitle_ar'] = null;
+        }
+        if ($group === 'authentication' || $group === '') {
+            $values = array_merge($values, [
+                'auth.google.enabled' => $googleEnabled,
+                'auth.google.client_id' => (string) ($validated['auth_google_client_id'] ?? (string) $settings->get('auth.google.client_id', '')),
+                'auth.google.client_secret' => (string) ($validated['auth_google_client_secret'] ?? (string) $settings->get('auth.google.client_secret', '')),
+            ]);
+        }
+        if ($group === 'security' || $group === '') {
+            $values = array_merge($values, [
+                'security.recaptcha.enabled' => $recaptchaToggle,
+                'security.recaptcha.site_key' => (string) ($validated['security_recaptcha_site_key'] ?? (string) $settings->get('security.recaptcha.site_key', '')),
+                'security.recaptcha.secret_key' => (string) ($validated['security_recaptcha_secret_key'] ?? (string) $settings->get('security.recaptcha.secret_key', '')),
+                'legal.terms.en' => $validated['legal_terms_en'] ?? (string) $settings->get('legal.terms.en', ''),
+                'legal.terms.ar' => $validated['legal_terms_ar'] ?? (string) $settings->get('legal.terms.ar', ''),
+                'legal.privacy.en' => $validated['legal_privacy_en'] ?? (string) $settings->get('legal.privacy.en', ''),
+                'legal.privacy.ar' => $validated['legal_privacy_ar'] ?? (string) $settings->get('legal.privacy.ar', ''),
+            ]);
+        }
+        if ($group === 'notifications' || $group === '') {
+            $values = array_merge($values, [
+                'contact.whatsapp.enabled' => $request->boolean('contact_whatsapp_enabled'),
+                'contact.whatsapp.phone' => (string) ($validated['contact_whatsapp_phone'] ?? (string) $settings->get('contact.whatsapp.phone', '')),
+                'contact.whatsapp.message' => (string) ($validated['contact_whatsapp_message'] ?? (string) $settings->get('contact.whatsapp.message', '')),
+            ]);
+        }
+        if (array_key_exists('stripe_mode', $validated)) {
+            $values['stripe.mode'] = (string) $validated['stripe_mode'] ?? 'test';
+        }
+        if (array_key_exists('stripe_publishable_key', $validated)) {
+            $values['stripe.publishable_key'] = (string) $validated['stripe_publishable_key'];
+        }
+        if (array_key_exists('stripe_secret_key', $validated) && trim((string) $validated['stripe_secret_key']) !== '') {
+            $values['stripe.secret_key'] = (string) $validated['stripe_secret_key'];
+        }
+        if (array_key_exists('stripe_webhook_secret', $validated)) {
+            $whsec = trim((string) $validated['stripe_webhook_secret']);
+            if ($whsec !== '' && str_starts_with($whsec, 'whsec_')) {
+                $values['stripe.webhook_secret'] = $whsec;
+            }
+        }
+        if (array_key_exists('paypal_mode', $validated)) {
+            $values['paypal.mode'] = (string) $validated['paypal_mode'] ?? 'sandbox';
+        }
+        if (array_key_exists('paypal_client_id', $validated)) {
+            $values['paypal.client_id'] = (string) $validated['paypal_client_id'];
+        }
+        if (array_key_exists('paypal_client_secret', $validated) && trim((string) $validated['paypal_client_secret']) !== '') {
+            $values['paypal.client_secret'] = (string) $validated['paypal_client_secret'];
+        }
         if (array_key_exists('legal_terms_en', $validated)) {
             $values['legal.terms.en'] = $validated['legal_terms_en'];
         }
@@ -334,14 +572,31 @@ class SettingsController extends Controller
             $path = $request->file('landing_instructor_image')->store('landing', 'public');
             $values['landing.instructor_image'] = $path;
         }
+        if ($group === 'landing') {
+            $removeHero = $request->boolean('remove_hero_image');
+            if ($removeHero) {
+                $current = (string) $settings->get('hero.image', '');
+                if ($current !== '') {
+                    Storage::disk('public')->delete($current);
+                }
+                Setting::query()->where('key', 'hero.image')->delete();
+            } elseif ($request->hasFile('hero_image')) {
+                $current = (string) $settings->get('hero.image', '');
+                $path = $request->file('hero_image')->store('hero', 'public');
+                if ($current !== '' && $current !== $path) {
+                    Storage::disk('public')->delete($current);
+                }
+                $values['hero.image'] = $path;
+            }
+        }
 
         $settings->set($values);
 
-        if ($paypalEnabled) {
+        if (($group === 'payments' || $group === '') && $paypalEnabled) {
             return back()->with('status', 'PayPal is connected successfully.');
         }
 
-        if ($stripeEnabled) {
+        if (($group === 'payments' || $group === '') && $stripeEnabled) {
             return back()->with('status', 'Stripe is connected successfully.');
         }
 

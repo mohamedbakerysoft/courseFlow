@@ -38,6 +38,9 @@
                 --color-error: {{ $theme['error'] ?? '#EF4444' }};
                 --font-arabic: {{ $typographyCss['arabic_stack'] ?? "'Cairo', sans-serif" }};
                 --font-english: {{ $typographyCss['english_stack'] ?? "'Inter', system-ui, sans-serif" }};
+                --hero-title-size: {{ $heroTypography['title'] ?? '56px' }};
+                --hero-subtitle-size: {{ $heroTypography['subtitle'] ?? '24px' }};
+                --hero-description-size: {{ $heroTypography['description'] ?? '18px' }};
             }
             html { font-family: var(--font-english); }
             html[lang="ar"], .rtl { font-family: var(--font-arabic); }
