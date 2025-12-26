@@ -5,11 +5,13 @@ namespace Database\Seeders;
 use App\Actions\Courses\EnrollUserInCourseAction;
 use App\Actions\Payments\ApproveManualPaymentAction;
 use App\Actions\Progress\MarkLessonCompletedAction;
+use App\Models\Setting;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DemoSeeder extends Seeder
 {
@@ -786,5 +788,12 @@ class DemoSeeder extends Seeder
                 ]
             );
         }
+
+        $publicHeroSource = public_path('images/demo/Subject.png');
+        $storageHeroPath = 'images/demo/Subject.png';
+        if (file_exists($publicHeroSource) && ! Storage::disk('public')->exists($storageHeroPath)) {
+            Storage::disk('public')->put($storageHeroPath, file_get_contents($publicHeroSource));
+        }
+        Setting::updateOrCreate(['key' => 'hero.image_path'], ['value' => $storageHeroPath]);
     }
 }

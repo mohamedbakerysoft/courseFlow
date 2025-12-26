@@ -18,12 +18,13 @@ class HandleStripePaymentSuccessAction
         $metadata = $session['metadata'] ?? [];
         $userId = (int) ($metadata['user_id'] ?? 0);
         $courseId = (int) ($metadata['course_id'] ?? 0);
+        $paymentIntentId = (string) ($session['payment_intent'] ?? '');
 
         if (! $sessionId || ! $userId || ! $courseId) {
             throw new \RuntimeException('Invalid session payload.');
         }
 
-        DB::transaction(function () use ($sessionId, $userId, $courseId) {
+        DB::transaction(function () use ($sessionId, $userId, $courseId, $paymentIntentId) {
             $payment = Payment::where('stripe_session_id', $sessionId)->first();
             if (! $payment) {
                 // Create record if it doesn't exist (idempotency safeguard)
@@ -48,6 +49,9 @@ class HandleStripePaymentSuccessAction
             }
 
             $payment->status = Payment::STATUS_PAID;
+            if (! empty($paymentIntentId)) {
+                $payment->external_reference = $paymentIntentId;
+            }
             $payment->save();
 
             // Enroll user after successful payment

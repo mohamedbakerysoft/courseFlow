@@ -51,7 +51,7 @@ it('free course enrolls directly', function () {
 });
 
 it('payment success enrolls user and prevents duplicate', function () {
-    config()->set('services.stripe.webhook_secret', 'whsec_test');
+    \App\Models\Setting::updateOrCreate(['key' => 'stripe.webhook_secret'], ['value' => 'whsec_test']);
 
     $user = User::factory()->create(['role' => User::ROLE_STUDENT]);
     $course = Course::create([
@@ -112,7 +112,7 @@ it('payment success enrolls user and prevents duplicate', function () {
 });
 
 it('webhook signature verified', function () {
-    config()->set('services.stripe.webhook_secret', 'whsec_test');
+    \App\Models\Setting::updateOrCreate(['key' => 'stripe.webhook_secret'], ['value' => 'whsec_test']);
 
     $payload = json_encode(['type' => 'checkout.session.completed', 'data' => ['object' => ['id' => 'sess_x', 'metadata' => []]]], JSON_THROW_ON_ERROR);
     $this->call(
@@ -123,5 +123,5 @@ it('webhook signature verified', function () {
         [],
         ['HTTP_Stripe-Signature' => 't=0,v1=invalid', 'CONTENT_TYPE' => 'application/json'],
         $payload
-    )->assertStatus(400);
+    )->assertStatus(403);
 });

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Payments;
 
-use App\Actions\Payments\CapturePayPalOrderAction;
 use App\Actions\Payments\CreatePayPalCheckoutAction;
+use App\Actions\Payments\CapturePayPalOrderAction;
 use App\Actions\Payments\HandlePayPalPaymentSuccessAction;
 use App\Actions\Payments\MarkPaymentFailedAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Payments\CapturePayPalOrderRequest;
 use App\Http\Requests\Payments\CreatePayPalOrderRequest;
+use App\Http\Requests\Payments\CapturePayPalOrderRequest;
 use App\Models\Course;
 use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;

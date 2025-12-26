@@ -13,8 +13,8 @@ class StripeService
 
     public function __construct()
     {
-        $secret = config('services.stripe.secret');
-        if ($secret && ! app()->environment('testing') && ! app()->environment('dusk') && ! app()->environment('dusk.local')) {
+        $secret = (string) app(\App\Services\SettingsService::class)->get('stripe.secret_key', '');
+        if ($secret !== '') {
             $this->client = new StripeClient($secret);
         }
     }
@@ -33,6 +33,9 @@ class StripeService
             $session = $this->client->checkout->sessions->create([
                 'mode' => 'payment',
                 'payment_method_types' => ['card'],
+                'payment_intent_data' => [
+                    'metadata' => $metadata,
+                ],
                 'line_items' => [[
                     'price_data' => [
                         'currency' => $currency,
@@ -59,31 +62,7 @@ class StripeService
 
     public function constructEvent(string $payload, string $signatureHeader)
     {
-        $webhookSecret = config('services.stripe.webhook_secret');
-        if (app()->environment('testing') || app()->environment('dusk') || app()->environment('dusk.local')) {
-            // Manual verification for tests/dusk
-            // Expected header: "t=timestamp,v1=signature"
-            $parts = [];
-            foreach (explode(',', $signatureHeader) as $pair) {
-                [$k, $v] = array_pad(explode('=', trim($pair), 2), 2, null);
-                if ($k && $v) {
-                    $parts[$k] = $v;
-                }
-            }
-            $ts = $parts['t'] ?? null;
-            $sig = $parts['v1'] ?? null;
-            if (! $ts || ! $sig) {
-                throw new \RuntimeException('Invalid signature header');
-            }
-            $expected = hash_hmac('sha256', $ts.'.'.$payload, (string) $webhookSecret);
-            if (! hash_equals($expected, $sig)) {
-                throw new \RuntimeException('Signature mismatch');
-            }
-            $data = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
-
-            return \Stripe\Event::constructFrom($data);
-        }
-
+        $webhookSecret = (string) app(\App\Services\SettingsService::class)->get('stripe.webhook_secret', '');
         return Webhook::constructEvent($payload, $signatureHeader, $webhookSecret);
     }
 }

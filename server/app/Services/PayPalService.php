@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 class PayPalService
 {
     public function __construct(private SettingsService $settings) {}
-
     public function createOrder(User $user, Course $course, string $successUrl, string $cancelUrl): array
     {
         if (

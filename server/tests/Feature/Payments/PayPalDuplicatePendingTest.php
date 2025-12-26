@@ -59,3 +59,4 @@ it('marks manual pending as failed when starting paypal checkout', function () {
     expect($paypalPending)->not->toBeNull();
     expect($paypalPending->external_reference)->toBe($paypalOrder['id']);
 });
+

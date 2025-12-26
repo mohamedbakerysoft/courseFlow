@@ -23,7 +23,7 @@ class StripeCheckoutTest extends DuskTestCase
     public function test_paid_checkout_enrolls_on_webhook(): void
     {
         Artisan::call('migrate:fresh', ['--force' => true]);
-        config()->set('services.stripe.webhook_secret', 'test_webhook_secret');
+        \App\Models\Setting::updateOrCreate(['key' => 'stripe.webhook_secret'], ['value' => 'test_webhook_secret']);
 
         $user = User::updateOrCreate(['email' => 'payer@example.com'], [
             'name' => 'Payer',
