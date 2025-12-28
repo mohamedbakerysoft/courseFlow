@@ -35,6 +35,22 @@
         </form>
         <div class="mt-3" data-db-result></div>
     </div>
+    <div data-step="dependencies" class="mb-6 hidden">
+        <h2 class="text-lg font-medium mb-2">Dependencies</h2>
+        <form data-form="dependencies" method="post" action="{{ route('install.dependencies') }}">
+            @csrf
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Composer Install</button>
+        </form>
+        <div class="mt-3" data-deps-result></div>
+    </div>
+    <div data-step="build" class="mb-6 hidden">
+        <h2 class="text-lg font-medium mb-2">Assets Build</h2>
+        <form data-form="build" method="post" action="{{ route('install.build') }}">
+            @csrf
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Run Build</button>
+        </form>
+        <div class="mt-3" data-build-result></div>
+    </div>
     <div data-step="migrate" class="mb-6 hidden">
         <h2 class="text-lg font-medium mb-2">Migrations</h2>
         <form data-form="migrate" method="post" action="{{ route('install.migrate') }}">

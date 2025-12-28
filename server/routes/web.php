@@ -23,6 +23,12 @@ Route::middleware([\App\Http\Middleware\EnsureNotInstalled::class])->group(funct
     Route::post('/install/database', [\App\Http\Controllers\InstallController::class, 'database'])
         ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
         ->name('install.database');
+    Route::post('/install/dependencies', [\App\Http\Controllers\InstallController::class, 'dependencies'])
+        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+        ->name('install.dependencies');
+    Route::post('/install/build', [\App\Http\Controllers\InstallController::class, 'build'])
+        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+        ->name('install.build');
     Route::post('/install/migrate', [\App\Http\Controllers\InstallController::class, 'migrate'])
         ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
         ->name('install.migrate');

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Install\CheckEnvironmentAction;
+use App\Actions\Install\RunComposerInstallAction;
 use App\Actions\Install\CreateAdminAction;
 use App\Actions\Install\RunMigrationsAction;
+use App\Actions\Install\BuildAssetsAction;
 use App\Actions\Install\WriteEnvAction;
 use App\Http\Requests\Installer\InstallAdminRequest;
 use App\Http\Requests\Installer\InstallDatabaseRequest;
@@ -44,6 +46,16 @@ class InstallController extends Controller
         );
 
         return response()->json(['ok' => true, 'env_path' => $path]);
+    }
+
+    public function dependencies(RunComposerInstallAction $action): JsonResponse
+    {
+        return response()->json($action->execute());
+    }
+
+    public function build(BuildAssetsAction $action): JsonResponse
+    {
+        return response()->json($action->execute());
     }
 
     public function migrate(RunMigrationsAction $action): JsonResponse

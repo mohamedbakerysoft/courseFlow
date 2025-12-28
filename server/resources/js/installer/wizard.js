@@ -47,9 +47,27 @@ el.addEventListener('submit', function (e) {
             const res = el.querySelector('[data-db-result]');
             if (data.ok) {
                 res.innerHTML = '<div class="rounded border border-green-200 bg-green-50 p-3 text-sm text-green-700">.env saved</div>';
-                showStep('migrate');
+                showStep('dependencies');
             } else {
                 res.innerHTML = '<div class="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">Failed</div>';
+            }
+        } else if (form.dataset.form === 'dependencies') {
+            const res = el.querySelector('[data-deps-result]');
+            if (data.ok) {
+                res.innerHTML = '<div class="rounded border border-green-200 bg-green-50 p-3 text-sm text-green-700">Composer installed</div>';
+                showStep('build');
+            } else {
+                const msg = data.message || data.error || 'Failed';
+                res.innerHTML = '<div class="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">'+msg+'</div>';
+            }
+        } else if (form.dataset.form === 'build') {
+            const res = el.querySelector('[data-build-result]');
+            if (data.ok) {
+                res.innerHTML = '<div class="rounded border border-green-200 bg-green-50 p-3 text-sm text-green-700">Assets built</div>';
+                showStep('migrate');
+            } else {
+                const msg = data.message || data.error || 'Failed';
+                res.innerHTML = '<div class="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">'+msg+'</div>';
             }
         } else if (form.dataset.form === 'migrate') {
             const res = el.querySelector('[data-migrate-result]');
