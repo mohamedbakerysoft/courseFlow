@@ -15,6 +15,8 @@ class InstructorProfileController extends Controller
         $instructorName = (string) $settings->get('instructor.name', '');
         $instructorTitle = (string) $settings->get('instructor.title', '');
         $instructorBio = (string) $settings->get('instructor.bio', '');
+        $instructorImagePath = (string) $settings->get('landing.instructor_image', '');
+        $instructorImageUrl = $instructorImagePath !== '' ? asset('storage/'.$instructorImagePath) : null;
         $heroHeadline = (string) $settings->get('instructor.hero_headline', (string) $settings->get('landing.hero_title', 'Teach and sell your courses with CourseFlow'));
         $heroSubheadline = (string) $settings->get('instructor.hero_subheadline', (string) $settings->get('landing.hero_subtitle', 'Launch a clean, modern course platform in minutes.'));
         $socialTwitter = (string) $settings->get('instructor.social.twitter', '');
@@ -28,6 +30,7 @@ class InstructorProfileController extends Controller
             'instructorName',
             'instructorTitle',
             'instructorBio',
+            'instructorImageUrl',
             'heroHeadline',
             'heroSubheadline',
             'socialTwitter',
@@ -51,6 +54,7 @@ class InstructorProfileController extends Controller
             'social_youtube' => ['nullable', 'url'],
             'social_linkedin' => ['nullable', 'url'],
             'hero_image_mode' => ['nullable', 'in:contain,cover'],
+            'instructor_image' => ['nullable', 'image', 'max:4096'],
         ]);
 
         $values = [
@@ -66,6 +70,11 @@ class InstructorProfileController extends Controller
         ];
         if (array_key_exists('hero_image_mode', $validated)) {
             $values['landing.hero_image_mode'] = $validated['hero_image_mode'];
+        }
+
+        if ($request->hasFile('instructor_image')) {
+            $path = $request->file('instructor_image')->store('landing', 'public');
+            $values['landing.instructor_image'] = $path;
         }
 
         $settings->set($values);

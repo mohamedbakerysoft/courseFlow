@@ -372,11 +372,19 @@
             <h2 class="text-xl font-semibold text-gray-900">
                 {{ __('Instructor') }}
             </h2>
-            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                <div class="space-y-2 text-center sm:text-start">
                 @php
-                    $profileImage = ($course->instructor && $course->instructor->profile_image_path)
-                        ? asset($course->instructor->profile_image_path)
-                        : ($instructorImageUrl ?? null);
+                    $profileImage = null;
+                    if (!empty($instructorImageUrl)) {
+                        $profileImage = $instructorImageUrl;
+                    } elseif ($course->instructor && !empty($course->instructor->profile_image_path)) {
+                        $p = $course->instructor->profile_image_path;
+                        if (\Illuminate\Support\Str::startsWith($p, ['http://', 'https://'])) {
+                            $profileImage = $p;
+                        } else {
+                            $profileImage = asset(\Illuminate\Support\Str::startsWith($p, ['storage/']) ? $p : ('storage/'.$p));
+                        }
+                    }
                     $displayName = $instructorName !== '' ? $instructorName : ($course->instructor->name ?? '');
                     $displayBio = $instructorBio !== '' ? $instructorBio : ($course->instructor->bio ?? '');
                 @endphp

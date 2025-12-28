@@ -21,7 +21,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('dashboard.instructor_profile.update') }}" class="space-y-8">
+        <form method="POST" action="{{ route('dashboard.instructor_profile.update') }}" enctype="multipart/form-data" class="space-y-8">
             @csrf
 
             <section class="bg-white rounded-lg shadow-sm border border-[var(--color-secondary)]/10 p-6 space-y-5">
@@ -57,6 +57,23 @@
                         @error('instructor_bio')
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror
+                    </div>
+                    <div>
+                        <label for="instructor_image" class="block text-sm font-medium text-[var(--color-text-muted)]">
+                            {{ __('Profile Image') }}
+                        </label>
+                        <input id="instructor_image" name="instructor_image" type="file" accept="image/*" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
+                        @error('instructor_image')
+                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                        @if (!empty($instructorImageUrl))
+                            <div class="mt-3 flex items-center gap-3">
+                                <img src="{{ $instructorImageUrl }}" alt="{{ $instructorName }}" class="w-20 h-20 rounded-full object-cover ring-4 ring-[var(--color-primary)]/10">
+                                <div class="text-xs text-[var(--color-text-muted)]">
+                                    {{ __('Current profile image preview') }}
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </section>
