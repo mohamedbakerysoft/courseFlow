@@ -14,6 +14,7 @@ class UpdatesController extends Controller
     public function edit(SettingsService $settings): View
     {
         $current = (string) $settings->get('app.version', '0.0.0');
+
         return view('dashboard.settings.updates', [
             'currentVersion' => $current,
         ]);
@@ -29,4 +30,3 @@ class UpdatesController extends Controller
         return response()->json($action->execute());
     }
 }
-

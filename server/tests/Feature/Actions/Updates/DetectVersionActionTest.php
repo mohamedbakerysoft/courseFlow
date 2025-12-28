@@ -29,4 +29,3 @@ it('detects update when new version is greater', function () {
     expect($result['update_available'])->toBeTrue();
     expect($result['status'])->toBe('update_available');
 });
-

@@ -47,7 +47,7 @@
             html[lang="ar"], .rtl { font-family: var(--font-arabic); }
         </style>
     </head>
-    <body class="antialiased bg-[var(--color-background)] text-[var(--color-text-primary)]">
+    <body class="antialiased bg-[var(--color-background)] text-[var(--color-text-primary)]" @if(isset($rightClickEnabled) && ! $rightClickEnabled) oncontextmenu="return false" @endif>
         @include('layouts.navigation')
         <main class="max-w-7xl mx-auto px-4 py-8">
             {{ $slot }}

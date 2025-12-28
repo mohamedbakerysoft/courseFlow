@@ -2,8 +2,6 @@
 
 namespace App\Actions\Install;
 
-use Illuminate\Support\Str;
-
 class WriteEnvAction
 {
     public function execute(string $appUrl, array $db, ?string $envPath = null): string

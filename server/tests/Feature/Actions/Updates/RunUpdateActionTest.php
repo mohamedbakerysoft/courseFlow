@@ -18,4 +18,3 @@ it('runs update and stores new version', function () {
     expect($stored)->not->toBeNull();
     expect($stored->value)->toBe('1.1.0');
 });
-

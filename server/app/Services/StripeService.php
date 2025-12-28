@@ -63,6 +63,7 @@ class StripeService
     public function constructEvent(string $payload, string $signatureHeader)
     {
         $webhookSecret = (string) app(\App\Services\SettingsService::class)->get('stripe.webhook_secret', '');
+
         return Webhook::constructEvent($payload, $signatureHeader, $webhookSecret);
     }
 }

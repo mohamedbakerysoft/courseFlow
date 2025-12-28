@@ -43,6 +43,7 @@ class ApplySettings
             'description' => max(14, min(28, $descriptionSize)).'px',
         ];
         View::share('heroTypography', $heroTypography);
+        View::share('rightClickEnabled', (bool) $this->settings->get('security.right_click.enabled', true));
 
         return $next($request);
     }

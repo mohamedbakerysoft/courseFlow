@@ -52,4 +52,3 @@ class DetectVersionAction
         return '';
     }
 }
-

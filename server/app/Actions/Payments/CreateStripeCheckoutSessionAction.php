@@ -5,8 +5,8 @@ namespace App\Actions\Payments;
 use App\Models\Course;
 use App\Models\Payment;
 use App\Models\User;
-use App\Services\StripeService;
 use App\Services\SettingsService;
+use App\Services\StripeService;
 use Illuminate\Support\Facades\DB;
 
 class CreateStripeCheckoutSessionAction

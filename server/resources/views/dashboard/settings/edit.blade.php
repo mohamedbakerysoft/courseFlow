@@ -376,6 +376,18 @@
                     </div>
                 </div>
                 <div class="mt-6">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="space-y-1">
+                            <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Enable Right Click') }}</p>
+                            <p class="text-xs text-[var(--color-text-muted)]">{{ __('Allow context menu (right-click) on public pages.') }}</p>
+                        </div>
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" name="security_right_click_enabled" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)] mr-2" @checked($securityRightClickEnabled)>
+                            <span class="text-sm text-[var(--color-text-muted)]">{{ __('Enabled') }}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="mt-6">
                     <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Legal Pages') }}</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
                         <div class="space-y-2">

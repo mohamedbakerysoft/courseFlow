@@ -19,6 +19,7 @@ class SettingsController extends Controller
         $defaultLanguage = $settings->get('site.default_language', 'en');
         $defaultTheme = (string) $settings->get('ui.theme.default', 'system');
         $logoPath = $settings->get('site.logo_path');
+        $securityRightClickEnabled = (bool) $settings->get('security.right_click.enabled', true);
 
         $paymentsStripeEnabled = (bool) $settings->get('payments.stripe.enabled', true);
         $paymentsPaypalEnabled = (bool) $settings->get('payments.paypal.enabled', true);
@@ -182,6 +183,7 @@ class SettingsController extends Controller
             'whatsappEnabled',
             'whatsappPhone',
             'whatsappMessage',
+            'securityRightClickEnabled',
             'stripeStatusLabel',
             'stripeStatusVariant',
             'stripeStatusMessage',
@@ -241,6 +243,7 @@ class SettingsController extends Controller
                 'security_recaptcha_enabled' => ['nullable', 'boolean'],
                 'security_recaptcha_site_key' => ['nullable', 'string'],
                 'security_recaptcha_secret_key' => ['nullable', 'string'],
+                'security_right_click_enabled' => ['nullable', 'boolean'],
                 'legal_terms_en' => ['nullable', 'string'],
                 'legal_terms_ar' => ['nullable', 'string'],
                 'legal_privacy_en' => ['nullable', 'string'],
@@ -510,6 +513,9 @@ class SettingsController extends Controller
                 'security.recaptcha.enabled' => $recaptchaToggle,
                 'security.recaptcha.site_key' => (string) ($validated['security_recaptcha_site_key'] ?? (string) $settings->get('security.recaptcha.site_key', '')),
                 'security.recaptcha.secret_key' => (string) ($validated['security_recaptcha_secret_key'] ?? (string) $settings->get('security.recaptcha.secret_key', '')),
+                'security.right_click.enabled' => $request->has('security_right_click_enabled')
+                    ? $request->boolean('security_right_click_enabled')
+                    : (bool) $settings->get('security.right_click.enabled', true),
                 'legal.terms.en' => $validated['legal_terms_en'] ?? (string) $settings->get('legal.terms.en', ''),
                 'legal.terms.ar' => $validated['legal_terms_ar'] ?? (string) $settings->get('legal.terms.ar', ''),
                 'legal.privacy.en' => $validated['legal_privacy_en'] ?? (string) $settings->get('legal.privacy.en', ''),

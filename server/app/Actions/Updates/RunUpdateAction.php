@@ -16,6 +16,7 @@ class RunUpdateAction
             app(SettingsService::class)->set([
                 'app.version' => $newVersion,
             ]);
+
             return [
                 'ok' => true,
                 'message' => 'Update completed successfully.',
@@ -38,6 +39,7 @@ class RunUpdateAction
                         Artisan::call('up');
                     } catch (\Throwable $ignore) {
                     }
+
                     return [
                         'ok' => false,
                         'message' => 'Migration failed: '.$e->getMessage(),
