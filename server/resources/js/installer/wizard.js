@@ -14,7 +14,8 @@ el.addEventListener('click', function (e) {
     if (btn) {
         fetch(el.querySelector('form[data-form="database"]')?.getAttribute('action').replace('/database', '/check'), {
             method: 'POST',
-            headers: { 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' }
+            headers: { 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+            credentials: 'same-origin'
         }).then(r => r.json()).then(data => {
             const res = el.querySelector('[data-result]');
             if (!res) return;
@@ -39,6 +40,7 @@ el.addEventListener('submit', function (e) {
     fetch(action, {
         method: 'POST',
         headers: { 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+        credentials: 'same-origin',
         body: fd
     }).then(r => r.json()).then(data => {
         if (form.dataset.form === 'database') {
