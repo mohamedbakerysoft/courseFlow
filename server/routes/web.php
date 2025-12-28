@@ -17,10 +17,18 @@ Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'
 
 Route::middleware([\App\Http\Middleware\EnsureNotInstalled::class])->group(function () {
     Route::get('/install', [\App\Http\Controllers\InstallController::class, 'show'])->name('install.show');
-    Route::post('/install/check', [\App\Http\Controllers\InstallController::class, 'check'])->name('install.check');
-    Route::post('/install/database', [\App\Http\Controllers\InstallController::class, 'database'])->name('install.database');
-    Route::post('/install/migrate', [\App\Http\Controllers\InstallController::class, 'migrate'])->name('install.migrate');
-    Route::post('/install/admin', [\App\Http\Controllers\InstallController::class, 'admin'])->name('install.admin');
+    Route::post('/install/check', [\App\Http\Controllers\InstallController::class, 'check'])
+        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+        ->name('install.check');
+    Route::post('/install/database', [\App\Http\Controllers\InstallController::class, 'database'])
+        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+        ->name('install.database');
+    Route::post('/install/migrate', [\App\Http\Controllers\InstallController::class, 'migrate'])
+        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+        ->name('install.migrate');
+    Route::post('/install/admin', [\App\Http\Controllers\InstallController::class, 'admin'])
+        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+        ->name('install.admin');
     Route::get('/install/finish', [\App\Http\Controllers\InstallController::class, 'finish'])->name('install.finish');
 });
 
