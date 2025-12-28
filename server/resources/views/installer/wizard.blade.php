@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Installer</title>
-    @vite('resources/js/installer/wizard.js')
+    @vite(['resources/css/app.css', 'resources/js/installer/wizard.js'])
 </head>
-<body class="antialiased">
+<body class="antialiased bg-[var(--color-background)] text-[var(--color-text-primary)]">
 <div id="installer" class="p-6 max-w-2xl mx-auto">
     <h1 class="text-2xl font-semibold mb-4">Installation</h1>
     <div data-step="check" class="mb-6">
