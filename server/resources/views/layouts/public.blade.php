@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="icon" type="image/png" sizes="any" href="{{ url('/favicon.png') }}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url('/favicon.png') }}">
         <title>{{ $title ?? config('app.name', 'CourseFlow') }}</title>
         <meta name="description" content="{{ $metaDescription ?? '' }}">
         @php

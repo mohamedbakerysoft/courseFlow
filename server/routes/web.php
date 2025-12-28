@@ -85,6 +85,29 @@ Route::get('/demo-login/{who}', function (string $who) {
     return app(\App\Actions\Auth\DemoLoginAction::class)->execute($who);
 })->name('demo.login');
 
+Route::get('/favicon.png', function () {
+    $docsLogo = base_path('../docs/assets/logo.png');
+    if (file_exists($docsLogo)) {
+        return response()->file($docsLogo, ['Content-Type' => 'image/png']);
+    }
+    $logoPath = app(\App\Services\SettingsService::class)->get('site.logo_path');
+    if ($logoPath) {
+        $stored = storage_path('app/public/'.$logoPath);
+        if (file_exists($stored)) {
+            return response()->file($stored, ['Content-Type' => 'image/png']);
+        }
+    }
+    $demo = public_path('images/demo/Subject.png');
+    if (file_exists($demo)) {
+        return response()->file($demo, ['Content-Type' => 'image/png']);
+    }
+    $ico = public_path('favicon.ico');
+    if (file_exists($ico)) {
+        return response()->file($ico, ['Content-Type' => 'image/x-icon']);
+    }
+    abort(404);
+})->name('favicon.png');
+
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
 Route::post('/courses/{course:slug}/enroll', [CourseController::class, 'enroll'])
