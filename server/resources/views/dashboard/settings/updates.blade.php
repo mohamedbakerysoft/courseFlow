@@ -49,8 +49,8 @@
             </div>
             <div class="mt-4">
                 <template x-if="!updateAvailable">
-                    <div class="rounded-md border border-[var(--color-secondary)]/20 bg-[var(--color-secondary)]/5 p-3 text-sm text-[var(--color-text-primary)]">
-                        {{ __('No update detected') }}
+                    <div class="rounded-md border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 p-3 text-sm text-[var(--color-accent)]">
+                        {{ __('You are up to date') }}
                     </div>
                 </template>
                 <template x-if="updateAvailable">
@@ -59,13 +59,21 @@
                     </div>
                 </template>
             </div>
-            <div class="mt-4">
-                <button type="button" x-on:click="runUpdate()" :disabled="!updateAvailable || running"
-                        class="inline-flex items-center px-4 py-2 rounded-md text-sm font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2"
-                        :class="updateAvailable && !running ? 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] focus:ring-[var(--color-primary)]' : 'bg-white text-[var(--color-text-muted)] border border-[var(--color-secondary)]/30 cursor-not-allowed'">
+            <div class="mt-4" x-show="updateAvailable">
+                <button type="button" x-on:click="runUpdate()" :disabled="running"
+                        class="inline-flex items-center px-4 py-2 rounded-md text-sm font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] focus:ring-[var(--color-primary)]">
                     <span x-show="!running">{{ __('Run Update') }}</span>
                     <span x-show="running">{{ __('Updating...') }}</span>
                 </button>
+            </div>
+            <div class="mt-4 flex items-center gap-3" x-show="!updateAvailable">
+                <button type="button" x-on:click="confirmUploaded()"
+                        class="inline-flex items-center px-4 py-2 rounded-md bg-white text-[var(--color-text-primary)] border border-[var(--color-secondary)]/30 text-sm font-semibold shadow-sm hover:bg-[var(--color-secondary)]/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
+                    {{ __('Re-check') }}
+                </button>
+                <p class="text-xs text-[var(--color-text-muted)]">
+                    {{ __('Installed version matches the latest available.') }}
+                </p>
             </div>
             <div class="mt-4" x-show="message">
                 <div class="rounded-md border p-3 text-sm"
@@ -102,6 +110,7 @@
                 detectUrl: opts.detectUrl || '',
                 runUrl: opts.runUrl || '',
                 csrf: opts.csrf || '',
+                detectedAt: '',
                 async confirmUploaded() {
                     try {
                         const res = await fetch(this.detectUrl, {
@@ -116,6 +125,7 @@
                         this.currentVersion = data.current_version;
                         this.newVersion = data.new_version;
                         this.updateAvailable = !!data.update_available;
+                        this.detectedAt = new Date().toLocaleString();
                     } catch (e) {
                         this.detected = true;
                         this.updateAvailable = false;
