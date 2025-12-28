@@ -20,7 +20,7 @@
         <form data-form="database" method="post" action="{{ route('install.database') }}">
             @csrf
             <label class="block mb-2">App URL</label>
-            <input type="url" name="app_url" class="w-full border rounded px-3 py-2 mb-3" placeholder="https://example.com">
+            <input type="url" name="app_url" class="w-full border rounded px-3 py-2 mb-3" value="{{ rtrim(url('/'), '/') }}" readonly>
             <label class="block mb-2">Host</label>
             <input type="text" name="host" class="w-full border rounded px-3 py-2 mb-3" value="127.0.0.1">
             <label class="block mb-2">Port</label>
