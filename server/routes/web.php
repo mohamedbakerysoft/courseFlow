@@ -130,6 +130,9 @@ Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.
     Route::post('/appearance', [\App\Http\Controllers\Dashboard\AppearanceController::class, 'update'])->name('appearance.update');
     Route::get('/settings', [\App\Http\Controllers\Dashboard\SettingsController::class, 'edit'])->name('settings.edit');
     Route::post('/settings', [\App\Http\Controllers\Dashboard\SettingsController::class, 'update'])->name('settings.update');
+    Route::get('/settings/updates', [\App\Http\Controllers\Dashboard\UpdatesController::class, 'edit'])->name('settings.updates');
+    Route::post('/settings/updates/detect', [\App\Http\Controllers\Dashboard\UpdatesController::class, 'detect'])->name('settings.updates.detect');
+    Route::post('/settings/updates/run', [\App\Http\Controllers\Dashboard\UpdatesController::class, 'run'])->name('settings.updates.run');
     Route::get('/instructor/profile', [\App\Http\Controllers\Dashboard\InstructorProfileController::class, 'edit'])->name('instructor_profile.edit');
     Route::post('/instructor/profile', [\App\Http\Controllers\Dashboard\InstructorProfileController::class, 'update'])->name('instructor_profile.update');
     Route::get('/courses/create', [\App\Http\Controllers\Dashboard\CourseController::class, 'create'])->name('courses.create');

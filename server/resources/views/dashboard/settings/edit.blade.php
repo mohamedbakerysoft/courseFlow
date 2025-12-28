@@ -54,6 +54,10 @@
                    :class="tab === 'landing' ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-secondary)]/30'">
                     {{ __('Landing') }}
                 </a>
+                <a href="{{ route('dashboard.settings.updates') }}"
+                   class="px-1 py-4 text-sm font-medium border-b-2 border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-secondary)]/30">
+                    {{ __('Updates') }}
+                </a>
             </nav>
         </div>
 
