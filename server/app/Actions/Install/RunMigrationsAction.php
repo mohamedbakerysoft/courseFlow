@@ -8,11 +8,18 @@ class RunMigrationsAction
 {
     public function execute(): array
     {
-        Artisan::call('config:clear');
-        Artisan::call('cache:clear');
-        Artisan::call('migrate', ['--force' => true]);
-        Artisan::call('db:seed', ['--force' => true]);
+        try {
+            Artisan::call('config:clear');
+            Artisan::call('cache:clear');
+            Artisan::call('migrate', ['--force' => true]);
+            Artisan::call('db:seed', ['--force' => true]);
 
-        return ['ok' => true];
+            return ['ok' => true];
+        } catch (\Throwable $e) {
+            return [
+                'ok' => false,
+                'message' => $e->getMessage(),
+            ];
+        }
     }
 }

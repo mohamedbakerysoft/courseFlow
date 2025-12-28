@@ -55,7 +55,8 @@ el.addEventListener('submit', function (e) {
                 res.innerHTML = '<div class="rounded border border-green-200 bg-green-50 p-3 text-sm text-green-700">Migrations complete</div>';
                 showStep('admin');
             } else {
-                res.innerHTML = '<div class="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">Failed</div>';
+                const msg = data.message || data.error || 'Failed';
+                res.innerHTML = '<div class="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">'+msg+'</div>';
             }
         } else if (form.dataset.form === 'admin') {
             const res = el.querySelector('[data-admin-result]');
@@ -65,6 +66,11 @@ el.addEventListener('submit', function (e) {
             } else {
                 res.innerHTML = '<div class="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">Failed</div>';
             }
+        }
+    }).catch(() => {
+        const res = el.querySelector('[data-migrate-result]');
+        if (res) {
+            res.innerHTML = '<div class="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">Network or server error</div>';
         }
     });
 });
