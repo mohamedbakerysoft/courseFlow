@@ -71,7 +71,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+function _isRightClickEnabled() {
+    const body = document.body;
+    if (!body) return true;
+    const v = body.getAttribute('data-right-click-enabled');
+    return v !== '0';
+}
 document.addEventListener('contextmenu', function (e) {
+    if (_isRightClickEnabled()) return;
     e.preventDefault();
 }, { passive: false });
 

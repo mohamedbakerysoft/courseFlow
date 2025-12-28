@@ -48,7 +48,7 @@
             html[lang="ar"], .rtl { font-family: var(--font-arabic); }
         </style>
     </head>
-    <body class="antialiased" @if(isset($rightClickEnabled) && ! $rightClickEnabled) oncontextmenu="return false" @endif>
+    <body class="antialiased" @if(isset($rightClickEnabled) && ! $rightClickEnabled) oncontextmenu="return false" @endif data-right-click-enabled="{{ isset($rightClickEnabled) && $rightClickEnabled ? '1' : '0' }}">
         <div class="min-h-screen bg-[var(--color-background)]">
             @include('layouts.navigation')
 
