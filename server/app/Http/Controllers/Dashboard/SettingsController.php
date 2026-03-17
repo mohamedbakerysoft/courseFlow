@@ -222,6 +222,9 @@ class SettingsController extends Controller
                 'default_language' => ['required', 'in:en,ar'],
                 'logo' => ['nullable', 'image', 'max:2048'],
                 'default_theme' => ['required', 'in:light,dark,system'],
+                'primary' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
+                'secondary' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
+                'accent' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
             ]);
         } elseif ($group === 'payments') {
             $validated = $request->validate([
@@ -305,6 +308,9 @@ class SettingsController extends Controller
                 'default_language' => ['required', 'in:en,ar'],
                 'logo' => ['nullable', 'image', 'max:2048'],
                 'default_theme' => ['nullable', 'in:light,dark,system'],
+                'primary' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
+                'secondary' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
+                'accent' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
                 'payments_stripe_enabled' => ['nullable', 'boolean'],
                 'payments_paypal_enabled' => ['nullable', 'boolean'],
                 'payments_manual_instructions' => ['nullable', 'string'],
@@ -411,6 +417,9 @@ class SettingsController extends Controller
             $values = array_merge($values, [
                 'site.default_language' => $validated['default_language'] ?? $settings->get('site.default_language', 'en'),
                 'ui.theme.default' => ($validated['default_theme'] ?? $settings->get('ui.theme.default', 'system')),
+                'theme.primary' => $validated['primary'] ?? (string) $settings->get('theme.primary', '#F5B800'),
+                'theme.secondary' => $validated['secondary'] ?? (string) $settings->get('theme.secondary', '#0B0B0B'),
+                'theme.accent' => $validated['accent'] ?? (string) $settings->get('theme.accent', '#F7F7F7'),
             ]);
         }
         if ($group === 'payments' || $group === '') {

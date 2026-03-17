@@ -16,6 +16,17 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    private const THEME_DEFAULTS = [
+        'primary' => '#F5B800',
+        'secondary' => '#0B0B0B',
+        'accent' => '#F7F7F7',
+        'bg' => '#FFFFFF',
+        'text' => '#0B0B0B',
+        'text_muted' => '#4A4A4A',
+        'primary_hover' => '#D8A100',
+        'error' => '#DC2626',
+    ];
+
     /**
      * Register any application services.
      */
@@ -42,27 +53,44 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(User::class, \App\Policies\UserPolicy::class);
 
         // Theme (colors)
-        $defaults = [
-            'primary' => '#C1121F',
-            'secondary' => '#0B0B0F',
-            'accent' => '#E85D04',
-            'bg' => '#F7F2F3',
-            'text' => '#111113',
-            'text_muted' => '#5F5B62',
-            'primary_hover' => '#9B0F1A',
-        ];
+        $defaults = self::THEME_DEFAULTS;
         $theme = $defaults;
+        $defaultUiTheme = 'system';
         try {
-            foreach (['theme.primary' => 'primary', 'theme.secondary' => 'secondary', 'theme.accent' => 'accent'] as $key => $map) {
+            foreach ([
+                'theme.primary' => 'primary',
+                'theme.secondary' => 'secondary',
+                'theme.accent' => 'accent',
+                'theme.bg' => 'bg',
+                'theme.text' => 'text',
+                'theme.text_muted' => 'text_muted',
+                'theme.primary_hover' => 'primary_hover',
+                'theme.error' => 'error',
+            ] as $key => $map) {
                 $row = Setting::query()->where('key', $key)->first();
                 if ($row && is_string($row->value) && preg_match('/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/', $row->value)) {
                     $theme[$map] = $row->value;
                 }
             }
+
+            if ($theme['primary_hover'] === $defaults['primary_hover'] && $theme['primary'] !== $defaults['primary']) {
+                $theme['primary_hover'] = $this->shiftHexBrightness($theme['primary'], -0.12);
+            }
+
+            if ($theme['text'] === $defaults['text'] && $theme['secondary'] !== $defaults['secondary']) {
+                $theme['text'] = $theme['secondary'];
+            }
+
+            $savedDefaultTheme = (string) (Setting::query()->where('key', 'ui.theme.default')->value('value') ?? 'system');
+            if (in_array($savedDefaultTheme, ['light', 'dark', 'system'], true)) {
+                $defaultUiTheme = $savedDefaultTheme;
+            }
         } catch (\Throwable $e) {
             $theme = $defaults;
+            $defaultUiTheme = 'system';
         }
         View::share('theme', $theme);
+        View::share('defaultUiTheme', $defaultUiTheme);
 
         // Typography (fonts)
         $typographyDefaults = [
@@ -190,11 +218,36 @@ class AppServiceProvider extends ServiceProvider
                 'message' => $waMessage,
             ]);
         } catch (\Throwable $e) {
-            View::share('whatsappCta', [
+        View::share('whatsappCta', [
                 'enabled' => false,
                 'phone' => '',
                 'message' => '',
             ]);
         }
+    }
+
+    private function shiftHexBrightness(string $hex, float $percentage): string
+    {
+        $normalized = ltrim($hex, '#');
+
+        if (strlen($normalized) === 3) {
+            $normalized = preg_replace('/(.)/', '$1$1', $normalized);
+        }
+
+        if (! is_string($normalized) || strlen($normalized) !== 6) {
+            return $hex;
+        }
+
+        $channels = str_split($normalized, 2);
+        $adjusted = array_map(function (string $channel) use ($percentage): string {
+            $value = hexdec($channel);
+            $nextValue = $percentage < 0
+                ? (int) round($value * (1 + $percentage))
+                : (int) round($value + ((255 - $value) * $percentage));
+
+            return str_pad(dechex(max(0, min(255, $nextValue))), 2, '0', STR_PAD_LEFT);
+        }, $channels);
+
+        return '#'.strtoupper(implode('', $adjusted));
     }
 }

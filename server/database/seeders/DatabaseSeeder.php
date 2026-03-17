@@ -95,6 +95,15 @@ class DatabaseSeeder extends Seeder
             ]);
 
         Setting::updateOrCreate(['key' => 'landing.show_contact_form'], ['value' => true]);
+        Setting::updateOrCreate(['key' => 'ui.theme.default'], ['value' => 'light']);
+        Setting::updateOrCreate(['key' => 'theme.primary'], ['value' => '#F5B800']);
+        Setting::updateOrCreate(['key' => 'theme.secondary'], ['value' => '#0B0B0B']);
+        Setting::updateOrCreate(['key' => 'theme.accent'], ['value' => '#F7F7F7']);
+        Setting::updateOrCreate(['key' => 'theme.bg'], ['value' => '#FFFFFF']);
+        Setting::updateOrCreate(['key' => 'theme.text'], ['value' => '#0B0B0B']);
+        Setting::updateOrCreate(['key' => 'theme.text_muted'], ['value' => '#4A4A4A']);
+        Setting::updateOrCreate(['key' => 'theme.primary_hover'], ['value' => '#D8A100']);
+        Setting::updateOrCreate(['key' => 'theme.error'], ['value' => '#DC2626']);
         Setting::updateOrCreate(['key' => 'typography.english_font'], ['value' => 'Poppins']);
         Setting::updateOrCreate(['key' => 'instructor.social.youtube'], ['value' => 'https://www.youtube.com/watch?v=M7lc1UVf-VE']);
         Setting::updateOrCreate(['key' => 'hero.image'], ['value' => 'images/demo/real/hero-formal-2.jpg']);

@@ -249,6 +249,14 @@
         transform: translateY(-1px);
     }
 
+    body [class*="bg-[var(--color-primary)]"][class*="text-white"] {
+        color: #0b0b0b !important;
+    }
+
+    body [class*="bg-[var(--color-accent)]"][class*="text-white"] {
+        color: #0b0b0b !important;
+    }
+
     .cf-button-secondary {
         color: #0b0b0b;
         background: #ffffff;

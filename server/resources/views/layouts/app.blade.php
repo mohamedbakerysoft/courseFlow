@@ -11,7 +11,10 @@
             (function () {
                 try {
                     var storedTheme = window.localStorage.getItem('courseflow-theme');
-                    var theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                    var defaultTheme = @json($defaultUiTheme ?? 'system');
+                    var theme = storedTheme || (defaultTheme === 'system'
+                        ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+                        : defaultTheme);
                     document.documentElement.classList.toggle('theme-dark', theme === 'dark');
                     document.documentElement.dataset.theme = theme;
                 } catch (error) {
@@ -34,9 +37,9 @@
                 'Instrument Sans' => 'https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap',
             ];
             $arabicFont = $typography['arabic_font'] ?? 'Alexandria';
-            $englishFont = 'Poppins';
+            $englishFont = $typography['english_font'] ?? 'Poppins';
             $arabicFontUrl = $googleFonts[$arabicFont] ?? $googleFonts['Alexandria'];
-            $englishFontUrl = $googleFonts['Poppins'];
+            $englishFontUrl = $googleFonts[$englishFont] ?? $googleFonts['Poppins'];
         @endphp
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,7 +59,7 @@
                 --color-text-muted: {{ $theme['text_muted'] ?? '#4A4A4A' }};
                 --color-error: {{ $theme['error'] ?? '#DC2626' }};
                 --font-arabic: {{ $typographyCss['arabic_stack'] ?? "'Alexandria', sans-serif" }};
-                --font-english: 'Poppins', system-ui, sans-serif;
+                --font-english: {{ $typographyCss['english_stack'] ?? "'Poppins', system-ui, sans-serif" }};
             }
             html { font-family: var(--font-english); }
             html[lang="ar"], .rtl { font-family: var(--font-arabic); }

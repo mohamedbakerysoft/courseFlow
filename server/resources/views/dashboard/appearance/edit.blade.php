@@ -4,16 +4,16 @@
             {{ __('Appearance / Branding') }}
         </h2>
     </x-slot>
-    <div class="py-8 max-w-4xl mx-auto">
+    <div class="py-8 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav class="mb-4 text-sm">
             <a href="{{ route('dashboard') }}" class="underline text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]">Dashboard</a>
             <span class="text-[var(--color-text-muted)]">/</span>
             <span class="text-[var(--color-text-muted)]">Appearance</span>
         </nav>
-        <div class="bg-white p-6 rounded shadow">
+        <div class="cf-admin-form-card p-6 shadow-none">
             <form x-data="{isSubmitting:false, tab: 'colors'}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.appearance.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
-                <div class="flex gap-3 border-b pb-2">
+                <div class="flex gap-3 border-b border-[var(--color-secondary)]/10 pb-2">
                     <button type="button" x-on:click="tab='colors'" :class="tab==='colors' ? 'text-[var(--color-primary)] font-semibold' : 'text-[var(--color-text-muted)]'" class="text-sm">Colors</button>
                     <button type="button" x-on:click="tab='typography'" :class="tab==='typography' ? 'text-[var(--color-primary)] font-semibold' : 'text-[var(--color-text-muted)]'" class="text-sm">Typography</button>
                     <button type="button" x-on:click="tab='hero'" :class="tab==='hero' ? 'text-[var(--color-primary)] font-semibold' : 'text-[var(--color-text-muted)]'" class="text-sm">Hero</button>
@@ -22,19 +22,19 @@
                 <div x-show="tab==='colors'" class="space-y-6">
                     <div>
                         <label class="block text-sm font-medium mb-1">Primary Color</label>
-                        <input type="color" name="primary" value="{{ $primary }}" class="h-10 w-16 border rounded">
-                        <p class="text-xs text-[var(--color-text-muted)] mt-1">Used for main actions and highlights.</p>
+                        <input type="color" name="primary" value="{{ $primary }}" class="h-10 w-16 rounded-xl border border-[var(--color-secondary)]/20 bg-white">
+                        <p class="text-xs text-[var(--color-text-muted)] mt-1">Used for main actions, active controls, and highlighted CTAs.</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">Secondary Color</label>
-                        <input type="color" name="secondary" value="{{ $secondary }}" class="h-10 w-16 border rounded">
-                        <p class="text-xs text-[var(--color-text-muted)] mt-1">Used for links and secondary actions.</p>
+                        <input type="color" name="secondary" value="{{ $secondary }}" class="h-10 w-16 rounded-xl border border-[var(--color-secondary)]/20 bg-white">
+                        <p class="text-xs text-[var(--color-text-muted)] mt-1">Used for dark shells, heading color, and strong contrast surfaces.</p>
                         @error('secondary')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">Accent Color</label>
-                        <input type="color" name="accent" value="{{ $accent }}" class="h-10 w-16 border rounded">
-                        <p class="text-xs text-[var(--color-text-muted)] mt-1">Used for status badges and success.</p>
+                        <input type="color" name="accent" value="{{ $accent }}" class="h-10 w-16 rounded-xl border border-[var(--color-secondary)]/20 bg-white">
+                        <p class="text-xs text-[var(--color-text-muted)] mt-1">Used for soft surfaces, chips, and supporting backgrounds.</p>
                         @error('accent')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
                     </div>
                 </div>
@@ -147,7 +147,9 @@
                     </div>
                 </div>
                 <div>
-                    <button type="submit" :disabled="isSubmitting" class="bg-[var(--color-primary)] text-white px-4 py-2 rounded">Save</button>
+                    <button type="submit" :disabled="isSubmitting" class="cf-button-primary">
+                        Save
+                    </button>
                 </div>
             </form>
         </div>

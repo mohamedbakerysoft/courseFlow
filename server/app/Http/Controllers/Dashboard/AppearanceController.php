@@ -12,9 +12,9 @@ class AppearanceController extends Controller
 {
     public function edit(SettingsService $settings)
     {
-        $primary = optional(Setting::where('key', 'theme.primary')->first())->value ?: '#C1121F';
-        $secondary = optional(Setting::where('key', 'theme.secondary')->first())->value ?: '#0B0B0F';
-        $accent = optional(Setting::where('key', 'theme.accent')->first())->value ?: '#E85D04';
+        $primary = optional(Setting::where('key', 'theme.primary')->first())->value ?: '#F5B800';
+        $secondary = optional(Setting::where('key', 'theme.secondary')->first())->value ?: '#0B0B0B';
+        $accent = optional(Setting::where('key', 'theme.accent')->first())->value ?: '#F7F7F7';
         $arabicFont = optional(Setting::where('key', 'typography.arabic_font')->first())->value ?: 'Alexandria';
         $englishFont = optional(Setting::where('key', 'typography.english_font')->first())->value ?: 'Plus Jakarta Sans';
 

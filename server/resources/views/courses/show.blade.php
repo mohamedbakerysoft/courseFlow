@@ -335,56 +335,30 @@
                                 <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $course->title }}</p>
                                 <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('Review the curriculum, choose a payment method, and start learning right away.') }}</p>
                             </div>
-<<<<<<< HEAD
                             <div class="text-right">
                                 <p class="text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $displayPrice }}</p>
                                 <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $lessons->count() }} {{ $isArabic ? 'دروس' : Str::plural('lessons', $lessons->count()) }}</p>
                             </div>
                         </div>
 
+                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div class="inline-flex items-center justify-center rounded-full border border-[var(--color-secondary)]/12 bg-[var(--color-accent)] px-4 py-3 text-xs font-medium text-[var(--color-text-muted)]">
+                                {{ $isArabic ? 'الدفع عبر سترايب وباي بال' : 'Payments via Stripe, PayPal, or manual approval' }}
+                            </div>
+                            <div class="inline-flex items-center justify-center rounded-full border border-[var(--color-secondary)]/12 bg-[var(--color-accent)] px-4 py-3 text-xs font-medium text-[var(--color-text-muted)]">
+                                {{ $isArabic ? 'وصول فوري بعد التسجيل' : 'Instant lesson access after enrollment' }}
+                            </div>
+                            <div class="inline-flex items-center justify-center rounded-full border border-[var(--color-secondary)]/12 bg-[var(--color-accent)] px-4 py-3 text-xs font-medium text-[var(--color-text-muted)]">
+                                {{ $isArabic ? 'دفع لمرة واحدة بدون اشتراك' : 'One-time payment with no subscription' }}
+                            </div>
+                            <div class="inline-flex items-center justify-center rounded-full border border-[var(--color-secondary)]/12 bg-[var(--color-accent)] px-4 py-3 text-xs font-medium text-[var(--color-text-muted)]">
+                                {{ $isArabic ? 'مسار تعلم منظم وواضح' : 'Clear course flow with protected progress' }}
+                            </div>
+                        </div>
+
                         <div class="grid gap-2">
                             @guest
                                 <a href="{{ route('login') }}" class="cf-button-primary w-full">{{ __('Login to enroll') }}</a>
-=======
-                            <div class="flex items-baseline justify-end gap-2 text-right">
-                                @if ($course->is_free || (float)$course->price == 0.0)
-                                    <span class="text-lg font-semibold text-[var(--color-primary)] whitespace-nowrap">
-                                        {{ __('Free') }}
-                                    </span>
-                                @else
-                                    <span class="text-lg font-semibold text-[var(--color-text-primary)] whitespace-nowrap">
-                                        {{ number_format((float)$course->price, 2) }}
-                                    </span>
-                                    <span class="text-sm font-semibold text-[var(--color-text-primary)] whitespace-nowrap">
-                                        {{ strtoupper($course->currency) }}
-                                    </span>
-                                @endif
-                                <span class="text-xs text-[var(--color-text-muted)] whitespace-nowrap">
-                                    {{ $lessons->count() }} {{ ($appLocale ?? app()->getLocale()) === 'ar' ? 'دروس' : Str::plural(__('lesson'), $lessons->count()) }}
-                                </span>
-                            </div>
-                        </div>
-                        @php $ar = app()->getLocale() === 'ar'; @endphp
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-                            <div class="inline-flex items-center justify-center h-10 rounded-full border border-[var(--color-secondary)]/25 bg-white px-3 text-xs font-medium text-[var(--color-text-muted)] whitespace-nowrap min-w-[160px]">
-                                {{ $ar ? 'الدفع عبر سترايب وباي بال' : 'Payments handled via Stripe & PayPal' }}
-                            </div>
-                            <div class="inline-flex items-center justify-center h-10 rounded-full border border-[var(--color-secondary)]/25 bg-white px-3 text-xs font-medium text-[var(--color-text-muted)] whitespace-nowrap min-w-[160px]">
-                                {{ $ar ? 'وصول فوري بعد التسجيل' : 'Instant access after enrollment' }}
-                            </div>
-                            <div class="inline-flex items-center justify-center h-10 rounded-full border border-[var(--color-secondary)]/25 bg-white px-3 text-xs font-medium text-[var(--color-text-muted)] whitespace-nowrap min-w-[160px]">
-                                {{ $ar ? 'دفع لمرة واحدة (بدون اشتراك)' : 'One‑time payment (no subscription)' }}
-                            </div>
-                            <div class="inline-flex items-center justify-center h-10 rounded-full border border-[var(--color-secondary)]/25 bg-white px-3 text-xs font-medium text-[var(--color-text-muted)] whitespace-nowrap min-w-[160px]">
-                                {{ $ar ? 'تركيز على الخصوصية' : 'Privacy‑focused' }}
-                            </div>
-                        </div>
-                        <div class="space-y-4">
-                @guest
-                    <a href="{{ route('login') }}" class="inline-flex w-full sm:w-auto mx-auto justify-center items-center px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-semibold shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
-                        {{ __('Login to Enroll') }}
-                    </a>
->>>>>>> 9bd7396 (feat(courses): improve course details layout and payment info display)
                             @else
                                 @if ($isEnrolled)
                                     @if (!empty($firstLesson))

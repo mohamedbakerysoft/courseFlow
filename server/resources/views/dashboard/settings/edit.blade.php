@@ -722,23 +722,23 @@
                     {{ __('Appearance') }}
                 </h2>
                 <p class="text-xs text-[var(--color-text-muted)]">
-                    {{ __('Update brand colors used across buttons, CTAs and the landing page.') }}
+                    {{ __('Update the same core colors used across the public site, dashboard, and shared components.') }}
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-[var(--color-text-muted)] mb-1">{{ __('Primary Color') }}</label>
-                        <input type="color" name="primary" value="{{ $theme['primary'] ?? '#3A5BA9' }}" class="h-10 w-16 border rounded">
-                        <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Main actions and highlights.') }}</p>
+                        <input type="color" name="primary" value="{{ $theme['primary'] ?? '#F5B800' }}" class="h-10 w-16 rounded-xl border border-[var(--color-secondary)]/20 bg-white">
+                        <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Main CTAs, active tabs, and highlighted actions.') }}</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-[var(--color-text-muted)] mb-1">{{ __('Secondary Color') }}</label>
-                        <input type="color" name="secondary" value="{{ $theme['secondary'] ?? '#2F3C4F' }}" class="h-10 w-16 border rounded">
-                        <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Links and secondary actions.') }}</p>
+                        <input type="color" name="secondary" value="{{ $theme['secondary'] ?? '#0B0B0B' }}" class="h-10 w-16 rounded-xl border border-[var(--color-secondary)]/20 bg-white">
+                        <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Dark surfaces, headings, and the admin shell.') }}</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-[var(--color-text-muted)] mb-1">{{ __('Accent Color') }}</label>
-                        <input type="color" name="accent" value="{{ $theme['accent'] ?? '#0FA3A4' }}" class="h-10 w-16 border rounded">
-                        <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Status badges and success.') }}</p>
+                        <input type="color" name="accent" value="{{ $theme['accent'] ?? '#F7F7F7' }}" class="h-10 w-16 rounded-xl border border-[var(--color-secondary)]/20 bg-white">
+                        <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Soft surfaces, chips, and quiet supporting panels.') }}</p>
                     </div>
                     <div class="md:col-span-3">
                         <a href="{{ route('dashboard.appearance.edit') }}" class="ml-3 inline-flex items-center text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]">
