@@ -37,16 +37,9 @@ class LandingContent
         'flow_step_2_body' => 'Pricing, payment choices, and course outcomes stay visible when the user is ready to act.',
         'flow_step_3_title' => 'Start learning fast',
         'flow_step_3_body' => 'Students land in a structured curriculum with visible progress and a clear next lesson.',
-        'instructor_kicker' => 'Instructor credibility',
-        'instructor_card_1_title' => 'Premium presentation',
-        'instructor_card_1_body' => 'A cleaner public identity improves the first impression and supports conversion.',
-        'instructor_card_2_title' => 'Direct call to action',
-        'instructor_card_2_body' => 'Students can move from discovery to enrollment without dead ends or clutter.',
-        'instructor_card_3_title' => 'Consistent experience',
-        'instructor_card_3_body' => 'The same visual system carries from landing page to course page to dashboard.',
         'testimonials_kicker' => 'Testimonials',
-        'testimonials_title' => 'What users notice when the storefront finally feels premium',
-        'testimonials_subtitle' => 'These signals matter because strong visual clarity improves trust before users commit to payment or enrollment.',
+        'testimonials_title' => 'What students say after joining Learnova courses',
+        'testimonials_subtitle' => 'Short, believable feedback helps visitors trust the instructor and understand the learning experience before they enroll.',
         'faq_kicker' => 'Frequently asked questions',
         'faq_title' => 'Remove friction before users reach the buy decision',
         'faq_subtitle' => 'A premium course product answers practical questions early, keeps pricing clear, and makes the next step obvious.',
@@ -62,17 +55,26 @@ class LandingContent
         [
             'name' => 'Sara Mitchell',
             'role' => 'Product designer',
+            'avatar' => 'images/demo/avatar-1.svg',
             'quote' => 'The entire experience feels premium and clear. I knew exactly what I was buying before checkout.',
         ],
         [
             'name' => 'Omar Farouk',
             'role' => 'Independent creator',
+            'avatar' => 'images/demo/avatar-2.svg',
             'quote' => 'The course cards are simple to compare, and the purchase flow feels much more trustworthy than most demos.',
         ],
         [
             'name' => 'Lina Hassan',
             'role' => 'Marketing consultant',
+            'avatar' => 'images/demo/avatar-3.svg',
             'quote' => 'The product feels like a real course business, not a generic template. That matters a lot for trust.',
+        ],
+        [
+            'name' => 'Daniel Ross',
+            'role' => 'Online educator',
+            'avatar' => 'images/demo/avatar-4.svg',
+            'quote' => 'The lesson flow is simple to follow, the checkout is clean, and the platform feels ready to sell from day one.',
         ],
     ];
 
@@ -88,6 +90,18 @@ class LandingContent
         [
             'question' => 'Is this experience suitable for a solo instructor?',
             'answer' => 'Yes. The storefront, checkout flow, course pages, and instructor profile are designed to help one creator present courses clearly and professionally.',
+        ],
+        [
+            'question' => 'Can I offer free and paid courses together?',
+            'answer' => 'Yes. You can publish free lead magnets, starter courses, and paid flagship programs side by side inside one consistent catalog.',
+        ],
+        [
+            'question' => 'Can students continue where they stopped?',
+            'answer' => 'Yes. The lesson experience keeps progress visible so returning students can continue from the next logical step instead of starting over.',
+        ],
+        [
+            'question' => 'Can I customize homepage copy from the admin panel?',
+            'answer' => 'Yes. Homepage copy, testimonials, FAQ content, hero media, and legal text can all be updated from the admin settings area.',
         ],
     ];
 
@@ -111,6 +125,10 @@ class LandingContent
                 return [
                     'name' => (string) $settings->get("landing.testimonials.{$number}.name", $testimonial['name']),
                     'role' => (string) $settings->get("landing.testimonials.{$number}.role", $testimonial['role']),
+                    'avatar' => MediaAsset::url(
+                        (string) $settings->get("landing.testimonials.{$number}.avatar", $testimonial['avatar']),
+                        MediaAsset::avatarFallbackPath($testimonial['name'])
+                    ),
                     'quote' => (string) $settings->get("landing.testimonials.{$number}.quote", $testimonial['quote']),
                 ];
             })

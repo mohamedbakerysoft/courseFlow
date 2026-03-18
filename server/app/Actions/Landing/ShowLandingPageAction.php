@@ -55,9 +55,13 @@ class ShowLandingPageAction
         $heroImageHeight = $heroImageHeightVal > 0 ? $heroImageHeightVal : null;
 
         $showHero = (bool) $this->settings->get('landing.show_hero', true);
+        $showPlatformProof = (bool) $this->settings->get('landing.show_platform_proof', true);
         $showAboutInstructor = (bool) $this->settings->get('landing.show_about', true);
         $showCoursesPreview = (bool) $this->settings->get('landing.show_courses_preview', true);
+        $showProblemSection = (bool) $this->settings->get('landing.show_problem_section', true);
+        $showFlowSection = (bool) $this->settings->get('landing.show_flow_section', true);
         $showTestimonials = (bool) $this->settings->get('landing.show_testimonials', true);
+        $showFaqSection = (bool) $this->settings->get('landing.show_faq_section', true);
         $showFooterCta = (bool) $this->settings->get('landing.show_footer_cta', true);
         $rawContact = $this->settings->get('landing.show_contact_form', true);
         $showContactForm = false;
@@ -132,9 +136,13 @@ class ShowLandingPageAction
             'heroImageWidth' => $heroImageWidth,
             'heroImageHeight' => $heroImageHeight,
             'showHero' => $showHero,
+            'showPlatformProof' => $showPlatformProof,
             'showAboutInstructor' => $showAboutInstructor,
             'showCoursesPreview' => $showCoursesPreview,
+            'showProblemSection' => $showProblemSection,
+            'showFlowSection' => $showFlowSection,
             'showTestimonials' => $showTestimonials,
+            'showFaqSection' => $showFaqSection,
             'showFooterCta' => $showFooterCta,
             'showContactForm' => $showContactForm,
             'features' => $features,

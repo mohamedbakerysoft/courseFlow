@@ -470,10 +470,17 @@
                         </label>
                         <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
                             <div>
-                                <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show About Instructor') }}</p>
-                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle instructor bio block inside hero.') }}</p>
+                                <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show Instructor Bio') }}</p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle the short instructor introduction inside the hero.') }}</p>
                             </div>
                             <input type="checkbox" name="landing_show_about" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowAbout)>
+                        </label>
+                        <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
+                            <div>
+                                <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show Platform Proof') }}</p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle the four proof cards under the hero video.') }}</p>
+                            </div>
+                            <input type="checkbox" name="landing_show_platform_proof" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowPlatformProof ?? true)>
                         </label>
                         <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
                             <div>
@@ -484,10 +491,31 @@
                         </label>
                         <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
                             <div>
+                                <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show Value Section') }}</p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle the problem-to-solution feature block.') }}</p>
+                            </div>
+                            <input type="checkbox" name="landing_show_problem_section" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowProblemSection ?? true)>
+                        </label>
+                        <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
+                            <div>
+                                <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show Journey Section') }}</p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle the discovery-to-learning journey explainer.') }}</p>
+                            </div>
+                            <input type="checkbox" name="landing_show_flow_section" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowFlowSection ?? true)>
+                        </label>
+                        <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
+                            <div>
                                 <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show Testimonials') }}</p>
                                 <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle testimonials section.') }}</p>
                             </div>
                             <input type="checkbox" name="landing_show_testimonials" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowTestimonials)>
+                        </label>
+                        <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
+                            <div>
+                                <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show FAQ Section') }}</p>
+                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle the frequently asked questions block.') }}</p>
+                            </div>
+                            <input type="checkbox" name="landing_show_faq_section" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowFaqSection ?? true)>
                         </label>
                         <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
                             <div>
@@ -651,13 +679,6 @@
                                 'flow_step_2_body' => 'Step 2 body',
                                 'flow_step_3_title' => 'Step 3 title',
                                 'flow_step_3_body' => 'Step 3 body',
-                                'instructor_kicker' => 'Instructor kicker',
-                                'instructor_card_1_title' => 'Instructor card 1 title',
-                                'instructor_card_1_body' => 'Instructor card 1 body',
-                                'instructor_card_2_title' => 'Instructor card 2 title',
-                                'instructor_card_2_body' => 'Instructor card 2 body',
-                                'instructor_card_3_title' => 'Instructor card 3 title',
-                                'instructor_card_3_body' => 'Instructor card 3 body',
                                 'testimonials_kicker' => 'Testimonials kicker',
                                 'testimonials_title' => 'Testimonials title',
                                 'testimonials_subtitle' => 'Testimonials subtitle',
@@ -691,6 +712,8 @@
                                     <input type="text" name="landing_testimonials[{{ $index }}][name]" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_testimonials.$index.name", $testimonial['name']) }}">
                                     <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Role') }}</label>
                                     <input type="text" name="landing_testimonials[{{ $index }}][role]" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_testimonials.$index.role", $testimonial['role']) }}">
+                                    <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Avatar URL') }}</label>
+                                    <input type="text" name="landing_testimonials[{{ $index }}][avatar]" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_testimonials.$index.avatar", $testimonial['avatar'] ?? '') }}" placeholder="{{ asset('images/demo/avatar-1.svg') }}">
                                     <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Quote') }}</label>
                                     <textarea name="landing_testimonials[{{ $index }}][quote]" rows="4" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old("landing_testimonials.$index.quote", $testimonial['quote']) }}</textarea>
                                 </div>

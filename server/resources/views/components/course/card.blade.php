@@ -50,7 +50,7 @@
                     {{ $course->title }}
                 </h3>
                 @if (!empty($course->description))
-                    <p class="cf-course-description line-clamp-3">
+                    <p class="cf-course-description line-clamp-2">
                         {{ str($course->description)->limit(158) }}
                     </p>
                 @endif

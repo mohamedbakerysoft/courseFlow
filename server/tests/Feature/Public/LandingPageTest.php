@@ -153,16 +153,24 @@ it('admin can toggle landing sections visibility', function () {
         'payments_paypal_enabled' => false,
         'payments_manual_instructions' => '',
         'landing_show_hero' => false,
+        'landing_show_platform_proof' => false,
         'landing_show_courses_preview' => false,
+        'landing_show_problem_section' => false,
+        'landing_show_flow_section' => false,
         'landing_show_testimonials' => false,
+        'landing_show_faq_section' => false,
         'landing_show_footer_cta' => false,
     ])->assertRedirect();
 
     $response = \Pest\Laravel\get('/');
     $response->assertOk();
     $response->assertDontSee('Teach and sell your courses with CourseFlow');
+    $response->assertDontSee('Fast, familiar checkout');
     $response->assertDontSee('Featured courses');
+    $response->assertDontSee('Turn a scattered course storefront into a focused buying and learning experience');
+    $response->assertDontSee('Guide the user from discovery to enrollment to structured learning');
     $response->assertDontSee('What people say after working together');
+    $response->assertDontSee('Remove friction before users reach the buy decision');
     $response->assertDontSee('Ready to take your next sales step?');
 });
 

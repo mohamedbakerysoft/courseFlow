@@ -49,9 +49,13 @@ class SettingsController extends Controller
         $heroImageUrl = MediaAsset::url($currentHeroImagePath, 'images/demo/real/hero-formal-2.jpg');
         $landingShowHero = (bool) $settings->get('landing.show_hero', true);
         $landingShowContactForm = (bool) $settings->get('landing.show_contact_form', true);
+        $landingShowPlatformProof = (bool) $settings->get('landing.show_platform_proof', true);
         $landingShowAbout = (bool) $settings->get('landing.show_about', true);
         $landingShowCoursesPreview = (bool) $settings->get('landing.show_courses_preview', true);
+        $landingShowProblemSection = (bool) $settings->get('landing.show_problem_section', true);
+        $landingShowFlowSection = (bool) $settings->get('landing.show_flow_section', true);
         $landingShowTestimonials = (bool) $settings->get('landing.show_testimonials', true);
+        $landingShowFaqSection = (bool) $settings->get('landing.show_faq_section', true);
         $landingShowFooterCta = (bool) $settings->get('landing.show_footer_cta', true);
         $landingHeroImageMode = (string) $settings->get('landing.hero_image_mode', 'cover');
         $landingHeroImageFocus = (string) $settings->get('landing.hero_image_focus', 'center');
@@ -160,9 +164,13 @@ class SettingsController extends Controller
             'landingInstructorImageUrl',
             'landingShowHero',
             'landingShowContactForm',
+            'landingShowPlatformProof',
             'landingShowAbout',
             'landingShowCoursesPreview',
+            'landingShowProblemSection',
+            'landingShowFlowSection',
             'landingShowTestimonials',
+            'landingShowFaqSection',
             'landingShowFooterCta',
             'landingHeroImageMode',
             'landingHeroImageFocus',
@@ -281,9 +289,13 @@ class SettingsController extends Controller
                 'landing_instructor_image' => ['nullable', 'image', 'max:2048'],
                 'landing_show_hero' => ['nullable', 'boolean'],
                 'landing_show_contact_form' => ['nullable', 'boolean'],
+                'landing_show_platform_proof' => ['nullable', 'boolean'],
                 'landing_show_about' => ['nullable', 'boolean'],
                 'landing_show_courses_preview' => ['nullable', 'boolean'],
+                'landing_show_problem_section' => ['nullable', 'boolean'],
+                'landing_show_flow_section' => ['nullable', 'boolean'],
                 'landing_show_testimonials' => ['nullable', 'boolean'],
+                'landing_show_faq_section' => ['nullable', 'boolean'],
                 'landing_show_footer_cta' => ['nullable', 'boolean'],
                 'landing_hero_image_mode' => ['nullable', 'in:contain,cover'],
                 'landing_hero_image_focus' => ['nullable', 'in:center,top,bottom,left,right'],
@@ -299,6 +311,7 @@ class SettingsController extends Controller
                 'landing_testimonials' => ['nullable', 'array'],
                 'landing_testimonials.*.name' => ['nullable', 'string', 'max:255'],
                 'landing_testimonials.*.role' => ['nullable', 'string', 'max:255'],
+                'landing_testimonials.*.avatar' => ['nullable', 'string', 'max:500'],
                 'landing_testimonials.*.quote' => ['nullable', 'string', 'max:1000'],
                 'landing_faqs' => ['nullable', 'array'],
                 'landing_faqs.*.question' => ['nullable', 'string', 'max:255'],
@@ -333,9 +346,13 @@ class SettingsController extends Controller
                 'landing_instructor_image' => ['nullable', 'image', 'max:2048'],
                 'landing_show_hero' => ['nullable', 'boolean'],
                 'landing_show_contact_form' => ['nullable', 'boolean'],
+                'landing_show_platform_proof' => ['nullable', 'boolean'],
                 'landing_show_about' => ['nullable', 'boolean'],
                 'landing_show_courses_preview' => ['nullable', 'boolean'],
+                'landing_show_problem_section' => ['nullable', 'boolean'],
+                'landing_show_flow_section' => ['nullable', 'boolean'],
                 'landing_show_testimonials' => ['nullable', 'boolean'],
+                'landing_show_faq_section' => ['nullable', 'boolean'],
                 'landing_show_footer_cta' => ['nullable', 'boolean'],
                 'landing_hero_image_mode' => ['nullable', 'in:contain,cover'],
                 'landing_hero_image_focus' => ['nullable', 'in:center,top,bottom,left,right'],
@@ -349,6 +366,7 @@ class SettingsController extends Controller
                 'landing_testimonials' => ['nullable', 'array'],
                 'landing_testimonials.*.name' => ['nullable', 'string', 'max:255'],
                 'landing_testimonials.*.role' => ['nullable', 'string', 'max:255'],
+                'landing_testimonials.*.avatar' => ['nullable', 'string', 'max:500'],
                 'landing_testimonials.*.quote' => ['nullable', 'string', 'max:1000'],
                 'landing_faqs' => ['nullable', 'array'],
                 'landing_faqs.*.question' => ['nullable', 'string', 'max:255'],
@@ -464,15 +482,27 @@ class SettingsController extends Controller
                 'landing.show_contact_form' => $request->has('landing_show_contact_form')
                     ? $request->boolean('landing_show_contact_form')
                     : (bool) $settings->get('landing.show_contact_form', true),
+                'landing.show_platform_proof' => $request->has('landing_show_platform_proof')
+                    ? $request->boolean('landing_show_platform_proof')
+                    : (bool) $settings->get('landing.show_platform_proof', true),
                 'landing.show_about' => $request->has('landing_show_about')
                     ? $request->boolean('landing_show_about')
                     : (bool) $settings->get('landing.show_about', true),
                 'landing.show_courses_preview' => $request->has('landing_show_courses_preview')
                     ? $request->boolean('landing_show_courses_preview')
                     : (bool) $settings->get('landing.show_courses_preview', true),
+                'landing.show_problem_section' => $request->has('landing_show_problem_section')
+                    ? $request->boolean('landing_show_problem_section')
+                    : (bool) $settings->get('landing.show_problem_section', true),
+                'landing.show_flow_section' => $request->has('landing_show_flow_section')
+                    ? $request->boolean('landing_show_flow_section')
+                    : (bool) $settings->get('landing.show_flow_section', true),
                 'landing.show_testimonials' => $request->has('landing_show_testimonials')
                     ? $request->boolean('landing_show_testimonials')
                     : (bool) $settings->get('landing.show_testimonials', true),
+                'landing.show_faq_section' => $request->has('landing_show_faq_section')
+                    ? $request->boolean('landing_show_faq_section')
+                    : (bool) $settings->get('landing.show_faq_section', true),
                 'landing.show_footer_cta' => $request->has('landing_show_footer_cta')
                     ? $request->boolean('landing_show_footer_cta')
                     : (bool) $settings->get('landing.show_footer_cta', true),
@@ -526,6 +556,7 @@ class SettingsController extends Controller
                 $number = $index + 1;
                 $values["landing.testimonials.{$number}.name"] = (string) data_get($validated, "landing_testimonials.{$index}.name", $settings->get("landing.testimonials.{$number}.name", $testimonialDefaults['name']));
                 $values["landing.testimonials.{$number}.role"] = (string) data_get($validated, "landing_testimonials.{$index}.role", $settings->get("landing.testimonials.{$number}.role", $testimonialDefaults['role']));
+                $values["landing.testimonials.{$number}.avatar"] = (string) data_get($validated, "landing_testimonials.{$index}.avatar", $settings->get("landing.testimonials.{$number}.avatar", $testimonialDefaults['avatar']));
                 $values["landing.testimonials.{$number}.quote"] = (string) data_get($validated, "landing_testimonials.{$index}.quote", $settings->get("landing.testimonials.{$number}.quote", $testimonialDefaults['quote']));
             }
 

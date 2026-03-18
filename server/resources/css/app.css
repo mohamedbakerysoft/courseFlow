@@ -260,9 +260,23 @@
     }
 
     .cf-trust-card {
-        @apply flex items-start gap-4 rounded-[22px] border px-5 py-5;
+        @apply flex flex-col gap-4 rounded-[24px] border p-4 sm:p-5;
         border-color: rgba(11, 11, 11, 0.07);
         background: #ffffff;
+    }
+
+    .cf-trust-card-media {
+        overflow: hidden;
+        border-radius: 18px;
+        aspect-ratio: 16 / 9;
+        background: rgba(247, 247, 247, 0.86);
+        border: 1px solid rgba(11, 11, 11, 0.06);
+    }
+
+    .cf-trust-card-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .cf-button-primary,
@@ -608,7 +622,7 @@
         z-index: 1;
         width: 100%;
         aspect-ratio: 16 / 9;
-        min-height: 24rem;
+        min-height: 29rem;
         background: linear-gradient(180deg, rgba(11, 11, 11, 0.16), rgba(11, 11, 11, 0.3));
     }
 
@@ -624,110 +638,6 @@
         flex-wrap: wrap;
         gap: 1rem;
         align-items: center;
-    }
-
-    .cf-hero-footer-band {
-        margin-top: 1.35rem;
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .cf-hero-course-card {
-        display: flex;
-        flex-direction: column;
-        gap: 0.9rem;
-        border: 1px solid rgba(11, 11, 11, 0.07);
-        border-radius: 24px;
-        background: rgba(255, 255, 255, 0.98);
-        padding: 0.9rem;
-        text-decoration: none;
-        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
-    }
-
-    .cf-hero-course-card:hover {
-        transform: translateY(-2px);
-        border-color: rgba(245, 184, 0, 0.34);
-        box-shadow: 0 12px 28px rgba(11, 11, 11, 0.06);
-    }
-
-    .cf-hero-course-media {
-        overflow: hidden;
-        border-radius: 20px;
-        aspect-ratio: 16 / 10;
-        background: rgba(247, 247, 247, 0.86);
-    }
-
-    .cf-hero-course-media img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .cf-hero-course-copy p,
-    .cf-hero-course-copy span,
-    .cf-hero-course-copy h3 {
-        margin: 0;
-    }
-
-    .cf-hero-course-copy p {
-        font-size: 0.77rem;
-        font-weight: 700;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: var(--color-text-muted);
-    }
-
-    .cf-hero-course-copy h3 {
-        margin-top: 0.45rem;
-        font-size: 1rem;
-        font-weight: 700;
-        line-height: 1.42;
-        color: var(--color-text-primary);
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;
-    }
-
-    .cf-hero-course-copy span {
-        display: inline-block;
-        margin-top: 0.4rem;
-        font-size: 0.84rem;
-        line-height: 1.55;
-        color: var(--color-text-muted);
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;
-    }
-
-    .cf-hero-footer-note {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        border: 1px solid rgba(11, 11, 11, 0.08);
-        border-radius: 22px;
-        background:
-            linear-gradient(135deg, rgba(245, 184, 0, 0.12), rgba(255, 255, 255, 0.94));
-        padding: 1.15rem 1.2rem;
-    }
-
-    .cf-hero-footer-note p:first-child {
-        margin: 0;
-        font-size: 0.84rem;
-        font-weight: 700;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--color-text-muted);
-    }
-
-    .cf-hero-footer-note p:last-child {
-        margin: 0.55rem 0 0;
-        font-size: 1.04rem;
-        font-weight: 600;
-        line-height: 1.65;
-        color: var(--color-text-primary);
     }
 
     .cf-lesson-layout {
@@ -1182,7 +1092,8 @@
     }
 
     .cf-course-card-image {
-        aspect-ratio: 16 / 10;
+        aspect-ratio: 16 / 9;
+        min-height: 250px;
     }
 
     .cf-course-overlay {
@@ -1199,26 +1110,26 @@
     }
 
     .cf-course-content {
-        @apply flex h-full flex-col gap-5 p-7;
+        @apply flex h-full flex-col gap-4 px-6 pb-6 pt-5;
     }
 
     .cf-course-title {
-        font-size: 1.42rem;
-        font-weight: 700;
-        line-height: 1.2;
+        font-size: 1.58rem;
+        font-weight: 800;
+        line-height: 1.12;
         letter-spacing: -0.04em;
         color: var(--color-text-primary);
         text-wrap: balance;
     }
 
     .cf-course-description {
-        font-size: 0.95rem;
-        line-height: 1.72;
+        font-size: 1rem;
+        line-height: 1.62;
         color: var(--color-text-muted);
     }
 
     .cf-course-instructor {
-        @apply flex items-center gap-3 rounded-[20px] border px-4 py-3;
+        @apply flex items-center gap-3 rounded-[18px] border px-3.5 py-3;
         border-color: rgba(11, 11, 11, 0.08);
         background: linear-gradient(180deg, rgba(247, 247, 247, 0.9), rgba(255, 255, 255, 0.94));
     }
@@ -1228,14 +1139,14 @@
     }
 
     .cf-course-meta-pill {
-        @apply inline-flex items-center rounded-full border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em];
+        @apply inline-flex items-center rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em];
         border-color: rgba(11, 11, 11, 0.08);
         background: #f7f7f7;
         color: rgba(11, 11, 11, 0.74);
     }
 
     .cf-course-footer {
-        @apply mt-auto flex items-end justify-between gap-4 border-t pt-5;
+        @apply mt-auto flex items-center justify-between gap-3 border-t pt-4;
         border-color: rgba(11, 11, 11, 0.08);
     }
 
@@ -1247,6 +1158,7 @@
 
     .cf-course-cta {
         @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition;
+        min-width: 128px;
         background: #f5b800;
         color: #0b0b0b;
     }
@@ -1422,6 +1334,15 @@
         border-color: rgba(11, 11, 11, 0.07);
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 247, 247, 0.9));
         box-shadow: 0 16px 42px rgba(11, 11, 11, 0.03);
+    }
+
+    .cf-testimonial-avatar {
+        width: 3.4rem;
+        height: 3.4rem;
+        border-radius: 9999px;
+        object-fit: cover;
+        border: 1px solid rgba(11, 11, 11, 0.08);
+        background: #f7f7f7;
     }
 
     .cf-check-list {
@@ -1664,13 +1585,11 @@
     html.theme-dark .cf-admin-helper,
     html.theme-dark .cf-table-shell-copy,
     html.theme-dark .cf-course-description,
-    html.theme-dark .cf-hero-course-copy span,
     html.theme-dark .cf-hero-video-copy p:first-child,
     html.theme-dark .cf-hero-stat-card p {
         color: rgba(244, 244, 244, 0.82);
     }
 
-    html.theme-dark .cf-hero-course-copy p,
     html.theme-dark .cf-course-meta-pill,
     html.theme-dark .cf-chip,
     html.theme-dark .cf-hero-pill,
@@ -1866,22 +1785,6 @@
         border-color: rgba(255, 255, 255, 0.08);
     }
 
-    html.theme-dark .cf-hero-course-card {
-        border-color: rgba(255, 255, 255, 0.08);
-        background: #171717;
-        box-shadow: none;
-    }
-
-    html.theme-dark .cf-hero-course-card:hover {
-        border-color: rgba(245, 184, 0, 0.34);
-        background: #1c1c1c;
-    }
-
-    html.theme-dark .cf-hero-footer-note {
-        border-color: rgba(255, 255, 255, 0.08);
-        background: linear-gradient(135deg, rgba(245, 184, 0, 0.12), rgba(23, 23, 23, 0.96));
-    }
-
     html.theme-dark .cf-flow-shell,
     html.theme-dark .cf-trust-shell {
         background: #111111;
@@ -2048,10 +1951,6 @@
             grid-template-columns: 1fr;
         }
 
-        .cf-hero-footer-band {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
     }
 
     @media (max-width: 639px) {
@@ -2103,7 +2002,7 @@
 
         .cf-hero-video-frame {
             aspect-ratio: 16 / 9;
-            min-height: 13rem;
+            min-height: 15.5rem;
         }
 
         .cf-hero-main {
@@ -2146,11 +2045,6 @@
             line-height: 1.74;
         }
 
-        .cf-hero-footer-band {
-            grid-template-columns: 1fr;
-            gap: 0.8rem;
-        }
-
         .cf-course-content {
             gap: 1rem;
             padding: 1.15rem;
@@ -2161,13 +2055,17 @@
         }
 
         .cf-course-title {
-            font-size: 1.18rem;
+            font-size: 1.32rem;
             line-height: 1.24;
         }
 
         .cf-course-description {
             font-size: 0.9rem;
             line-height: 1.62;
+        }
+
+        .cf-course-card-image {
+            min-height: 210px;
         }
 
         .cf-course-footer {

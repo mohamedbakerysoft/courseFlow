@@ -1,9 +1,15 @@
 <x-public-layout :title="$page->title" :metaDescription="str($page->content)->limit(160)">
-    <div class="max-w-3xl mx-auto">
-        <div class="bg-white rounded-xl shadow-sm ring-1 ring-[var(--color-secondary)]/10 p-6 sm:p-8">
-            <h1 class="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)] mb-4">
-                {{ $page->title }}
-            </h1>
+    <section class="cf-shell cf-section pt-8 sm:pt-10">
+        <div class="cf-section-shell max-w-4xl mx-auto">
+            <div class="max-w-2xl space-y-4">
+                <span class="cf-kicker">{{ __('Legal information') }}</span>
+                <h1 class="cf-heading">
+                    {{ $page->title }}
+                </h1>
+                <p class="cf-subheading">
+                    {{ __('Review the current :title page exactly as it appears to visitors on the storefront.', ['title' => $page->title]) }}
+                </p>
+            </div>
             @php
                 $blocks = preg_split("/\n\s*\n/", (string) $page->content) ?: [];
                 $hasNumberedSections = false;
@@ -17,7 +23,7 @@
                 }
             @endphp
             @if ($hasNumberedSections)
-                <div class="prose prose-sm sm:prose max-w-none text-[var(--color-text-muted)]">
+                <div class="prose prose-sm sm:prose max-w-none text-[var(--color-text-muted)] mt-8">
                     @foreach ($blocks as $block)
                         @php
                             $lines = preg_split("/\n/", (string) $block) ?: [];
@@ -35,10 +41,10 @@
                     @endforeach
                 </div>
             @else
-                <div class="prose prose-sm sm:prose max-w-none text-[var(--color-text-muted)]">
+                <div class="prose prose-sm sm:prose max-w-none text-[var(--color-text-muted)] mt-8">
                     {!! nl2br(e($page->content)) !!}
                 </div>
             @endif
         </div>
-    </div>
+    </section>
 </x-public-layout>

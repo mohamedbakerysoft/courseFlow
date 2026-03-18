@@ -121,6 +121,10 @@ class DatabaseSeeder extends Seeder
         );
 
         Setting::updateOrCreate(['key' => 'landing.show_contact_form'], ['value' => true]);
+        Setting::updateOrCreate(['key' => 'landing.show_platform_proof'], ['value' => true]);
+        Setting::updateOrCreate(['key' => 'landing.show_problem_section'], ['value' => true]);
+        Setting::updateOrCreate(['key' => 'landing.show_flow_section'], ['value' => true]);
+        Setting::updateOrCreate(['key' => 'landing.show_faq_section'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'demo.enabled'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'en']);
         Setting::updateOrCreate(['key' => 'ui.theme.default'], ['value' => 'light']);
@@ -140,6 +144,34 @@ class DatabaseSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'hero.image_fit'], ['value' => 'cover']);
         Setting::updateOrCreate(['key' => 'hero.image_ratio'], ['value' => '4:5']);
         Setting::updateOrCreate(['key' => 'hero.image_focus'], ['value' => 'center']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.0.name'], ['value' => 'Maya Collins']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.0.role'], ['value' => 'Course buyer']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.0.quote'], ['value' => 'The checkout felt clear, the lessons opened instantly, and the platform looked polished from the first click.']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.0.avatar'], ['value' => 'images/demo/avatar-1.svg']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.1.name'], ['value' => 'Ethan Brooks']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.1.role'], ['value' => 'Business coach']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.1.quote'], ['value' => 'Learnova made the course offer feel trustworthy before I even reached the pricing section.']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.1.avatar'], ['value' => 'images/demo/avatar-2.svg']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.2.name'], ['value' => 'Sofia Turner']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.2.role'], ['value' => 'Consultant']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.2.quote'], ['value' => 'I liked how easy it was to move from browsing to enrollment without any confusing extra steps.']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.2.avatar'], ['value' => 'images/demo/avatar-3.svg']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.3.name'], ['value' => 'Daniel Ross']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.3.role'], ['value' => 'Online educator']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.3.quote'], ['value' => 'The lesson flow feels structured, premium, and professional enough to trust with a paid program.']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.3.avatar'], ['value' => 'images/demo/avatar-4.svg']);
+        Setting::updateOrCreate(['key' => 'landing.faqs.0.question'], ['value' => 'Can I offer both free and paid courses?']);
+        Setting::updateOrCreate(['key' => 'landing.faqs.0.answer'], ['value' => 'Yes. You can publish free offers, paid programs, and downloadable books while keeping the same storefront experience.']);
+        Setting::updateOrCreate(['key' => 'landing.faqs.1.question'], ['value' => 'What happens after a student enrolls?']);
+        Setting::updateOrCreate(['key' => 'landing.faqs.1.answer'], ['value' => 'Students get instant access to their purchased course or resource, with lesson order and progress tracking ready right away.']);
+        Setting::updateOrCreate(['key' => 'landing.faqs.2.question'], ['value' => 'Can I manage landing page content from the admin panel?']);
+        Setting::updateOrCreate(['key' => 'landing.faqs.2.answer'], ['value' => 'Yes. Hero copy, testimonials, FAQs, visibility toggles, contact block, and legal content are all controlled from admin settings.']);
+        Setting::updateOrCreate(['key' => 'landing.faqs.3.question'], ['value' => 'Which payment methods can I enable?']);
+        Setting::updateOrCreate(['key' => 'landing.faqs.3.answer'], ['value' => 'Depending on your setup, you can enable Stripe, PayPal, and manual payment instructions for one-time purchases.']);
+        Setting::updateOrCreate(['key' => 'landing.faqs.4.question'], ['value' => 'Can learners resume where they stopped?']);
+        Setting::updateOrCreate(['key' => 'landing.faqs.4.answer'], ['value' => 'Yes. Lesson progress remains visible so learners can return to the next step without losing their place.']);
+        Setting::updateOrCreate(['key' => 'legal.terms.en'], ['value' => "1. Introduction\nLearnova provides digital courses and educational resources for individual learners and customers.\n\n2. Accounts and access\nYou are responsible for the security of your account and any activity that happens under it.\n\n3. Purchases and delivery\nPaid products are delivered after successful payment confirmation. Free products become available immediately after enrollment when applicable.\n\n4. Personal use\nCourse videos, books, downloads, and supporting materials are licensed for personal use only and may not be resold, copied, or redistributed without permission.\n\n5. Refunds\nRefund terms may vary by offer and are described on the relevant sales page or purchase flow.\n\n6. Contact\nIf you need help with billing, access, or content questions, use the contact form available on the storefront."]);
+        Setting::updateOrCreate(['key' => 'legal.privacy.en'], ['value' => "1. Information we collect\nLearnova may collect account details, purchase information, communication history, and basic usage data required to operate the platform.\n\n2. How we use information\nData is used to deliver purchased content, improve the learning experience, provide support, and keep the platform secure.\n\n3. Payments and providers\nPayments may be processed by third-party providers such as Stripe or PayPal. Sensitive financial details are handled according to the policies of those providers.\n\n4. Cookies and analytics\nCookies may be used to remember preferences, support login sessions, and understand how visitors use the storefront.\n\n5. Your choices\nYou can request updates or removal of your data where applicable by contacting the site owner through the storefront contact form.\n\n6. Updates\nThis privacy policy may be updated to reflect operational or legal changes, and the latest version published on the site is the one in effect."]);
 
         Setting::query()->whereIn('key', [
             'typography.arabic_font',
