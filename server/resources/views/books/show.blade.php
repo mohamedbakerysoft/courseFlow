@@ -149,7 +149,7 @@
                         </div>
 
                         <div class="cf-divider pt-4 text-sm text-[var(--color-text-muted)]">
-                            <p>{{ __('Sell this like any other product in CourseFlow: clear price, one-time payment, and downloadable delivery after access is granted.') }}</p>
+                            <p>{{ __('Sell this like any other product in Learnova: clear price, one-time payment, and downloadable delivery after access is granted.') }}</p>
                         </div>
                     </div>
                 </div>

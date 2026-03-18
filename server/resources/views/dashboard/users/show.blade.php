@@ -1,18 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="space-y-1">
-            <h2 class="font-semibold text-xl text-[var(--color-text-primary)] leading-tight">
+        <div class="space-y-3">
+            <p class="cf-dark-muted text-sm font-semibold uppercase tracking-[0.24em]">{{ __('User management') }}</p>
+            <h2 class="cf-dark-title text-3xl font-bold tracking-[-0.04em] sm:text-4xl">
                 {{ __('User Details') }}
             </h2>
-            <p class="text-sm text-[var(--color-text-muted)]">
+            <p class="cf-dark-copy max-w-2xl text-sm leading-7">
                 {{ __('Review status and course access. Toggle Active/Disabled and grant access.') }}
             </p>
         </div>
     </x-slot>
 
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 space-y-6">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ring-1 ring-[var(--color-secondary)]/10">
-            <div class="p-6">
+    <div class="cf-admin-shell">
+        <div class="cf-admin-form-card">
+            <div class="cf-admin-toolbar">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-[var(--color-text-muted)]">{{ __('Name') }}</p>
@@ -49,21 +50,22 @@
             </div>
         </div>
 
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ring-1 ring-[var(--color-secondary)]/10">
-            <div class="p-6">
-                <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-3">{{ __('Course Access') }}</h3>
-                <p class="text-sm text-[var(--color-text-muted)] mb-4">{{ __('Enrolled Courses') }}: {{ $enrolledCount }}</p>
+        <div class="cf-admin-form-card space-y-6">
+            <div class="cf-admin-section-header">
+                <h3 class="cf-admin-section-title">{{ __('Course Access') }}</h3>
+                <p class="cf-admin-section-copy">{{ __('Enrolled Courses') }}: {{ $enrolledCount }}</p>
+            </div>
                 @if ($enrolledCourses->count())
-                    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach ($enrolledCourses as $c)
-                            <li class="border border-[var(--color-secondary)]/20 rounded-lg p-3">
+                            <li class="cf-admin-inline-note">
                                 <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ $c->title }}</p>
                                 <p class="text-xs text-[var(--color-text-muted)]">#{{ $c->slug }}</p>
                             </li>
                         @endforeach
                     </ul>
                 @else
-                    <div class="rounded-lg border border-dashed border-[var(--color-secondary)]/30 p-6 text-center">
+                    <div class="rounded-[22px] border border-dashed border-[var(--color-secondary)]/24 p-6 text-center">
                         <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-text-muted)]">
                             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5" />
@@ -79,11 +81,11 @@
                     </div>
                 @endif
 
-                <div class="mt-6">
-                    <form action="{{ route('dashboard.users.grant_access', $user) }}" method="POST" class="flex items-end gap-3">
+                <div class="pt-2">
+                    <form action="{{ route('dashboard.users.grant_access', $user) }}" method="POST" class="flex flex-col gap-4 lg:flex-row lg:items-end">
                         @csrf
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-[var(--color-text-primary)] mb-1">{{ __('Grant Access to Course') }}</label>
+                        <div class="cf-admin-field flex-1">
+                            <label>{{ __('Grant Access to Course') }}</label>
                             <select name="course_id" class="cf-select w-full">
                                 @foreach ($courses as $course)
                                     <option value="{{ $course->id }}">{{ $course->title }}</option>
@@ -95,7 +97,6 @@
                         </button>
                     </form>
                 </div>
-            </div>
         </div>
     </div>
 </x-app-layout>

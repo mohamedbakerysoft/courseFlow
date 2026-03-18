@@ -1,72 +1,74 @@
 <x-app-layout>
-    <div class="py-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" x-data="{ tab: (window.location.hash ? window.location.hash.substring(1) : 'general') }">
-        <div class="mb-6 space-y-3">
+    <div class="cf-admin-shell-narrow" x-data="{ tab: (window.location.hash ? window.location.hash.substring(1) : 'general') }">
+        <div class="space-y-3">
             <x-breadcrumbs :items="[
                 ['label' => __('Dashboard'), 'url' => route('dashboard')],
                 ['label' => __('Settings')],
             ]" />
-            <div class="flex items-center justify-between">
-                <h1 class="text-2xl font-semibold text-[var(--color-text-primary)]">
-                    {{ __('Settings') }}
-                </h1>
-                <a href="{{ route('dashboard') }}" class="inline-flex items-center text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]">
+            <div class="cf-admin-toolbar">
+                <div>
+                    <h1 class="cf-admin-heading">
+                        {{ __('Settings') }}
+                    </h1>
+                    <p class="cf-admin-copy mt-3">
+                        {{ __('Configure storefront behavior, payments, security, and landing content from one organized admin workspace.') }}
+                    </p>
+                </div>
+                <a href="{{ route('dashboard') }}" class="cf-button-ghost !px-4 !py-2.5 !text-sm">
                     {{ __('Back to Dashboard') }}
                 </a>
             </div>
         </div>
         <x-public.demo-notice />
 
-        <div class="border-b border-[var(--color-secondary)]/10">
-            <nav class="-mb-[1px] flex flex-wrap gap-6" aria-label="{{ __('Settings tabs') }}">
+        <div>
+            <nav class="cf-admin-tabbar" aria-label="{{ __('Settings tabs') }}">
                 <a href="#general" @click.prevent="tab = 'general'; location.hash = 'general'"
-                   class="px-1 py-4 text-sm font-medium border-b-2"
-                   :class="tab === 'general' ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-secondary)]/30'">
+                   :class="tab === 'general' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">
                     {{ __('General') }}
                 </a>
                 <a href="#payments" @click.prevent="tab = 'payments'; location.hash = 'payments'"
-                   class="px-1 py-4 text-sm font-medium border-b-2"
-                   :class="tab === 'payments' ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-secondary)]/30'">
+                   :class="tab === 'payments' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">
                     {{ __('Payments') }}
                 </a>
                 <a href="#authentication" @click.prevent="tab = 'authentication'; location.hash = 'authentication'"
-                   class="px-1 py-4 text-sm font-medium border-b-2"
-                   :class="tab === 'authentication' ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-secondary)]/30'">
+                   :class="tab === 'authentication' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">
                     {{ __('Authentication') }}
                 </a>
                 <a href="#security" @click.prevent="tab = 'security'; location.hash = 'security'"
-                   class="px-1 py-4 text-sm font-medium border-b-2"
-                   :class="tab === 'security' ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-secondary)]/30'">
+                   :class="tab === 'security' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">
                     {{ __('Security') }}
                 </a>
                 <a href="#notifications" @click.prevent="tab = 'notifications'; location.hash = 'notifications'"
-                   class="px-1 py-4 text-sm font-medium border-b-2"
-                   :class="tab === 'notifications' ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-secondary)]/30'">
+                   :class="tab === 'notifications' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">
                     {{ __('Notifications') }}
                 </a>
                 <a href="#landing" @click.prevent="tab = 'landing'; location.hash = 'landing'"
-                   class="px-1 py-4 text-sm font-medium border-b-2"
-                   :class="tab === 'landing' ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-secondary)]/30'">
+                   :class="tab === 'landing' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">
                     {{ __('Landing') }}
                 </a>
                 <a href="{{ route('dashboard.settings.updates') }}"
-                   class="px-1 py-4 text-sm font-medium border-b-2 border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-secondary)]/30">
+                   class="cf-admin-tab">
                     {{ __('Updates') }}
                 </a>
             </nav>
         </div>
 
-        <form x-cloak x-show="tab === 'general'" method="POST" action="{{ route('dashboard.settings.update') }}" enctype="multipart/form-data" class="space-y-8 mt-6">
+        <form x-cloak x-show="tab === 'general'" method="POST" action="{{ route('dashboard.settings.update') }}" enctype="multipart/form-data" class="space-y-8 pt-2">
             @csrf
             <input type="hidden" name="settings_group" value="general">
-            <section class="cf-admin-form-card space-y-5">
-                <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('General Settings') }}</h2>
-                <div class="grid grid-cols-1 gap-6">
-                    <div class="rounded-md border border-[var(--color-secondary)]/20 bg-white p-4">
+            <section class="cf-admin-form-card">
+                <div class="cf-admin-section-header">
+                    <h2 class="cf-admin-section-title">{{ __('General Settings') }}</h2>
+                    <p class="cf-admin-section-copy">{{ __('Control the default experience visitors see first, including theme behavior, branding, and demo accessibility.') }}</p>
+                </div>
+                <div class="cf-admin-form-grid">
+                    <div class="cf-admin-inline-note">
                         <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Storefront language') }}</p>
-                        <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('CourseFlow now runs in English only across the website and admin panel.') }}</p>
+                        <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('Learnova now runs in English only across the website and admin panel.') }}</p>
                     </div>
-                    <div>
-                        <label for="default_theme" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Default Theme') }}</label>
+                    <div class="cf-admin-field">
+                        <label for="default_theme">{{ __('Default Theme') }}</label>
                         <select id="default_theme" name="default_theme" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
                             <option value="system" @selected(($defaultTheme ?? 'system') === 'system')>{{ __('System') }}</option>
                             <option value="light" @selected(($defaultTheme ?? 'system') === 'light')>{{ __('Light') }}</option>
@@ -76,15 +78,15 @@
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-                    <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-4">
-                        <div class="space-y-1">
-                            <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Enable demo mode') }}</p>
-                            <p class="text-xs text-[var(--color-text-muted)]">{{ __('When enabled, visitors can use quick login buttons for the demo admin and demo instructor accounts.') }}</p>
+                    <label class="cf-admin-switch">
+                        <div class="cf-admin-switch-copy">
+                            <p>{{ __('Enable demo mode') }}</p>
+                            <p>{{ __('When enabled, visitors can use quick login buttons for the demo admin and demo instructor accounts.') }}</p>
                         </div>
                         <input type="checkbox" name="demo_enabled" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($demoEnabled)>
                     </label>
-                    <div>
-                        <label for="logo" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Site Logo') }}</label>
+                    <div class="cf-admin-field">
+                        <label for="logo">{{ __('Site Logo') }}</label>
                         <input id="logo" name="logo" type="file" accept="image/*" class="mt-1 block w-full text-sm text-[var(--color-text-primary)] border-[var(--color-secondary)]/30 rounded-md shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
                         @error('logo')
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
@@ -610,7 +612,7 @@
                                     <input id="landing_copy_{{ $copyKey }}" name="landing_copy[{{ $copyKey }}]" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_copy.$copyKey", $landingCopy[$copyKey] ?? '') }}">
                                 </div>
                             @endforeach
-                            @foreach (['hero_video_eyebrow' => 'Video eyebrow', 'hero_video_badge' => 'Video badge', 'hero_video_title' => 'Video title', 'hero_note_1_title' => 'Note 1 title', 'hero_note_1_body' => 'Note 1 body', 'hero_note_2_title' => 'Note 2 title', 'hero_note_2_body' => 'Note 2 body'] as $copyKey => $copyLabel)
+                            @foreach (['hero_video_eyebrow' => 'Video eyebrow', 'hero_video_badge' => 'Video badge', 'hero_video_title' => 'Video title'] as $copyKey => $copyLabel)
                                 <div class="{{ str_contains($copyKey, 'body') || $copyKey === 'hero_video_title' ? 'md:col-span-2' : '' }}">
                                     <label for="landing_copy_{{ $copyKey }}" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __($copyLabel) }}</label>
                                     @if (str_contains($copyKey, 'body') || $copyKey === 'hero_video_title')
@@ -781,7 +783,7 @@
                 <div class="grid grid-cols-1 gap-6">
                     <div class="rounded-md border border-[var(--color-secondary)]/20 bg-white p-4">
                         <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Storefront language') }}</p>
-                        <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('CourseFlow now runs in English only across the website and admin panel.') }}</p>
+                        <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('Learnova now runs in English only across the website and admin panel.') }}</p>
                     </div>
 
                     <div>

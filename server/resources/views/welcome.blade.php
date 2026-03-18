@@ -49,7 +49,7 @@
                                     >
                                     <div class="min-w-0">
                                         <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $instructorName }}</p>
-                                        <p class="text-sm text-[var(--color-text-muted)]">{{ $instructorTitle !== '' ? $instructorTitle : __('Founder of CourseFlow') }}</p>
+                                        <p class="text-sm text-[var(--color-text-muted)]">{{ $instructorTitle !== '' ? $instructorTitle : __('Founder of Learnova') }}</p>
                                     </div>
                                 </div>
                             @endif
@@ -72,32 +72,12 @@
                                 @endif
                             </div>
 
-                            <div class="flex flex-wrap gap-3 text-sm">
+                            <div class="cf-hero-mobile-trust flex flex-wrap gap-3 text-sm">
                                 @foreach ($heroHighlights as $highlight)
                                     <span class="cf-hero-pill">{{ $highlight }}</span>
                                 @endforeach
                             </div>
                         </div>
-
-                        <div class="flex flex-col gap-3 sm:flex-row">
-                            <a href="{{ route('courses.index') }}" class="cf-button-primary sm:min-w-[220px]">
-                                {{ __('Browse Courses') }}
-                            </a>
-                            <a href="{{ route('instructor.show') }}" class="cf-button-secondary sm:min-w-[220px]">
-                                {{ __('Meet the Instructor') }}
-                            </a>
-                        </div>
-
-                        @if (!empty($platformStats))
-                            <div class="cf-hero-stat-grid">
-                                @foreach (collect($platformStats)->take(3) as $stat)
-                                    <article class="cf-hero-stat-card">
-                                        <p>{{ $stat['label'] }}</p>
-                                        <h3>{{ $stat['value'] }}</h3>
-                                    </article>
-                                @endforeach
-                            </div>
-                        @endif
                     </div>
 
                     <div class="cf-hero-visual relative">
@@ -127,7 +107,7 @@
                                     <div class="cf-hero-video-frame">
                                         <iframe
                                             src="{{ $heroVideoEmbedUrl }}"
-                                            title="{{ __('CourseFlow video preview') }}"
+                                            title="{{ __('Learnova video preview') }}"
                                             loading="lazy"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                             referrerpolicy="strict-origin-when-cross-origin"
@@ -136,23 +116,25 @@
                                     </div>
                                 </div>
 
-                                <div class="cf-hero-video-footer">
-                                    <div class="cf-hero-video-note">
-                                        <p>{{ $landingCopy['hero_note_1_title'] ?? __('What users notice') }}</p>
-                                        <p>{{ $landingCopy['hero_note_1_body'] ?? __('A clearer hero, stronger hierarchy, and immediate proof of the product in action.') }}</p>
-                                    </div>
-                                    <div class="cf-hero-video-note">
-                                        <p>{{ $landingCopy['hero_note_2_title'] ?? __('Why it converts') }}</p>
-                                        <p>{{ $landingCopy['hero_note_2_body'] ?? __('Visitors understand the offer faster when the story and the interface line up in the first screen.') }}</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="cf-hero-footer-band">
-                    @forelse (($heroCourses ?? collect())->take(4) as $heroCourse)
+                <div class="cf-hero-action-band">
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <a href="{{ route('courses.index') }}" class="cf-button-primary sm:min-w-[220px]">
+                            {{ __('Browse Courses') }}
+                        </a>
+                        <a href="{{ route('instructor.show') }}" class="cf-button-secondary sm:min-w-[220px]">
+                            {{ __('Meet the Instructor') }}
+                        </a>
+                    </div>
+                </div>
+
+                @if (($heroCourses ?? collect())->isNotEmpty())
+                    <div class="cf-hero-footer-band">
+                        @foreach (($heroCourses ?? collect())->take(4) as $heroCourse)
                         <a href="{{ route('courses.show', $heroCourse) }}" class="cf-hero-course-card">
                             <div class="cf-hero-course-media">
                                 <img
@@ -172,15 +154,9 @@
                                 </span>
                             </div>
                         </a>
-                    @empty
-                        @foreach ($platformStats as $stat)
-                            <div class="cf-hero-footer-card">
-                                <p>{{ $stat['label'] }}</p>
-                                <p>{{ $stat['value'] }}</p>
-                            </div>
                         @endforeach
-                    @endforelse
-                </div>
+                    </div>
+                @endif
             </div>
         </section>
     @endif
@@ -345,7 +321,7 @@
                     {{ $message }}
                 </div>
             @enderror
-            <div class="cf-section-shell grid gap-6 lg:grid-cols-[0.8fr,1.2fr]">
+                <div class="cf-section-shell grid gap-6 lg:grid-cols-[0.8fr,1.2fr]">
                 <div class="space-y-4">
                     <span class="cf-kicker">{{ $landingCopy['contact_kicker'] ?? __('Get in touch') }}</span>
                     <h2 class="cf-heading">{{ $landingCopy['contact_title'] ?? __('Ask a question before you enroll') }}</h2>

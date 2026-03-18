@@ -7,7 +7,7 @@
         <meta name="referrer" content="strict-origin-when-cross-origin">
         <link rel="icon" type="image/png" sizes="any" href="{{ url('/favicon.png') }}">
         <link rel="apple-touch-icon" sizes="180x180" href="{{ url('/favicon.png') }}">
-        <title>{{ $title ?? config('app.name', 'CourseFlow') }}</title>
+        <title>{{ $title ?? config('app.name', 'Learnova') }}</title>
         <meta name="description" content="{{ $metaDescription ?? '' }}">
         <script>
             (function () {
@@ -71,7 +71,7 @@
                     <div class="grid gap-8 lg:grid-cols-[1.4fr,0.8fr] lg:items-end">
                         <div class="space-y-4">
                             <span class="cf-dark-kicker">
-                                Premium learning storefront
+                                {{ __('Premium learning storefront') }}
                             </span>
                             <div class="max-w-2xl space-y-3">
                                 <h2 class="cf-dark-title text-2xl font-bold tracking-[-0.04em] sm:text-3xl">
@@ -96,7 +96,7 @@
                     <div class="cf-dark-muted mt-8 border-t border-white/10 pt-6 text-sm">
                         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <p>&copy; {{ date('Y') }} {{ config('app.name') }}</p>
-                            <p>A modern storefront built for focused, independent course businesses.</p>
+                            <p>{{ __('A modern storefront built for focused, independent course businesses.') }}</p>
                         </div>
                     </div>
                 </div>

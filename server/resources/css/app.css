@@ -147,6 +147,16 @@
         box-shadow: 0 18px 48px rgba(11, 11, 11, 0.04);
     }
 
+    .cf-flow-shell {
+        background:
+            linear-gradient(180deg, rgba(247, 247, 247, 0.82), rgba(255, 255, 255, 0.98));
+    }
+
+    .cf-trust-shell {
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 249, 245, 0.92));
+    }
+
     .cf-section-header {
         @apply mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between;
     }
@@ -283,6 +293,7 @@
         border: 1px solid #f5b800;
         box-shadow: none;
         --tw-ring-color: rgba(245, 184, 0, 0.4);
+        text-shadow: none;
     }
 
     .cf-button-primary:hover {
@@ -489,8 +500,8 @@
     .cf-hero-main {
         display: grid;
         align-items: stretch;
-        gap: 2.75rem;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: 2.25rem;
+        grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
     }
 
     .cf-hero-instructor {
@@ -540,7 +551,7 @@
         display: flex;
         height: 100%;
         flex-direction: column;
-        gap: 1.15rem;
+        gap: 1rem;
     }
 
     .cf-hero-video-header {
@@ -553,7 +564,7 @@
     }
 
     .cf-hero-video-copy {
-        max-width: 34rem;
+        max-width: 36rem;
     }
 
     .cf-hero-video-copy p:first-child {
@@ -567,9 +578,9 @@
 
     .cf-hero-video-copy p:last-child {
         margin: 0.45rem 0 0;
-        font-size: 1.12rem;
+        font-size: 1.08rem;
         font-weight: 600;
-        line-height: 1.55;
+        line-height: 1.6;
         color: var(--color-text-primary);
     }
 
@@ -579,6 +590,7 @@
         border-radius: 28px;
         border: 1px solid rgba(11, 11, 11, 0.08);
         background: #0b0b0b;
+        box-shadow: 0 18px 40px rgba(11, 11, 11, 0.08);
     }
 
     .cf-hero-video-poster {
@@ -596,6 +608,7 @@
         z-index: 1;
         width: 100%;
         aspect-ratio: 16 / 9;
+        min-height: 24rem;
         background: linear-gradient(180deg, rgba(11, 11, 11, 0.16), rgba(11, 11, 11, 0.3));
     }
 
@@ -605,99 +618,19 @@
         border: 0;
     }
 
-    .cf-hero-video-footer {
-        display: grid;
-        gap: 0.9rem;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .cf-hero-video-note {
-        border: 1px solid rgba(11, 11, 11, 0.08);
-        border-radius: 22px;
-        background: rgba(255, 255, 255, 0.98);
-        padding: 1.1rem 1.1rem 1.1rem 1.2rem;
-    }
-
-    .cf-hero-video-note p:first-child {
-        margin: 0;
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--color-text-muted);
-    }
-
-    .cf-hero-video-note p:last-child {
-        margin: 0.5rem 0 0;
-        font-size: 1.02rem;
-        font-weight: 600;
-        line-height: 1.62;
-        color: var(--color-text-primary);
+    .cf-hero-action-band {
+        margin-top: 1.6rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
     }
 
     .cf-hero-footer-band {
-        margin-top: 2rem;
+        margin-top: 1.35rem;
         display: grid;
         gap: 1rem;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .cf-hero-stat-grid {
-        display: grid;
-        gap: 0.95rem;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .cf-hero-stat-card {
-        border: 1px solid rgba(11, 11, 11, 0.07);
-        border-radius: 24px;
-        background: rgba(255, 255, 255, 0.96);
-        padding: 1.2rem 1.1rem;
-    }
-
-    .cf-hero-stat-card p,
-    .cf-hero-stat-card h3 {
-        margin: 0;
-    }
-
-    .cf-hero-stat-card p {
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--color-text-muted);
-    }
-
-    .cf-hero-stat-card h3 {
-        margin-top: 0.5rem;
-        font-size: 2rem;
-        font-weight: 800;
-        letter-spacing: -0.05em;
-        color: var(--color-text-primary);
-    }
-
-    .cf-hero-footer-card {
-        border: 1px solid rgba(11, 11, 11, 0.08);
-        border-radius: 22px;
-        background: #ffffff;
-        padding: 1.15rem 1.1rem;
-    }
-
-    .cf-hero-footer-card p:first-child {
-        margin: 0;
-        font-size: 0.84rem;
-        font-weight: 700;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--color-text-muted);
-    }
-
-    .cf-hero-footer-card p:last-child {
-        margin: 0.5rem 0 0;
-        font-size: 1.3rem;
-        font-weight: 700;
-        line-height: 1.3;
-        color: var(--color-text-primary);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .cf-hero-course-card {
@@ -707,7 +640,7 @@
         border: 1px solid rgba(11, 11, 11, 0.07);
         border-radius: 24px;
         background: rgba(255, 255, 255, 0.98);
-        padding: 1rem;
+        padding: 0.9rem;
         text-decoration: none;
         transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
     }
@@ -721,7 +654,7 @@
     .cf-hero-course-media {
         overflow: hidden;
         border-radius: 20px;
-        aspect-ratio: 16 / 11;
+        aspect-ratio: 16 / 10;
         background: rgba(247, 247, 247, 0.86);
     }
 
@@ -747,18 +680,26 @@
 
     .cf-hero-course-copy h3 {
         margin-top: 0.45rem;
-        font-size: 1.08rem;
+        font-size: 1rem;
         font-weight: 700;
-        line-height: 1.38;
+        line-height: 1.42;
         color: var(--color-text-primary);
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
     }
 
     .cf-hero-course-copy span {
         display: inline-block;
         margin-top: 0.4rem;
-        font-size: 0.88rem;
-        line-height: 1.6;
+        font-size: 0.84rem;
+        line-height: 1.55;
         color: var(--color-text-muted);
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
     }
 
     .cf-hero-footer-note {
@@ -1036,6 +977,40 @@
             #ffffff;
     }
 
+    .cf-admin-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .cf-admin-shell {
+        @apply mx-auto w-full max-w-[1200px] space-y-6 px-4 sm:px-6 lg:px-8;
+    }
+
+    .cf-admin-shell-narrow {
+        @apply mx-auto w-full max-w-[980px] space-y-6 px-4 sm:px-6 lg:px-8;
+    }
+
+    .cf-admin-toolbar {
+        @apply flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between;
+    }
+
+    .cf-admin-heading {
+        font-size: clamp(2rem, 3vw, 2.7rem);
+        line-height: 1.06;
+        letter-spacing: -0.05em;
+        font-weight: 800;
+        color: var(--color-text-primary);
+        text-wrap: balance;
+    }
+
+    .cf-admin-copy {
+        max-width: 44rem;
+        font-size: 0.96rem;
+        line-height: 1.75;
+        color: var(--color-text-muted);
+    }
+
     .cf-page-header {
         @apply relative overflow-hidden rounded-[34px] border px-6 py-8 sm:px-8 sm:py-10 lg:px-10;
         border-color: rgba(255, 255, 255, 0.08);
@@ -1055,6 +1030,18 @@
         background: #f5b800;
     }
 
+    .cf-page-header > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .cf-page-header p,
+    .cf-page-header h1,
+    .cf-page-header h2,
+    .cf-page-header h3 {
+        text-wrap: balance;
+    }
+
     .cf-stat-card {
         @apply rounded-[28px] border px-6 py-6;
         border-color: rgba(11, 11, 11, 0.07);
@@ -1062,16 +1049,57 @@
         box-shadow: 0 14px 36px rgba(11, 11, 11, 0.035);
     }
 
+    .cf-stat-card p,
+    .cf-stat-card h3,
+    .cf-stat-card h4 {
+        margin: 0;
+    }
+
+    .cf-stat-card h3,
+    .cf-stat-card h4 {
+        text-wrap: balance;
+    }
+
     .cf-table-shell {
         @apply overflow-hidden rounded-[26px] border;
         border-color: rgba(11, 11, 11, 0.08);
         background: #ffffff;
+        box-shadow: 0 14px 36px rgba(11, 11, 11, 0.03);
+    }
+
+    .cf-table-shell-header {
+        @apply flex flex-col gap-4 border-b px-6 py-5 sm:flex-row sm:items-end sm:justify-between;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: linear-gradient(180deg, rgba(247, 247, 247, 0.82), rgba(255, 255, 255, 0.96));
+    }
+
+    .cf-table-shell-header p,
+    .cf-table-shell-header h2,
+    .cf-table-shell-header h3 {
+        margin: 0;
+    }
+
+    .cf-table-shell-title {
+        font-size: 1.15rem;
+        line-height: 1.4;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--color-text-primary);
+    }
+
+    .cf-table-shell-copy {
+        margin-top: 0.4rem;
+        font-size: 0.92rem;
+        line-height: 1.7;
+        color: var(--color-text-muted);
     }
 
     .cf-table {
         @apply min-w-full divide-y text-sm;
         --cf-divider: rgba(11, 11, 11, 0.08);
         border-color: var(--cf-divider);
+        border-collapse: separate;
+        border-spacing: 0;
     }
 
     .cf-table thead {
@@ -1079,13 +1107,49 @@
     }
 
     .cf-table th {
-        @apply px-4 py-4 text-left text-[13px] font-semibold uppercase tracking-[0.16em];
+        @apply px-6 py-4 text-left text-[12px] font-semibold uppercase tracking-[0.18em];
         color: var(--color-text-muted);
     }
 
     .cf-table td {
-        @apply px-4 py-4 align-middle;
+        @apply px-6 py-5 align-middle;
         color: var(--color-text-primary);
+    }
+
+    .cf-table tbody tr {
+        transition: background-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .cf-table tbody tr:hover {
+        background: rgba(247, 247, 247, 0.75);
+    }
+
+    .cf-table td:first-child,
+    .cf-table th:first-child {
+        padding-left: 1.5rem;
+    }
+
+    .cf-table td:last-child,
+    .cf-table th:last-child {
+        padding-right: 1.5rem;
+    }
+
+    .cf-table-empty {
+        @apply px-6 py-14 text-center;
+    }
+
+    .cf-table-empty-title {
+        font-size: 1.55rem;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        color: var(--color-text-primary);
+    }
+
+    .cf-table-empty-copy {
+        margin-top: 0.7rem;
+        font-size: 0.95rem;
+        line-height: 1.75;
+        color: var(--color-text-muted);
     }
 
     .cf-badge {
@@ -1117,6 +1181,10 @@
         background: #f7f7f7;
     }
 
+    .cf-course-card-image {
+        aspect-ratio: 16 / 10;
+    }
+
     .cf-course-overlay {
         position: absolute;
         inset: 0;
@@ -1132,6 +1200,21 @@
 
     .cf-course-content {
         @apply flex h-full flex-col gap-5 p-7;
+    }
+
+    .cf-course-title {
+        font-size: 1.42rem;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.04em;
+        color: var(--color-text-primary);
+        text-wrap: balance;
+    }
+
+    .cf-course-description {
+        font-size: 0.95rem;
+        line-height: 1.72;
+        color: var(--color-text-muted);
     }
 
     .cf-course-instructor {
@@ -1177,6 +1260,118 @@
         border-color: rgba(11, 11, 11, 0.07);
         background: #ffffff;
         box-shadow: 0 16px 40px rgba(11, 11, 11, 0.035);
+    }
+
+    .cf-admin-form-card > * + * {
+        margin-top: 1.35rem;
+    }
+
+    .cf-admin-section-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+    }
+
+    .cf-admin-section-title {
+        font-size: 1.28rem;
+        line-height: 1.35;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--color-text-primary);
+    }
+
+    .cf-admin-section-copy {
+        font-size: 0.94rem;
+        line-height: 1.7;
+        color: var(--color-text-muted);
+    }
+
+    .cf-admin-form-grid {
+        display: grid;
+        gap: 1.2rem;
+    }
+
+    .cf-admin-form-grid-two {
+        display: grid;
+        gap: 1.2rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cf-admin-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+    }
+
+    .cf-admin-field > label,
+    .cf-admin-field > span {
+        font-size: 0.9rem;
+        line-height: 1.45;
+        font-weight: 600;
+        color: var(--color-text-primary);
+    }
+
+    .cf-admin-helper {
+        font-size: 0.82rem;
+        line-height: 1.6;
+        color: var(--color-text-muted);
+    }
+
+    .cf-admin-inline-note {
+        @apply rounded-[20px] border px-4 py-3;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: linear-gradient(180deg, rgba(247, 247, 247, 0.84), rgba(255, 255, 255, 0.96));
+    }
+
+    .cf-admin-switch {
+        @apply flex items-center justify-between gap-4 rounded-[22px] border px-4 py-4;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+    }
+
+    .cf-admin-switch-copy p {
+        margin: 0;
+    }
+
+    .cf-admin-switch-copy p:first-child {
+        font-size: 0.94rem;
+        line-height: 1.45;
+        font-weight: 600;
+        color: var(--color-text-primary);
+    }
+
+    .cf-admin-switch-copy p:last-child {
+        margin-top: 0.25rem;
+        font-size: 0.82rem;
+        line-height: 1.6;
+        color: var(--color-text-muted);
+    }
+
+    .cf-admin-tabbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        border-bottom: 1px solid rgba(11, 11, 11, 0.08);
+        padding-bottom: 1rem;
+    }
+
+    .cf-admin-tab {
+        @apply inline-flex items-center rounded-full border px-4 py-2.5 text-sm font-semibold transition;
+        border-color: rgba(11, 11, 11, 0.08);
+        background: #ffffff;
+        color: var(--color-text-muted);
+    }
+
+    .cf-admin-tab.is-active {
+        border-color: rgba(245, 184, 0, 0.32);
+        background: rgba(245, 184, 0, 0.12);
+        color: #0b0b0b;
+    }
+
+    .cf-admin-info-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .cf-feature-card {
@@ -1452,8 +1647,49 @@
     html.theme-dark .cf-subheading,
     html.theme-dark .cf-muted,
     html.theme-dark .cf-course-summary,
-    html.theme-dark .cf-badge-muted {
+    html.theme-dark .cf-badge-muted,
+    html.theme-dark .cf-admin-copy,
+    html.theme-dark .cf-admin-section-copy,
+    html.theme-dark .cf-admin-helper,
+    html.theme-dark .cf-table-shell-copy {
         color: var(--color-text-muted);
+    }
+
+    html.theme-dark .cf-subheading,
+    html.theme-dark .cf-muted,
+    html.theme-dark .cf-course-summary,
+    html.theme-dark .cf-badge-muted,
+    html.theme-dark .cf-admin-copy,
+    html.theme-dark .cf-admin-section-copy,
+    html.theme-dark .cf-admin-helper,
+    html.theme-dark .cf-table-shell-copy,
+    html.theme-dark .cf-course-description,
+    html.theme-dark .cf-hero-course-copy span,
+    html.theme-dark .cf-hero-video-copy p:first-child,
+    html.theme-dark .cf-hero-stat-card p {
+        color: rgba(244, 244, 244, 0.82);
+    }
+
+    html.theme-dark .cf-hero-course-copy p,
+    html.theme-dark .cf-course-meta-pill,
+    html.theme-dark .cf-chip,
+    html.theme-dark .cf-hero-pill,
+    html.theme-dark .cf-floating-pill {
+        color: rgba(244, 244, 244, 0.88);
+    }
+
+    html.theme-dark .cf-admin-inline-note,
+    html.theme-dark .cf-admin-switch,
+    html.theme-dark .cf-admin-tab,
+    html.theme-dark .cf-table thead {
+        border-color: rgba(255, 255, 255, 0.08);
+        background: #171717;
+    }
+
+    html.theme-dark .cf-admin-tab.is-active {
+        border-color: rgba(245, 184, 0, 0.28);
+        background: rgba(245, 184, 0, 0.18);
+        color: #0b0b0b;
     }
 
     html.theme-dark .cf-nav-link:hover,
@@ -1474,6 +1710,18 @@
         background:
             radial-gradient(circle at top right, rgba(245, 184, 0, 0.14), transparent 22%),
             #090909;
+    }
+
+    html.theme-dark .cf-app-shell {
+        background:
+            radial-gradient(circle at top left, rgba(245, 184, 0, 0.12), transparent 22%),
+            radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.03), transparent 28%),
+            #0b0b0b;
+        color: #f4f4f4;
+    }
+
+    html.theme-dark .cf-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.03);
     }
 
     html.theme-dark .cf-input,
@@ -1565,6 +1813,28 @@
         color: rgba(11, 11, 11, 0.82);
     }
 
+    html.theme-dark .cf-button-primary,
+    html.theme-dark .cf-course-cta {
+        background: #f5b800;
+        border-color: #f5b800;
+        color: #0b0b0b;
+        box-shadow: 0 12px 30px rgba(245, 184, 0, 0.14);
+    }
+
+    html.theme-dark .cf-button-primary:hover,
+    html.theme-dark .cf-course-cta:hover {
+        background: #e5ad00;
+        border-color: #e5ad00;
+        color: #0b0b0b;
+    }
+
+    @media (max-width: 1024px) {
+        .cf-admin-info-grid,
+        .cf-admin-form-grid-two {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
     html.theme-dark .cf-app-shell .border-\[var\(--color-secondary\)\]\/10,
     html.theme-dark .cf-app-shell .border-\[var\(--color-secondary\)\]\/20,
     html.theme-dark .cf-app-shell .border-\[var\(--color-secondary\)\]\/30,
@@ -1592,18 +1862,8 @@
             #111111;
     }
 
-    html.theme-dark .cf-hero-video-stage,
-    html.theme-dark .cf-hero-video-note {
+    html.theme-dark .cf-hero-video-stage {
         border-color: rgba(255, 255, 255, 0.08);
-    }
-
-    html.theme-dark .cf-hero-video-note {
-        background: rgba(23, 23, 23, 0.95);
-    }
-
-    html.theme-dark .cf-hero-footer-card {
-        border-color: rgba(255, 255, 255, 0.08);
-        background: #171717;
     }
 
     html.theme-dark .cf-hero-course-card {
@@ -1620,6 +1880,11 @@
     html.theme-dark .cf-hero-footer-note {
         border-color: rgba(255, 255, 255, 0.08);
         background: linear-gradient(135deg, rgba(245, 184, 0, 0.12), rgba(23, 23, 23, 0.96));
+    }
+
+    html.theme-dark .cf-flow-shell,
+    html.theme-dark .cf-trust-shell {
+        background: #111111;
     }
 
     html.theme-dark .cf-admin-toast {
@@ -1685,7 +1950,9 @@
 
     html.theme-dark [class*="bg-white/"],
     html.theme-dark .bg-white {
-        color: #f4f4f4;
+        background: rgba(17, 17, 17, 0.96) !important;
+        color: #f4f4f4 !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
     }
 
     html.theme-dark .shadow,
@@ -1710,6 +1977,39 @@
         background: rgba(17, 17, 17, 0.94) !important;
     }
 
+    html.theme-dark .cf-button-secondary,
+    html.theme-dark .cf-button-ghost,
+    html.theme-dark .cf-admin-tab,
+    html.theme-dark button[class*="bg-white"],
+    html.theme-dark a[class*="bg-white"] {
+        background: #171717;
+        border-color: rgba(255, 255, 255, 0.08);
+        color: #f4f4f4;
+    }
+
+    html.theme-dark .cf-button-secondary:hover,
+    html.theme-dark .cf-button-ghost:hover,
+    html.theme-dark .cf-admin-tab:hover,
+    html.theme-dark button[class*="bg-white"]:hover,
+    html.theme-dark a[class*="bg-white"]:hover {
+        background: #1f1f1f;
+        color: #ffffff;
+    }
+
+    html.theme-dark .cf-admin-shell [class*="text-black"],
+    html.theme-dark .cf-admin-shell-narrow [class*="text-black"],
+    html.theme-dark .cf-app-shell [class*="text-black"] {
+        color: #f4f4f4 !important;
+    }
+
+    html.theme-dark .cf-admin-tab.is-active,
+    html.theme-dark .cf-button-primary,
+    html.theme-dark .cf-course-cta,
+    html.theme-dark .cf-price-pill,
+    html.theme-dark nav[role="navigation"] span[aria-current="page"] {
+        color: #0b0b0b !important;
+    }
+
     html.theme-dark nav[role="navigation"] a,
     html.theme-dark nav[role="navigation"] span {
         border-color: rgba(255, 255, 255, 0.08);
@@ -1725,6 +2025,10 @@
 
     @media (max-width: 1023px) {
         .cf-hero-main {
+            grid-template-columns: 1fr;
+        }
+
+        .cf-hero-action-band {
             grid-template-columns: 1fr;
         }
 
@@ -1748,13 +2052,6 @@
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        .cf-hero-video-footer {
-            grid-template-columns: 1fr;
-        }
-
-        .cf-hero-stat-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
     }
 
     @media (max-width: 639px) {
@@ -1763,29 +2060,29 @@
         }
 
         .cf-section {
-            @apply py-14;
+            @apply py-11;
         }
 
         .cf-display {
-            font-size: clamp(3.3rem, 12vw, 4.05rem);
-            line-height: 1;
+            font-size: clamp(3rem, 12vw, 3.7rem);
+            line-height: 0.98;
         }
 
         .cf-heading {
-            font-size: clamp(2.25rem, 9vw, 2.7rem);
+            font-size: clamp(2rem, 8.5vw, 2.45rem);
         }
 
         .cf-hero-shell::after {
-            margin-top: 1.5rem;
+            margin-top: 1.1rem;
         }
 
         .cf-hero-media {
             min-height: auto;
-            padding: 0.75rem;
+            padding: 0.7rem;
         }
 
         .cf-section-shell {
-            @apply rounded-[28px] px-5 py-6;
+            @apply rounded-[28px] px-5 py-5;
         }
 
         .cf-hero-copy .cf-button-primary,
@@ -1801,11 +2098,37 @@
         }
 
         .cf-hero-video-copy p:last-child {
-            font-size: 1.04rem;
+            font-size: 0.98rem;
         }
 
         .cf-hero-video-frame {
             aspect-ratio: 16 / 9;
+            min-height: 13rem;
+        }
+
+        .cf-hero-main {
+            gap: 1.35rem;
+        }
+
+        .cf-hero-action-band {
+            margin-top: 1rem;
+            gap: 0.85rem;
+        }
+
+        .cf-trust-shell,
+        .cf-flow-shell,
+        .cf-section-shell {
+            margin-bottom: 0;
+        }
+
+        .cf-hero-mobile-trust {
+            gap: 0.55rem;
+        }
+
+        .cf-hero-pill {
+            padding-inline: 0.75rem;
+            padding-block: 0.55rem;
+            font-size: 11px;
         }
 
         .cf-lesson-video-shell iframe {
@@ -1825,10 +2148,35 @@
 
         .cf-hero-footer-band {
             grid-template-columns: 1fr;
+            gap: 0.8rem;
         }
 
-        .cf-hero-stat-grid {
-            grid-template-columns: 1fr;
+        .cf-course-content {
+            gap: 1rem;
+            padding: 1.15rem;
+        }
+
+        .cf-card-grid {
+            gap: 1rem;
+        }
+
+        .cf-course-title {
+            font-size: 1.18rem;
+            line-height: 1.24;
+        }
+
+        .cf-course-description {
+            font-size: 0.9rem;
+            line-height: 1.62;
+        }
+
+        .cf-course-footer {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .cf-course-cta {
+            width: 100%;
         }
 
         nav[role="navigation"] > div:last-child {

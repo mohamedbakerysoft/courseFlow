@@ -43,11 +43,11 @@ class DemoSeeder extends Seeder
                     'password' => bcrypt('password'),
                     'role' => User::ROLE_ADMIN,
                     'profile_image_path' => 'images/demo/real/hero-formal-2.jpg',
-                    'bio' => 'Founder of CourseFlow and instructor focused on helping creators launch polished course businesses with stronger branding, trusted checkout, and premium student experiences.',
+                    'bio' => 'Founder of Learnova and instructor focused on helping creators launch polished course businesses with stronger branding, trusted checkout, and premium student experiences.',
                     'social_links' => [
                         'website' => 'https://example.com',
-                        'twitter' => 'https://twitter.com/courseflow',
-                        'linkedin' => 'https://linkedin.com/in/courseflow',
+                        'twitter' => 'https://twitter.com/learnova',
+                        'linkedin' => 'https://linkedin.com/in/learnova',
                         'youtube' => $defaultYouTubeUrl,
                     ],
                 ]
@@ -56,11 +56,11 @@ class DemoSeeder extends Seeder
             $admin->update([
                 'name' => 'Nour Khaled',
                 'profile_image_path' => (! $admin->profile_image_path || str_contains((string) $admin->profile_image_path, 'instructor-omar.jpg') || str_contains((string) $admin->profile_image_path, 'instructor-owner.jpg')) ? 'images/demo/real/hero-formal-2.jpg' : $admin->profile_image_path,
-                'bio' => (! $admin->bio || $admin->bio === 'Instructor bio') ? 'Founder of CourseFlow and instructor focused on helping creators launch polished course businesses with stronger branding, trusted checkout, and premium student experiences.' : $admin->bio,
+                'bio' => (! $admin->bio || $admin->bio === 'Instructor bio' || str_contains((string) $admin->bio, 'CourseFlow')) ? 'Founder of Learnova and instructor focused on helping creators launch polished course businesses with stronger branding, trusted checkout, and premium student experiences.' : $admin->bio,
                 'social_links' => $admin->social_links ?: [
                     'website' => 'https://example.com',
-                    'twitter' => 'https://twitter.com/courseflow',
-                    'linkedin' => 'https://linkedin.com/in/courseflow',
+                    'twitter' => 'https://twitter.com/learnova',
+                    'linkedin' => 'https://linkedin.com/in/learnova',
                     'youtube' => $defaultYouTubeUrl,
                 ],
             ]);
@@ -73,10 +73,10 @@ class DemoSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'role' => User::ROLE_ADMIN,
                 'profile_image_path' => 'images/demo/real/hero-formal-1.jpg',
-                'bio' => 'Hands-on instructor teaching how to position, launch, and sell professional online courses with CourseFlow.',
+                'bio' => 'Hands-on instructor teaching how to position, launch, and sell professional online courses with Learnova.',
                 'social_links' => [
-                    'twitter' => 'https://twitter.com/courseflow_demo',
-                    'linkedin' => 'https://linkedin.com/in/courseflow-demo',
+                    'twitter' => 'https://twitter.com/learnova_demo',
+                    'linkedin' => 'https://linkedin.com/in/learnova-demo',
                 ],
             ]
         );
@@ -122,22 +122,24 @@ class DemoSeeder extends Seeder
         $coursesData = [
             [
                 'slug' => 'courseflow-mastery-launch',
-                'title' => 'CourseFlow Mastery (Advanced • Best Seller)',
+                'title' => 'Learnova Mastery (Advanced • Best Seller)',
                 'description' => 'Advanced program to launch a polished platform, set branding, and sell confidently with Stripe, PayPal and manual payments.',
                 'is_free' => false,
                 'price' => 129,
                 'language' => 'en',
                 'thumbnail_path' => $demoCourseCovers[0],
+                'instructor_email' => $admin->email,
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
                 'slug' => 'laravel-fundamentals-online-courses',
                 'title' => 'Laravel Fundamentals (Intermediate)',
-                'description' => 'Intermediate track covering routing, Eloquent, Blade and actions to customize CourseFlow with confidence.',
+                'description' => 'Intermediate track covering routing, Eloquent, Blade and actions to customize Learnova with confidence.',
                 'is_free' => false,
                 'price' => 49,
                 'language' => 'en',
-                'thumbnail_path' => $demoCourseCovers[1],
+                'thumbnail_path' => $demoCourseCovers[5],
+                'instructor_email' => $admin->email,
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -147,17 +149,19 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 39,
                 'language' => 'en',
-                'thumbnail_path' => $demoCourseCovers[2],
+                'thumbnail_path' => $demoCourseCovers[3],
+                'instructor_email' => $instructor->email,
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
                 'slug' => 'course-launch-marketing-blueprint',
                 'title' => 'Course Launch & Marketing (Advanced)',
-                'description' => 'Advanced playbook to plan your launch, craft effective sales copy and set up funnels into CourseFlow checkout.',
+                'description' => 'Advanced playbook to plan your launch, craft effective sales copy and set up funnels into Learnova checkout.',
                 'is_free' => false,
                 'price' => 89,
                 'language' => 'en',
                 'thumbnail_path' => $demoCourseCovers[3],
+                'instructor_email' => $admin->email,
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -168,26 +172,29 @@ class DemoSeeder extends Seeder
                 'price' => 29,
                 'language' => 'en',
                 'thumbnail_path' => $demoCourseCovers[4],
+                'instructor_email' => $instructor->email,
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
                 'slug' => 'courseflow-quickstart-mini-course',
-                'title' => 'CourseFlow Quickstart (Beginner)',
+                'title' => 'Learnova Quickstart (Beginner)',
                 'description' => 'Beginner-friendly mini-course: follow a focused walkthrough from fresh install to a polished, demo-ready platform.',
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
-                'thumbnail_path' => $demoCourseCovers[5],
+                'thumbnail_path' => $demoCourseCovers[6],
+                'instructor_email' => $admin->email,
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
                 'slug' => 'creator-productivity-systems',
                 'title' => 'Creator Productivity Systems (Beginner)',
-                'description' => 'Beginner track to plan lessons, batch content and keep your CourseFlow classroom organized.',
+                'description' => 'Beginner track to plan lessons, batch content and keep your Learnova classroom organized.',
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
-                'thumbnail_path' => $demoCourseCovers[6],
+                'thumbnail_path' => $demoCourseCovers[1],
+                'instructor_email' => $instructor->email,
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -197,7 +204,8 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 59,
                 'language' => 'en',
-                'thumbnail_path' => $demoCourseCovers[0],
+                'thumbnail_path' => $demoCourseCovers[6],
+                'instructor_email' => $admin->email,
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -207,7 +215,8 @@ class DemoSeeder extends Seeder
                 'is_free' => false,
                 'price' => 69,
                 'language' => 'en',
-                'thumbnail_path' => $demoCourseCovers[1],
+                'thumbnail_path' => $demoCourseCovers[2],
+                'instructor_email' => $admin->email,
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
@@ -256,7 +265,7 @@ class DemoSeeder extends Seeder
                     'is_free' => $c['is_free'],
                     'status' => $c['status'] ?? Course::STATUS_PUBLISHED,
                     'language' => $c['language'],
-                    'instructor_id' => $admin->id,
+                    'instructor_id' => ($c['instructor_email'] ?? null) === $instructor->email ? $instructor->id : $admin->id,
                 ]
             );
 
@@ -266,13 +275,13 @@ class DemoSeeder extends Seeder
                 'courseflow-mastery-launch' => [
                     [
                         'slug' => 'welcome-and-tour',
-                        'title' => 'Welcome & Tour of CourseFlow',
+                        'title' => 'Welcome & Tour of Learnova',
                         'description' => 'See the student dashboard, public landing page and course details screens in action.',
                         'video_url' => 'https://www.youtube.com/embed/MYyJ4PuL4pY',
                     ],
                     [
                         'slug' => 'install-with-sail',
-                        'title' => 'Installing CourseFlow with Laravel Sail',
+                        'title' => 'Installing Learnova with Laravel Sail',
                         'description' => 'Spin up a local environment using Sail, run migrations and seed realistic demo data.',
                         'video_url' => 'https://www.youtube.com/embed/MFh0Fd7BsjE',
                     ],
@@ -311,7 +320,7 @@ class DemoSeeder extends Seeder
                     [
                         'slug' => 'laravel-basics-overview',
                         'title' => 'Laravel Basics for Course Platforms',
-                        'description' => 'Understand how routes, controllers and actions power CourseFlow.',
+                        'description' => 'Understand how routes, controllers and actions power Learnova.',
                         'video_url' => 'https://www.youtube.com/embed/MFh0Fd7BsjE',
                     ],
                     [
@@ -387,7 +396,7 @@ class DemoSeeder extends Seeder
                     [
                         'slug' => 'sales-page-copy',
                         'title' => 'Writing High-Converting Sales Page Copy',
-                        'description' => 'Craft headlines, benefits and FAQs tailored to CourseFlow.',
+                        'description' => 'Craft headlines, benefits and FAQs tailored to Learnova.',
                         'video_url' => 'https://www.youtube.com/embed/MYyJ4PuL4pY',
                     ],
                     [
@@ -398,8 +407,8 @@ class DemoSeeder extends Seeder
                     ],
                     [
                         'slug' => 'evergreen-funnels',
-                        'title' => 'Evergreen Funnels into CourseFlow',
-                        'description' => 'Connect your funnel tools so new students land directly in CourseFlow.',
+                        'title' => 'Evergreen Funnels into Learnova',
+                        'description' => 'Connect your funnel tools so new students land directly in Learnova.',
                         'video_url' => 'https://www.youtube.com/embed/MYyJ4PuL4pY',
                     ],
                 ],
@@ -477,7 +486,7 @@ class DemoSeeder extends Seeder
                     [
                         'slug' => 'track-progress',
                         'title' => 'Track Student Progress',
-                        'description' => 'Use CourseFlow progress data to see where students get stuck.',
+                        'description' => 'Use Learnova progress data to see where students get stuck.',
                         'video_url' => 'https://www.youtube.com/embed/MYyJ4PuL4pY',
                     ],
                     [
@@ -649,7 +658,7 @@ class DemoSeeder extends Seeder
         $booksData = [
             [
                 'slug' => 'courseflow-launch-playbook-book',
-                'title' => 'CourseFlow Launch Playbook',
+                'title' => 'Learnova Launch Playbook',
                 'description' => 'A polished downloadable guide that helps solo instructors structure offers, plan launch assets, and improve checkout clarity before going live.',
                 'thumbnail_path' => $demoCourseCovers[5],
                 'download_file_path' => $demoBookFiles['playbook'],
@@ -661,7 +670,7 @@ class DemoSeeder extends Seeder
             ],
             [
                 'slug' => 'courseflow-free-workbook',
-                'title' => 'CourseFlow Free Workbook',
+                'title' => 'Learnova Free Workbook',
                 'description' => 'A free workbook with planning prompts, launch checklists, and storefront review notes that visitors can download instantly.',
                 'thumbnail_path' => $demoCourseCovers[6],
                 'download_file_path' => $demoBookFiles['workbook'],
@@ -898,7 +907,7 @@ stream
 BT
 /F1 20 Tf
 72 760 Td
-(CourseFlow Demo Download) Tj
+(Learnova Demo Download) Tj
 0 -34 Td
 /F1 12 Tf
 (This is a seeded downloadable resource for demo and testing purposes.) Tj

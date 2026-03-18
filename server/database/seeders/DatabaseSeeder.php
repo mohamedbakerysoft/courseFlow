@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             ['slug' => 'sample-course'],
             [
                 'title' => 'Course Business Quickstart',
-                'thumbnail_path' => 'images/demo/real/course-real-1.jpg',
+                'thumbnail_path' => 'images/demo/real/course-real-7.jpg',
                 'description' => 'A practical starter course for instructors who want to package expertise, present it clearly, and start selling with confidence.',
                 'price' => 0,
                 'currency' => 'USD',
@@ -37,7 +37,8 @@ class DatabaseSeeder extends Seeder
                 'status' => Course::STATUS_PUBLISHED,
                 'product_type' => Course::TYPE_COURSE,
                 'language' => 'en',
-                'instructor_id' => User::query()->where('email', config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL))->first()?->id,
+                'instructor_id' => User::query()->where('email', 'instructor@demo.com')->first()?->id
+                    ?: User::query()->where('email', config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL))->first()?->id,
             ],
         );
 
@@ -84,7 +85,7 @@ class DatabaseSeeder extends Seeder
             })
             ->update([
                 'name' => 'Nour Khaled',
-                'bio' => 'Founder of CourseFlow, helping independent instructors build polished course businesses with stronger branding, clearer checkout flows, and a more confident learning experience.',
+                'bio' => 'Founder of Learnova, helping independent instructors build polished course businesses with stronger branding, clearer checkout flows, and a more confident learning experience.',
             ]);
 
         User::query()
@@ -99,15 +100,15 @@ class DatabaseSeeder extends Seeder
         Storage::disk('public')->makeDirectory('books');
         $sampleBookPath = 'books/courseflow-sample-resource.pdf';
         if (! Storage::disk('public')->exists($sampleBookPath)) {
-            Storage::disk('public')->put($sampleBookPath, "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Count 1 /Kids [3 0 R] >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>\nendobj\n4 0 obj\n<< /Length 95 >>\nstream\nBT\n/F1 16 Tf\n72 760 Td\n(CourseFlow sample resource) Tj\n0 -30 Td\n/F1 12 Tf\n(Replace this seeded PDF from the admin Books area.) Tj\nET\nendstream\nendobj\n5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\nxref\n0 6\n0000000000 65535 f \n0000000009 00000 n \n0000000058 00000 n \n0000000115 00000 n \n0000000241 00000 n \n0000000400 00000 n \ntrailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n470\n%%EOF");
+            Storage::disk('public')->put($sampleBookPath, "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Count 1 /Kids [3 0 R] >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>\nendobj\n4 0 obj\n<< /Length 95 >>\nstream\nBT\n/F1 16 Tf\n72 760 Td\n(Learnova sample resource) Tj\n0 -30 Td\n/F1 12 Tf\n(Replace this seeded PDF from the admin Books area.) Tj\nET\nendstream\nendobj\n5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\nxref\n0 6\n0000000000 65535 f \n0000000009 00000 n \n0000000058 00000 n \n0000000115 00000 n \n0000000241 00000 n \n0000000400 00000 n \ntrailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n470\n%%EOF");
         }
 
         Course::updateOrCreate(
             ['slug' => 'courseflow-sample-resource-book'],
             [
-                'title' => 'CourseFlow Sample Resource Book',
+                'title' => 'Learnova Sample Resource Book',
                 'thumbnail_path' => 'images/demo/real/course-real-2.jpg',
-                'description' => 'A seeded downloadable resource that demonstrates free and paid digital book delivery inside CourseFlow.',
+                'description' => 'A seeded downloadable resource that demonstrates free and paid digital book delivery inside Learnova.',
                 'download_file_path' => $sampleBookPath,
                 'price' => 0,
                 'currency' => 'USD',

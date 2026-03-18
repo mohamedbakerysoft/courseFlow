@@ -12,7 +12,7 @@
                     @endif
                     <div class="hidden sm:block">
                         <p class="cf-nav-brand-eyebrow text-sm font-semibold uppercase tracking-[0.22em]">{{ config('app.name') }}</p>
-                        <p class="text-sm text-[var(--color-text-primary)]">{{ __('Course storefront') }}</p>
+                        <p class="text-sm text-[var(--color-text-primary)]">{{ __('Premium learning storefront') }}</p>
                     </div>
                 </a>
 
@@ -58,7 +58,7 @@
                 @auth
                     <x-dropdown align="right" width="56">
                         <x-slot name="trigger">
-                            <button class="cf-nav-surface focus:outline-none focus:ring-2 focus:ring-[rgba(193,18,31,0.18)]">
+                            <button class="cf-nav-surface focus:outline-none focus:ring-2 focus:ring-[rgba(245,184,0,0.2)]">
                                 <span class="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-primary)] text-sm font-semibold text-white">
                                     {{ \Illuminate\Support\Str::substr(Auth::user()->name, 0, 1) }}
                                 </span>
@@ -142,7 +142,7 @@
                         <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">{{ __('My Courses') }}</x-responsive-nav-link>
                     @endcan
 
-                    <div class="mt-4 rounded-[24px] border border-[rgba(193,18,31,0.12)] bg-[rgba(193,18,31,0.06)] px-4 py-4 backdrop-blur">
+                    <div class="mt-4 rounded-[24px] border border-[rgba(11,11,11,0.08)] bg-[rgba(247,247,247,0.9)] px-4 py-4 backdrop-blur dark:border-white/10 dark:bg-white/5">
                         <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ Auth::user()->name }}</p>
                         <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ Auth::user()->email }}</p>
                         <div class="mt-4 space-y-2">

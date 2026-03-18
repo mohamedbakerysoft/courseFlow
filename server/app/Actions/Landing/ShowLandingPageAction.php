@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Services\SettingsService;
 use App\Support\LandingContent;
 use App\Support\MediaAsset;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ShowLandingPageAction
@@ -26,7 +25,7 @@ class ShowLandingPageAction
         $heroTitleLocal = (string) ($this->settings->get('instructor.hero_headline_en') ?: $this->settings->get('instructor.hero_headline') ?: $this->settings->get('hero.title.en') ?: $this->settings->get('landing.hero_title_en') ?: '');
         $heroSubtitleLocal = (string) ($this->settings->get('instructor.hero_subheadline_en') ?: $this->settings->get('instructor.hero_subheadline') ?: $this->settings->get('hero.subtitle.en') ?: $this->settings->get('landing.hero_subtitle_en') ?: '');
         $heroTitleDefault = (string) $this->settings->get('landing.hero_title', 'Launch courses with a storefront learners trust');
-        $heroSubtitleDefault = (string) $this->settings->get('landing.hero_subtitle', 'CourseFlow helps independent instructors sell digital courses with secure checkout, instant access, and progress-aware lessons.');
+        $heroSubtitleDefault = (string) $this->settings->get('landing.hero_subtitle', 'Learnova helps independent instructors sell digital courses with secure checkout, instant access, and progress-aware lessons.');
         $heroTitle = $heroTitleLocal !== '' ? $heroTitleLocal : $heroTitleDefault;
         $heroSubtitle = $heroSubtitleLocal !== '' ? $heroSubtitleLocal : $heroSubtitleDefault;
 
@@ -118,28 +117,6 @@ class ShowLandingPageAction
             ->get();
         $heroCourses = $featuredCourses->take(4)->values();
 
-        $publishedCoursesCount = Course::query()->published()->where('product_type', Course::TYPE_COURSE)->count();
-        $publishedLessonsCount = DB::table('lessons')
-            ->join('courses', 'courses.id', '=', 'lessons.course_id')
-            ->where('courses.status', Course::STATUS_PUBLISHED)
-            ->where('lessons.status', 'published')
-            ->count();
-
-        $platformStats = [
-            [
-                'label' => 'Published courses',
-                'value' => max($publishedCoursesCount, $featuredCourses->count()),
-            ],
-            [
-                'label' => 'Structured lessons',
-                'value' => $publishedLessonsCount,
-            ],
-            [
-                'label' => 'Payment options',
-                'value' => 3,
-            ],
-        ];
-
         $data = [
             'heroTitle' => $heroTitle,
             'heroSubtitle' => $heroSubtitle,
@@ -163,7 +140,6 @@ class ShowLandingPageAction
             'features' => $features,
             'featuredCourses' => $featuredCourses,
             'heroCourses' => $heroCourses,
-            'platformStats' => $platformStats,
             'landingCopy' => $landingCopy,
             'landingTestimonials' => $landingTestimonials,
             'landingFaqs' => $landingFaqs,

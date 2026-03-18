@@ -21,7 +21,7 @@
             <img
                 src="{{ $thumb }}"
                 alt="{{ $course->title }}"
-                class="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                class="cf-course-card-image w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                 loading="lazy"
                 onerror="this.onerror=null;this.src='{{ $thumbFallback }}';"
             >
@@ -46,11 +46,11 @@
                     @endif
                     <span class="cf-chip !py-1 !text-[11px] !font-semibold">{{ __('Instant access') }}</span>
                 </div>
-                <h3 class="text-[1.55rem] font-bold leading-[1.15] tracking-[-0.045em] text-[var(--color-text-primary)] line-clamp-2">
+                <h3 class="cf-course-title line-clamp-2">
                     {{ $course->title }}
                 </h3>
                 @if (!empty($course->description))
-                    <p class="text-[15px] leading-7 text-[var(--color-text-muted)] line-clamp-3">
+                    <p class="cf-course-description line-clamp-3">
                         {{ str($course->description)->limit(158) }}
                     </p>
                 @endif

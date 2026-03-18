@@ -61,21 +61,21 @@
                             A refined sign-in experience for students and instructors
                         </h1>
                         <p class="cf-subheading">
-                            A clear, organized account flow that carries from discovery into login, enrollment, and dashboard access.
+                            {{ __('A clear, organized account flow that carries from discovery into login, enrollment, and dashboard access.') }}
                         </p>
                     </div>
                     <div class="grid gap-4 sm:grid-cols-3">
                         <div class="cf-panel-soft px-5 py-5">
-                            <p class="text-sm font-semibold text-[var(--color-text-primary)]">Fast sign-in</p>
-                            <p class="mt-2 text-sm text-[var(--color-text-muted)]">Fewer steps and clearer actions.</p>
+                        <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Fast sign-in') }}</p>
+                        <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('Fewer steps and clearer actions.') }}</p>
                         </div>
                         <div class="cf-panel-soft px-5 py-5">
-                                <p class="text-sm font-semibold text-[var(--color-text-primary)]">Higher trust</p>
-                            <p class="mt-2 text-sm text-[var(--color-text-muted)]">Aligned with the course sales journey.</p>
+                                <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Higher trust') }}</p>
+                            <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('Aligned with the course sales journey.') }}</p>
                         </div>
                         <div class="cf-panel-soft px-5 py-5">
-                            <p class="text-sm font-semibold text-[var(--color-text-primary)]">Focused and consistent</p>
-                            <p class="mt-2 text-sm text-[var(--color-text-muted)]">One clean English experience across login, checkout, and dashboard access.</p>
+                            <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Focused and consistent') }}</p>
+                            <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('One clean English experience across login, checkout, and dashboard access.') }}</p>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                             </a>
                             <div>
                                 <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--color-text-muted)]">{{ config('app.name') }}</p>
-                                <p class="mt-1 text-sm text-[var(--color-text-muted)]">Clear access for instructors and students.</p>
+                                <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('Clear access for instructors and students.') }}</p>
                             </div>
                         </div>
                         {{ $slot }}

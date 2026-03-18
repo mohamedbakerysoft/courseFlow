@@ -14,10 +14,6 @@ class LandingContent
         'hero_video_eyebrow' => 'Platform walkthrough',
         'hero_video_title' => 'See the storefront, course page, and enrollment flow together in one clean preview.',
         'hero_video_badge' => 'YouTube-ready showcase',
-        'hero_note_1_title' => 'What users notice',
-        'hero_note_1_body' => 'A clearer hero, stronger hierarchy, and immediate proof of the product in action.',
-        'hero_note_2_title' => 'Why it converts',
-        'hero_note_2_body' => 'Visitors understand the offer faster when the story and the interface line up in the first screen.',
         'courses_kicker' => 'Course catalog',
         'courses_title' => 'Featured courses',
         'courses_subtitle' => 'Pick a flagship program, a focused quickstart, or a practical specialty course from one clear catalog.',
@@ -87,7 +83,7 @@ class LandingContent
         ],
         [
             'question' => 'What payment methods are supported?',
-            'answer' => 'CourseFlow supports Stripe, PayPal, and manual payment flows so instructors can sell in the way that fits their business.',
+            'answer' => 'Learnova supports Stripe, PayPal, and manual payment flows so instructors can sell in the way that fits their business.',
         ],
         [
             'question' => 'Is this experience suitable for a solo instructor?',

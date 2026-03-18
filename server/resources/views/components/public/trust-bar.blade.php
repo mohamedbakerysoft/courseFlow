@@ -1,7 +1,7 @@
 @props(['copy' => []])
 
 <section aria-label="{{ __('Platform proof') }}">
-    <div class="cf-section-shell !px-5 !py-5 sm:!px-6">
+    <div class="cf-section-shell cf-trust-shell !px-5 !py-5 sm:!px-6">
         <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <div class="cf-trust-card">
                 <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)]">

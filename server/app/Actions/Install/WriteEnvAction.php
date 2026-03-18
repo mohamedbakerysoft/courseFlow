@@ -9,7 +9,7 @@ class WriteEnvAction
         $path = $envPath ?: base_path('.env');
         $appKey = 'base64:'.base64_encode(random_bytes(32));
         $contents = [];
-        $contents[] = 'APP_NAME="CourseFlow"';
+        $contents[] = 'APP_NAME="Learnova"';
         $contents[] = 'APP_ENV=production';
         $contents[] = 'APP_KEY='.$appKey;
         $contents[] = 'APP_DEBUG=false';
