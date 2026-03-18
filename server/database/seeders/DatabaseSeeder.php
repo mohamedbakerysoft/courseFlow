@@ -121,6 +121,7 @@ class DatabaseSeeder extends Seeder
 
         Setting::updateOrCreate(['key' => 'landing.show_contact_form'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'demo.enabled'], ['value' => true]);
+        Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'en']);
         Setting::updateOrCreate(['key' => 'ui.theme.default'], ['value' => 'light']);
         Setting::updateOrCreate(['key' => 'theme.primary'], ['value' => '#F5B800']);
         Setting::updateOrCreate(['key' => 'theme.secondary'], ['value' => '#0B0B0B']);
@@ -130,7 +131,7 @@ class DatabaseSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'theme.text_muted'], ['value' => '#4A4A4A']);
         Setting::updateOrCreate(['key' => 'theme.primary_hover'], ['value' => '#D8A100']);
         Setting::updateOrCreate(['key' => 'theme.error'], ['value' => '#DC2626']);
-        Setting::updateOrCreate(['key' => 'typography.english_font'], ['value' => 'Poppins']);
+        Setting::updateOrCreate(['key' => 'typography.english_font'], ['value' => 'Manrope']);
         Setting::updateOrCreate(['key' => 'instructor.social.youtube'], ['value' => 'https://www.youtube.com/watch?v=M7lc1UVf-VE']);
         Setting::updateOrCreate(['key' => 'landing.hero_video_url'], ['value' => 'https://www.youtube.com/watch?v=M7lc1UVf-VE']);
         Setting::updateOrCreate(['key' => 'hero.image'], ['value' => 'images/demo/real/hero-formal-2.jpg']);
@@ -138,5 +139,15 @@ class DatabaseSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'hero.image_fit'], ['value' => 'cover']);
         Setting::updateOrCreate(['key' => 'hero.image_ratio'], ['value' => '4:5']);
         Setting::updateOrCreate(['key' => 'hero.image_focus'], ['value' => 'center']);
+
+        Setting::query()->whereIn('key', [
+            'typography.arabic_font',
+            'landing.hero_title_ar',
+            'landing.hero_subtitle_ar',
+            'hero.title.ar',
+            'hero.subtitle.ar',
+            'legal.terms.ar',
+            'legal.privacy.ar',
+        ])->delete();
     }
 }

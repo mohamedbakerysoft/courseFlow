@@ -44,17 +44,17 @@
                 </div>
                 <div>
                     <p class="text-sm font-medium text-[var(--color-text-muted)]">{{ __('New version detected') }}</p>
-                    <p class="text-base font-semibold" :class="updateAvailable ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'" x-text="newVersion ?? '-'"></p>
+                    <p class="text-base font-semibold text-[var(--color-text-primary)]" x-text="newVersion ?? '-'"></p>
                 </div>
             </div>
             <div class="mt-4">
                 <template x-if="!updateAvailable">
-                    <div class="rounded-md border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 p-3 text-sm text-[var(--color-accent)]">
+                    <div class="rounded-md border border-[var(--color-secondary)]/10 bg-[var(--color-accent)]/70 p-3 text-sm text-[var(--color-text-primary)]">
                         {{ __('You are up to date') }}
                     </div>
                 </template>
                 <template x-if="updateAvailable">
-                    <div class="rounded-md border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 p-3 text-sm text-[var(--color-primary)]">
+                    <div class="rounded-md border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/14 p-3 text-sm font-medium text-[var(--color-text-primary)]">
                         {{ __('New update available') }}
                     </div>
                 </template>
@@ -77,14 +77,14 @@
             </div>
             <div class="mt-4" x-show="message">
                 <div class="rounded-md border p-3 text-sm"
-                     :class="ok ? 'border-[var(--color-primary)]/30 bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'border-[var(--color-error)]/30 bg-[var(--color-error)]/10 text-[var(--color-error)]'">
+                     :class="ok ? 'border-[var(--color-primary)]/30 bg-[var(--color-primary)]/14 text-[var(--color-text-primary)]' : 'border-[var(--color-error)]/30 bg-[var(--color-error)]/10 text-[var(--color-text-primary)]'">
                     <p x-text="message"></p>
                 </div>
             </div>
         </section>
 
-        <section class="rounded-lg border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 p-4">
-            <h3 class="text-sm font-semibold text-[var(--color-accent)] mb-1">{{ __('WARNING') }}</h3>
+        <section class="rounded-lg border border-[var(--color-secondary)]/10 bg-[var(--color-accent)]/70 p-4">
+            <h3 class="mb-1 text-sm font-semibold text-[var(--color-text-primary)]">{{ __('WARNING') }}</h3>
             <p class="text-sm text-[var(--color-text-primary)]">
                 {{ __('If the site becomes inaccessible after uploading files, connect to your server via SSH and run:') }}
             </p>

@@ -18,7 +18,7 @@ class SettingsController extends Controller
 {
     public function edit(SettingsService $settings, ValidateStripeConfigAction $stripeValidator, ValidatePayPalConfigAction $paypalValidator): View
     {
-        $defaultLanguage = $settings->get('site.default_language', 'en');
+        $defaultLanguage = 'en';
         $defaultTheme = (string) $settings->get('ui.theme.default', 'system');
         $demoEnabled = filter_var($settings->get('demo.enabled', config('demo.enabled')), FILTER_VALIDATE_BOOL);
         $logoPath = $settings->get('site.logo_path');
@@ -34,13 +34,9 @@ class SettingsController extends Controller
         $landingHeroTitle = (string) $settings->get('landing.hero_title', 'Launch courses with a storefront learners trust');
         $landingHeroSubtitle = (string) $settings->get('landing.hero_subtitle', 'Sell digital courses with secure checkout, instant access, and structured lessons.');
         $landingHeroTitleEn = (string) $settings->get('landing.hero_title_en', '');
-        $landingHeroTitleAr = (string) $settings->get('landing.hero_title_ar', '');
         $landingHeroSubtitleEn = (string) $settings->get('landing.hero_subtitle_en', '');
-        $landingHeroSubtitleAr = (string) $settings->get('landing.hero_subtitle_ar', '');
         $heroTitleEn = (string) $settings->get('hero.title.en', '');
-        $heroTitleAr = (string) $settings->get('hero.title.ar', '');
         $heroSubtitleEn = (string) $settings->get('hero.subtitle.en', '');
-        $heroSubtitleAr = (string) $settings->get('hero.subtitle.ar', '');
         $landingFeature1Title = (string) $settings->get('landing.feature_1_title', 'Secure checkout');
         $landingFeature1Description = (string) $settings->get('landing.feature_1_description', 'Offer card, PayPal, or manual payments without confusing the learner.');
         $landingFeature2Title = (string) $settings->get('landing.feature_2_title', 'Structured delivery');
@@ -87,9 +83,7 @@ class SettingsController extends Controller
         $whatsappMessage = (string) $settings->get('contact.whatsapp.message', 'Hello! I have a question about your courses.');
 
         $legalTermsEn = (string) $settings->get('legal.terms.en', "1. Introduction\nBy using this site, you agree to these terms.\n\n2. User Accounts\nYou are responsible for your login credentials and agree not to misuse the platform.\n\n3. Course Access & Payments\nAccess to courses is granted upon valid payment or free enrollment as described.\n\n4. Refund Policy\nRefunds may be offered according to the instructor’s policy stated on the course page, subject to reasonable use.\n\n5. Intellectual Property\nAll learning materials are licensed for personal use only and may not be redistributed or shared.\n\n6. Termination\nWe may suspend or terminate access in cases of misuse or violation of these terms.\n\n7. Contact Information\nYou can reach us using the contact form on the site.");
-        $legalTermsAr = (string) $settings->get('legal.terms.ar', "1. المقدمة\nباستخدام هذا الموقع، فإنك توافق على هذه الشروط.\n\n2. حسابات المستخدمين\nأنت مسؤول عن الحفاظ على سرية بيانات الدخول وعدم إساءة الاستخدام.\n\n3. الوصول إلى الدورات والمدفوعات\nيتم منح الوصول إلى الدورات عند إتمام الدفع أو التسجيل المجاني وفقاً للوصف.\n\n4. سياسة الاسترداد\nقد يتم تقديم استرداد وفق سياسة المعلم المنصوص عليها في صفحة الدورة، مع مراعاة الاستخدام المعقول.\n\n5. الملكية الفكرية\nجميع المواد التعليمية مرخصة للاستخدام الشخصي فقط ولا يجوز إعادة توزيعها أو مشاركتها.\n\n6. الإنهاء\nيجوز لنا تعليق أو إنهاء الوصول عند إساءة الاستخدام أو مخالفة الشروط.\n\n7. معلومات الاتصال\nيمكنك التواصل عبر نموذج الاتصال داخل الموقع.");
         $legalPrivacyEn = (string) $settings->get('legal.privacy.en', "1. Information We Collect\nWe collect basic account details, payment data when required, and usage data to improve the service.\n\n2. How We Use Information\nWe use data to provide the service, enhance the experience, ensure security, and communicate updates.\n\n3. Cookies\nWe use cookies to remember preferences and analyze usage. You can disable cookies in your browser settings.\n\n4. Third-Party Services\nWe may use payment providers, analytics, and video hosting. Your data is subject to their policies.\n\n5. Data Security\nWe take reasonable measures to protect data without guaranteeing absolute security.\n\n6. User Rights\nYou may request to update or delete your data, subject to applicable law.\n\n7. Contact\nPlease use the site’s contact form to reach us.");
-        $legalPrivacyAr = (string) $settings->get('legal.privacy.ar', "1. المعلومات التي نجمعها\nنقوم بجمع معلومات الحساب الأساسية، بيانات الدفع عند الحاجة، وبيانات الاستخدام لتحسين الخدمة.\n\n2. كيفية استخدام المعلومات\nنستخدم البيانات لتقديم الخدمة، تحسين التجربة، وضمان الأمان وإبلاغك بالتحديثات.\n\n3. ملفات تعريف الارتباط\nنستخدم ملفات تعريف الارتباط لتذكر تفضيلاتك وتحليل الاستخدام. يمكنك تعطيلها من إعدادات المتصفح.\n\n4. الخدمات الخارجية\nقد نستخدم موفري الدفع والتحليلات وخدمات استضافة الفيديو. تخضع بياناتك لسياسات هذه الخدمات.\n\n5. أمان البيانات\nنتخذ تدابير معقولة لحماية البيانات، دون ضمان حماية مطلقة.\n\n6. حقوق المستخدم\nيمكنك طلب تحديث أو حذف بياناتك وفقاً للقانون المعمول به.\n\n7. الاتصال\nيرجى استخدام نموذج الاتصال داخل الموقع للتواصل.");
 
         $stripePublishableKey = (string) $settings->get('stripe.publishable_key', '');
         $stripeSecretKey = (string) $settings->get('stripe.secret_key', '');
@@ -154,13 +148,9 @@ class SettingsController extends Controller
             'landingHeroTitle',
             'landingHeroSubtitle',
             'landingHeroTitleEn',
-            'landingHeroTitleAr',
             'landingHeroSubtitleEn',
-            'landingHeroSubtitleAr',
             'heroTitleEn',
-            'heroTitleAr',
             'heroSubtitleEn',
-            'heroSubtitleAr',
             'landingFeature1Title',
             'landingFeature1Description',
             'landingFeature2Title',
@@ -185,9 +175,7 @@ class SettingsController extends Controller
             'landingTestimonials',
             'landingFaqs',
             'legalTermsEn',
-            'legalTermsAr',
             'legalPrivacyEn',
-            'legalPrivacyAr',
             'googleLoginEnabled',
             'googleClientId',
             'googleClientSecret',
@@ -230,7 +218,6 @@ class SettingsController extends Controller
 
         if ($group === 'general') {
             $validated = $request->validate([
-                'default_language' => ['required', 'in:en,ar'],
                 'logo' => ['nullable', 'image', 'max:2048'],
                 'default_theme' => ['required', 'in:light,dark,system'],
                 'demo_enabled' => ['nullable', 'boolean'],
@@ -265,9 +252,7 @@ class SettingsController extends Controller
                 'security_recaptcha_secret_key' => ['nullable', 'string'],
                 'security_right_click_enabled' => ['nullable', 'boolean'],
                 'legal_terms_en' => ['nullable', 'string'],
-                'legal_terms_ar' => ['nullable', 'string'],
                 'legal_privacy_en' => ['nullable', 'string'],
-                'legal_privacy_ar' => ['nullable', 'string'],
             ]);
         } elseif ($group === 'notifications') {
             $validated = $request->validate([
@@ -281,13 +266,9 @@ class SettingsController extends Controller
                 'landing_hero_title' => ['nullable', 'string', 'max:255'],
                 'landing_hero_subtitle' => ['nullable', 'string', 'max:255'],
                 'landing_hero_title_en' => ['nullable', 'string', 'max:255'],
-                'landing_hero_title_ar' => ['nullable', 'string', 'max:255'],
                 'landing_hero_subtitle_en' => ['nullable', 'string', 'max:255'],
-                'landing_hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
                 'hero_title_en' => ['nullable', 'string', 'max:255'],
-                'hero_title_ar' => ['nullable', 'string', 'max:255'],
                 'hero_subtitle_en' => ['nullable', 'string', 'max:255'],
-                'hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
                 'hero_font_title' => ['nullable', 'integer', 'between:28,96'],
                 'hero_font_subtitle' => ['nullable', 'integer', 'between:18,48'],
                 'hero_font_description' => ['nullable', 'integer', 'between:14,28'],
@@ -327,7 +308,6 @@ class SettingsController extends Controller
             ]);
         } else {
             $validated = $request->validate([
-                'default_language' => ['required', 'in:en,ar'],
                 'logo' => ['nullable', 'image', 'max:2048'],
                 'default_theme' => ['nullable', 'in:light,dark,system'],
                 'demo_enabled' => ['nullable', 'boolean'],
@@ -341,13 +321,9 @@ class SettingsController extends Controller
                 'landing_hero_title' => ['nullable', 'string', 'max:255'],
                 'landing_hero_subtitle' => ['nullable', 'string', 'max:255'],
                 'landing_hero_title_en' => ['nullable', 'string', 'max:255'],
-                'landing_hero_title_ar' => ['nullable', 'string', 'max:255'],
                 'landing_hero_subtitle_en' => ['nullable', 'string', 'max:255'],
-                'landing_hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
                 'hero_title_en' => ['nullable', 'string', 'max:255'],
-                'hero_title_ar' => ['nullable', 'string', 'max:255'],
                 'hero_subtitle_en' => ['nullable', 'string', 'max:255'],
-                'hero_subtitle_ar' => ['nullable', 'string', 'max:255'],
                 'landing_feature_1_title' => ['nullable', 'string', 'max:255'],
                 'landing_feature_1_description' => ['nullable', 'string'],
                 'landing_feature_2_title' => ['nullable', 'string', 'max:255'],
@@ -378,9 +354,7 @@ class SettingsController extends Controller
                 'landing_faqs.*.question' => ['nullable', 'string', 'max:255'],
                 'landing_faqs.*.answer' => ['nullable', 'string', 'max:1000'],
                 'legal_terms_en' => ['nullable', 'string'],
-                'legal_terms_ar' => ['nullable', 'string'],
                 'legal_privacy_en' => ['nullable', 'string'],
-                'legal_privacy_ar' => ['nullable', 'string'],
                 'auth_google_enabled' => ['nullable', 'boolean'],
                 'auth_google_client_id' => ['nullable', 'string'],
                 'auth_google_client_secret' => ['nullable', 'string'],
@@ -448,7 +422,7 @@ class SettingsController extends Controller
         $values = [];
         if ($group === 'general' || $group === '') {
             $values = array_merge($values, [
-                'site.default_language' => $validated['default_language'] ?? $settings->get('site.default_language', 'en'),
+                'site.default_language' => 'en',
                 'ui.theme.default' => ($validated['default_theme'] ?? $settings->get('ui.theme.default', 'system')),
                 'demo.enabled' => $request->has('demo_enabled')
                     ? $request->boolean('demo_enabled')
@@ -474,14 +448,10 @@ class SettingsController extends Controller
                 'landing.hero_title' => $validated['landing_hero_title'] ?? (string) $settings->get('landing.hero_title', ''),
                 'landing.hero_subtitle' => $validated['landing_hero_subtitle'] ?? (string) $settings->get('landing.hero_subtitle', ''),
                 'landing.hero_title_en' => $validated['landing_hero_title_en'] ?? (string) $settings->get('landing.hero_title_en', ''),
-                'landing.hero_title_ar' => $validated['landing_hero_title_ar'] ?? (string) $settings->get('landing.hero_title_ar', ''),
                 'landing.hero_subtitle_en' => $validated['landing_hero_subtitle_en'] ?? (string) $settings->get('landing.hero_subtitle_en', ''),
-                'landing.hero_subtitle_ar' => $validated['landing_hero_subtitle_ar'] ?? (string) $settings->get('landing.hero_subtitle_ar', ''),
                 // New single source of truth
                 'hero.title.en' => $validated['hero_title_en'] ?? (string) $settings->get('hero.title.en', ''),
-                'hero.title.ar' => $validated['hero_title_ar'] ?? (string) $settings->get('hero.title.ar', ''),
                 'hero.subtitle.en' => $validated['hero_subtitle_en'] ?? (string) $settings->get('hero.subtitle.en', ''),
-                'hero.subtitle.ar' => $validated['hero_subtitle_ar'] ?? (string) $settings->get('hero.subtitle.ar', ''),
                 'landing.feature_1_title' => $validated['landing_feature_1_title'] ?? (string) $settings->get('landing.feature_1_title', ''),
                 'landing.feature_1_description' => $validated['landing_feature_1_description'] ?? (string) $settings->get('landing.feature_1_description', ''),
                 'landing.feature_2_title' => $validated['landing_feature_2_title'] ?? (string) $settings->get('landing.feature_2_title', ''),
@@ -536,29 +506,17 @@ class SettingsController extends Controller
                 ?? $validated['landing_hero_title']
                 ?? (string) $settings->get('hero.title.en', (string) $settings->get('landing.hero_title_en', (string) $settings->get('landing.hero_title', '')))
             );
-            $values['hero.title.ar'] = (string) (
-                $validated['hero_title_ar']
-                ?? $validated['landing_hero_title_ar']
-                ?? (string) $settings->get('hero.title.ar', (string) $settings->get('landing.hero_title_ar', ''))
-            );
             $values['hero.subtitle.en'] = (string) (
                 $validated['hero_subtitle_en']
                 ?? $validated['landing_hero_subtitle_en']
                 ?? $validated['landing_hero_subtitle']
                 ?? (string) $settings->get('hero.subtitle.en', (string) $settings->get('landing.hero_subtitle_en', (string) $settings->get('landing.hero_subtitle', '')))
             );
-            $values['hero.subtitle.ar'] = (string) (
-                $validated['hero_subtitle_ar']
-                ?? $validated['landing_hero_subtitle_ar']
-                ?? (string) $settings->get('hero.subtitle.ar', (string) $settings->get('landing.hero_subtitle_ar', ''))
-            );
             // Clean up legacy duplicates
             $values['landing.hero_title'] = null;
             $values['landing.hero_subtitle'] = null;
             $values['landing.hero_title_en'] = null;
-            $values['landing.hero_title_ar'] = null;
             $values['landing.hero_subtitle_en'] = null;
-            $values['landing.hero_subtitle_ar'] = null;
 
             foreach (array_keys(LandingContent::COPY_DEFAULTS) as $copyKey) {
                 $values["landing.copy.{$copyKey}"] = (string) data_get($validated, "landing_copy.{$copyKey}", $settings->get("landing.copy.{$copyKey}", LandingContent::COPY_DEFAULTS[$copyKey]));
@@ -593,9 +551,7 @@ class SettingsController extends Controller
                     ? $request->boolean('security_right_click_enabled')
                     : (bool) $settings->get('security.right_click.enabled', true),
                 'legal.terms.en' => $validated['legal_terms_en'] ?? (string) $settings->get('legal.terms.en', ''),
-                'legal.terms.ar' => $validated['legal_terms_ar'] ?? (string) $settings->get('legal.terms.ar', ''),
                 'legal.privacy.en' => $validated['legal_privacy_en'] ?? (string) $settings->get('legal.privacy.en', ''),
-                'legal.privacy.ar' => $validated['legal_privacy_ar'] ?? (string) $settings->get('legal.privacy.ar', ''),
             ]);
         }
         if ($group === 'notifications' || $group === '') {
@@ -638,14 +594,8 @@ class SettingsController extends Controller
         if (array_key_exists('legal_terms_en', $validated)) {
             $values['legal.terms.en'] = $validated['legal_terms_en'];
         }
-        if (array_key_exists('legal_terms_ar', $validated)) {
-            $values['legal.terms.ar'] = $validated['legal_terms_ar'];
-        }
         if (array_key_exists('legal_privacy_en', $validated)) {
             $values['legal.privacy.en'] = $validated['legal_privacy_en'];
-        }
-        if (array_key_exists('legal_privacy_ar', $validated)) {
-            $values['legal.privacy.ar'] = $validated['legal_privacy_ar'];
         }
 
         if ($request->hasFile('logo')) {
@@ -676,6 +626,16 @@ class SettingsController extends Controller
         }
 
         $settings->set($values);
+
+        Setting::query()->whereIn('key', [
+            'typography.arabic_font',
+            'landing.hero_title_ar',
+            'landing.hero_subtitle_ar',
+            'hero.title.ar',
+            'hero.subtitle.ar',
+            'legal.terms.ar',
+            'legal.privacy.ar',
+        ])->delete();
 
         if (($group === 'payments' || $group === '') && $paypalEnabled) {
             return back()->with('status', 'PayPal is connected successfully.');

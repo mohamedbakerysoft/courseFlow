@@ -94,12 +94,11 @@ class AppServiceProvider extends ServiceProvider
 
         // Typography (fonts)
         $typographyDefaults = [
-            'arabic_font' => 'Alexandria',
-            'english_font' => 'Poppins',
+            'english_font' => 'Manrope',
         ];
         $typography = $typographyDefaults;
         try {
-            foreach (['typography.arabic_font' => 'arabic_font', 'typography.english_font' => 'english_font'] as $key => $map) {
+            foreach (['typography.english_font' => 'english_font'] as $key => $map) {
                 $row = Setting::query()->where('key', $key)->first();
                 if ($row && is_string($row->value) && $row->value !== '') {
                     $typography[$map] = $row->value;
@@ -109,23 +108,14 @@ class AppServiceProvider extends ServiceProvider
             $typography = $typographyDefaults;
         }
         $fontStacks = [
-            // Arabic stacks
-            'Cairo' => "'Cairo', sans-serif",
-            'Tajawal' => "'Tajawal', sans-serif",
-            'IBM Plex Arabic' => "'IBM Plex Arabic', sans-serif",
-            'Alexandria' => "'Alexandria', sans-serif",
-            'Noto Sans Arabic' => "'Noto Sans Arabic', sans-serif",
-            // English stacks
-            'Inter' => "'Inter', system-ui, sans-serif",
-            'Poppins' => "'Poppins', system-ui, sans-serif",
-            'Roboto' => "'Roboto', system-ui, sans-serif",
-            'Plus Jakarta Sans' => "'Plus Jakarta Sans', system-ui, sans-serif",
             'Manrope' => "'Manrope', system-ui, sans-serif",
-            'Instrument Sans' => "'Instrument Sans', system-ui, sans-serif",
         ];
+
+        if (($typography['english_font'] ?? null) !== 'Manrope') {
+            $typography['english_font'] = 'Manrope';
+        }
         $typographyCss = [
-            'arabic_stack' => $fontStacks[$typography['arabic_font']] ?? $fontStacks['Alexandria'],
-            'english_stack' => $fontStacks[$typography['english_font']] ?? $fontStacks['Poppins'],
+            'english_stack' => $fontStacks[$typography['english_font']] ?? $fontStacks['Manrope'],
         ];
         View::share('typography', $typography);
         View::share('typographyCss', $typographyCss);

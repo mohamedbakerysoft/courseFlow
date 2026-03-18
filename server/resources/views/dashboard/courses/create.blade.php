@@ -12,7 +12,7 @@
         <form x-data="{isSubmitting:false, thumbPreview:null}" x-on:submit="isSubmitting=true" method="POST" action="{{ route('dashboard.courses.store') }}" enctype="multipart/form-data" class="space-y-4 bg-white p-6 rounded shadow">
             @csrf
             <p class="text-xs text-[var(--color-text-muted)]">
-                {{ app()->getLocale() === 'ar' ? 'بعض الخصائص المتقدمة غير مفعلة في النسخة التجريبية.' : 'Some advanced features are disabled in demo mode.' }}
+                {{ __('Some advanced features are disabled in demo mode.') }}
             </p>
             <div>
                 <label class="block text-sm font-medium">Title</label>

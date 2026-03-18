@@ -3,7 +3,6 @@
         $catalogCourses = $courses->getCollection();
         $freeCourses = $catalogCourses->where('is_free', true)->count();
         $paidCourses = $catalogCourses->where('is_free', false)->count();
-        $arabicCourses = $catalogCourses->where('language', 'ar')->count();
     @endphp
 
     <section class="cf-shell cf-section pt-10 sm:pt-14">
@@ -24,9 +23,6 @@
                 <div class="flex flex-wrap gap-2">
                     <span class="cf-chip">{{ __('Free courses: :count', ['count' => $freeCourses]) }}</span>
                     <span class="cf-chip">{{ __('Paid courses: :count', ['count' => $paidCourses]) }}</span>
-                    @if ($arabicCourses > 0)
-                        <span class="cf-chip">{{ __('Arabic-ready options') }}</span>
-                    @endif
                     <span class="cf-chip">{{ __('Instant enrollment') }}</span>
                 </div>
             </div>

@@ -42,9 +42,9 @@
                         <td class="px-4 py-3 text-[var(--color-text-muted)]">{{ $lesson->position }}</td>
                         <td class="px-4 py-3">
                             @if($lesson->status === \App\Models\Lesson::STATUS_DRAFT)
-                                <span class="inline-flex items-center px-2 py-1 rounded bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-xs">Draft</span>
+                                <span class="cf-badge-muted">{{ __('Draft') }}</span>
                             @else
-                                <span class="inline-flex items-center px-2 py-1 rounded bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-xs">Published</span>
+                                <span class="cf-badge">{{ __('Published') }}</span>
                             @endif
                         </td>
                         <td class="px-4 py-3 space-x-3 whitespace-nowrap text-sm">
@@ -52,7 +52,7 @@
                             <form action="{{ route('dashboard.lessons.destroy', $lesson) }}" method="POST" class="inline" onsubmit="return confirm('Delete lesson?')">
                                 @csrf
                                 @method('DELETE')
-                                <button class="text-[var(--color-accent)] hover:underline">Delete</button>
+                                <button class="text-[var(--color-error)] hover:underline">{{ __('Delete') }}</button>
                             </form>
                         </td>
                     </tr>

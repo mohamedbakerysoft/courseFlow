@@ -1,6 +1,5 @@
 <x-public-layout :title="$course->title" :metaDescription="str($course->description)->limit(160)">
     @php
-        $isArabic = app()->getLocale() === 'ar';
         $displayPrice = $course->is_free || (float) $course->price == 0.0
             ? __('Free')
             : number_format((float) $course->price, 2).' '.$course->currency;
@@ -14,37 +13,6 @@
         $thumbnailFallback = $course->thumbnail_fallback_url;
         $courseSignal = Str::lower($course->slug.' '.$course->title.' '.$course->description);
         $courseBlueprint = match (true) {
-            Str::contains($courseSignal, ['arabic', 'rtl', 'localization']) => [
-                'outcomes' => [
-                    __('Build an Arabic-ready learner experience with clearer RTL structure.'),
-                    __('Translate the storefront and course flow without losing clarity.'),
-                    __('Ship a localized experience that still feels clear and easy to navigate.'),
-                ],
-                'audience' => [
-                    __('Creators serving Arabic-speaking students.'),
-                    __('Teams adapting an English course business to RTL.'),
-                    __('Instructors improving bilingual clarity and trust.'),
-                ],
-                'requirements' => [
-                    __('Basic familiarity with CourseFlow or Laravel project setup.'),
-                    __('A clear idea of the audience you want to localize for.'),
-                    __('Willingness to test layout, content, and lesson flow carefully.'),
-                ],
-                'faq' => [
-                    [
-                        'question' => __('Will this help with both translation and layout?'),
-                        'answer' => __('Yes. The lessons focus on language adaptation, RTL layout, and a smoother learner experience together.'),
-                    ],
-                    [
-                        'question' => __('Is it suitable for an existing course business?'),
-                        'answer' => __('Yes. It works well for creators expanding into Arabic without rebuilding their whole storefront.'),
-                    ],
-                    [
-                        'question' => __('Do I need advanced coding experience?'),
-                        'answer' => __('Intermediate familiarity is enough if you can follow structured lessons and test each change carefully.'),
-                    ],
-                ],
-            ],
             Str::contains($courseSignal, ['launch', 'marketing', 'sales']) => [
                 'outcomes' => [
                     __('Clarify the offer, positioning, and sales story behind your course.'),
@@ -133,7 +101,7 @@
                     <a href="{{ route('courses.index') }}" class="cf-button-ghost !px-4 !py-2">{{ __('Back to courses') }}</a>
                     <div class="flex flex-wrap gap-2">
                         <span class="cf-chip">{{ $displayPrice }}</span>
-                        <span class="cf-chip">{{ $lessons->count() }} {{ $isArabic ? 'دروس' : Str::plural('lessons', $lessons->count()) }}</span>
+                        <span class="cf-chip">{{ $lessons->count() }} {{ Str::plural('lesson', $lessons->count()) }}</span>
                         <span class="cf-chip">{{ strtoupper($course->language) }}</span>
                     </div>
                     <div class="space-y-4">
@@ -188,7 +156,7 @@
     <section class="cf-shell pb-14 sm:pb-16 lg:pb-20">
         <div class="grid gap-8 lg:grid-cols-[1.12fr,0.88fr]">
             <div class="space-y-6">
-                <div class="cf-panel px-6 py-6 sm:px-8">
+                <div class="cf-section-shell">
                     <div class="grid gap-6 sm:grid-cols-2">
                         <div>
                             <span class="cf-kicker">{{ __('What you will learn') }}</span>
@@ -245,7 +213,7 @@
                     </article>
                 </div>
 
-                <div class="cf-panel px-6 py-6 sm:px-8">
+                <div class="cf-section-shell">
                     <div class="flex items-center justify-between gap-4">
                         <div>
                             <span class="cf-kicker">{{ __('Curriculum') }}</span>
@@ -337,22 +305,22 @@
                             </div>
                             <div class="text-right">
                                 <p class="text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $displayPrice }}</p>
-                                <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $lessons->count() }} {{ $isArabic ? 'دروس' : Str::plural('lessons', $lessons->count()) }}</p>
+                                <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $lessons->count() }} {{ Str::plural('lesson', $lessons->count()) }}</p>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                            <div class="inline-flex items-center justify-center rounded-full border border-[var(--color-secondary)]/12 bg-[var(--color-accent)] px-4 py-3 text-xs font-medium text-[var(--color-text-muted)]">
-                                {{ $isArabic ? 'الدفع عبر سترايب وباي بال' : 'Payments via Stripe, PayPal, or manual approval' }}
+                            <div class="cf-soft-pill">
+                                {{ __('Payments via Stripe, PayPal, or manual approval') }}
                             </div>
-                            <div class="inline-flex items-center justify-center rounded-full border border-[var(--color-secondary)]/12 bg-[var(--color-accent)] px-4 py-3 text-xs font-medium text-[var(--color-text-muted)]">
-                                {{ $isArabic ? 'وصول فوري بعد التسجيل' : 'Instant lesson access after enrollment' }}
+                            <div class="cf-soft-pill">
+                                {{ __('Instant lesson access after enrollment') }}
                             </div>
-                            <div class="inline-flex items-center justify-center rounded-full border border-[var(--color-secondary)]/12 bg-[var(--color-accent)] px-4 py-3 text-xs font-medium text-[var(--color-text-muted)]">
-                                {{ $isArabic ? 'دفع لمرة واحدة بدون اشتراك' : 'One-time payment with no subscription' }}
+                            <div class="cf-soft-pill">
+                                {{ __('One-time payment with no subscription') }}
                             </div>
-                            <div class="inline-flex items-center justify-center rounded-full border border-[var(--color-secondary)]/12 bg-[var(--color-accent)] px-4 py-3 text-xs font-medium text-[var(--color-text-muted)]">
-                                {{ $isArabic ? 'مسار تعلم منظم وواضح' : 'Clear course flow with protected progress' }}
+                            <div class="cf-soft-pill">
+                                {{ __('Clear course flow with protected progress') }}
                             </div>
                         </div>
 

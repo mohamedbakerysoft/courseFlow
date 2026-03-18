@@ -11,8 +11,8 @@
   <rect x="910" y="392" width="228" height="250" rx="28" fill="#EDE9FE"/>
   <rect x="1166" y="392" width="216" height="250" rx="28" fill="#E0F2FE"/>
   <rect x="654" y="688" width="200" height="54" rx="18" fill="#0F172A"/>
-  <text x="252" y="718" fill="#0F172A" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="58" font-weight="700">Arabic & RTL</text>
-  <text x="252" y="772" fill="#475569" font-family="Alexandria, Arial, sans-serif" font-size="30">واجهة احترافية جاهزة للعربية</text>
+  <text x="252" y="718" fill="#0F172A" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="58" font-weight="700">Content Ops</text>
+  <text x="252" y="772" fill="#475569" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="30">Operations and workflow system</text>
   <defs>
     <linearGradient id="a" x1="86" y1="86" x2="1514" y2="914" gradientUnits="userSpaceOnUse">
       <stop stop-color="#F8FAFC"/>

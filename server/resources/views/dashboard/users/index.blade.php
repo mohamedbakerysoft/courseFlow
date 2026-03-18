@@ -37,7 +37,7 @@
                                                     {{ __('Disabled') }}
                                                 </span>
                                             @else
-                                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-xs font-semibold">
+                                                <span class="cf-badge">
                                                     <svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
                                                     {{ __('Active') }}
                                                 </span>

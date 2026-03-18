@@ -1,6 +1,6 @@
 @props(['copy' => []])
 
-<section aria-label="{{ __('How it works') }}" class="cf-panel overflow-hidden px-6 py-8 sm:px-8">
+<section aria-label="{{ __('How it works') }}" class="cf-section-shell overflow-hidden !px-6 !py-8 sm:!px-8">
     <div class="grid gap-8 lg:grid-cols-[0.9fr,1.1fr] lg:items-center">
         <div class="space-y-4">
             <span class="cf-kicker">{{ $copy['flow_kicker'] ?? __('How it works') }}</span>

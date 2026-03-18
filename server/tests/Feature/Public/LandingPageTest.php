@@ -196,24 +196,22 @@ it('hero image settings override landing image config', function () {
     $response->assertSee('aspect-ratio: 4/5', false);
 });
 
-it('hero text settings render by locale', function () {
-    \App\Models\Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'ar']);
-    \App\Models\Setting::updateOrCreate(['key' => 'hero.title.ar'], ['value' => 'عنوان البطل']);
-    \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.ar'], ['value' => 'وصف قصير للبطل']);
+it('hero text settings render in english', function () {
+    \App\Models\Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'en']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.title.en'], ['value' => 'Hero headline']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.en'], ['value' => 'Short hero description']);
 
     $response = \Pest\Laravel\get('/');
 
     $response->assertOk();
-    $response->assertSee('عنوان البطل');
-    $response->assertSee('وصف قصير للبطل');
+    $response->assertSee('Hero headline');
+    $response->assertSee('Short hero description');
 });
 
-it('falls back to EN when AR is empty', function () {
-    \App\Models\Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'ar']);
+it('falls back to default hero text when english settings are empty', function () {
+    \App\Models\Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'en']);
     \App\Models\Setting::updateOrCreate(['key' => 'hero.title.en'], ['value' => 'English Hero']);
-    \App\Models\Setting::updateOrCreate(['key' => 'hero.title.ar'], ['value' => '']);
     \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.en'], ['value' => 'English Subtitle']);
-    \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.ar'], ['value' => '']);
 
     $response = \Pest\Laravel\get('/');
 
@@ -222,18 +220,18 @@ it('falls back to EN when AR is empty', function () {
     $response->assertSee('English Subtitle');
 });
 
-it('falls back to AR when EN is empty', function () {
+it('ignores removed legacy hero settings when english is empty', function () {
     \App\Models\Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'en']);
     \App\Models\Setting::updateOrCreate(['key' => 'hero.title.en'], ['value' => '']);
-    \App\Models\Setting::updateOrCreate(['key' => 'hero.title.ar'], ['value' => 'عنوان عربي']);
     \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.en'], ['value' => '']);
-    \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.ar'], ['value' => 'وصف عربي']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.title.ar'], ['value' => 'Legacy Hero']);
+    \App\Models\Setting::updateOrCreate(['key' => 'hero.subtitle.ar'], ['value' => 'Legacy Subtitle']);
 
     $response = \Pest\Laravel\get('/');
 
     $response->assertOk();
-    $response->assertSee('عنوان عربي');
-    $response->assertSee('وصف عربي');
+    $response->assertDontSee('Legacy Hero');
+    $response->assertDontSee('Legacy Subtitle');
 });
 
 it('shows WhatsApp CTA when enabled with phone', function () {

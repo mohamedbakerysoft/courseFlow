@@ -161,12 +161,12 @@ class DemoSeeder extends Seeder
                 'status' => Course::STATUS_PUBLISHED,
             ],
             [
-                'slug' => 'courseflow-arabic-rtl',
-                'title' => 'CourseFlow in Arabic (Intermediate): RTL & Localization',
-                'description' => 'Intermediate guide to translate CourseFlow, enable RTL, and deliver a first-class Arabic experience.',
+                'slug' => 'courseflow-content-operations',
+                'title' => 'Course Content Operations (Intermediate)',
+                'description' => 'Intermediate system for refining lesson structure, polishing copy, and keeping the student journey clear from first click to completion.',
                 'is_free' => false,
                 'price' => 29,
-                'language' => 'ar',
+                'language' => 'en',
                 'thumbnail_path' => $demoCourseCovers[4],
                 'status' => Course::STATUS_PUBLISHED,
             ],
@@ -365,9 +365,9 @@ class DemoSeeder extends Seeder
                         'video_url' => 'https://www.youtube.com/embed/r5iWCtfltso',
                     ],
                     [
-                        'slug' => 'dark-mode-and-rtl',
-                        'title' => 'Dark Mode & RTL Considerations',
-                        'description' => 'Keep your UI readable in both light, dark and RTL layouts.',
+                        'slug' => 'dark-mode-consistency',
+                        'title' => 'Dark Mode Consistency',
+                        'description' => 'Keep your UI readable and balanced in both light and dark themes.',
                         'video_url' => 'https://www.youtube.com/embed/dFgzHOX84xQ',
                     ],
                 ],
@@ -403,29 +403,29 @@ class DemoSeeder extends Seeder
                         'video_url' => 'https://www.youtube.com/embed/MYyJ4PuL4pY',
                     ],
                 ],
-                'courseflow-arabic-rtl' => [
+                'courseflow-content-operations' => [
                     [
-                        'slug' => 'arabic-language-setup',
-                        'title' => 'Enabling Arabic & RTL Support',
-                        'description' => 'Configure localization files and RTL CSS classes.',
+                        'slug' => 'content-operations-setup',
+                        'title' => 'Set Up Your Content Operations Workflow',
+                        'description' => 'Create a simple publishing routine for course pages, lessons, and updates.',
                         'video_url' => 'https://www.youtube.com/embed/dFgzHOX84xQ',
                     ],
                     [
-                        'slug' => 'translate-landing-page',
-                        'title' => 'Translating the Landing Page',
-                        'description' => 'Localize headlines, features and CTAs into Arabic.',
+                        'slug' => 'refine-landing-copy',
+                        'title' => 'Refine Your Landing Page Copy',
+                        'description' => 'Improve headlines, proof, and CTA clarity without making the page feel busy.',
                         'video_url' => 'https://www.youtube.com/embed/dFgzHOX84xQ',
                     ],
                     [
-                        'slug' => 'rtl-course-layout',
-                        'title' => 'Designing RTL Course Layouts',
-                        'description' => 'Ensure grids, cards and navigation feel natural in RTL.',
+                        'slug' => 'course-layout-systems',
+                        'title' => 'Course Layout Systems',
+                        'description' => 'Make sure cards, grids, and navigation stay clean and easy to scan.',
                         'video_url' => 'https://www.youtube.com/embed/dFgzHOX84xQ',
                     ],
                     [
-                        'slug' => 'test-arabic-experience',
-                        'title' => 'Testing the Arabic Student Experience',
-                        'description' => 'Use Dusk to visually confirm RTL rendering.',
+                        'slug' => 'qa-student-experience',
+                        'title' => 'Quality Check the Student Experience',
+                        'description' => 'Review the lesson flow visually and confirm the journey feels complete.',
                         'video_url' => 'https://www.youtube.com/embed/dFgzHOX84xQ',
                     ],
                 ],
@@ -765,7 +765,7 @@ class DemoSeeder extends Seeder
 
         $primaryCourse = $createdCourses[0] ?? null;
         $secondaryCourse = $createdCourses[2] ?? null;
-        $rtlCourse = $createdCourses[4] ?? null;
+        $operationsCourse = $createdCourses[4] ?? null;
         $brandingDraftCourse = collect($createdCourses)->firstWhere('slug', 'business-branding-foundations');
 
         if ($primaryCourse) {
@@ -797,14 +797,14 @@ class DemoSeeder extends Seeder
             );
         }
 
-        if ($rtlCourse && isset($students[2])) {
+        if ($operationsCourse && isset($students[2])) {
             Payment::updateOrCreate(
                 ['external_reference' => 'demo-manual-pending-1'],
                 [
                     'user_id' => $students[2]->id,
-                    'course_id' => $rtlCourse->id,
+                    'course_id' => $operationsCourse->id,
                     'provider' => 'manual',
-                    'amount' => $rtlCourse->price,
+                    'amount' => $operationsCourse->price,
                     'currency' => 'USD',
                     'status' => Payment::STATUS_PENDING,
                     'proof_path' => 'storage/manual-payments/demo-proof.jpg',
@@ -860,7 +860,7 @@ class DemoSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'theme.text_muted'], ['value' => '#4A4A4A']);
         Setting::updateOrCreate(['key' => 'theme.primary_hover'], ['value' => '#D8A100']);
         Setting::updateOrCreate(['key' => 'theme.error'], ['value' => '#DC2626']);
-        Setting::updateOrCreate(['key' => 'typography.english_font'], ['value' => 'Poppins']);
+        Setting::updateOrCreate(['key' => 'typography.english_font'], ['value' => 'Manrope']);
         Setting::updateOrCreate(['key' => 'demo.enabled'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'instructor.social.youtube'], ['value' => $defaultYouTubeUrl]);
         Setting::updateOrCreate(['key' => 'landing.hero_video_url'], ['value' => $defaultYouTubeUrl]);

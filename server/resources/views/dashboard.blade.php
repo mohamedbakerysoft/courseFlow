@@ -32,7 +32,7 @@
 
         @can('viewAny', \App\Models\Course::class)
             <section class="grid gap-6 xl:grid-cols-[1.2fr,0.8fr]">
-                <div class="cf-panel px-6 py-6 sm:px-8">
+                <div class="cf-section-shell">
                     <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <span class="cf-kicker">{{ __('Quick actions') }}</span>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
 
-                <div class="cf-panel-dark px-6 py-6">
+                <div class="cf-panel-dark px-6 py-6 sm:px-8">
                     <p class="cf-dark-muted text-xs font-semibold uppercase tracking-[0.24em]">{{ __('Product status') }}</p>
                     <h3 class="cf-dark-title mt-3 text-2xl font-bold tracking-[-0.04em]">{{ __('Instructor workflow at a glance') }}</h3>
                     <ul class="cf-dark-copy mt-5 space-y-3 text-sm leading-7">
@@ -106,7 +106,7 @@
                 </div>
             </section>
         @else
-            <section class="cf-panel px-6 py-6 sm:px-8">
+            <section class="cf-section-shell">
                 <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                     <div class="max-w-2xl">
                         <span class="cf-kicker">{{ __('Student dashboard') }}</span>

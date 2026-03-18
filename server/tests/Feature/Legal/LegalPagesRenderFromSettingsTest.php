@@ -12,10 +12,10 @@ it('renders terms from settings in English', function () {
     $response->assertSee('Test Terms EN');
 });
 
-it('renders privacy from settings in Arabic', function () {
-    Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'ar']);
-    Setting::updateOrCreate(['key' => 'legal.privacy.ar'], ['value' => 'سياسة خصوصية اختبار']);
+it('renders privacy from settings in English', function () {
+    Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'en']);
+    Setting::updateOrCreate(['key' => 'legal.privacy.en'], ['value' => 'Test Privacy EN']);
     $response = get('/privacy');
     $response->assertStatus(200);
-    $response->assertSee('سياسة خصوصية اختبار');
+    $response->assertSee('Test Privacy EN');
 });

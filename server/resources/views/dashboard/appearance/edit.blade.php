@@ -39,28 +39,11 @@
                 </div>
                 <div x-show="tab==='typography'" class="space-y-6">
                     <div>
-                        <label for="arabic_font" class="block text-sm font-medium mb-1">Arabic Font</label>
-                        <select id="arabic_font" name="arabic_font" class="mt-1 block w-64 rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
-                            <option value="Alexandria" @selected($arabicFont==='Alexandria')>Alexandria</option>
-                            <option value="Noto Sans Arabic" @selected($arabicFont==='Noto Sans Arabic')>Noto Sans Arabic</option>
-                            <option value="Cairo" @selected($arabicFont==='Cairo')>Cairo</option>
-                            <option value="Tajawal" @selected($arabicFont==='Tajawal')>Tajawal</option>
-                            <option value="IBM Plex Arabic" @selected($arabicFont==='IBM Plex Arabic')>IBM Plex Arabic</option>
-                        </select>
-                        <p class="text-xs text-[var(--color-text-muted)] mt-1">Applied to Arabic pages (lang="ar").</p>
-                        @error('arabic_font')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
-                    </div>
-                    <div>
                         <label for="english_font" class="block text-sm font-medium mb-1">English Font</label>
                         <select id="english_font" name="english_font" class="mt-1 block w-64 rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
-                            <option value="Plus Jakarta Sans" @selected($englishFont==='Plus Jakarta Sans')>Plus Jakarta Sans</option>
                             <option value="Manrope" @selected($englishFont==='Manrope')>Manrope</option>
-                            <option value="Instrument Sans" @selected($englishFont==='Instrument Sans')>Instrument Sans</option>
-                            <option value="Inter" @selected($englishFont==='Inter')>Inter</option>
-                            <option value="Poppins" @selected($englishFont==='Poppins')>Poppins</option>
-                            <option value="Roboto" @selected($englishFont==='Roboto')>Roboto</option>
                         </select>
-                        <p class="text-xs text-[var(--color-text-muted)] mt-1">Applied to non-Arabic pages.</p>
+                        <p class="text-xs text-[var(--color-text-muted)] mt-1">Applied across the entire website and admin panel. Manrope is enforced globally for one consistent premium font.</p>
                         @error('english_font')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
                     </div>
                 </div>

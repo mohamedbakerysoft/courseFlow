@@ -11,9 +11,7 @@
         ? __('Free')
         : number_format((float) $course->price, 2).' '.$course->currency;
     $lessonsCount = (int) ($course->lessons_count ?? 0);
-    $lessonLabel = app()->getLocale() === 'ar'
-        ? 'دروس'
-        : Str::plural('lesson', $lessonsCount);
+    $lessonLabel = Str::plural('lesson', $lessonsCount);
     $language = strtoupper($course->language ?? 'EN');
 @endphp
 
@@ -39,20 +37,6 @@
         </div>
 
         <div class="cf-course-content">
-            <div class="cf-course-instructor">
-                <img
-                    src="{{ $instructorAvatar }}"
-                    alt="{{ $instructorName }}"
-                    class="h-12 w-12 rounded-2xl object-cover ring-2 ring-[rgba(193,18,31,0.08)]"
-                    loading="lazy"
-                    onerror="this.onerror=null;this.src='{{ $instructorAvatarFallback }}';"
-                >
-                <div class="min-w-0">
-                    <p class="truncate text-sm font-semibold text-[var(--color-text-primary)]">{{ $instructorName }}</p>
-                    <p class="truncate text-xs text-[var(--color-text-muted)]">{{ __('Instructor-led learning') }}</p>
-                </div>
-            </div>
-
             <div class="space-y-4">
                 <div class="flex flex-wrap gap-2">
                     @if (isset($course->lessons_count))
@@ -79,13 +63,18 @@
             </div>
 
             <div class="cf-course-footer">
-                <div class="space-y-1">
-                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                        {{ __('Ready to start') }}
-                    </p>
-                    <p class="cf-course-summary">
-                        {{ __('Clear pricing, structured lessons, and a direct path into the course.') }}
-                    </p>
+                <div class="cf-course-instructor">
+                    <img
+                        src="{{ $instructorAvatar }}"
+                        alt="{{ $instructorName }}"
+                        class="h-12 w-12 rounded-2xl object-cover ring-2 ring-[rgba(245,184,0,0.12)]"
+                        loading="lazy"
+                        onerror="this.onerror=null;this.src='{{ $instructorAvatarFallback }}';"
+                    >
+                    <div class="min-w-0">
+                        <p class="truncate text-sm font-semibold text-[var(--color-text-primary)]">{{ $instructorName }}</p>
+                        <p class="truncate text-xs text-[var(--color-text-muted)]">{{ __('Instructor-led learning') }}</p>
+                    </div>
                 </div>
                 <span class="cf-course-cta">{{ __($ctaLabel) }}</span>
             </div>

@@ -20,11 +20,9 @@ class ApplySettings
 
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = (string) $this->settings->get('site.default_language', config('app.locale'));
+        $locale = 'en';
 
         app()->setLocale($locale);
-
-        $isRtl = in_array($locale, ['ar'], true);
 
         $logoPath = (string) $this->settings->get('site.logo_path', '');
         $logoUrl = $logoPath !== '' && Storage::disk('public')->exists($logoPath)
@@ -33,7 +31,6 @@ class ApplySettings
 
         View::share([
             'appLocale' => $locale,
-            'isRtl' => $isRtl,
             'siteLogoUrl' => $logoUrl,
         ]);
 

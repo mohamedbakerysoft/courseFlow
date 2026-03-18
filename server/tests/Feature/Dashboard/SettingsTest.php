@@ -15,7 +15,7 @@ it('instructor can view settings page', function () {
     $response = $this->get(route('dashboard.settings.edit'));
 
     $response->assertOk();
-    $response->assertSee('Default Language');
+    $response->assertSee('Storefront language');
 });
 
 it('student cannot access settings page', function () {
@@ -36,7 +36,6 @@ it('instructor can update settings including logo and payments', function () {
     $logo = UploadedFile::fake()->image('logo.png', 200, 200);
 
     $response = $this->post(route('dashboard.settings.update'), [
-        'default_language' => 'ar',
         'logo' => $logo,
         'payments_stripe_enabled' => '1',
         'payments_paypal_enabled' => '0',
@@ -47,7 +46,7 @@ it('instructor can update settings including logo and payments', function () {
 
     $settings = Setting::query()->pluck('value', 'key');
 
-    expect($settings['site.default_language'] ?? null)->toBe('ar');
+    expect($settings['site.default_language'] ?? null)->toBe('en');
     expect((bool) ($settings['payments.stripe.enabled'] ?? false))->toBeTrue();
     expect((bool) ($settings['payments.paypal.enabled'] ?? false))->toBeFalse();
     expect($settings['payments.manual.instructions'] ?? null)->toBe('Bank transfer details');
@@ -57,14 +56,15 @@ it('instructor can update settings including logo and payments', function () {
     Storage::disk('public')->assertExists($logoPath);
 });
 
-it('applies default language and rtl direction on public pages', function () {
+it('keeps public pages in english without rtl direction', function () {
     Setting::updateOrCreate(
         ['key' => 'site.default_language'],
-        ['value' => 'ar'],
+        ['value' => 'en'],
     );
 
     $response = $this->get('/');
 
     $response->assertOk();
-    $response->assertSee('dir="rtl"', false);
+    $response->assertSee('lang="en"', false);
+    $response->assertDontSee('dir="rtl"', false);
 });

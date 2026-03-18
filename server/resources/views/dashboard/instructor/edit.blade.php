@@ -16,7 +16,7 @@
         </div>
 
         @if (session('status'))
-            <div class="mb-4 rounded-lg border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 px-4 py-2 text-sm text-[var(--color-accent)]">
+            <div class="mb-4 cf-status-message">
                 {{ session('status') }}
             </div>
         @endif

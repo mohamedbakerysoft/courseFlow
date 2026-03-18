@@ -5,7 +5,6 @@
                 {{ $page->title }}
             </h1>
             @php
-                $locale = app()->getLocale();
                 $blocks = preg_split("/\n\s*\n/", (string) $page->content) ?: [];
                 $hasNumberedSections = false;
                 foreach ($blocks as $b) {
@@ -18,7 +17,7 @@
                 }
             @endphp
             @if ($hasNumberedSections)
-                <div class="prose prose-sm sm:prose max-w-none text-[var(--color-text-muted)] {{ $locale === 'ar' ? 'text-right' : '' }}">
+                <div class="prose prose-sm sm:prose max-w-none text-[var(--color-text-muted)]">
                     @foreach ($blocks as $block)
                         @php
                             $lines = preg_split("/\n/", (string) $block) ?: [];
@@ -31,12 +30,12 @@
                         @endphp
                         <h2 class="text-lg font-semibold text-[var(--color-text-primary)] mt-6 mb-2">{{ $title }}</h2>
                         @if (!empty($rest))
-                            <p class="{{ $locale === 'ar' ? 'text-right' : '' }}">{!! nl2br(e(implode("\n", $rest))) !!}</p>
+                            <p>{!! nl2br(e(implode("\n", $rest))) !!}</p>
                         @endif
                     @endforeach
                 </div>
             @else
-                <div class="prose prose-sm sm:prose max-w-none text-[var(--color-text-muted)] {{ $locale === 'ar' ? 'text-right' : '' }}">
+                <div class="prose prose-sm sm:prose max-w-none text-[var(--color-text-muted)]">
                     {!! nl2br(e($page->content)) !!}
                 </div>
             @endif

@@ -5,6 +5,28 @@
             ? __('You have already completed this lesson and can revisit it anytime.')
             : __('Continue this lesson and move to the next step when you are ready.');
         $lessonVideoUrl = $lesson->video_url;
+        $lessonBody = trim((string) $lesson->description);
+        $cleanLessonBody = trim(preg_replace('/\s+/', ' ', strip_tags($lessonBody)));
+        $lessonParagraphs = collect(preg_split('/\r?\n\r?\n+/', $lessonBody) ?: [])
+            ->map(fn ($paragraph) => trim(strip_tags($paragraph)))
+            ->filter()
+            ->values();
+        $lessonSentences = collect(preg_split('/(?<=[.!?])\s+/', $cleanLessonBody) ?: [])
+            ->map(fn ($sentence) => trim($sentence))
+            ->filter()
+            ->values();
+        $lessonHighlights = $lessonSentences->take(4)->values();
+        $lessonSummary = $lessonParagraphs->first() ?? $cleanLessonBody;
+        $lessonTakeaways = collect([
+            $lessonHighlights->get(0),
+            $lessonHighlights->get(1),
+            $lessonHighlights->get(2),
+        ])->filter()->values();
+        $lessonActions = collect([
+            $nextLesson ? __('Continue directly into :lesson', ['lesson' => $nextLesson->title]) : null,
+            ! $isCompleted ? __('Finish this lesson and keep your progress moving.') : __('Revisit the video whenever you need a refresher.'),
+            __('Return to :course for the full learning path.', ['course' => $course->title]),
+        ])->filter()->values();
 
         if (filled($lessonVideoUrl) && str($lessonVideoUrl)->contains(['youtube.com', 'youtu.be'])) {
             $parsedUrl = parse_url($lessonVideoUrl);
@@ -38,12 +60,12 @@
                 <section class="cf-lesson-header">
                     <div class="flex flex-col gap-6">
                         <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <div class="max-w-3xl">
+                            <div class="cf-lesson-title-wrap">
                                 <span class="cf-lesson-kicker">{{ __('Lesson experience') }}</span>
-                                <h1 class="mt-4 text-[2.4rem] font-bold tracking-[-0.055em] text-[var(--color-text-primary)] sm:text-[3rem]">
+                                <h1 class="cf-lesson-title">
                                     {{ $lesson->title }}
                                 </h1>
-                                <p class="mt-4 max-w-2xl text-[1.02rem] leading-8 text-[var(--color-text-muted)]">
+                                <p class="cf-lesson-lead">
                                     {{ __('Inside :course, this lesson keeps the flow focused, easy to follow, and ready for the next action.', ['course' => $course->title]) }}
                                 </p>
                             </div>
@@ -87,20 +109,61 @@
                     ></iframe>
                 </section>
 
-                <section class="cf-panel px-6 py-6 sm:px-8 sm:py-8">
-                    <div class="flex items-center justify-between gap-4">
+                <section class="cf-panel cf-lesson-summary-card px-6 py-6 sm:px-8 sm:py-8">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                         <div>
-                            <p class="text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">{{ __('Lesson notes') }}</p>
-                            <h2 class="mt-2 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('What this lesson covers') }}</h2>
+                            <p class="text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">{{ __('After the video') }}</p>
+                            <h2 class="mt-2 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Understand the key ideas and decide the next step') }}</h2>
                         </div>
                         <span class="cf-floating-pill">{{ __('Progress') }}: {{ $progressPercent }}%</span>
                     </div>
 
-                    @if ($isCompleted)
-                        <div class="cf-status-message mt-5">
-                            {{ __('You’ve explored the core workflow. The full version is designed for real instruction and student management.') }}
+                    <div class="cf-lesson-summary-grid mt-6">
+                        <article class="cf-panel-soft cf-lesson-detail-card px-5 py-5">
+                            <p class="cf-lesson-detail-kicker">{{ __('Lesson summary') }}</p>
+                            <div class="cf-lesson-detail-copy mt-4">
+                                @if (!empty($lessonSummary))
+                                    <p>{{ $lessonSummary }}</p>
+                                @else
+                                    <p>{{ __('This lesson currently relies on the video as the main teaching material.') }}</p>
+                                @endif
+                            </div>
+                        </article>
+
+                        <article class="cf-panel-soft cf-lesson-detail-card px-5 py-5">
+                            <p class="cf-lesson-detail-kicker">{{ __('Key takeaways') }}</p>
+                            <ul class="cf-check-list mt-4">
+                                @forelse ($lessonTakeaways as $lessonTakeaway)
+                                    <li>{{ $lessonTakeaway }}</li>
+                                @empty
+                                    <li>{{ __('Watch the lesson carefully and use the notes below for the main ideas.') }}</li>
+                                @endforelse
+                            </ul>
+                        </article>
+
+                        <article class="cf-panel-soft cf-lesson-detail-card px-5 py-5">
+                            <p class="cf-lesson-detail-kicker">{{ __('Action steps') }}</p>
+                            <ul class="cf-check-list mt-4">
+                                @foreach ($lessonActions as $lessonAction)
+                                    <li>{{ $lessonAction }}</li>
+                                @endforeach
+                            </ul>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="cf-panel cf-lesson-notes-card px-6 py-6 sm:px-8 sm:py-8">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                            <p class="text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">{{ __('Lesson notes') }}</p>
+                            <h2 class="mt-2 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Notes, details, and supporting context') }}</h2>
                         </div>
-                    @endif
+                        @if ($isCompleted)
+                            <div class="cf-status-message">
+                                {{ __('Completed lessons stay available so you can review them at any time.') }}
+                            </div>
+                        @endif
+                    </div>
 
                     <div class="cf-lesson-richtext mt-6">
                         @if (!empty($lesson->description))
@@ -114,10 +177,10 @@
 
             <aside class="cf-lesson-sidebar">
                 <div class="cf-lesson-sidebar-sticky">
-                    <div class="cf-lesson-sidebar-card">
+                    <div class="cf-lesson-sidebar-card cf-lesson-sidebar-primary">
                         <p class="text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">{{ __('Navigation') }}</p>
-                        <h2 class="mt-3 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Keep moving through the course') }}</h2>
-                        <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ __('Move back, continue to the next lesson, or return to the course overview whenever you need context.') }}</p>
+                        <h2 class="mt-3 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Keep learning without losing context') }}</h2>
+                        <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ __('Move through the lesson path with a clear previous step, next step, and course overview nearby.') }}</p>
 
                         <div class="cf-lesson-nav-grid mt-6">
                             @if (!empty($prevLesson))
@@ -130,6 +193,10 @@
                                 <a href="{{ route('lessons.show', [$course, $nextLesson]) }}" class="cf-button-primary w-full justify-center">
                                     {{ __('Next Lesson') }}
                                 </a>
+                                <div class="cf-lesson-next-card">
+                                    <p>{{ __('Up next') }}</p>
+                                    <h3>{{ $nextLesson->title }}</h3>
+                                </div>
                             @endif
 
                             <a href="{{ route('courses.show', $course) }}" class="cf-button-ghost w-full justify-center">
@@ -151,6 +218,10 @@
                             <div class="cf-panel-soft px-4 py-4">
                                 <p class="text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">{{ __('Progress inside course') }}</p>
                                 <p class="mt-2 text-lg font-bold text-[var(--color-text-primary)]">{{ $progressPercent }}%</p>
+                            </div>
+                            <div class="cf-panel-soft px-4 py-4">
+                                <p class="text-[12px] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">{{ __('Lesson title') }}</p>
+                                <p class="mt-2 text-base font-semibold leading-7 text-[var(--color-text-primary)]">{{ $lesson->title }}</p>
                             </div>
                         </div>
                     </div>

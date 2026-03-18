@@ -61,15 +61,9 @@
             <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('General Settings') }}</h2>
                 <div class="grid grid-cols-1 gap-6">
-                    <div>
-                        <label for="default_language" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Default Language') }}</label>
-                        <select id="default_language" name="default_language" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
-                            <option value="en" @selected($defaultLanguage === 'en')>English</option>
-                            <option value="ar" @selected($defaultLanguage === 'ar')>العربية</option>
-                        </select>
-                        @error('default_language')
-                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                    <div class="rounded-md border border-[var(--color-secondary)]/20 bg-white p-4">
+                        <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Storefront language') }}</p>
+                        <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('CourseFlow now runs in English only across the website and admin panel.') }}</p>
                     </div>
                     <div>
                         <label for="default_theme" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Default Theme') }}</label>
@@ -121,7 +115,7 @@
                 <div class="space-y-5">
                     <div class="rounded-md border border-[var(--color-secondary)]/20 bg-white p-3">
                         <p class="text-xs text-[var(--color-text-muted)]">
-                            {{ app()->getLocale() === 'ar' ? 'شراء لمرة واحدة · وصول مدى الحياة · بدون رسوم شهرية' : 'One‑time purchase. Lifetime access. No monthly fees.' }}
+                            {{ __('One‑time purchase. Lifetime access. No monthly fees.') }}
                         </p>
                     </div>
                     <div class="rounded-md border border-[var(--color-secondary)]/20 p-4 space-y-4">
@@ -177,7 +171,7 @@
                                             @click="navigator.clipboard.writeText(document.getElementById('stripe_webhook_endpoint').value); copied = true">
                                             {{ __('Copy') }}
                                         </button>
-                                        <span x-show="copied" class="inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-xs">{{ __('Copied') }}</span>
+                                        <span x-show="copied" class="inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-secondary)]/12 bg-[var(--color-accent)]/70 text-[var(--color-text-primary)] text-xs font-semibold">{{ __('Copied') }}</span>
                                     </div>
                                 </div>
                                 <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Add this URL to Stripe → Developers → Webhooks') }}</p>
@@ -259,7 +253,7 @@
                                         @click="navigator.clipboard.writeText(document.getElementById('paypal_webhook_endpoint').value); copied = true">
                                         {{ __('Copy') }}
                                     </button>
-                                    <span x-show="copied" class="inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-xs">{{ __('Copied') }}</span>
+                                    <span x-show="copied" class="inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--color-secondary)]/12 bg-[var(--color-accent)]/70 text-[var(--color-text-primary)] text-xs font-semibold">{{ __('Copied') }}</span>
                                 </div>
                             </div>
                             <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Add this URL in PayPal Developer Dashboard → Webhooks') }}</p>
@@ -390,22 +384,14 @@
                 </div>
                 <div class="mt-6">
                     <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Legal Pages') }}</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+                    <div class="grid grid-cols-1 gap-6 mt-3">
                         <div class="space-y-2">
                             <label for="legal_terms_en" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Terms of Service (English)') }}</label>
                             <textarea id="legal_terms_en" name="legal_terms_en" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_terms_en', $legalTermsEn) }}</textarea>
                         </div>
                         <div class="space-y-2">
-                            <label for="legal_terms_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('شروط الخدمة (العربية)') }}</label>
-                            <textarea id="legal_terms_ar" name="legal_terms_ar" dir="rtl" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_terms_ar', $legalTermsAr) }}</textarea>
-                        </div>
-                        <div class="space-y-2">
                             <label for="legal_privacy_en" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Privacy Policy (English)') }}</label>
                             <textarea id="legal_privacy_en" name="legal_privacy_en" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_privacy_en', $legalPrivacyEn) }}</textarea>
-                        </div>
-                        <div class="space-y-2">
-                            <label for="legal_privacy_ar" class="block text sm font-medium text-[var(--color-text-muted)]">{{ __('سياسة الخصوصية (العربية)') }}</label>
-                            <textarea id="legal_privacy_ar" name="legal_privacy_ar" dir="rtl" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_privacy_ar', $legalPrivacyAr) }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -512,14 +498,10 @@
                     <section class="cf-admin-form-card space-y-5">
                         <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('Hero Title') }}</h3>
                         <p class="text-xs text-[var(--color-text-muted)]">{{ __('Used as the main headline in the landing page hero section.') }}</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 gap-4">
                             <div>
-                                <label for="hero_title_en" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero title (EN)') }}</label>
+                                <label for="hero_title_en" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero title') }}</label>
                                 <input id="hero_title_en" name="hero_title_en" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('hero_title_en', $heroTitleEn ?? '') }}">
-                            </div>
-                            <div>
-                                <label for="hero_title_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero title (AR)') }}</label>
-                                <input id="hero_title_ar" name="hero_title_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('hero_title_ar', $heroTitleAr ?? '') }}">
                             </div>
                         </div>
                     </section>
@@ -552,14 +534,10 @@
                     <section class="cf-admin-form-card space-y-5">
                         <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('Hero Subtitle') }}</h3>
                         <p class="text-xs text-[var(--color-text-muted)]">{{ __('Used as the supporting text in the landing page hero section.') }}</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 gap-4">
                             <div>
-                                <label for="hero_subtitle_en" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero subtitle (EN)') }}</label>
+                                <label for="hero_subtitle_en" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero subtitle') }}</label>
                                 <input id="hero_subtitle_en" name="hero_subtitle_en" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('hero_subtitle_en', $heroSubtitleEn ?? '') }}">
-                            </div>
-                            <div>
-                                <label for="hero_subtitle_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero subtitle (AR)') }}</label>
-                                <input id="hero_subtitle_ar" name="hero_subtitle_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('hero_subtitle_ar', $heroSubtitleAr ?? '') }}">
                             </div>
                         </div>
                     </section>
@@ -801,17 +779,9 @@
                     {{ __('General Settings') }}
                 </h2>
                 <div class="grid grid-cols-1 gap-6">
-                    <div>
-                        <label for="default_language" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                            {{ __('Default Language') }}
-                        </label>
-                        <select id="default_language" name="default_language" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
-                            <option value="en" @selected($defaultLanguage === 'en')>English</option>
-                            <option value="ar" @selected($defaultLanguage === 'ar')>العربية</option>
-                        </select>
-                        @error('default_language')
-                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                    <div class="rounded-md border border-[var(--color-secondary)]/20 bg-white p-4">
+                        <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Storefront language') }}</p>
+                        <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('CourseFlow now runs in English only across the website and admin panel.') }}</p>
                     </div>
 
                     <div>
@@ -869,7 +839,7 @@
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">
                     {{ __('Legal Pages') }}
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 gap-6">
                     <div class="space-y-2">
                         <label for="legal_terms_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
                             {{ __('Terms of Service (English)') }}
@@ -880,29 +850,11 @@
                         @enderror
                     </div>
                     <div class="space-y-2">
-                        <label for="legal_terms_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                            {{ __('شروط الخدمة (العربية)') }}
-                        </label>
-                        <textarea id="legal_terms_ar" name="legal_terms_ar" dir="rtl" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_terms_ar', $legalTermsAr) }}</textarea>
-                        @error('legal_terms_ar')
-                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="space-y-2">
                         <label for="legal_privacy_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
                             {{ __('Privacy Policy (English)') }}
                         </label>
                         <textarea id="legal_privacy_en" name="legal_privacy_en" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_privacy_en', $legalPrivacyEn) }}</textarea>
                         @error('legal_privacy_en')
-                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="space-y-2">
-                        <label for="legal_privacy_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                            {{ __('سياسة الخصوصية (العربية)') }}
-                        </label>
-                        <textarea id="legal_privacy_ar" name="legal_privacy_ar" dir="rtl" rows="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('legal_privacy_ar', $legalPrivacyAr) }}</textarea>
-                        @error('legal_privacy_ar')
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -916,7 +868,7 @@
                 <div class="space-y-5">
                     <div class="rounded-md border border-[var(--color-secondary)]/20 bg-white p-3">
                         <p class="text-xs text-[var(--color-text-muted)]">
-                            {{ app()->getLocale() === 'ar' ? 'شراء لمرة واحدة · وصول مدى الحياة · بدون رسوم شهرية' : 'One‑time purchase. Lifetime access. No monthly fees.' }}
+                            {{ __('One‑time purchase. Lifetime access. No monthly fees.') }}
                         </p>
                     </div>
                     <div class="rounded-md border border-[var(--color-secondary)]/20 p-4 space-y-4">
@@ -1261,36 +1213,22 @@
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 gap-4">
                         <div>
                             <label for="landing_hero_title_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                                {{ __('Hero title (EN)') }}
+                                {{ __('Hero title') }}
                             </label>
                             <input id="landing_hero_title_en" name="landing_hero_title_en" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                                    value="{{ old('landing_hero_title_en', $landingHeroTitleEn ?? '') }}">
                         </div>
-                        <div>
-                            <label for="landing_hero_title_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                                {{ __('Hero title (AR)') }}
-                            </label>
-                            <input id="landing_hero_title_ar" name="landing_hero_title_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                                   value="{{ old('landing_hero_title_ar', $landingHeroTitleAr ?? '') }}">
-                        </div>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 gap-4">
                         <div>
                             <label for="hero_title_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                                {{ __('Hero title (EN, override)') }}
+                                {{ __('Hero title override') }}
                             </label>
                             <input id="hero_title_en" name="hero_title_en" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                                    value="{{ old('hero_title_en', $heroTitleEn ?? '') }}">
-                        </div>
-                        <div>
-                            <label for="hero_title_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                                {{ __('Hero title (AR, override)') }}
-                            </label>
-                            <input id="hero_title_ar" name="hero_title_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                                   value="{{ old('hero_title_ar', $heroTitleAr ?? '') }}">
                         </div>
                     </div>
                     <div>
@@ -1303,36 +1241,22 @@
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 gap-4">
                         <div>
                             <label for="landing_hero_subtitle_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                                {{ __('Hero subtitle (EN)') }}
+                                {{ __('Hero subtitle') }}
                             </label>
                             <input id="landing_hero_subtitle_en" name="landing_hero_subtitle_en" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                                    value="{{ old('landing_hero_subtitle_en', $landingHeroSubtitleEn ?? '') }}">
                         </div>
-                        <div>
-                            <label for="landing_hero_subtitle_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                                {{ __('Hero subtitle (AR)') }}
-                            </label>
-                            <input id="landing_hero_subtitle_ar" name="landing_hero_subtitle_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                                   value="{{ old('landing_hero_subtitle_ar', $landingHeroSubtitleAr ?? '') }}">
-                        </div>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 gap-4">
                         <div>
                             <label for="hero_subtitle_en" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                                {{ __('Hero subtitle (EN, override)') }}
+                                {{ __('Hero subtitle override') }}
                             </label>
                             <input id="hero_subtitle_en" name="hero_subtitle_en" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                                    value="{{ old('hero_subtitle_en', $heroSubtitleEn ?? '') }}">
-                        </div>
-                        <div>
-                            <label for="hero_subtitle_ar" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                                {{ __('Hero subtitle (AR, override)') }}
-                            </label>
-                            <input id="hero_subtitle_ar" name="hero_subtitle_ar" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                                   value="{{ old('hero_subtitle_ar', $heroSubtitleAr ?? '') }}">
                         </div>
                     </div>
                     <div>

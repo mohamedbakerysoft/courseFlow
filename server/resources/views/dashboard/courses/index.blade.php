@@ -76,7 +76,7 @@
                                     <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.destroy', $course) }}" method="POST" class="inline-flex" onsubmit="return confirm('Delete course?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button :disabled="isSubmitting" class="inline-flex items-center rounded-full bg-[var(--color-accent)]/12 px-4 py-2 text-sm font-semibold text-[var(--color-accent)] hover:bg-[var(--color-accent)]/16">{{ __('Delete') }}</button>
+                                        <button :disabled="isSubmitting" class="inline-flex items-center rounded-full bg-[var(--color-error)]/10 px-4 py-2 text-sm font-semibold text-[var(--color-error)] hover:bg-[var(--color-error)]/14">{{ __('Delete') }}</button>
                                     </form>
                                 </div>
                             </td>

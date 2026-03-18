@@ -29,9 +29,9 @@
     @endphp
 
     @if ($showHero)
-        <section id="hero" class="cf-shell cf-section pt-8 sm:pt-12 lg:pt-14">
+        <section id="hero" class="cf-shell cf-section pt-6 sm:pt-10 lg:pt-12">
             <div class="cf-hero-shell">
-                <div class="cf-hero-main lg:grid-cols-[0.82fr,1.18fr] lg:gap-16">
+                <div class="cf-hero-main">
                     <div class="cf-hero-copy space-y-8">
                         <div class="space-y-5">
                             <span class="cf-kicker">
@@ -87,6 +87,17 @@
                                 {{ __('Meet the Instructor') }}
                             </a>
                         </div>
+
+                        @if (!empty($platformStats))
+                            <div class="cf-hero-stat-grid">
+                                @foreach (collect($platformStats)->take(3) as $stat)
+                                    <article class="cf-hero-stat-card">
+                                        <p>{{ $stat['label'] }}</p>
+                                        <h3>{{ $stat['value'] }}</h3>
+                                    </article>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
 
                     <div class="cf-hero-visual relative">
@@ -152,7 +163,7 @@
                                 >
                             </div>
                             <div class="cf-hero-course-copy">
-                                <p>{{ $heroCourse->language === 'ar' ? __('Arabic course') : __('Latest course') }}</p>
+                                <p>{{ __('Latest course') }}</p>
                                 <h3>{{ $heroCourse->title }}</h3>
                                 <span>
                                     {{ $heroCourse->is_free ? __('Free download-ready access') : number_format((float) $heroCourse->price, 2).' '.strtoupper($heroCourse->currency ?? 'USD') }}
@@ -180,48 +191,52 @@
 
     @if ($showCoursesPreview)
         <section class="cf-shell cf-section pt-8">
-            <div class="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-                <div class="max-w-2xl space-y-3">
-                    <span class="cf-kicker">{{ $landingCopy['courses_kicker'] ?? __('Course catalog') }}</span>
-                    <h2 class="cf-heading">{{ $landingCopy['courses_title'] ?? __('Featured courses') }}</h2>
-                    <p class="cf-subheading">{{ $landingCopy['courses_subtitle'] ?? __('Pick a flagship program, a focused quickstart, or a practical specialty course from one clear catalog.') }}</p>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                    <span class="cf-chip">{{ __('Self-paced learning') }}</span>
-                    <span class="cf-chip">{{ __('One-time payment') }}</span>
-                    <span class="cf-chip">{{ __('Instant enrollment') }}</span>
-                </div>
-            </div>
-
-            <div class="cf-card-grid">
-                @forelse ($featuredCourses as $course)
-                    <x-course.card :course="$course" />
-                @empty
-                    <div class="cf-panel px-8 py-10 text-center text-[var(--color-text-muted)]">
-                        {{ __('No courses available yet') }}
+            <div class="cf-section-shell">
+                <div class="cf-section-header">
+                    <div class="max-w-2xl space-y-3">
+                        <span class="cf-kicker">{{ $landingCopy['courses_kicker'] ?? __('Course catalog') }}</span>
+                        <h2 class="cf-heading">{{ $landingCopy['courses_title'] ?? __('Featured courses') }}</h2>
+                        <p class="cf-subheading">{{ $landingCopy['courses_subtitle'] ?? __('Pick a flagship program, a focused quickstart, or a practical specialty course from one clear catalog.') }}</p>
                     </div>
-                @endforelse
+                    <div class="flex flex-wrap gap-2">
+                        <span class="cf-chip">{{ __('Self-paced learning') }}</span>
+                        <span class="cf-chip">{{ __('One-time payment') }}</span>
+                        <span class="cf-chip">{{ __('Instant enrollment') }}</span>
+                    </div>
+                </div>
+
+                <div class="cf-card-grid">
+                    @forelse ($featuredCourses as $course)
+                        <x-course.card :course="$course" />
+                    @empty
+                        <div class="cf-panel px-8 py-10 text-center text-[var(--color-text-muted)]">
+                            {{ __('No courses available yet') }}
+                        </div>
+                    @endforelse
+                </div>
             </div>
         </section>
     @endif
 
     <section class="cf-shell cf-section">
-        <div class="grid gap-6 lg:grid-cols-[0.82fr,1.18fr] lg:items-start">
-            <div class="space-y-4">
-                <span class="cf-kicker">{{ $landingCopy['problem_kicker'] ?? __('Problem to solution') }}</span>
-                <h2 class="cf-heading">{{ $landingCopy['problem_title'] ?? __('Turn a scattered course storefront into a focused buying and learning experience') }}</h2>
-                <p class="cf-subheading">{{ $landingCopy['problem_subtitle'] ?? __('The platform brings your catalog, checkout, curriculum, and instructor credibility into one clear journey.') }}</p>
-            </div>
-            <div class="grid gap-5 sm:grid-cols-3">
-                @foreach ($features as $feature)
-                    <article class="cf-panel px-6 py-6">
-                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--color-primary)]/18 text-xl text-[var(--color-secondary)]">
-                            {{ $feature['icon'] }}
-                        </div>
-                        <h3 class="mt-5 text-lg font-semibold text-[var(--color-text-primary)]">{{ $feature['title'] }}</h3>
-                        <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ $feature['description'] }}</p>
-                    </article>
-                @endforeach
+        <div class="cf-section-shell">
+            <div class="grid gap-8 lg:grid-cols-[0.8fr,1.2fr] lg:items-start">
+                <div class="space-y-4">
+                    <span class="cf-kicker">{{ $landingCopy['problem_kicker'] ?? __('Problem to solution') }}</span>
+                    <h2 class="cf-heading">{{ $landingCopy['problem_title'] ?? __('Turn a scattered course storefront into a focused buying and learning experience') }}</h2>
+                    <p class="cf-subheading">{{ $landingCopy['problem_subtitle'] ?? __('The platform brings your catalog, checkout, curriculum, and instructor credibility into one clear journey.') }}</p>
+                </div>
+                <div class="grid gap-5 sm:grid-cols-3">
+                    @foreach ($features as $feature)
+                        <article class="cf-feature-card">
+                            <div class="cf-feature-icon">
+                                {{ $feature['icon'] }}
+                            </div>
+                            <h3>{{ $feature['title'] }}</h3>
+                            <p>{{ $feature['description'] }}</p>
+                        </article>
+                    @endforeach
+                </div>
             </div>
         </div>
     </section>
@@ -232,7 +247,7 @@
 
     <section class="cf-shell cf-section pt-6">
         <div class="grid gap-6 lg:grid-cols-[0.92fr,1.08fr] lg:items-center">
-            <div class="cf-panel px-6 py-6 sm:px-8 sm:py-8">
+            <div class="cf-panel cf-spotlight-panel px-6 py-6 sm:px-8 sm:py-8">
                 <div class="flex items-center gap-4">
                     <img
                         src="{{ $instructorAvatar }}"
@@ -256,15 +271,15 @@
                 </div>
             </div>
             <div class="grid gap-4 sm:grid-cols-3">
-                <article class="cf-panel-soft px-5 py-5">
+                <article class="cf-panel-soft cf-spotlight-note px-5 py-5">
                     <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $landingCopy['instructor_card_1_title'] ?? __('Premium presentation') }}</p>
                     <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ $landingCopy['instructor_card_1_body'] ?? __('A cleaner public identity improves the first impression and supports conversion.') }}</p>
                 </article>
-                <article class="cf-panel-soft px-5 py-5">
+                <article class="cf-panel-soft cf-spotlight-note px-5 py-5">
                     <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $landingCopy['instructor_card_2_title'] ?? __('Direct call to action') }}</p>
                     <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ $landingCopy['instructor_card_2_body'] ?? __('Students can move from discovery to enrollment without dead ends or clutter.') }}</p>
                 </article>
-                <article class="cf-panel-soft px-5 py-5">
+                <article class="cf-panel-soft cf-spotlight-note px-5 py-5">
                     <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $landingCopy['instructor_card_3_title'] ?? __('Consistent experience') }}</p>
                     <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ $landingCopy['instructor_card_3_body'] ?? __('The same visual system carries from landing page to course page to dashboard.') }}</p>
                 </article>
@@ -274,32 +289,34 @@
 
     @if ($showTestimonials)
         <section class="cf-shell cf-section">
-            <div class="mb-8 max-w-2xl space-y-3">
-                <span class="cf-kicker">{{ $landingCopy['testimonials_kicker'] ?? __('Testimonials') }}</span>
-                <h2 class="cf-heading">{{ $landingCopy['testimonials_title'] ?? __('What users notice when the storefront finally feels premium') }}</h2>
-                <p class="cf-subheading">{{ $landingCopy['testimonials_subtitle'] ?? __('These signals matter because strong visual clarity improves trust before users commit to payment or enrollment.') }}</p>
-            </div>
-            <div class="grid gap-5 md:grid-cols-3">
-                @foreach ($testimonials as $testimonial)
-                    <article class="cf-panel px-6 py-6">
-                        <div class="flex items-center gap-4">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-secondary)] text-sm font-semibold text-white">
-                                {{ Str::substr($testimonial['name'], 0, 1) }}
+            <div class="cf-section-shell">
+                <div class="mb-8 max-w-2xl space-y-3">
+                    <span class="cf-kicker">{{ $landingCopy['testimonials_kicker'] ?? __('Testimonials') }}</span>
+                    <h2 class="cf-heading">{{ $landingCopy['testimonials_title'] ?? __('What users notice when the storefront finally feels premium') }}</h2>
+                    <p class="cf-subheading">{{ $landingCopy['testimonials_subtitle'] ?? __('These signals matter because strong visual clarity improves trust before users commit to payment or enrollment.') }}</p>
+                </div>
+                <div class="grid gap-5 md:grid-cols-3">
+                    @foreach ($testimonials as $testimonial)
+                        <article class="cf-testimonial-card">
+                            <div class="flex items-center gap-4">
+                                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-secondary)] text-sm font-semibold text-white">
+                                    {{ Str::substr($testimonial['name'], 0, 1) }}
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-[var(--color-text-primary)]">{{ $testimonial['name'] }}</p>
+                                    <p class="text-sm text-[var(--color-text-muted)]">{{ $testimonial['role'] }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="font-semibold text-[var(--color-text-primary)]">{{ $testimonial['name'] }}</p>
-                                <p class="text-sm text-[var(--color-text-muted)]">{{ $testimonial['role'] }}</p>
-                            </div>
-                        </div>
-                        <p class="mt-5 text-sm leading-7 text-[var(--color-text-muted)]">"{{ $testimonial['quote'] }}"</p>
-                    </article>
-                @endforeach
+                            <p class="mt-5 text-sm leading-7 text-[var(--color-text-muted)]">"{{ $testimonial['quote'] }}"</p>
+                        </article>
+                    @endforeach
+                </div>
             </div>
         </section>
     @endif
 
     <section class="cf-shell cf-section pt-6">
-        <div class="grid gap-6 lg:grid-cols-[0.82fr,1.18fr]">
+        <div class="cf-section-shell grid gap-6 lg:grid-cols-[0.82fr,1.18fr]">
             <div class="space-y-4">
                 <span class="cf-kicker">{{ $landingCopy['faq_kicker'] ?? __('Frequently asked questions') }}</span>
                 <h2 class="cf-heading">{{ $landingCopy['faq_title'] ?? __('Remove friction before users reach the buy decision') }}</h2>
@@ -328,7 +345,7 @@
                     {{ $message }}
                 </div>
             @enderror
-            <div class="grid gap-6 lg:grid-cols-[0.8fr,1.2fr]">
+            <div class="cf-section-shell grid gap-6 lg:grid-cols-[0.8fr,1.2fr]">
                 <div class="space-y-4">
                     <span class="cf-kicker">{{ $landingCopy['contact_kicker'] ?? __('Get in touch') }}</span>
                     <h2 class="cf-heading">{{ $landingCopy['contact_title'] ?? __('Ask a question before you enroll') }}</h2>

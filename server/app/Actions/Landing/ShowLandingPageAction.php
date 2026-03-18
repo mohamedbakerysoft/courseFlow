@@ -23,15 +23,12 @@ class ShowLandingPageAction
             ->first()
             ?: User::query()->where('role', User::ROLE_ADMIN)->first();
 
-        $locale = app()->getLocale();
-        $heroTitleLocal = (string) ($this->settings->get("instructor.hero_headline_{$locale}") ?: $this->settings->get('instructor.hero_headline') ?: $this->settings->get("hero.title.{$locale}") ?: $this->settings->get("landing.hero_title_{$locale}") ?: '');
-        $heroSubtitleLocal = (string) ($this->settings->get("instructor.hero_subheadline_{$locale}") ?: $this->settings->get('instructor.hero_subheadline') ?: $this->settings->get("hero.subtitle.{$locale}") ?: $this->settings->get("landing.hero_subtitle_{$locale}") ?: '');
-        $heroTitleFallback = (string) ($locale === 'ar' ? ($this->settings->get('hero.title.en') ?: $this->settings->get('landing.hero_title_en') ?: '') : ($this->settings->get('hero.title.ar') ?: $this->settings->get('landing.hero_title_ar') ?: ''));
-        $heroSubtitleFallback = (string) ($locale === 'ar' ? ($this->settings->get('hero.subtitle.en') ?: $this->settings->get('landing.hero_subtitle_en') ?: '') : ($this->settings->get('hero.subtitle.ar') ?: $this->settings->get('landing.hero_subtitle_ar') ?: ''));
+        $heroTitleLocal = (string) ($this->settings->get('instructor.hero_headline_en') ?: $this->settings->get('instructor.hero_headline') ?: $this->settings->get('hero.title.en') ?: $this->settings->get('landing.hero_title_en') ?: '');
+        $heroSubtitleLocal = (string) ($this->settings->get('instructor.hero_subheadline_en') ?: $this->settings->get('instructor.hero_subheadline') ?: $this->settings->get('hero.subtitle.en') ?: $this->settings->get('landing.hero_subtitle_en') ?: '');
         $heroTitleDefault = (string) $this->settings->get('landing.hero_title', 'Launch courses with a storefront learners trust');
         $heroSubtitleDefault = (string) $this->settings->get('landing.hero_subtitle', 'CourseFlow helps independent instructors sell digital courses with secure checkout, instant access, and progress-aware lessons.');
-        $heroTitle = $heroTitleLocal !== '' ? $heroTitleLocal : ($heroTitleFallback !== '' ? $heroTitleFallback : $heroTitleDefault);
-        $heroSubtitle = $heroSubtitleLocal !== '' ? $heroSubtitleLocal : ($heroSubtitleFallback !== '' ? $heroSubtitleFallback : $heroSubtitleDefault);
+        $heroTitle = $heroTitleLocal !== '' ? $heroTitleLocal : $heroTitleDefault;
+        $heroSubtitle = $heroSubtitleLocal !== '' ? $heroSubtitleLocal : $heroSubtitleDefault;
 
         $instructorName = (string) ($this->settings->get('instructor.name') ?: ($instructor?->name ?? 'Instructor'));
         $instructorTitle = (string) ($this->settings->get('instructor.title') ?: '');
@@ -130,15 +127,15 @@ class ShowLandingPageAction
 
         $platformStats = [
             [
-                'label' => app()->getLocale() === 'ar' ? 'دورات منشورة' : 'Published courses',
+                'label' => 'Published courses',
                 'value' => max($publishedCoursesCount, $featuredCourses->count()),
             ],
             [
-                'label' => app()->getLocale() === 'ar' ? 'دروس منظّمة' : 'Structured lessons',
+                'label' => 'Structured lessons',
                 'value' => $publishedLessonsCount,
             ],
             [
-                'label' => app()->getLocale() === 'ar' ? 'خيارات دفع' : 'Payment options',
+                'label' => 'Payment options',
                 'value' => 3,
             ],
         ];
