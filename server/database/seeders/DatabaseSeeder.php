@@ -136,7 +136,7 @@ class DatabaseSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'theme.text_muted'], ['value' => '#4A4A4A']);
         Setting::updateOrCreate(['key' => 'theme.primary_hover'], ['value' => '#D8A100']);
         Setting::updateOrCreate(['key' => 'theme.error'], ['value' => '#DC2626']);
-        Setting::updateOrCreate(['key' => 'typography.english_font'], ['value' => 'Manrope']);
+        Setting::updateOrCreate(['key' => 'typography.english_font'], ['value' => 'Poppins']);
         Setting::updateOrCreate(['key' => 'instructor.social.youtube'], ['value' => 'https://www.youtube.com/watch?v=M7lc1UVf-VE']);
         Setting::updateOrCreate(['key' => 'landing.hero_video_url'], ['value' => 'https://www.youtube.com/watch?v=M7lc1UVf-VE']);
         Setting::updateOrCreate(['key' => 'hero.image'], ['value' => 'images/demo/real/hero-formal-2.jpg']);

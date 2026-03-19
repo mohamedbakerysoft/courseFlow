@@ -15,8 +15,8 @@
     body {
         min-height: 100vh;
         font-size: 17.5px;
-        line-height: 1.7;
-        letter-spacing: -0.012em;
+        line-height: 1.66;
+        letter-spacing: -0.016em;
         font-optical-sizing: auto;
         text-rendering: optimizeLegibility;
         background:
@@ -100,26 +100,27 @@
     }
 
     .cf-display {
-        font-size: clamp(3.95rem, 6.35vw, 5.5rem);
-        font-weight: 800;
-        letter-spacing: -0.068em;
+        font-size: clamp(4.2rem, 6.8vw, 6rem);
+        font-weight: 700;
+        letter-spacing: -0.058em;
         color: var(--color-text-primary);
-        line-height: 0.94;
+        line-height: 1.02;
+        text-wrap: balance;
     }
 
     .cf-heading {
         font-size: clamp(2.55rem, 3.9vw, 3.55rem);
-        font-weight: 800;
-        letter-spacing: -0.046em;
+        font-weight: 700;
+        letter-spacing: -0.04em;
         color: var(--color-text-primary);
-        line-height: 1.02;
+        line-height: 1.08;
     }
 
     .cf-subheading {
-        font-size: clamp(1.08rem, 1.7vw, 1.24rem);
-        font-weight: 500;
-        color: var(--color-text-muted);
-        line-height: 1.74;
+        font-size: clamp(1.1rem, 1.55vw, 1.28rem);
+        font-weight: 400;
+        color: rgba(11, 11, 11, 0.78);
+        line-height: 1.72;
     }
 
     .cf-muted {
@@ -284,7 +285,7 @@
     .cf-button-ghost {
         @apply inline-flex items-center justify-center rounded-full px-6 py-3.5 font-semibold transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
         font-size: 16.5px;
-        letter-spacing: -0.015em;
+        letter-spacing: 0.01em;
     }
 
     .cf-app-shell label,
@@ -421,6 +422,7 @@
 
     .cf-nav-link {
         @apply inline-flex items-center rounded-full px-4 py-2.5 text-[15px] font-semibold transition;
+        letter-spacing: 0.04em;
         color: rgba(11, 11, 11, 0.7);
     }
 
@@ -488,22 +490,14 @@
     }
 
     .cf-hero-shell {
-        @apply rounded-[38px] border px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12;
-        border-color: rgba(11, 11, 11, 0.07);
-        background:
-            radial-gradient(circle at top left, rgba(245, 184, 0, 0.16), transparent 24%),
-            linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 248, 248, 0.9));
-        box-shadow: 0 24px 60px rgba(11, 11, 11, 0.05);
+        @apply px-0 py-4 sm:py-5 lg:py-6;
+        border-color: transparent;
+        background: transparent;
+        box-shadow: none;
     }
 
     .cf-hero-shell::after {
-        content: "";
-        display: block;
-        width: 96px;
-        height: 4px;
-        margin-top: 2rem;
-        border-radius: 9999px;
-        background: #f5b800;
+        display: none;
     }
 
     .cf-hero-copy {
@@ -513,15 +507,15 @@
 
     .cf-hero-main {
         display: grid;
-        align-items: stretch;
-        gap: 2.25rem;
-        grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+        align-items: center;
+        gap: 3rem;
+        grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
     }
 
     .cf-hero-instructor {
         @apply inline-flex items-center gap-3 rounded-full border px-4 py-2.5;
         border-color: rgba(11, 11, 11, 0.08);
-        background: rgba(247, 247, 247, 0.92);
+        background: rgba(255, 255, 255, 0.94);
         max-width: 36rem;
     }
 
@@ -544,19 +538,18 @@
     }
 
     .cf-hero-media {
-        @apply relative overflow-hidden rounded-[32px] border;
+        @apply relative overflow-hidden;
         min-height: 100%;
-        padding: 1.2rem;
-        border-color: rgba(11, 11, 11, 0.07);
-        background:
-            linear-gradient(180deg, rgba(247, 247, 247, 0.94) 0%, rgba(255, 255, 255, 0.98) 100%);
+        padding: 0;
+        border-color: transparent;
+        background: transparent;
     }
 
     .cf-hero-accent {
-        width: clamp(92px, 18vw, 138px);
-        height: 6px;
+        width: clamp(140px, 24vw, 220px);
+        height: 5px;
         border-radius: 9999px;
-        background: linear-gradient(90deg, #f5b800 0%, rgba(245, 184, 0, 0.28) 100%);
+        background: #f5b800;
     }
 
     .cf-hero-video-stack {
@@ -565,7 +558,7 @@
         display: flex;
         height: 100%;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.85rem;
     }
 
     .cf-hero-video-header {
@@ -573,8 +566,8 @@
         flex-wrap: wrap;
         align-items: flex-start;
         justify-content: space-between;
-        gap: 1rem;
-        padding: 0.35rem 0.35rem 0 0.35rem;
+        gap: 0.9rem;
+        padding: 0 0 0.15rem;
     }
 
     .cf-hero-video-copy {
@@ -591,20 +584,20 @@
     }
 
     .cf-hero-video-copy p:last-child {
-        margin: 0.45rem 0 0;
-        font-size: 1.08rem;
-        font-weight: 600;
-        line-height: 1.6;
+        margin: 0.35rem 0 0;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.55;
         color: var(--color-text-primary);
     }
 
     .cf-hero-video-stage {
         position: relative;
         overflow: hidden;
-        border-radius: 28px;
-        border: 1px solid rgba(11, 11, 11, 0.08);
+        border-radius: 18px;
+        border: 1px solid rgba(11, 11, 11, 0.1);
         background: #0b0b0b;
-        box-shadow: 0 18px 40px rgba(11, 11, 11, 0.08);
+        box-shadow: 0 12px 28px rgba(11, 11, 11, 0.08);
     }
 
     .cf-hero-video-poster {
@@ -1963,8 +1956,8 @@
         }
 
         .cf-display {
-            font-size: clamp(3rem, 12vw, 3.7rem);
-            line-height: 0.98;
+            font-size: clamp(3.1rem, 12vw, 4rem);
+            line-height: 1.02;
         }
 
         .cf-heading {
@@ -1977,7 +1970,7 @@
 
         .cf-hero-media {
             min-height: auto;
-            padding: 0.7rem;
+            padding: 0;
         }
 
         .cf-section-shell {
@@ -2006,7 +1999,7 @@
         }
 
         .cf-hero-main {
-            gap: 1.35rem;
+            gap: 1.2rem;
         }
 
         .cf-hero-action-band {

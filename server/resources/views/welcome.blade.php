@@ -29,11 +29,11 @@
     @endphp
 
     @if ($showHero)
-        <section id="hero" class="cf-shell cf-section pt-6 sm:pt-10 lg:pt-12">
+        <section id="hero" class="cf-shell pt-5 pb-6 sm:pt-8 sm:pb-8 lg:pt-10 lg:pb-10">
             <div class="cf-hero-shell">
                 <div class="cf-hero-main">
-                    <div class="cf-hero-copy space-y-8">
-                        <div class="space-y-5">
+                    <div class="cf-hero-copy space-y-6">
+                        <div class="space-y-4">
                             <span class="cf-kicker">
                                 {{ $landingCopy['hero_kicker'] ?? __('Independent course business platform') }}
                             </span>
@@ -54,14 +54,14 @@
                                 </div>
                             @endif
 
-                            <div class="space-y-5">
-                                <h1 class="cf-display max-w-[11ch]" style="font-size: var(--hero-title-size);">
+                            <div class="space-y-4">
+                                <h1 class="cf-display max-w-[12ch]" style="font-size: var(--hero-title-size);">
                                     {{ $heroTitle }}
                                 </h1>
 
                                 <div class="cf-hero-accent"></div>
 
-                                <p class="max-w-2xl text-lg leading-8 text-[var(--color-text-muted)]" style="font-size: clamp(1.02rem, 1.34vw, var(--hero-subtitle-size));">
+                                <p class="max-w-[34rem] text-lg leading-8 text-[var(--color-text-muted)]" style="font-size: clamp(1.02rem, 1.34vw, var(--hero-subtitle-size));">
                                     {{ $heroSubtitle }}
                                 </p>
 
@@ -134,16 +134,16 @@
     @endif
 
     @if ($showPlatformProof)
-        <section id="platform-proof" class="cf-shell pb-8 sm:pb-10">
+        <section id="platform-proof" class="cf-shell pb-6 sm:pb-8 lg:pb-9">
             <x-public.trust-bar :copy="$landingCopy" :courses="$featuredCourses" />
         </section>
     @endif
 
     @if ($showCoursesPreview)
-        <section class="cf-shell cf-section pt-8">
+        <section class="cf-shell pt-6 pb-10 sm:pt-7 sm:pb-12 lg:pt-8 lg:pb-14">
             <div class="cf-section-shell">
-                <div class="cf-section-header">
-                    <div class="max-w-2xl space-y-3">
+                <div class="cf-section-header !mb-6 sm:!mb-7">
+                    <div class="max-w-2xl space-y-2.5">
                         <span class="cf-kicker">{{ $landingCopy['courses_kicker'] ?? __('Course catalog') }}</span>
                         <h2 class="cf-heading">{{ $landingCopy['courses_title'] ?? __('Featured courses') }}</h2>
                         <p class="cf-subheading">{{ $landingCopy['courses_subtitle'] ?? __('Pick a flagship program, a focused quickstart, or a practical specialty course from one clear catalog.') }}</p>
@@ -169,15 +169,15 @@
     @endif
 
     @if ($showProblemSection)
-        <section class="cf-shell cf-section">
+        <section class="cf-shell pb-10 pt-4 sm:pb-12 sm:pt-5 lg:pb-14 lg:pt-6">
             <div class="cf-section-shell">
-                <div class="grid gap-8 lg:grid-cols-[0.8fr,1.2fr] lg:items-start">
-                    <div class="space-y-4">
+                <div class="grid gap-6 lg:grid-cols-[0.8fr,1.2fr] lg:items-start">
+                    <div class="space-y-3">
                         <span class="cf-kicker">{{ $landingCopy['problem_kicker'] ?? __('Problem to solution') }}</span>
                         <h2 class="cf-heading">{{ $landingCopy['problem_title'] ?? __('Turn a scattered course storefront into a focused buying and learning experience') }}</h2>
                         <p class="cf-subheading">{{ $landingCopy['problem_subtitle'] ?? __('The platform brings your catalog, checkout, curriculum, and instructor credibility into one clear journey.') }}</p>
                     </div>
-                    <div class="grid gap-5 sm:grid-cols-3">
+                    <div class="grid gap-4 sm:grid-cols-3">
                         @foreach ($features as $feature)
                             <article class="cf-feature-card">
                                 <div class="cf-feature-icon">
@@ -194,20 +194,20 @@
     @endif
 
     @if ($showFlowSection)
-        <section class="cf-shell pb-6">
+        <section class="cf-shell pb-8 pt-1 sm:pb-10 lg:pb-12">
             <x-public.social-proof :copy="$landingCopy" />
         </section>
     @endif
 
     @if ($showTestimonials)
-        <section class="cf-shell cf-section">
+        <section class="cf-shell pb-10 pt-2 sm:pb-12 sm:pt-3 lg:pb-14 lg:pt-4">
             <div class="cf-section-shell">
-                <div class="mb-8 max-w-2xl space-y-3">
+                <div class="mb-6 max-w-2xl space-y-2.5 sm:mb-7">
                     <span class="cf-kicker">{{ $landingCopy['testimonials_kicker'] ?? __('Testimonials') }}</span>
                     <h2 class="cf-heading">{{ $landingCopy['testimonials_title'] ?? __('What users notice when the storefront finally feels premium') }}</h2>
                     <p class="cf-subheading">{{ $landingCopy['testimonials_subtitle'] ?? __('These signals matter because strong visual clarity improves trust before users commit to payment or enrollment.') }}</p>
                 </div>
-                <div class="grid gap-5 md:grid-cols-3">
+                <div class="grid gap-4 md:grid-cols-3">
                     @foreach ($testimonials as $testimonial)
                         <article class="cf-testimonial-card">
                             <div class="flex items-center gap-4">
@@ -232,14 +232,14 @@
     @endif
 
     @if ($showFaqSection)
-        <section class="cf-shell cf-section pt-6">
-            <div class="cf-section-shell grid gap-6 lg:grid-cols-[0.82fr,1.18fr]">
-                <div class="space-y-4">
+        <section class="cf-shell pb-10 pt-2 sm:pb-12 sm:pt-3 lg:pb-14 lg:pt-4">
+            <div class="cf-section-shell grid gap-5 lg:grid-cols-[0.82fr,1.18fr]">
+                <div class="space-y-3">
                     <span class="cf-kicker">{{ $landingCopy['faq_kicker'] ?? __('Frequently asked questions') }}</span>
                     <h2 class="cf-heading">{{ $landingCopy['faq_title'] ?? __('Remove friction before users reach the buy decision') }}</h2>
                     <p class="cf-subheading">{{ $landingCopy['faq_subtitle'] ?? __('A premium course product answers practical questions early, keeps pricing clear, and makes the next step obvious.') }}</p>
                 </div>
-                <div class="space-y-4">
+                <div class="space-y-3">
                     @foreach ($faqItems as $faqItem)
                         <details class="cf-faq-item" @if ($loop->first) open @endif>
                             <summary class="cf-faq-summary">{{ $faqItem['question'] }}</summary>
@@ -252,7 +252,7 @@
     @endif
 
     @if ($showContactForm === true)
-        <section id="contact" class="cf-shell cf-section pt-4">
+        <section id="contact" class="cf-shell pb-12 pt-2 sm:pb-14 sm:pt-3 lg:pb-16 lg:pt-4">
             @if (session('status'))
                 <div class="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
                     {{ session('status') }}
@@ -263,13 +263,13 @@
                     {{ $message }}
                 </div>
             @enderror
-                <div class="cf-section-shell grid gap-6 lg:grid-cols-[0.8fr,1.2fr]">
-                <div class="space-y-4">
+                <div class="cf-section-shell grid gap-5 lg:grid-cols-[0.8fr,1.2fr]">
+                <div class="space-y-3">
                     <span class="cf-kicker">{{ $landingCopy['contact_kicker'] ?? __('Get in touch') }}</span>
                     <h2 class="cf-heading">{{ $landingCopy['contact_title'] ?? __('Ask a question before you enroll') }}</h2>
                     <p class="cf-subheading">{{ $landingCopy['contact_subtitle'] ?? __('Use this section for support, custom requests, or questions about which course to start with.') }}</p>
                 </div>
-                <form id="contactForm" method="POST" action="{{ route('contact.submit') }}" class="cf-panel space-y-5 px-6 py-6 sm:px-8 sm:py-8">
+                <form id="contactForm" method="POST" action="{{ route('contact.submit') }}" class="cf-panel space-y-4 px-6 py-6 sm:px-7 sm:py-7">
                     @csrf
                     <div>
                         <label for="contact_name" class="mb-2 block text-sm font-medium text-[var(--color-text-primary)]">{{ __('Name') }}</label>
@@ -287,7 +287,7 @@
                         @error('message')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
                     </div>
                     <input type="hidden" id="captcha_token" name="captcha_token" value="">
-                    <div class="flex justify-end">
+                    <div class="flex justify-end pt-1">
                         <button type="submit" class="cf-button-primary">{{ __('Send message') }}</button>
                     </div>
                 </form>
@@ -317,10 +317,10 @@
     @endif
 
     @if ($showFooterCta)
-        <section class="cf-shell pb-14 sm:pb-16 lg:pb-20">
-            <div class="cf-panel-dark px-6 py-8 sm:px-10 sm:py-10">
-                <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                    <div class="max-w-2xl space-y-3">
+        <section class="cf-shell pb-12 sm:pb-14 lg:pb-16">
+            <div class="cf-panel-dark px-6 py-8 sm:px-9 sm:py-9">
+                <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                    <div class="max-w-2xl space-y-2.5">
                         <span class="cf-dark-kicker">
                             {{ $landingCopy['footer_kicker'] ?? __('Your next step') }}
                         </span>

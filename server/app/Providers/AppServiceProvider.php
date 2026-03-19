@@ -94,28 +94,16 @@ class AppServiceProvider extends ServiceProvider
 
         // Typography (fonts)
         $typographyDefaults = [
-            'english_font' => 'Manrope',
+            'english_font' => 'Poppins',
         ];
         $typography = $typographyDefaults;
-        try {
-            foreach (['typography.english_font' => 'english_font'] as $key => $map) {
-                $row = Setting::query()->where('key', $key)->first();
-                if ($row && is_string($row->value) && $row->value !== '') {
-                    $typography[$map] = $row->value;
-                }
-            }
-        } catch (\Throwable $e) {
-            $typography = $typographyDefaults;
-        }
         $fontStacks = [
-            'Manrope' => "'Manrope', system-ui, sans-serif",
+            'Poppins' => "'Poppins', system-ui, sans-serif",
         ];
 
-        if (($typography['english_font'] ?? null) !== 'Manrope') {
-            $typography['english_font'] = 'Manrope';
-        }
+        $typography['english_font'] = 'Poppins';
         $typographyCss = [
-            'english_stack' => $fontStacks[$typography['english_font']] ?? $fontStacks['Manrope'],
+            'english_stack' => $fontStacks['Poppins'],
         ];
         View::share('typography', $typography);
         View::share('typographyCss', $typographyCss);

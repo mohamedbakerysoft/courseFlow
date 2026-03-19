@@ -3,7 +3,7 @@
         <div class="space-y-3">
             <p class="cf-dark-muted text-sm font-semibold uppercase tracking-[0.24em]">{{ __('Brand system') }}</p>
             <h2 class="cf-dark-title text-3xl font-bold tracking-[-0.04em] sm:text-4xl">{{ __('Appearance / Branding') }}</h2>
-            <p class="cf-dark-copy max-w-2xl text-sm leading-7">{{ __('Keep the storefront and admin panel visually aligned with one typography and color system.') }}</p>
+            <p class="cf-dark-copy max-w-2xl text-sm leading-7">{{ __('Keep the storefront and admin panel visually aligned with one fixed brand font and color system.') }}</p>
         </div>
     </x-slot>
 
@@ -18,7 +18,6 @@
                 @csrf
                 <div class="cf-admin-tabbar">
                     <button type="button" x-on:click="tab='colors'" :class="tab==='colors' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">Colors</button>
-                    <button type="button" x-on:click="tab='typography'" :class="tab==='typography' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">Typography</button>
                     <button type="button" x-on:click="tab='layout'" :class="tab==='layout' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">Layout</button>
                 </div>
                 <div x-show="tab==='colors'" class="cf-admin-form-grid">
@@ -40,19 +39,10 @@
                         @error('accent')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
                     </div>
                 </div>
-                <div x-show="tab==='typography'" class="cf-admin-form-grid">
-                    <div class="cf-admin-field">
-                        <label for="english_font">English Font</label>
-                        <select id="english_font" name="english_font" class="mt-1 block w-64 rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
-                            <option value="Manrope" @selected($englishFont==='Manrope')>Manrope</option>
-                        </select>
-                        <p class="cf-admin-helper">Applied across the entire website and admin panel. Manrope is enforced globally for one consistent premium font.</p>
-                        @error('english_font')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
-                    </div>
-                </div>
                 <div x-show="tab==='layout'" class="cf-admin-form-grid">
                     <div class="cf-admin-field">
                         <span>Landing Layout</span>
+                        <p class="cf-admin-helper mb-4">The Learnova storefront now uses one fixed brand font across the public site and admin panel for a fully consistent look.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <label class="block rounded-lg border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
                                 <input type="radio" name="landing_layout" value="default" class="mb-2" {{ ($landingLayout ?? 'default') === 'default' ? 'checked' : '' }}>
