@@ -29,7 +29,7 @@
                     <div class="cf-hero-copy space-y-6">
                         <div class="space-y-5">
                             <div class="space-y-5">
-                                <h1 class="cf-display max-w-[14ch]" style="font-size: var(--hero-title-size);">
+                                <h1 class="cf-display max-w-[19ch]" style="font-size: var(--hero-title-size);">
                                     {{ $heroTitle }}
                                 </h1>
 
