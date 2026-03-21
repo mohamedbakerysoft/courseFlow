@@ -126,7 +126,7 @@
                     </div>
                     @auth
                         @if ($isEnrolled)
-                            <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                            <div class="rounded-2xl border border-[var(--color-primary)] bg-[var(--color-primary)]/10 px-4 py-3 text-sm text-[var(--color-primary)]">
                                 {{ __('You are enrolled') }}. {{ __('Progress') }}: {{ $progressPercent }}%
                             </div>
                         @endif
@@ -415,7 +415,7 @@
                                                                             createOrder: function () { return callCreateOrder(); },
                                                                             onApprove: function (data) {
                                                                                 return callCapture(data.orderID).then(function () {
-                                                                                    container.innerHTML = '<div class="rounded-2xl border border-green-200 bg-green-50 p-3 text-sm text-green-700">{{ __('Payment successful. You are enrolled.') }}</div>';
+                                                                                    container.innerHTML = '<div class="rounded-2xl border border-[var(--color-primary)] bg-[var(--color-primary)]/10 p-3 text-sm text-[var(--color-primary)]">{{ __('Payment successful. You are enrolled.') }}</div>';
                                                                                     var forms = container.parentElement.querySelectorAll('form');
                                                                                     forms.forEach(function (f) { f.style.display = 'none'; });
                                                                                 });
