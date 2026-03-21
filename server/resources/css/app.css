@@ -1665,7 +1665,7 @@
     html.theme-dark .cf-course-description,
     html.theme-dark .cf-hero-video-copy p:first-child,
     html.theme-dark .cf-hero-stat-card p {
-        color: rgba(244, 244, 244, 0.82);
+        color: rgba(0, 0, 0, 0.82);
     }
 
     html.theme-dark .cf-course-meta-pill,
