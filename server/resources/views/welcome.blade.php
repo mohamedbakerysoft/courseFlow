@@ -180,7 +180,7 @@
                     <p class="cf-subheading">{{ $landingCopy['testimonials_subtitle'] ?? __('Clear feedback from real buyers and instructors helps new visitors trust the teaching experience before they enroll.') }}</p>
                 </div>
                 <div class="grid gap-4 md:grid-cols-3">
-                    @foreach ($testimonials as $testimonial)
+                    @foreach (collect($testimonials)->take(6) as $testimonial)
                         <article class="cf-testimonial-card">
                             <div class="flex items-center gap-4">
                                 <img
