@@ -64,17 +64,98 @@
         <div class="cf-app-shell">
             @include('layouts.navigation')
 
-            <main class="cf-shell py-8 sm:py-10 lg:py-12">
-                @isset($header)
-                    <header class="cf-page-header mb-8 text-white">
-                        <div class="relative z-10">
-                            {{ $header }}
-                        </div>
-                    </header>
-                @endisset
+            @auth
+                @can('viewAny', \App\Models\Course::class)
+                    <div class="flex">
+                        <!-- Sidebar -->
+                        <aside class="w-64 bg-white border-r border-gray-200 min-h-screen">
+                            <nav class="mt-8">
+                                <div class="px-4">
+                                    <h2 class="text-lg font-semibold text-gray-800 mb-4">{{ __('Admin Panel') }}</h2>
+                                    <ul class="space-y-2">
+                                        <li>
+                                            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard') && !request()->routeIs('dashboard.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                {{ __('Dashboard') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('dashboard.courses.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.courses.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                {{ __('Courses') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('dashboard.books.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.books.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                {{ __('Books') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('dashboard.users.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.users.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                {{ __('Users') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('dashboard.finance.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.finance.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                {{ __('Finance') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('dashboard.appearance.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.appearance.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                {{ __('Appearance') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('dashboard.settings.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.settings.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                {{ __('Settings') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('dashboard.instructor_profile.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.instructor_profile.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                {{ __('Profile') }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </aside>
+                        <!-- Main content -->
+                        <main class="flex-1 cf-shell py-8 sm:py-10 lg:py-12">
+                            @isset($header)
+                                <header class="cf-page-header mb-8 text-white">
+                                    <div class="relative z-10">
+                                        {{ $header }}
+                                    </div>
+                                </header>
+                            @endisset
 
-                {{ $slot }}
-            </main>
+                            {{ $slot }}
+                        </main>
+                    </div>
+                @else
+                    <main class="cf-shell py-8 sm:py-10 lg:py-12">
+                        @isset($header)
+                            <header class="cf-page-header mb-8 text-white">
+                                <div class="relative z-10">
+                                    {{ $header }}
+                                </div>
+                            </header>
+                        @endisset
+
+                        {{ $slot }}
+                    </main>
+                @endcan
+            @else
+                <main class="cf-shell py-8 sm:py-10 lg:py-12">
+                    @isset($header)
+                        <header class="cf-page-header mb-8 text-white">
+                            <div class="relative z-10">
+                                {{ $header }}
+                            </div>
+                        </header>
+                    @endisset
+
+                    {{ $slot }}
+                </main>
+            @endauth
         </div>
     </body>
 </html>

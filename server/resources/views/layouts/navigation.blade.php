@@ -25,13 +25,6 @@
                     @endguest
                     @auth
                         @can('viewAny', \App\Models\Course::class)
-                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">{{ __('Dashboard') }}</x-nav-link>
-                            <x-nav-link :href="route('dashboard.courses.index')" :active="request()->routeIs('dashboard.courses.*')">{{ __('Courses') }}</x-nav-link>
-                            <x-nav-link :href="route('dashboard.books.index')" :active="request()->routeIs('dashboard.books.*')">{{ __('Books') }}</x-nav-link>
-                            <x-nav-link :href="route('dashboard.settings.edit')" :active="request()->routeIs('dashboard.settings.*')">{{ __('Settings') }}</x-nav-link>
-                            <x-nav-link :href="route('dashboard.appearance.edit')" :active="request()->routeIs('dashboard.appearance.*')">{{ __('Appearance') }}</x-nav-link>
-                            <x-nav-link :href="route('dashboard.users.index')" :active="request()->routeIs('dashboard.users.*')">{{ __('Users') }}</x-nav-link>
-                            <x-nav-link :href="route('dashboard.finance.index')" :active="request()->routeIs('dashboard.finance.*')">{{ __('Finance') }}</x-nav-link>
                             <x-nav-link :href="url('/')" :active="request()->is('/')">{{ __('View Site') }}</x-nav-link>
                         @else
                             <x-nav-link :href="url('/')" :active="request()->is('/')">{{ __('Home') }}</x-nav-link>
