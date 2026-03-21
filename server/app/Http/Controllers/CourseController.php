@@ -38,7 +38,7 @@ class CourseController extends Controller
         $course = $action->execute($course);
         $isEnrolled = $checker->execute($request->user(), $course);
         $progressPercent = $isEnrolled ? $progressAction->execute($request->user(), $course) : 0;
-        $lessons = $course->lessons()->published()->select(['id', 'slug', 'title', 'position'])->orderBy('position')->get();
+        $lessons = $course->publishedLessonsList();
         $firstLesson = $lessons->first();
         $isStripeEnabled = (bool) $settings->get('payments.stripe.enabled', true);
         $isPayPalEnabled = (bool) $settings->get('payments.paypal.enabled', true);

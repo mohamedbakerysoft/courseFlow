@@ -7,14 +7,8 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ListPublishedCoursesAction
 {
-    public function execute(int $perPage = 12): LengthAwarePaginator
+    public function execute(int $perPage = Course::DEFAULT_PER_PAGE): LengthAwarePaginator
     {
-        return Course::published()
-            ->courses()
-            ->with('instructor')
-            ->withCount('lessons')
-            ->orderByDesc('created_at')
-            ->select(['id', 'slug', 'title', 'description', 'thumbnail_path', 'price', 'currency', 'is_free', 'instructor_id', 'product_type'])
-            ->paginate($perPage);
+        return Course::paginatePublishedCourses($perPage);
     }
 }

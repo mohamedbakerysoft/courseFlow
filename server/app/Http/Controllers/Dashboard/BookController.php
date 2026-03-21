@@ -11,6 +11,7 @@ use App\Actions\Dashboard\Courses\UpdateCourseAction;
 use App\Actions\Dashboard\Courses\UploadCourseThumbnailAction;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\ReferenceOption;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -21,14 +22,14 @@ class BookController extends Controller
 {
     public function index(Request $request, ListInstructorCoursesAction $list): View
     {
-        $books = $list->executeByType($request->user(), Course::TYPE_BOOK, 20);
+        $books = $list->executeByType($request->user(), Course::TYPE_BOOK);
 
         return view('dashboard.books.index', compact('books'));
     }
 
     public function create(): View
     {
-        return view('dashboard.books.create');
+        return view('dashboard.books.create', $this->formOptions());
     }
 
     public function store(Request $request, CreateCourseAction $create, UploadCourseThumbnailAction $upload): RedirectResponse
@@ -56,7 +57,7 @@ class BookController extends Controller
         abort_unless(($book->product_type ?? Course::TYPE_COURSE) === Course::TYPE_BOOK, 404);
         $this->authorize('view', $book);
 
-        return view('dashboard.books.edit', compact('book'));
+        return view('dashboard.books.edit', array_merge(['book' => $book], $this->formOptions()));
     }
 
     public function update(Request $request, Course $book, UpdateCourseAction $update, UploadCourseThumbnailAction $upload): RedirectResponse
@@ -128,10 +129,18 @@ class BookController extends Controller
             'thumbnail' => ['nullable', 'image', 'max:2048'],
             'download_file' => ['nullable', 'file', 'mimes:pdf,epub,zip,doc,docx', 'max:10240'],
             'price' => ['nullable', 'numeric', 'min:0'],
-            'currency' => ['nullable', 'string', 'max:8'],
+            'currency' => ['nullable', 'string', 'max:8', Rule::exists('reference_options', 'code')->where('type', ReferenceOption::TYPE_CURRENCY)->where('is_active', true)],
             'is_free' => ['nullable', 'boolean'],
-            'language' => ['nullable', 'string', 'max:12'],
+            'language' => ['nullable', 'string', 'max:12', Rule::exists('reference_options', 'code')->where('type', ReferenceOption::TYPE_LANGUAGE)->where('is_active', true)],
             'remove_download_file' => ['nullable', 'boolean'],
         ]);
+    }
+
+    private function formOptions(): array
+    {
+        return [
+            'languageOptions' => ReferenceOption::languageOptions(),
+            'currencyOptions' => ReferenceOption::currencyOptions(),
+        ];
     }
 }

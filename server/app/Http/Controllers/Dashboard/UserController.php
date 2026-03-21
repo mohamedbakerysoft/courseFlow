@@ -17,7 +17,7 @@ class UserController extends Controller
 {
     public function index(ListUsersAction $list): View
     {
-        $users = $list->execute(20);
+        $users = $list->execute();
 
         return view('dashboard.users.index', compact('users'));
     }
@@ -25,8 +25,8 @@ class UserController extends Controller
     public function show(User $user): View
     {
         $enrolledCount = $user->courses()->count();
-        $enrolledCourses = $user->courses()->select(['courses.id', 'courses.slug', 'courses.title'])->get();
-        $courses = Course::published()->select(['id', 'slug', 'title'])->orderBy('title')->get();
+        $enrolledCourses = $user->enrolledCoursesList();
+        $courses = Course::listPublishedOptions();
 
         return view('dashboard.users.show', compact('user', 'enrolledCount', 'enrolledCourses', 'courses'));
     }
@@ -42,7 +42,7 @@ class UserController extends Controller
     public function grantAccess(User $user, GrantCourseAccessRequest $request, GrantCourseAccessAction $grant): RedirectResponse
     {
         $courseId = (int) ($request->validated()['course_id'] ?? $request->input('course_id'));
-        $course = Course::published()->where('id', $courseId)->firstOrFail();
+        $course = Course::findPublishedById($courseId);
         $grant->execute($user, $course);
 
         return redirect()->route('dashboard.users.show', $user)->with('status', 'granted');

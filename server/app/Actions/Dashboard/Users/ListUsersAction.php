@@ -7,11 +7,8 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ListUsersAction
 {
-    public function execute(int $perPage = 20): LengthAwarePaginator
+    public function execute(int $perPage = \App\Models\Course::DEFAULT_PER_PAGE): LengthAwarePaginator
     {
-        return User::query()
-            ->orderByDesc('created_at')
-            ->select(['id', 'name', 'email', 'role', 'is_disabled'])
-            ->paginate($perPage);
+        return User::paginateForDashboard($perPage);
     }
 }

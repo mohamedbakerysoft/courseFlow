@@ -11,4 +11,9 @@ class Page extends Model
         'title',
         'content',
     ];
+
+    public static function findBySlugOrFail(string $slug): self
+    {
+        return static::query()->where('slug', $slug)->firstOrFail();
+    }
 }

@@ -9,16 +9,8 @@ class ShowInstructorProfileAction
 {
     public function execute(): array
     {
-        $instructor = User::query()
-            ->where('email', config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL))
-            ->first()
-            ?: User::query()->where('role', User::ROLE_ADMIN)->firstOrFail();
-        $courses = Course::query()
-            ->published()
-            ->with('instructor')
-            ->withCount('lessons')
-            ->select(['id', 'slug', 'title', 'description', 'thumbnail_path', 'price', 'currency', 'is_free', 'language', 'instructor_id'])
-            ->get();
+        $instructor = User::primaryInstructorOrFail();
+        $courses = Course::listPublishedForInstructorProfile();
 
         $links = [];
         if (! empty($instructor->social_links)) {

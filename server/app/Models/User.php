@@ -6,6 +6,8 @@ use App\Support\MediaAsset;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -110,5 +112,33 @@ class User extends Authenticatable
     public function getProfileImageFallbackUrlAttribute(): string
     {
         return MediaAsset::avatarFallback($this->email ?: $this->name);
+    }
+
+    public static function paginateForDashboard(int $perPage = Course::DEFAULT_PER_PAGE): LengthAwarePaginator
+    {
+        return static::query()
+            ->orderByDesc('created_at')
+            ->select(['id', 'name', 'email', 'role', 'is_disabled'])
+            ->paginate($perPage);
+    }
+
+    public static function primaryInstructor(): ?self
+    {
+        return static::query()
+            ->where('email', config('demo.admin_email', self::PROTECTED_ADMIN_EMAIL))
+            ->first()
+            ?: static::query()->where('role', self::ROLE_ADMIN)->first();
+    }
+
+    public static function primaryInstructorOrFail(): self
+    {
+        return static::primaryInstructor() ?? static::query()->where('role', self::ROLE_ADMIN)->firstOrFail();
+    }
+
+    public function enrolledCoursesList(): Collection
+    {
+        return $this->courses()
+            ->select(['courses.id', 'courses.slug', 'courses.title'])
+            ->get();
     }
 }

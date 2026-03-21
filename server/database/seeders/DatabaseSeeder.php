@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\ReferenceOption;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -119,6 +120,29 @@ class DatabaseSeeder extends Seeder
                 'instructor_id' => User::query()->where('email', config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL))->first()?->id,
             ],
         );
+
+        $referenceOptions = [
+            ['type' => ReferenceOption::TYPE_LANGUAGE, 'code' => 'en', 'label' => 'English', 'sort_order' => 10],
+            ['type' => ReferenceOption::TYPE_LANGUAGE, 'code' => 'ar', 'label' => 'Arabic', 'sort_order' => 20],
+            ['type' => ReferenceOption::TYPE_LANGUAGE, 'code' => 'fr', 'label' => 'French', 'sort_order' => 30],
+            ['type' => ReferenceOption::TYPE_CURRENCY, 'code' => 'USD', 'label' => 'US Dollar (USD)', 'sort_order' => 10],
+            ['type' => ReferenceOption::TYPE_CURRENCY, 'code' => 'EUR', 'label' => 'Euro (EUR)', 'sort_order' => 20],
+            ['type' => ReferenceOption::TYPE_CURRENCY, 'code' => 'GBP', 'label' => 'British Pound (GBP)', 'sort_order' => 30],
+            ['type' => ReferenceOption::TYPE_CURRENCY, 'code' => 'EGP', 'label' => 'Egyptian Pound (EGP)', 'sort_order' => 40],
+            ['type' => ReferenceOption::TYPE_CURRENCY, 'code' => 'SAR', 'label' => 'Saudi Riyal (SAR)', 'sort_order' => 50],
+            ['type' => ReferenceOption::TYPE_CURRENCY, 'code' => 'AED', 'label' => 'UAE Dirham (AED)', 'sort_order' => 60],
+        ];
+
+        foreach ($referenceOptions as $referenceOption) {
+            ReferenceOption::updateOrCreate(
+                ['type' => $referenceOption['type'], 'code' => $referenceOption['code']],
+                [
+                    'label' => $referenceOption['label'],
+                    'sort_order' => $referenceOption['sort_order'],
+                    'is_active' => true,
+                ],
+            );
+        }
 
         Setting::updateOrCreate(['key' => 'landing.show_contact_form'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'landing.show_platform_proof'], ['value' => true]);

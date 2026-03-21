@@ -42,15 +42,14 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium">Language</label>
-                    <input name="language" type="text" value="en" class="mt-1 w-full border rounded p-2">
+                    <select name="language" class="mt-1 w-full border rounded p-2">
+                        @foreach($languageOptions as $languageOption)
+                            <option value="{{ $languageOption->code }}" @selected(old('language', 'en') === $languageOption->code)>{{ $languageOption->label }}</option>
+                        @endforeach
+                    </select>
                     @error('language')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
                 </div>
             </div>
-            @inject('settings', 'App\Services\SettingsService')
-            @php
-                $supportedCurrencies = config('currencies.supported', ['USD']);
-                $defaultCurrency = $settings->get('payments.default_currency', 'USD');
-            @endphp
             <div class="grid grid-cols-3 gap-4">
                 <div>
                     <label class="block text-sm font-medium">Price</label>
@@ -61,8 +60,8 @@
                 <div>
                     <label class="block text-sm font-medium">Currency</label>
                     <select name="currency" class="mt-1 w-full border rounded p-2">
-                        @foreach($supportedCurrencies as $code)
-                            <option value="{{ $code }}" @selected(old('currency', $defaultCurrency) === $code)>{{ $code }}</option>
+                        @foreach($currencyOptions as $currencyOption)
+                            <option value="{{ $currencyOption->code }}" @selected(old('currency', 'USD') === $currencyOption->code)>{{ $currencyOption->label }}</option>
                         @endforeach
                     </select>
                     @error('currency')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror

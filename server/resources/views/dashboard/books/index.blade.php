@@ -102,9 +102,33 @@
             </table>
         </div>
 
-        @if (method_exists($books, 'links'))
-            <div class="flex justify-end">
-                {{ $books->onEachSide(1)->links() }}
+        @if ($books->hasPages())
+            <div class="flex flex-col gap-4 rounded-[22px] border border-[rgba(11,11,11,0.08)] bg-white px-5 py-4 shadow-[0_10px_24px_rgba(11,11,11,0.03)] sm:flex-row sm:items-center sm:justify-between">
+                <p class="text-sm text-[var(--color-text-muted)]">
+                    {{ __('Showing :from-:to of :total books', ['from' => $books->firstItem(), 'to' => $books->lastItem(), 'total' => $books->total()]) }}
+                </p>
+
+                <nav aria-label="{{ __('Books pagination') }}" class="flex flex-wrap items-center gap-2">
+                    @if ($books->onFirstPage())
+                        <span class="inline-flex min-w-10 items-center justify-center rounded-full border border-[rgba(11,11,11,0.08)] px-4 py-2 text-sm font-semibold text-[var(--color-text-muted)] opacity-60">{{ __('Previous') }}</span>
+                    @else
+                        <a href="{{ $books->previousPageUrl() }}" class="inline-flex min-w-10 items-center justify-center rounded-full border border-[rgba(11,11,11,0.08)] px-4 py-2 text-sm font-semibold text-[var(--color-text-primary)] transition hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]">{{ __('Previous') }}</a>
+                    @endif
+
+                    @foreach ($books->getUrlRange(1, $books->lastPage()) as $page => $url)
+                        @if ($page === $books->currentPage())
+                            <span aria-current="page" class="inline-flex h-10 min-w-10 items-center justify-center rounded-full bg-[var(--color-primary)] px-3 text-sm font-semibold text-[var(--color-secondary)]">{{ $page }}</span>
+                        @else
+                            <a href="{{ $url }}" class="inline-flex h-10 min-w-10 items-center justify-center rounded-full border border-[rgba(11,11,11,0.08)] px-3 text-sm font-semibold text-[var(--color-text-primary)] transition hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]">{{ $page }}</a>
+                        @endif
+                    @endforeach
+
+                    @if ($books->hasMorePages())
+                        <a href="{{ $books->nextPageUrl() }}" class="inline-flex min-w-10 items-center justify-center rounded-full border border-[rgba(11,11,11,0.08)] px-4 py-2 text-sm font-semibold text-[var(--color-text-primary)] transition hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]">{{ __('Next') }}</a>
+                    @else
+                        <span class="inline-flex min-w-10 items-center justify-center rounded-full border border-[rgba(11,11,11,0.08)] px-4 py-2 text-sm font-semibold text-[var(--color-text-muted)] opacity-60">{{ __('Next') }}</span>
+                    @endif
+                </nav>
             </div>
         @endif
     </div>

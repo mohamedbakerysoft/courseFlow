@@ -8,18 +8,13 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ListInstructorCoursesAction
 {
-    public function execute(User $user, int $perPage = 12): LengthAwarePaginator
+    public function execute(User $user, int $perPage = Course::DEFAULT_PER_PAGE): LengthAwarePaginator
     {
-        return Course::where('instructor_id', $user->id)
-            ->orderByDesc('created_at')
-            ->paginate($perPage);
+        return Course::paginateInstructorItems($user, null, $perPage);
     }
 
-    public function executeByType(User $user, string $productType, int $perPage = 12): LengthAwarePaginator
+    public function executeByType(User $user, string $productType, int $perPage = Course::DEFAULT_PER_PAGE): LengthAwarePaginator
     {
-        return Course::where('instructor_id', $user->id)
-            ->where('product_type', $productType)
-            ->orderByDesc('created_at')
-            ->paginate($perPage);
+        return Course::paginateInstructorItems($user, $productType, $perPage);
     }
 }

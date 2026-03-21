@@ -11,20 +11,22 @@ use App\Actions\Dashboard\Courses\UpdateCourseAction;
 use App\Actions\Dashboard\Courses\UploadCourseThumbnailAction;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\ReferenceOption;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
 {
     public function index(Request $request, ListInstructorCoursesAction $list)
     {
-        $courses = $list->executeByType($request->user(), Course::TYPE_COURSE, 20);
+        $courses = $list->executeByType($request->user(), Course::TYPE_COURSE);
 
         return view('dashboard.courses.index', compact('courses'));
     }
 
     public function create()
     {
-        return view('dashboard.courses.create');
+        return view('dashboard.courses.create', $this->formOptions());
     }
 
     public function store(Request $request, CreateCourseAction $create, UploadCourseThumbnailAction $upload)
@@ -38,9 +40,9 @@ class CourseController extends Controller
             'thumbnail_path' => ['nullable', 'string'],
             'thumbnail' => ['nullable', 'image', 'max:2048'],
             'price' => ['nullable', 'numeric', 'min:0'],
-            'currency' => ['nullable', 'string', 'max:8'],
+            'currency' => ['nullable', 'string', 'max:8', Rule::exists('reference_options', 'code')->where('type', ReferenceOption::TYPE_CURRENCY)->where('is_active', true)],
             'is_free' => ['nullable', 'boolean'],
-            'language' => ['nullable', 'string', 'max:12'],
+            'language' => ['nullable', 'string', 'max:12', Rule::exists('reference_options', 'code')->where('type', ReferenceOption::TYPE_LANGUAGE)->where('is_active', true)],
         ]);
 
         if ($request->hasFile('thumbnail')) {
@@ -58,7 +60,7 @@ class CourseController extends Controller
     {
         $this->authorize('view', $course);
 
-        return view('dashboard.courses.edit', compact('course'));
+        return view('dashboard.courses.edit', array_merge(['course' => $course], $this->formOptions()));
     }
 
     public function update(Request $request, Course $course, UpdateCourseAction $update, UploadCourseThumbnailAction $upload)
@@ -72,9 +74,9 @@ class CourseController extends Controller
             'thumbnail_path' => ['nullable', 'string'],
             'thumbnail' => ['nullable', 'image', 'max:2048'],
             'price' => ['nullable', 'numeric', 'min:0'],
-            'currency' => ['nullable', 'string', 'max:8'],
+            'currency' => ['nullable', 'string', 'max:8', Rule::exists('reference_options', 'code')->where('type', ReferenceOption::TYPE_CURRENCY)->where('is_active', true)],
             'is_free' => ['nullable', 'boolean'],
-            'language' => ['nullable', 'string', 'max:12'],
+            'language' => ['nullable', 'string', 'max:12', Rule::exists('reference_options', 'code')->where('type', ReferenceOption::TYPE_LANGUAGE)->where('is_active', true)],
         ]);
 
         if ($request->hasFile('thumbnail')) {
@@ -110,5 +112,13 @@ class CourseController extends Controller
         $unpublish->execute($course);
 
         return back()->with('status', 'Course unpublished.');
+    }
+
+    private function formOptions(): array
+    {
+        return [
+            'languageOptions' => ReferenceOption::languageOptions(),
+            'currencyOptions' => ReferenceOption::currencyOptions(),
+        ];
     }
 }

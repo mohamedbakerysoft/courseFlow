@@ -27,7 +27,11 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Language') }}</label>
-                    <input name="language" type="text" class="cf-input mt-2" value="{{ old('language', 'en') }}">
+                    <select name="language" class="cf-input mt-2">
+                        @foreach($languageOptions as $languageOption)
+                            <option value="{{ $languageOption->code }}" @selected(old('language', 'en') === $languageOption->code)>{{ $languageOption->label }}</option>
+                        @endforeach
+                    </select>
                     @error('language')<p class="text-[var(--color-error)] text-sm mt-2">{{ $message }}</p>@enderror
                 </div>
                 <div class="md:col-span-2">
@@ -56,7 +60,11 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Currency') }}</label>
-                    <input name="currency" type="text" class="cf-input mt-2" value="{{ old('currency', 'USD') }}">
+                    <select name="currency" class="cf-input mt-2">
+                        @foreach($currencyOptions as $currencyOption)
+                            <option value="{{ $currencyOption->code }}" @selected(old('currency', 'USD') === $currencyOption->code)>{{ $currencyOption->label }}</option>
+                        @endforeach
+                    </select>
                     @error('currency')<p class="text-[var(--color-error)] text-sm mt-2">{{ $message }}</p>@enderror
                 </div>
                 <label class="flex items-center gap-3 rounded-2xl border border-[var(--color-secondary)]/10 px-4 py-4">

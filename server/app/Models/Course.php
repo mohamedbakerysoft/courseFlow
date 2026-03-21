@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use App\Support\MediaAsset;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class Course extends \Illuminate\Database\Eloquent\Model
 {
+    public const DEFAULT_PER_PAGE = 10;
+
     protected $fillable = [
         'title',
         'slug',
@@ -84,5 +88,84 @@ class Course extends \Illuminate\Database\Eloquent\Model
     public function getIsBookAttribute(): bool
     {
         return ($this->product_type ?? self::TYPE_COURSE) === self::TYPE_BOOK;
+    }
+
+    public static function paginatePublishedCourses(int $perPage = self::DEFAULT_PER_PAGE): LengthAwarePaginator
+    {
+        return static::query()
+            ->published()
+            ->courses()
+            ->with('instructor')
+            ->withCount('lessons')
+            ->orderByDesc('created_at')
+            ->select(['id', 'slug', 'title', 'description', 'thumbnail_path', 'price', 'currency', 'is_free', 'instructor_id', 'product_type'])
+            ->paginate($perPage);
+    }
+
+    public static function paginatePublishedBooks(int $perPage = self::DEFAULT_PER_PAGE): LengthAwarePaginator
+    {
+        return static::query()
+            ->published()
+            ->books()
+            ->with('instructor')
+            ->orderByDesc('created_at')
+            ->paginate($perPage);
+    }
+
+    public static function paginateInstructorItems(User $user, ?string $productType = null, int $perPage = self::DEFAULT_PER_PAGE): LengthAwarePaginator
+    {
+        return static::query()
+            ->where('instructor_id', $user->id)
+            ->when($productType, fn ($query) => $query->where('product_type', $productType))
+            ->orderByDesc('created_at')
+            ->paginate($perPage);
+    }
+
+    public static function listPublishedForLanding(int $limit = 6): Collection
+    {
+        return static::query()
+            ->published()
+            ->courses()
+            ->with('instructor')
+            ->withCount('lessons')
+            ->orderByDesc('created_at')
+            ->limit($limit)
+            ->get();
+    }
+
+    public static function listPublishedForInstructorProfile(): Collection
+    {
+        return static::query()
+            ->published()
+            ->with('instructor')
+            ->withCount('lessons')
+            ->select(['id', 'slug', 'title', 'description', 'thumbnail_path', 'price', 'currency', 'is_free', 'language', 'instructor_id'])
+            ->get();
+    }
+
+    public static function listPublishedOptions(): Collection
+    {
+        return static::query()
+            ->published()
+            ->select(['id', 'slug', 'title'])
+            ->orderBy('title')
+            ->get();
+    }
+
+    public static function findPublishedById(int $id): self
+    {
+        return static::query()
+            ->published()
+            ->whereKey($id)
+            ->firstOrFail();
+    }
+
+    public function publishedLessonsList(): Collection
+    {
+        return $this->lessons()
+            ->published()
+            ->select(['id', 'slug', 'title', 'position'])
+            ->orderBy('position')
+            ->get();
     }
 }

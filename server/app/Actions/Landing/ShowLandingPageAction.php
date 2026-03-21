@@ -16,10 +16,7 @@ class ShowLandingPageAction
 
     public function execute(): View
     {
-        $instructor = User::query()
-            ->where('email', config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL))
-            ->first()
-            ?: User::query()->where('role', User::ROLE_ADMIN)->first();
+        $instructor = User::primaryInstructor();
 
         $heroTitleLocal = (string) ($this->settings->get('instructor.hero_headline_en') ?: $this->settings->get('instructor.hero_headline') ?: $this->settings->get('hero.title.en') ?: $this->settings->get('landing.hero_title_en') ?: '');
         $heroSubtitleLocal = (string) ($this->settings->get('instructor.hero_subheadline_en') ?: $this->settings->get('instructor.hero_subheadline') ?: $this->settings->get('hero.subtitle.en') ?: $this->settings->get('landing.hero_subtitle_en') ?: '');
@@ -89,14 +86,7 @@ class ShowLandingPageAction
             ],
         ];
 
-        $featuredCourses = Course::query()
-            ->published()
-            ->where('product_type', Course::TYPE_COURSE)
-            ->with('instructor')
-            ->withCount('lessons')
-            ->orderByDesc('created_at')
-            ->limit(6)
-            ->get();
+        $featuredCourses = Course::listPublishedForLanding();
         $heroCourses = $featuredCourses->take(4)->values();
 
         $data = [

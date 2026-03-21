@@ -33,7 +33,7 @@ class ShowPageAction
             return $page;
         }
 
-        return Page::query()->where('slug', $slug)->firstOrFail();
+        return Page::findBySlugOrFail($slug);
     }
 
     protected function defaultLegalContent(string $slug, string $locale): string

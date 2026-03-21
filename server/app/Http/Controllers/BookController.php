@@ -16,12 +16,7 @@ class BookController extends Controller
 {
     public function index(): View
     {
-        $books = Course::query()
-            ->published()
-            ->books()
-            ->with('instructor')
-            ->orderByDesc('created_at')
-            ->paginate(12);
+        $books = Course::paginatePublishedBooks();
 
         return view('books.index', compact('books'));
     }
