@@ -1668,6 +1668,16 @@
         color: rgba(0, 0, 0, 0.82);
     }
 
+    html.theme-dark .cf-subheading {
+        color: white;
+    }
+
+    html.theme-dark .cf-nav-link,
+    html.theme-dark .cf-mobile-link,
+    html.theme-dark .cf-nav-brand-eyebrow {
+        color: white;
+    }
+
     html.theme-dark .cf-course-meta-pill,
     html.theme-dark .cf-chip,
     html.theme-dark .cf-hero-pill,
