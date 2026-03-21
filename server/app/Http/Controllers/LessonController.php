@@ -23,26 +23,39 @@ class LessonController extends Controller
     ): View {
         $lesson = $action->execute($course, $lesson);
 
-        $isCompleted = false;
+        $completedLessonIds = collect();
         if ($request->user()) {
-            $isCompleted = $request->user()->completedLessons()
-                ->where('lessons.id', $lesson->id)
-                ->exists();
+            $completedLessonIds = $request->user()->completedLessons()
+                ->where('lessons.course_id', $course->id)
+                ->pluck('lessons.id');
         }
 
-        $progressPercent = $progressAction->execute($request->user(), $course);
-        $prevLesson = $course->lessons()->published()
-            ->where('position', '<', $lesson->position)
-            ->orderBy('position', 'desc')
-            ->select(['id', 'slug', 'title', 'position'])
-            ->first();
-        $nextLesson = $course->lessons()->published()
-            ->where('position', '>', $lesson->position)
-            ->orderBy('position', 'asc')
-            ->select(['id', 'slug', 'title', 'position'])
-            ->first();
+        $isCompleted = $completedLessonIds->contains($lesson->id);
 
-        return view('lessons.show', compact('course', 'lesson', 'isCompleted', 'progressPercent', 'prevLesson', 'nextLesson'));
+        $progressPercent = $progressAction->execute($request->user(), $course);
+        $courseLessons = $course->lessons()
+            ->published()
+            ->orderBy('position')
+            ->select(['id', 'slug', 'title', 'position'])
+            ->get();
+
+        $firstIncompleteLesson = $courseLessons->first(fn (Lesson $courseLesson) => ! $completedLessonIds->contains($courseLesson->id));
+        $firstIncompletePosition = $firstIncompleteLesson?->position;
+
+        $lessonItems = $courseLessons->map(function (Lesson $courseLesson) use ($completedLessonIds, $lesson, $firstIncompletePosition) {
+            $completed = $completedLessonIds->contains($courseLesson->id);
+            $current = $courseLesson->id === $lesson->id;
+            $locked = ! $completed && ! $current && $firstIncompletePosition !== null && $courseLesson->position > $firstIncompletePosition;
+
+            return [
+                'lesson' => $courseLesson,
+                'is_current' => $current,
+                'is_completed' => $completed,
+                'is_locked' => $locked,
+            ];
+        })->values();
+
+        return view('lessons.show', compact('course', 'lesson', 'isCompleted', 'progressPercent', 'lessonItems'));
     }
 
     public function complete(
