@@ -40,6 +40,14 @@ class CourseController extends Controller
         $progressPercent = $isEnrolled ? $progressAction->execute($request->user(), $course) : 0;
         $lessons = $course->publishedLessonsList();
         $firstLesson = $lessons->first();
+
+        $completedLessonIds = [];
+        if ($request->user() && $isEnrolled) {
+            $completedLessonIds = $request->user()->completedLessons()
+                ->where('lessons.course_id', $course->id)
+                ->pluck('lessons.id')
+                ->toArray();
+        }
         $isStripeEnabled = (bool) $settings->get('payments.stripe.enabled', true);
         $isPayPalEnabled = (bool) $settings->get('payments.paypal.enabled', true);
         $manualInstructions = (string) $settings->get('payments.manual.instructions', 'Send the course fee via bank transfer or cash and upload your proof of payment.');
@@ -57,6 +65,7 @@ class CourseController extends Controller
             'progressPercent',
             'lessons',
             'firstLesson',
+            'completedLessonIds',
             'isStripeEnabled',
             'isPayPalEnabled',
             'hasManualPayment',

@@ -84,7 +84,6 @@
                                     <p>{{ $landingCopy['hero_video_eyebrow'] ?? __('Platform walkthrough') }}</p>
                                     <p>{{ $landingCopy['hero_video_title'] ?? __('See the storefront, course page, and enrollment flow together in one clean preview.') }}</p>
                                 </div>
-                                <span class="cf-floating-pill">{{ $landingCopy['hero_video_badge'] ?? __('YouTube-ready showcase') }}</span>
                             </div>
 
                             <div class="cf-hero-video-frame overflow-hidden rounded-[1.45rem] border border-[rgba(11,11,11,0.09)] bg-black shadow-[0_18px_42px_rgba(11,11,11,0.12)]">
@@ -114,11 +113,7 @@
                         <h2 class="cf-heading">{{ $landingCopy['courses_title'] ?? __('Featured courses') }}</h2>
                         <p class="cf-subheading">{{ $landingCopy['courses_subtitle'] ?? __('Pick a flagship program, a focused quickstart, or a practical specialty course from one clear catalog.') }}</p>
                     </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="cf-chip">{{ __('Self-paced learning') }}</span>
-                        <span class="cf-chip">{{ __('One-time payment') }}</span>
-                        <span class="cf-chip">{{ __('Instant enrollment') }}</span>
-                    </div>
+            
                 </div>
 
                 <div class="cf-card-grid items-start">

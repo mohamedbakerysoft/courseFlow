@@ -33,7 +33,7 @@ function makeCourseWithLesson(string $courseSlug = 'course-p', string $lessonSlu
     return [$course, $lesson];
 }
 
-it('creates progress when enrolled user opens lesson', function () {
+it('does not create progress when enrolled user opens lesson', function () {
     [$course, $lesson] = makeCourseWithLesson();
     $user = User::factory()->create();
     $user->courses()->attach($course->id, ['enrolled_at' => now()]);
@@ -45,16 +45,31 @@ it('creates progress when enrolled user opens lesson', function () {
         ->where('user_id', $user->id)
         ->where('lesson_id', $lesson->id)
         ->exists();
+    expect($exists)->toBeFalse();
+});
+
+it('creates progress when enrolled user marks lesson completed', function () {
+    [$course, $lesson] = makeCourseWithLesson();
+    $user = User::factory()->create();
+    $user->courses()->attach($course->id, ['enrolled_at' => now()]);
+
+    \Pest\Laravel\actingAs($user)->post("/courses/{$course->slug}/lessons/{$lesson->slug}/complete")
+        ->assertOk();
+
+    $exists = DB::table('lesson_user_progress')
+        ->where('user_id', $user->id)
+        ->where('lesson_id', $lesson->id)
+        ->exists();
     expect($exists)->toBeTrue();
 });
 
-it('opening the same lesson twice does not create duplicate progress', function () {
+it('marking the same lesson complete twice does not create duplicate progress', function () {
     [$course, $lesson] = makeCourseWithLesson('course-p2', 'l-1a');
     $user = User::factory()->create();
     $user->courses()->attach($course->id, ['enrolled_at' => now()]);
 
-    \Pest\Laravel\actingAs($user)->get("/courses/{$course->slug}/lessons/{$lesson->slug}");
-    \Pest\Laravel\actingAs($user)->get("/courses/{$course->slug}/lessons/{$lesson->slug}");
+    \Pest\Laravel\actingAs($user)->post("/courses/{$course->slug}/lessons/{$lesson->slug}/complete")->assertOk();
+    \Pest\Laravel\actingAs($user)->post("/courses/{$course->slug}/lessons/{$lesson->slug}/complete")->assertOk();
 
     $count = DB::table('lesson_user_progress')
         ->where('user_id', $user->id)
@@ -105,8 +120,8 @@ it('course progress percentage is calculated correctly', function () {
     $user = User::factory()->create();
     $user->courses()->attach($course->id, ['enrolled_at' => now()]);
 
-    \Pest\Laravel\actingAs($user)->get("/courses/{$course->slug}/lessons/{$lesson1->slug}");
-    \Pest\Laravel\actingAs($user)->get("/courses/{$course->slug}/lessons/{$lesson2->slug}");
+    \Pest\Laravel\actingAs($user)->post("/courses/{$course->slug}/lessons/{$lesson1->slug}/complete")->assertOk();
+    \Pest\Laravel\actingAs($user)->post("/courses/{$course->slug}/lessons/{$lesson2->slug}/complete")->assertOk();
 
     \Pest\Laravel\actingAs($user)->get("/courses/{$course->slug}")
         ->assertOk()

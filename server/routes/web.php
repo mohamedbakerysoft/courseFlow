@@ -122,6 +122,11 @@ Route::get('/courses/{course:slug}/lessons/{lesson:slug}', [LessonController::cl
     ->scopeBindings()
     ->name('lessons.show');
 
+Route::post('/courses/{course:slug}/lessons/{lesson:slug}/complete', [LessonController::class, 'complete'])
+    ->middleware(['auth', \App\Http\Middleware\EnsureUserIsEnrolled::class])
+    ->scopeBindings()
+    ->name('lessons.complete');
+
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
 Route::get('/books/{book:slug}', [BookController::class, 'show'])->name('books.show');
 Route::get('/books/{book:slug}/download', [BookController::class, 'download'])->name('books.download');

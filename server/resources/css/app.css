@@ -1672,7 +1672,7 @@
     html.theme-dark .cf-chip,
     html.theme-dark .cf-hero-pill,
     html.theme-dark .cf-floating-pill {
-        color: rgba(244, 244, 244, 0.88);
+        color: rgba(0, 0, 0, 0.88);
     }
 
     html.theme-dark .cf-admin-inline-note,

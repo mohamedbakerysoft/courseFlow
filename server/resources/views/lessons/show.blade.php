@@ -95,6 +95,12 @@
                                 @endif
                                 <span class="text-[var(--color-text-muted)]">{{ $lessonStateCopy }}</span>
                             </div>
+
+                            @if (! $isCompleted)
+                                <div>
+                                    <button id="markLessonCompleteBtn" type="button" class="cf-button-secondary mt-3">{{ __('Mark lesson as completed') }}</button>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </section>
@@ -229,4 +235,41 @@
             </aside>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const markBtn = document.getElementById('markLessonCompleteBtn');
+            if (!markBtn) return;
+
+            let isSubmitting = false;
+            markBtn.addEventListener('click', async function () {
+                if (isSubmitting) return;
+                isSubmitting = true;
+                markBtn.disabled = true;
+                markBtn.textContent = '{{ __('Saving progress...') }}';
+
+                try {
+                    const response = await fetch('{{ route('lessons.complete', [$course, $lesson]) }}', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify({}),
+                    });
+
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        throw new Error('Request failed');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    markBtn.textContent = '{{ __('Try again') }}';
+                    markBtn.disabled = false;
+                }
+            });
+        });
+    </script>
 </x-public-layout>

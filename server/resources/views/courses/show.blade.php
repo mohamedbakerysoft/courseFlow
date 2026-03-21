@@ -229,31 +229,33 @@
                     @if (!empty($lessons) && $lessons->count())
                         <div class="mt-6 space-y-3">
                             @foreach ($lessons as $l)
-                                <div class="cf-panel-soft flex items-center justify-between gap-4 px-5 py-4">
-                                    <div class="flex min-w-0 items-center gap-3">
-                                        <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[var(--color-primary)]/10 text-sm font-semibold text-[var(--color-primary)]">
-                                            {{ $l->position }}
+                                @php
+                                    $lessonCompleted = in_array($l->id, $completedLessonIds ?? []);
+                                @endphp
+
+                                <a href="{{ route('lessons.show', [$course, $l]) }}" class="cf-panel-soft block rounded-[14px] border border-[rgba(11,11,11,0.08)] px-5 py-4 hover:border-[var(--color-primary)] hover:bg-[rgba(245,184,0,0.08)] transition">
+                                    <div class="flex items-center justify-between gap-4">
+                                        <div class="flex min-w-0 items-center gap-3">
+                                            <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[var(--color-primary)]/10 text-sm font-semibold text-[var(--color-primary)]">
+                                                {{ $l->position }}
+                                            </div>
+                                            <div class="min-w-0">
+                                                <p class="truncate text-sm font-medium text-[var(--color-text-primary)]">{{ $l->title }}</p>
+                                            </div>
                                         </div>
-                                        @auth
-                                            @if ($isEnrolled)
-                                                <a href="{{ route('lessons.show', [$course, $l]) }}" class="truncate text-sm font-medium text-[var(--color-text-primary)] hover:text-[var(--color-primary)]">
-                                                    {{ $l->title }}
-                                                </a>
+
+                                        <div class="flex items-center gap-2 whitespace-nowrap">
+                                            @if ($lessonCompleted)
+                                                <span class="cf-badge text-xs">{{ __('Completed') }}</span>
+                                                <svg class="h-4 w-4 text-emerald-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.028a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-3.75-3.75a.75.75 0 111.06-1.06l3.22 3.22 6.97-6.97a.75.75 0 011.06 0z" clip-rule="evenodd" /></svg>
+                                            @elseif ($isEnrolled)
+                                                <span class="cf-badge-muted text-xs">{{ __('In progress') }}</span>
                                             @else
-                                                <span class="truncate text-sm text-[var(--color-text-muted)]">{{ $l->title }}</span>
+                                                <span class="cf-badge-muted text-xs">{{ __('Locked') }}</span>
                                             @endif
-                                        @else
-                                            <span class="truncate text-sm text-[var(--color-text-muted)]">{{ $l->title }}</span>
-                                        @endauth
+                                        </div>
                                     </div>
-                                    <span class="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
-                                        @auth
-                                            {{ $isEnrolled ? __('Open') : __('Locked') }}
-                                        @else
-                                            {{ __('Locked') }}
-                                        @endauth
-                                    </span>
-                                </div>
+                                </a>
                             @endforeach
                         </div>
                     @else
@@ -465,17 +467,7 @@
                     </ul>
                 </div>
 
-                <div class="cf-panel-soft px-6 py-6">
-                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Quick answers') }}</p>
-                    <div class="mt-4 space-y-4">
-                        @foreach ($courseBlueprint['faq'] as $faqItem)
-                            <div class="rounded-[22px] border border-[rgba(17,17,19,0.08)] px-4 py-4">
-                                <p class="font-medium text-[var(--color-text-primary)]">{{ $faqItem['question'] }}</p>
-                                <p class="mt-2 text-sm leading-7 text-[var(--color-text-muted)]">{{ $faqItem['answer'] }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Courses\CheckUserEnrollmentAction;
 use App\Actions\Courses\ShowLessonAction;
 use App\Actions\Progress\CalculateCourseProgressAction;
 use App\Actions\Progress\MarkLessonCompletedAction;
@@ -21,7 +22,14 @@ class LessonController extends Controller
         Request $request
     ): View {
         $lesson = $action->execute($course, $lesson);
-        $isCompleted = $markAction->execute($request->user(), $lesson);
+
+        $isCompleted = false;
+        if ($request->user()) {
+            $isCompleted = $request->user()->completedLessons()
+                ->where('lessons.id', $lesson->id)
+                ->exists();
+        }
+
         $progressPercent = $progressAction->execute($request->user(), $course);
         $prevLesson = $course->lessons()->published()
             ->where('position', '<', $lesson->position)
@@ -35,5 +43,21 @@ class LessonController extends Controller
             ->first();
 
         return view('lessons.show', compact('course', 'lesson', 'isCompleted', 'progressPercent', 'prevLesson', 'nextLesson'));
+    }
+
+    public function complete(
+        Course $course,
+        Lesson $lesson,
+        CheckUserEnrollmentAction $checker,
+        MarkLessonCompletedAction $markAction,
+        Request $request
+    ): \Illuminate\Http\JsonResponse {
+        if (! $checker->execute($request->user(), $course)) {
+            abort(403);
+        }
+
+        $marked = $markAction->execute($request->user(), $lesson);
+
+        return response()->json(['completed' => $marked]);
     }
 }
