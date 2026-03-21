@@ -79,7 +79,6 @@
                         <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
                             <a href="/terms" class="cf-dark-link-card">{{ __('Terms') }}</a>
                             <a href="/privacy" class="cf-dark-link-card">{{ __('Privacy') }}</a>
-                            <a href="{{ $footerContactUrl }}" class="cf-dark-link-card">{{ $footerContactLabel }}</a>
                         </div>
                     </div>
                     <div class="cf-dark-muted mt-8 border-t border-white/10 pt-6 text-sm">
