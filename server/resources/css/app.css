@@ -584,8 +584,8 @@
     .cf-hero-main {
         display: grid;
         align-items: center;
-        gap: 3rem;
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.7fr);
+        gap: 2.25rem;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
     }
 
     .cf-hero-instructor {
@@ -611,6 +611,7 @@
     .cf-hero-visual {
         position: relative;
         z-index: 1;
+        width: 100%;
     }
 
     .cf-hero-media {
@@ -691,7 +692,7 @@
         z-index: 1;
         width: 100%;
         aspect-ratio: 16 / 9;
-        min-height: 29rem;
+        min-height: 31rem;
         background: linear-gradient(180deg, rgba(11, 11, 11, 0.16), rgba(11, 11, 11, 0.3));
     }
 
