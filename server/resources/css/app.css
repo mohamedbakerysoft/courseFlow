@@ -17,7 +17,6 @@
         min-height: 100vh;
         font-size: 16px;
         line-height: 1.7;
-        
         font-optical-sizing: auto;
         text-rendering: optimizeLegibility;
         background:
@@ -479,10 +478,13 @@
         @apply inline-flex items-center rounded-[5px] px-4 py-2.5 text-[15px] font-semibold transition;
         min-height: 2.75rem;
         white-space: nowrap;
-        letter-spacing: 0.045em;
         text-transform: uppercase;
         color: rgba(11, 11, 11, 0.82);
-        font-family: var(--font-english), sans-serif !important;
+        letter-spacing: 1px;
+        align-items: center;
+        padding: 10px 20px;
+        font-weight: 600;
+        display: flex;
     }
 
     .cf-nav-link:hover,
