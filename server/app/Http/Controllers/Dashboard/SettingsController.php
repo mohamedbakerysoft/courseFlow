@@ -73,6 +73,8 @@ class SettingsController extends Controller
         $whatsappEnabled = (bool) $settings->get('contact.whatsapp.enabled', false);
         $whatsappPhone = (string) $settings->get('contact.whatsapp.phone', '');
         $whatsappMessage = (string) $settings->get('contact.whatsapp.message', 'Hello! I have a question about your courses.');
+        $liveChatProvider = (string) $settings->get('contact.live_chat.provider', 'none');
+        $tawkWidgetEmbedCode = (string) $settings->get('contact.live_chat.tawk_embed_code', '');
 
         $legalTermsEn = (string) $settings->get('legal.terms.en', "1. Introduction\nBy using this site, you agree to these terms.\n\n2. User Accounts\nYou are responsible for your login credentials and agree not to misuse the platform.\n\n3. Course Access & Payments\nAccess to courses is granted upon valid payment or free enrollment as described.\n\n4. Refund Policy\nRefunds may be offered according to the instructor’s policy stated on the course page, subject to reasonable use.\n\n5. Intellectual Property\nAll learning materials are licensed for personal use only and may not be redistributed or shared.\n\n6. Termination\nWe may suspend or terminate access in cases of misuse or violation of these terms.\n\n7. Contact Information\nYou can reach us using the contact form on the site.");
         $legalPrivacyEn = (string) $settings->get('legal.privacy.en', "1. Information We Collect\nWe collect basic account details, payment data when required, and usage data to improve the service.\n\n2. How We Use Information\nWe use data to provide the service, enhance the experience, ensure security, and communicate updates.\n\n3. Cookies\nWe use cookies to remember preferences and analyze usage. You can disable cookies in your browser settings.\n\n4. Third-Party Services\nWe may use payment providers, analytics, and video hosting. Your data is subject to their policies.\n\n5. Data Security\nWe take reasonable measures to protect data without guaranteeing absolute security.\n\n6. User Rights\nYou may request to update or delete your data, subject to applicable law.\n\n7. Contact\nPlease use the site’s contact form to reach us.");
@@ -175,6 +177,8 @@ class SettingsController extends Controller
             'whatsappEnabled',
             'whatsappPhone',
             'whatsappMessage',
+            'liveChatProvider',
+            'tawkWidgetEmbedCode',
             'securityRightClickEnabled',
             'stripeStatusLabel',
             'stripeStatusVariant',
@@ -246,6 +250,8 @@ class SettingsController extends Controller
                 'contact_whatsapp_enabled' => ['nullable', 'boolean'],
                 'contact_whatsapp_phone' => ['nullable', 'string', 'max:32'],
                 'contact_whatsapp_message' => ['nullable', 'string', 'max:500'],
+                'contact_live_chat_provider' => ['nullable', 'in:none,tawk'],
+                'contact_live_chat_tawk_embed_code' => ['nullable', 'string'],
             ]);
         } elseif ($group === 'landing') {
             $validated = $request->validate([
@@ -342,6 +348,8 @@ class SettingsController extends Controller
                 'contact_whatsapp_enabled' => ['nullable', 'boolean'],
                 'contact_whatsapp_phone' => ['nullable', 'string', 'max:32'],
                 'contact_whatsapp_message' => ['nullable', 'string', 'max:500'],
+                'contact_live_chat_provider' => ['nullable', 'in:none,tawk'],
+                'contact_live_chat_tawk_embed_code' => ['nullable', 'string'],
                 'stripe_publishable_key' => ['nullable', 'string'],
                 'stripe_secret_key' => ['nullable', 'string'],
                 'stripe_mode' => ['nullable', 'in:test,live'],
@@ -533,6 +541,8 @@ class SettingsController extends Controller
                 'contact.whatsapp.enabled' => $request->boolean('contact_whatsapp_enabled'),
                 'contact.whatsapp.phone' => (string) ($validated['contact_whatsapp_phone'] ?? (string) $settings->get('contact.whatsapp.phone', '')),
                 'contact.whatsapp.message' => (string) ($validated['contact_whatsapp_message'] ?? (string) $settings->get('contact.whatsapp.message', '')),
+                'contact.live_chat.provider' => (string) ($validated['contact_live_chat_provider'] ?? (string) $settings->get('contact.live_chat.provider', 'none')),
+                'contact.live_chat.tawk_embed_code' => trim((string) ($validated['contact_live_chat_tawk_embed_code'] ?? (string) $settings->get('contact.live_chat.tawk_embed_code', ''))),
             ]);
         }
         if (array_key_exists('stripe_mode', $validated)) {

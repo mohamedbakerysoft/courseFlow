@@ -183,21 +183,27 @@ class AppServiceProvider extends ServiceProvider
             // noop
         }
 
-        // Contact: WhatsApp CTA shared to public layout
+        // Contact / Live chat settings shared to public layout
         try {
+            $chatProvider = (string) (Setting::query()->where('key', 'contact.live_chat.provider')->value('value') ?? 'none');
+            $tawkEmbedCode = (string) (Setting::query()->where('key', 'contact.live_chat.tawk_embed_code')->value('value') ?? '');
             $waEnabled = (bool) (Setting::query()->where('key', 'contact.whatsapp.enabled')->value('value') ?? false);
             $waPhone = (string) (Setting::query()->where('key', 'contact.whatsapp.phone')->value('value') ?? '');
             $waMessage = (string) (Setting::query()->where('key', 'contact.whatsapp.message')->value('value') ?? '');
-            View::share('whatsappCta', [
-                'enabled' => $waEnabled && $waPhone !== '',
-                'phone' => $waPhone,
-                'message' => $waMessage,
+
+            View::share('liveChat', [
+                'provider' => $chatProvider,
+                'enabled' => $chatProvider === 'tawk' && trim($tawkEmbedCode) !== '',
+                'tawk_embed_code' => $tawkEmbedCode,
+                'legacy_whatsapp_enabled' => $waEnabled && $waPhone !== '',
+                'legacy_whatsapp_phone' => $waPhone,
+                'legacy_whatsapp_message' => $waMessage,
             ]);
         } catch (\Throwable $e) {
-        View::share('whatsappCta', [
+            View::share('liveChat', [
+                'provider' => 'none',
                 'enabled' => false,
-                'phone' => '',
-                'message' => '',
+                'tawk_embed_code' => '',
             ]);
         }
     }

@@ -411,6 +411,19 @@
             <section class="cf-admin-form-card space-y-5">
                 <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('Notifications') }}</h2>
                 <div class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="contact_live_chat_provider" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Live Chat Provider') }}</label>
+                            <select id="contact_live_chat_provider" name="contact_live_chat_provider" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
+                                <option value="none" @selected(old('contact_live_chat_provider', $liveChatProvider) === 'none')>{{ __('None') }}</option>
+                                <option value="tawk" @selected(old('contact_live_chat_provider', $liveChatProvider) === 'tawk')>{{ __('Tawk.to') }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="contact_live_chat_tawk_embed_code" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Tawk.to Widget Embed Code') }}</label>
+                            <textarea id="contact_live_chat_tawk_embed_code" name="contact_live_chat_tawk_embed_code" rows="4" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="<script>...Tawk.to...</script>">{{ old('contact_live_chat_tawk_embed_code', $tawkWidgetEmbedCode) }}</textarea>
+                        </div>
+                    </div>
                     <div class="flex items-start justify-between gap-4">
                         <div class="space-y-1">
                             <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('WhatsApp Floating Button') }}</p>
@@ -1040,6 +1053,19 @@
                     {{ __('Contact') }}
                 </h2>
                 <div class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="contact_live_chat_provider" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Live Chat Provider') }}</label>
+                            <select id="contact_live_chat_provider" name="contact_live_chat_provider" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
+                                <option value="none" @selected(old('contact_live_chat_provider', $liveChatProvider) === 'none')>{{ __('None') }}</option>
+                                <option value="tawk" @selected(old('contact_live_chat_provider', $liveChatProvider) === 'tawk')>{{ __('Tawk.to') }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="contact_live_chat_tawk_embed_code" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Tawk.to Widget Embed Code') }}</label>
+                            <textarea id="contact_live_chat_tawk_embed_code" name="contact_live_chat_tawk_embed_code" rows="4" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="<script>...Tawk.to...</script>">{{ old('contact_live_chat_tawk_embed_code', $tawkWidgetEmbedCode) }}</textarea>
+                        </div>
+                    </div>
                     <div class="flex items-start justify-between gap-4">
                         <div class="space-y-1">
                             <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('WhatsApp Floating Button') }}</p>

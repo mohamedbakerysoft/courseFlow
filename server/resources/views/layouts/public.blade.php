@@ -90,20 +90,12 @@
                 </div>
             </footer>
         </div>
-        @php
-            $enabled = false;
-            $phone = '';
-            $message = '';
-            if (!empty($whatsappCta) && ($whatsappCta['enabled'] ?? false)) {
-                $enabled = true;
-                $phone = (string) ($whatsappCta['phone'] ?? '');
-                $message = (string) ($whatsappCta['message'] ?? '');
-            } else {
-                $enabled = (bool) (\App\Models\Setting::query()->where('key', 'contact.whatsapp.enabled')->value('value') ?? false);
-                $phone = (string) (\App\Models\Setting::query()->where('key', 'contact.whatsapp.phone')->value('value') ?? '');
-                $message = (string) (\App\Models\Setting::query()->where('key', 'contact.whatsapp.message')->value('value') ?? '');
-            }
-        @endphp
-        <x-whatsapp-floating :enabled="$enabled" :phone="$phone" :message="$message" />
+        <x-live-chat-floating
+            :enabled="(bool) ($liveChat['enabled'] ?? false)"
+            :provider="(string) ($liveChat['provider'] ?? 'none')"
+        />
+        @if (($liveChat['provider'] ?? 'none') === 'tawk' && ! empty($liveChat['tawk_embed_code']))
+            {!! $liveChat['tawk_embed_code'] !!}
+        @endif
     </body>
 </html>

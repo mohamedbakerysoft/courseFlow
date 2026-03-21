@@ -222,46 +222,4 @@
         </section>
     @endif
 
-    @if ($showContactForm === true)
-        <div x-data="{ open: false }" class="fixed bottom-5 right-5 z-40 sm:bottom-6 sm:right-6">
-            <button type="button" @click="open = !open" class="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-primary)] text-[var(--color-primary-contrast)] shadow-[0_18px_40px_rgba(11,11,11,0.2)] transition hover:-translate-y-0.5" aria-label="{{ __('Open support chat') }}">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5m-7 6 2.6-2H19a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h1Z"/>
-                </svg>
-            </button>
-
-            <div x-cloak x-show="open" x-transition.origin.bottom.right class="absolute bottom-16 right-0 w-[min(92vw,24rem)] overflow-hidden rounded-[1.4rem] border border-[rgba(11,11,11,0.08)] bg-white p-5 shadow-[0_28px_60px_rgba(11,11,11,0.16)]">
-                <div class="mb-4 flex items-start justify-between gap-4">
-                    <div>
-                        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--color-text-muted)]">{{ __('Support') }}</p>
-                        <h3 class="mt-2 text-xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Send a quick message') }}</h3>
-                    </div>
-                    <button type="button" @click="open = false" class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-text-primary)]">
-                        <span class="sr-only">{{ __('Close support chat') }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6 6 18"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <form id="contactForm" method="POST" action="{{ route('contact.submit') }}" class="space-y-4">
-                    @csrf
-                    <div>
-                        <label for="contact_name" class="mb-2 block text-sm font-medium text-[var(--color-text-primary)]">{{ __('Name') }}</label>
-                        <input id="contact_name" name="name" type="text" class="cf-input" value="{{ old('name') }}">
-                    </div>
-                    <div>
-                        <label for="contact_email" class="mb-2 block text-sm font-medium text-[var(--color-text-primary)]">{{ __('Email') }}</label>
-                        <input id="contact_email" name="email" type="email" class="cf-input" value="{{ old('email') }}">
-                    </div>
-                    <div>
-                        <label for="contact_message" class="mb-2 block text-sm font-medium text-[var(--color-text-primary)]">{{ __('Message') }}</label>
-                        <textarea id="contact_message" name="message" rows="4" class="cf-input">{{ old('message') }}</textarea>
-                    </div>
-                    <input type="hidden" id="captcha_token" name="captcha_token" value="">
-                    <button type="submit" class="cf-button-primary w-full">{{ __('Send Message') }}</button>
-                </form>
-            </div>
-        </div>
-    @endif
 </x-public-layout>

@@ -145,6 +145,8 @@ class DatabaseSeeder extends Seeder
         }
 
         Setting::updateOrCreate(['key' => 'landing.show_contact_form'], ['value' => true]);
+        Setting::updateOrCreate(['key' => 'contact.live_chat.provider'], ['value' => 'tawk']);
+        Setting::updateOrCreate(['key' => 'contact.live_chat.tawk_embed_code'], ['value' => "<!--Start of Tawk.to Script-->\n<script type=\"text/javascript\">\nvar Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();\n(function(){\nvar s1=document.createElement(\"script\"),s0=document.getElementsByTagName(\"script\")[0];\ns1.async=true;\ns1.src='https://embed.tawk.to/69beef38cfaccd1c35825392/1jk8tct2m';\ns1.charset='UTF-8';\ns1.setAttribute('crossorigin','*');\ns0.parentNode.insertBefore(s1,s0);\n})();\n</script>\n<!--End of Tawk.to Script-->"]);
         Setting::updateOrCreate(['key' => 'landing.show_platform_proof'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'landing.show_problem_section'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'landing.show_flow_section'], ['value' => true]);
