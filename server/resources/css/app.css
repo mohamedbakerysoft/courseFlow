@@ -1672,6 +1672,10 @@
         color: white;
     }
 
+    html.theme-dark .cf-course-description {
+        color: white;
+    }
+
     html.theme-dark .cf-nav-link,
     html.theme-dark .cf-mobile-link,
     html.theme-dark .cf-nav-brand-eyebrow {
@@ -1682,7 +1686,17 @@
     html.theme-dark .cf-chip,
     html.theme-dark .cf-hero-pill,
     html.theme-dark .cf-floating-pill {
-        color: rgba(0, 0, 0, 0.88);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.18);
+        color: #f4f4f4;
+    }
+
+    html.theme-dark .cf-course-meta-pill.text-black,
+    html.theme-dark .cf-chip.text-black,
+    html.theme-dark .cf-hero-pill.text-black,
+    html.theme-dark .cf-floating-pill.text-black {
+        color: #0b0b0b !important;
+        background: #f7f7f7 !important;
     }
 
     html.theme-dark .cf-admin-inline-note,
