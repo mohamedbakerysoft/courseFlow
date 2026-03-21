@@ -139,11 +139,6 @@ class DatabaseSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'typography.english_font'], ['value' => 'Poppins']);
         Setting::updateOrCreate(['key' => 'instructor.social.youtube'], ['value' => 'https://www.youtube.com/watch?v=M7lc1UVf-VE']);
         Setting::updateOrCreate(['key' => 'landing.hero_video_url'], ['value' => 'https://www.youtube.com/watch?v=M7lc1UVf-VE']);
-        Setting::updateOrCreate(['key' => 'hero.image'], ['value' => 'images/demo/real/hero-formal-2.jpg']);
-        Setting::updateOrCreate(['key' => 'hero.image_path'], ['value' => 'images/demo/real/hero-formal-2.jpg']);
-        Setting::updateOrCreate(['key' => 'hero.image_fit'], ['value' => 'cover']);
-        Setting::updateOrCreate(['key' => 'hero.image_ratio'], ['value' => '4:5']);
-        Setting::updateOrCreate(['key' => 'hero.image_focus'], ['value' => 'center']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.0.name'], ['value' => 'Maya Collins']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.0.role'], ['value' => 'Course buyer']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.0.quote'], ['value' => 'The checkout felt clear, the lessons opened instantly, and the platform looked polished from the first click.']);

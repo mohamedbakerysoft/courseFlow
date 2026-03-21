@@ -853,12 +853,6 @@ class DemoSeeder extends Seeder
             );
         }
 
-        $storageHeroPath = 'images/demo/real/hero-formal-2.jpg';
-        Setting::updateOrCreate(['key' => 'hero.image'], ['value' => $storageHeroPath]);
-        Setting::updateOrCreate(['key' => 'hero.image_path'], ['value' => $storageHeroPath]);
-        Setting::updateOrCreate(['key' => 'hero.image_fit'], ['value' => 'cover']);
-        Setting::updateOrCreate(['key' => 'hero.image_focus'], ['value' => 'center']);
-        Setting::updateOrCreate(['key' => 'hero.image_ratio'], ['value' => '4:5']);
         Setting::updateOrCreate(['key' => 'landing.show_contact_form'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'ui.theme.default'], ['value' => 'light']);
         Setting::updateOrCreate(['key' => 'theme.primary'], ['value' => '#F5B800']);

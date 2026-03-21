@@ -15,13 +15,10 @@ class AppearanceController extends Controller
         $secondary = optional(Setting::where('key', 'theme.secondary')->first())->value ?: '#0B0B0B';
         $accent = optional(Setting::where('key', 'theme.accent')->first())->value ?: '#F7F7F7';
 
-        $landingLayout = (string) $settings->get('landing.layout', 'default');
-
         return view('dashboard.appearance.edit', compact(
             'primary',
             'secondary',
             'accent',
-            'landingLayout',
         ));
     }
 
@@ -31,15 +28,15 @@ class AppearanceController extends Controller
             'primary' => ['required', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
             'secondary' => ['required', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
             'accent' => ['required', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
-            'landing_layout' => ['nullable', 'in:default,layout_v2,layout_v3'],
         ]);
         $settings->set([
             'theme.primary' => $validated['primary'],
             'theme.secondary' => $validated['secondary'],
             'theme.accent' => $validated['accent'],
             'typography.english_font' => 'Poppins',
-            'landing.layout' => $validated['landing_layout'] ?? 'default',
         ]);
+
+        Setting::updateOrCreate(['key' => 'landing.layout'], ['value' => 'default']);
 
         Setting::query()->where('key', 'typography.arabic_font')->delete();
 

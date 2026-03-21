@@ -92,22 +92,6 @@ class AppServiceProvider extends ServiceProvider
         View::share('theme', $theme);
         View::share('defaultUiTheme', $defaultUiTheme);
 
-        // Typography (fonts)
-        $typographyDefaults = [
-            'english_font' => 'Poppins',
-        ];
-        $typography = $typographyDefaults;
-        $fontStacks = [
-            'Poppins' => "'Poppins', system-ui, sans-serif",
-        ];
-
-        $typography['english_font'] = 'Poppins';
-        $typographyCss = [
-            'english_stack' => $fontStacks['Poppins'],
-        ];
-        View::share('typography', $typography);
-        View::share('typographyCss', $typographyCss);
-
         // Hero typography (font sizes)
         try {
             $titleRow = Setting::query()->where('key', 'hero.font.title')->first();

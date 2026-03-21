@@ -2,13 +2,7 @@
     @php
         $instructorAvatar = $instructor?->profile_image_url ?? \App\Support\MediaAsset::avatarFallback($instructorName ?? 'Instructor');
         $instructorAvatarFallback = $instructor?->profile_image_fallback_url ?? \App\Support\MediaAsset::avatarFallback($instructorName ?? 'Instructor');
-        $heroHighlights = array_values(array_filter([
-            $landingCopy['hero_highlight_1'] ?? null,
-            $landingCopy['hero_highlight_2'] ?? null,
-            $landingCopy['hero_highlight_3'] ?? null,
-        ]));
         $testimonials = $landingTestimonials ?? [];
-        $faqItems = $landingFaqs ?? [];
         $heroVideoSource = trim((string) ($heroVideoUrl ?? ($instructorLinks['youtube'] ?? '')));
         $heroVideoId = null;
 
@@ -29,56 +23,49 @@
     @endphp
 
     @if ($showHero)
-        <section id="hero" class="cf-shell pt-5 pb-6 sm:pt-8 sm:pb-8 lg:pt-10 lg:pb-10">
+        <section id="hero" class="cf-shell pt-6 pb-6 sm:pt-10 sm:pb-8 lg:pt-14 lg:pb-10">
             <div class="cf-hero-shell">
                 <div class="cf-hero-main">
                     <div class="cf-hero-copy space-y-6">
-                        <div class="space-y-4">
+                        <div class="space-y-5">
                             <span class="cf-kicker">
                                 {{ $landingCopy['hero_kicker'] ?? __('Independent course business platform') }}
                             </span>
 
-                            @if (!empty($instructorName))
-                                <div class="cf-hero-instructor">
-                                    <img
-                                        src="{{ $instructorAvatar }}"
-                                        alt="{{ $instructorName }}"
-                                        class="h-12 w-12 rounded-full object-cover"
-                                        loading="lazy"
-                                        onerror="this.onerror=null;this.src='{{ $instructorAvatarFallback }}';"
-                                    >
-                                    <div class="min-w-0">
-                                        <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $instructorName }}</p>
-                                        <p class="text-sm text-[var(--color-text-muted)]">{{ $instructorTitle !== '' ? $instructorTitle : __('Founder of Learnova') }}</p>
-                                    </div>
-                                </div>
-                            @endif
-
-                            <div class="space-y-4">
-                                <h1 class="cf-display max-w-[12ch]" style="font-size: var(--hero-title-size);">
+                            <div class="space-y-5">
+                                <h1 class="cf-display max-w-[14ch]" style="font-size: var(--hero-title-size);">
                                     {{ $heroTitle }}
                                 </h1>
 
                                 <div class="cf-hero-accent"></div>
 
-                                <p class="max-w-[34rem] text-lg leading-8 text-[var(--color-text-muted)]" style="font-size: clamp(1.02rem, 1.34vw, var(--hero-subtitle-size));">
+                                <p class="max-w-[37rem] text-[var(--color-text-muted)]" style="font-size: clamp(1.12rem, 1.5vw, 1.45rem); line-height: 1.62;">
                                     {{ $heroSubtitle }}
                                 </p>
 
                                 @if (!empty($instructorBio) && $showAboutInstructor)
+                                    @if (!empty($instructorName))
+                                        <div class="cf-hero-instructor">
+                                            <img
+                                                src="{{ $instructorAvatar }}"
+                                                alt="{{ $instructorName }}"
+                                                class="h-12 w-12 rounded-full object-cover"
+                                                loading="lazy"
+                                                onerror="this.onerror=null;this.src='{{ $instructorAvatarFallback }}';"
+                                            >
+                                            <div class="min-w-0">
+                                                <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $instructorName }}</p>
+                                                <p class="text-sm text-[var(--color-text-muted)]">{{ $instructorTitle !== '' ? $instructorTitle : __('Founder of Learnova') }}</p>
+                                            </div>
+                                        </div>
+                                    @endif
                                     <p class="max-w-xl text-sm leading-7 text-[var(--color-text-muted)]" style="font-size: var(--hero-description-size);">
                                         {{ __('Led by :name. :bio', ['name' => $instructorName, 'bio' => str($instructorBio)->limit(130)]) }}
                                     </p>
                                 @endif
                             </div>
 
-                            <div class="cf-hero-mobile-trust flex flex-wrap gap-3 text-sm">
-                                @foreach ($heroHighlights as $highlight)
-                                    <span class="cf-hero-pill">{{ $highlight }}</span>
-                                @endforeach
-                            </div>
-
-                            <div class="cf-hero-action-band">
+                            <div class="cf-hero-action-band pt-1">
                                 <a href="{{ route('courses.index') }}" class="cf-button-primary sm:min-w-[220px]">
                                     {{ __('Browse Courses') }}
                                 </a>
@@ -91,41 +78,26 @@
 
                     <div class="cf-hero-visual relative">
                         <div class="pointer-events-none absolute -inset-6 rounded-[42px] bg-[radial-gradient(circle_at_center,_rgba(245,184,0,0.22),_transparent_60%)] blur-3xl"></div>
-                        <div class="cf-hero-media">
-                            <div class="cf-hero-video-stack">
-                                <div class="cf-hero-video-header">
+                        <div class="relative space-y-5">
+                            <div class="cf-hero-video-header">
                                 <div class="cf-hero-video-copy">
-                                        <p>{{ $landingCopy['hero_video_eyebrow'] ?? __('Platform walkthrough') }}</p>
-                                        <p>{{ $landingCopy['hero_video_title'] ?? __('See the storefront, course page, and enrollment flow together in one clean preview.') }}</p>
-                                    </div>
-                                    <span class="cf-floating-pill">{{ $landingCopy['hero_video_badge'] ?? __('YouTube-ready showcase') }}</span>
+                                    <p>{{ $landingCopy['hero_video_eyebrow'] ?? __('Platform walkthrough') }}</p>
+                                    <p>{{ $landingCopy['hero_video_title'] ?? __('See the storefront, course page, and enrollment flow together in one clean preview.') }}</p>
                                 </div>
-
-                                <div class="cf-hero-video-stage">
-                                    <img
-                                        src="{{ $heroImageUrl ?? asset('images/demo/real/hero-formal-2.jpg') }}"
-                                        alt="{{ __('Formal instructor portrait') }}"
-                                        fetchpriority="high"
-                                        loading="eager"
-                                        decoding="async"
-                                        style="object-position: {{ $heroImageFocus ?? 'center' }}; aspect-ratio: {{ $heroImageRatio ?? '4/5' }}; {{ $heroImageWidth ? 'width: '.$heroImageWidth.'px;' : '' }} {{ $heroImageHeight ? 'height: '.$heroImageHeight.'px;' : '' }}"
-                                        class="cf-hero-video-poster {{ $heroImageMode === 'contain' ? 'object-contain' : 'object-cover' }} transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                                        onerror="this.onerror=null;this.src='{{ asset('images/demo/real/hero-formal-2.jpg') }}';"
-                                    >
-
-                                    <div class="cf-hero-video-frame">
-                                        <iframe
-                                            src="{{ $heroVideoEmbedUrl }}"
-                                            title="{{ __('Learnova video preview') }}"
-                                            loading="lazy"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                            referrerpolicy="strict-origin-when-cross-origin"
-                                            allowfullscreen
-                                        ></iframe>
-                                    </div>
-                                </div>
-
+                                <span class="cf-floating-pill">{{ $landingCopy['hero_video_badge'] ?? __('YouTube-ready showcase') }}</span>
                             </div>
+
+                            <div class="cf-hero-video-frame overflow-hidden rounded-[1.45rem] border border-[rgba(11,11,11,0.09)] bg-black shadow-[0_18px_42px_rgba(11,11,11,0.12)]">
+                                <iframe
+                                    src="{{ $heroVideoEmbedUrl }}"
+                                    title="{{ __('Learnova video preview') }}"
+                                    loading="lazy"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen
+                                ></iframe>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -133,14 +105,8 @@
         </section>
     @endif
 
-    @if ($showPlatformProof)
-        <section id="platform-proof" class="cf-shell pb-6 sm:pb-8 lg:pb-9">
-            <x-public.trust-bar :copy="$landingCopy" :courses="$featuredCourses" />
-        </section>
-    @endif
-
     @if ($showCoursesPreview)
-        <section class="cf-shell pt-6 pb-10 sm:pt-7 sm:pb-12 lg:pt-8 lg:pb-14">
+        <section class="cf-shell pt-4 pb-10 sm:pt-5 sm:pb-12 lg:pt-6 lg:pb-14">
             <div class="cf-section-shell">
                 <div class="cf-section-header !mb-6 sm:!mb-7">
                     <div class="max-w-2xl space-y-2.5">
@@ -155,7 +121,7 @@
                     </div>
                 </div>
 
-                <div class="cf-card-grid">
+                <div class="cf-card-grid items-start">
                     @forelse ($featuredCourses as $course)
                         <x-course.card :course="$course" />
                     @empty
@@ -165,6 +131,12 @@
                     @endforelse
                 </div>
             </div>
+        </section>
+    @endif
+
+    @if ($showPlatformProof)
+        <section id="platform-proof" class="cf-shell pb-6 sm:pb-8 lg:pb-9">
+            <x-public.trust-bar :copy="$landingCopy" :courses="$featuredCourses" />
         </section>
     @endif
 
@@ -204,8 +176,8 @@
             <div class="cf-section-shell">
                 <div class="mb-6 max-w-2xl space-y-2.5 sm:mb-7">
                     <span class="cf-kicker">{{ $landingCopy['testimonials_kicker'] ?? __('Testimonials') }}</span>
-                    <h2 class="cf-heading">{{ $landingCopy['testimonials_title'] ?? __('What users notice when the storefront finally feels premium') }}</h2>
-                    <p class="cf-subheading">{{ $landingCopy['testimonials_subtitle'] ?? __('These signals matter because strong visual clarity improves trust before users commit to payment or enrollment.') }}</p>
+                    <h2 class="cf-heading">{{ $landingCopy['testimonials_title'] ?? __('What instructors and students notice once the storefront feels professional') }}</h2>
+                    <p class="cf-subheading">{{ $landingCopy['testimonials_subtitle'] ?? __('Clear feedback from real buyers and instructors helps new visitors trust the teaching experience before they enroll.') }}</p>
                 </div>
                 <div class="grid gap-4 md:grid-cols-3">
                     @foreach ($testimonials as $testimonial)
@@ -219,99 +191,14 @@
                                     onerror="this.onerror=null;this.src='{{ \App\Support\MediaAsset::avatarFallback($testimonial['name']) }}';"
                                 >
                                 <div>
-                                    <p class="text-base font-semibold text-[var(--color-text-primary)]">{{ $testimonial['name'] }}</p>
-                                    <p class="text-sm text-[var(--color-text-muted)]">{{ $testimonial['role'] }}</p>
+                                    <p class="text-[1.05rem] font-semibold text-[var(--color-text-primary)]">{{ $testimonial['name'] }}</p>
+                                    <p class="text-[0.95rem] text-[var(--color-text-muted)]">{{ $testimonial['role'] }}</p>
                                 </div>
                             </div>
-                            <p class="mt-5 text-[15px] leading-8 text-[var(--color-text-muted)]">"{{ $testimonial['quote'] }}"</p>
+                            <p class="mt-4 text-[1rem] leading-8 text-[var(--color-text-primary)]/85">"{{ $testimonial['quote'] }}"</p>
                         </article>
                     @endforeach
                 </div>
-            </div>
-        </section>
-    @endif
-
-    @if ($showFaqSection)
-        <section class="cf-shell pb-10 pt-2 sm:pb-12 sm:pt-3 lg:pb-14 lg:pt-4">
-            <div class="cf-section-shell grid gap-5 lg:grid-cols-[0.82fr,1.18fr]">
-                <div class="space-y-3">
-                    <span class="cf-kicker">{{ $landingCopy['faq_kicker'] ?? __('Frequently asked questions') }}</span>
-                    <h2 class="cf-heading">{{ $landingCopy['faq_title'] ?? __('Remove friction before users reach the buy decision') }}</h2>
-                    <p class="cf-subheading">{{ $landingCopy['faq_subtitle'] ?? __('A premium course product answers practical questions early, keeps pricing clear, and makes the next step obvious.') }}</p>
-                </div>
-                <div class="space-y-3">
-                    @foreach ($faqItems as $faqItem)
-                        <details class="cf-faq-item" @if ($loop->first) open @endif>
-                            <summary class="cf-faq-summary">{{ $faqItem['question'] }}</summary>
-                            <p class="mt-3 text-[15px] leading-8 text-[var(--color-text-muted)]">{{ $faqItem['answer'] }}</p>
-                        </details>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-    @endif
-
-    @if ($showContactForm === true)
-        <section id="contact" class="cf-shell pb-12 pt-2 sm:pb-14 sm:pt-3 lg:pb-16 lg:pt-4">
-            @if (session('status'))
-                <div class="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-                    {{ session('status') }}
-                </div>
-            @endif
-            @error('captcha')
-                <div class="mb-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                    {{ $message }}
-                </div>
-            @enderror
-                <div class="cf-section-shell grid gap-5 lg:grid-cols-[0.8fr,1.2fr]">
-                <div class="space-y-3">
-                    <span class="cf-kicker">{{ $landingCopy['contact_kicker'] ?? __('Get in touch') }}</span>
-                    <h2 class="cf-heading">{{ $landingCopy['contact_title'] ?? __('Ask a question before you enroll') }}</h2>
-                    <p class="cf-subheading">{{ $landingCopy['contact_subtitle'] ?? __('Use this section for support, custom requests, or questions about which course to start with.') }}</p>
-                </div>
-                <form id="contactForm" method="POST" action="{{ route('contact.submit') }}" class="cf-panel space-y-4 px-6 py-6 sm:px-7 sm:py-7">
-                    @csrf
-                    <div>
-                        <label for="contact_name" class="mb-2 block text-sm font-medium text-[var(--color-text-primary)]">{{ __('Name') }}</label>
-                        <input id="contact_name" name="name" type="text" class="cf-input" value="{{ old('name') }}" required>
-                        @error('name')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
-                    </div>
-                    <div>
-                        <label for="contact_email" class="mb-2 block text-sm font-medium text-[var(--color-text-primary)]">{{ __('Email') }}</label>
-                        <input id="contact_email" name="email" type="email" class="cf-input" value="{{ old('email') }}" required>
-                        @error('email')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
-                    </div>
-                    <div>
-                        <label for="contact_message" class="mb-2 block text-sm font-medium text-[var(--color-text-primary)]">{{ __('Message') }}</label>
-                        <textarea id="contact_message" name="message" rows="5" class="cf-input">{{ old('message') }}</textarea>
-                        @error('message')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
-                    </div>
-                    <input type="hidden" id="captcha_token" name="captcha_token" value="">
-                    <div class="flex justify-end pt-1">
-                        <button type="submit" class="cf-button-primary">{{ __('Send message') }}</button>
-                    </div>
-                </form>
-                @php $siteKey = config('services.recaptcha.site_key'); @endphp
-                @if (!empty($siteKey))
-                    <script src="https://www.google.com/recaptcha/api.js?render={{ $siteKey }}"></script>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            var form = document.getElementById('contactForm');
-                            if (!form) return;
-                            form.addEventListener('submit', function (e) {
-                                if (typeof grecaptcha === 'undefined') return;
-                                e.preventDefault();
-                                grecaptcha.ready(function () {
-                                    grecaptcha.execute('{{ $siteKey }}', {action: 'contact'}).then(function (token) {
-                                        var input = document.getElementById('captcha_token');
-                                        if (input) input.value = token;
-                                        form.submit();
-                                    });
-                                });
-                            }, { passive: false });
-                        });
-                    </script>
-                @endif
             </div>
         </section>
     @endif
@@ -322,21 +209,64 @@
                 <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                     <div class="max-w-2xl space-y-2.5">
                         <span class="cf-dark-kicker">
-                            {{ $landingCopy['footer_kicker'] ?? __('Your next step') }}
+                            {{ $landingCopy['footer_kicker'] ?? __('Launch with confidence') }}
                         </span>
                         <h2 class="cf-dark-title text-3xl font-bold tracking-[-0.04em] sm:text-4xl">
-                            {{ $landingCopy['footer_title'] ?? __('Present your courses like a premium product and make the next action obvious') }}
+                            {{ $landingCopy['footer_title'] ?? __('Present, launch, and sell your courses with a storefront that feels premium from the first click') }}
                         </h2>
                         <p class="cf-dark-copy text-base leading-7">
-                            {{ $landingCopy['footer_body'] ?? __('Clear messaging, stronger hierarchy, and a simpler CTA structure help this platform feel much closer to a sellable product.') }}
+                            {{ $landingCopy['footer_body'] ?? __('Give your courses a cleaner public presence, guide visitors into checkout with less friction, and help students enter the curriculum with confidence.') }}
                         </p>
                     </div>
                     <div class="flex flex-col gap-3 sm:flex-row">
-                        <a href="{{ route('courses.index') }}" class="cf-button-primary">{{ __('Browse Courses') }}</a>
-                        <a href="{{ route('login') }}" class="cf-dark-link-card !inline-flex !items-center !justify-center !rounded-full !px-6 !py-3.5">{{ __('Preview the account flow') }}</a>
+                        <a href="{{ route('courses.index') }}" class="cf-button-primary">{{ __('Explore Courses') }}</a>
+                        <a href="{{ route('login') }}" class="cf-dark-link-card !inline-flex !items-center !justify-center !rounded-full !px-6 !py-3.5">{{ __('Preview Instructor Access') }}</a>
                     </div>
                 </div>
             </div>
         </section>
+    @endif
+
+    @if ($showContactForm === true)
+        <div x-data="{ open: false }" class="fixed bottom-5 right-5 z-40 sm:bottom-6 sm:right-6">
+            <button type="button" @click="open = !open" class="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-primary)] text-[var(--color-primary-contrast)] shadow-[0_18px_40px_rgba(11,11,11,0.2)] transition hover:-translate-y-0.5" aria-label="{{ __('Open support chat') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5m-7 6 2.6-2H19a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h1Z"/>
+                </svg>
+            </button>
+
+            <div x-cloak x-show="open" x-transition.origin.bottom.right class="absolute bottom-16 right-0 w-[min(92vw,24rem)] overflow-hidden rounded-[1.4rem] border border-[rgba(11,11,11,0.08)] bg-white p-5 shadow-[0_28px_60px_rgba(11,11,11,0.16)]">
+                <div class="mb-4 flex items-start justify-between gap-4">
+                    <div>
+                        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--color-text-muted)]">{{ __('Support') }}</p>
+                        <h3 class="mt-2 text-xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Send a quick message') }}</h3>
+                    </div>
+                    <button type="button" @click="open = false" class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-text-primary)]">
+                        <span class="sr-only">{{ __('Close support chat') }}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6 6 18"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="contactForm" method="POST" action="{{ route('contact.submit') }}" class="space-y-4">
+                    @csrf
+                    <div>
+                        <label for="contact_name" class="mb-2 block text-sm font-medium text-[var(--color-text-primary)]">{{ __('Name') }}</label>
+                        <input id="contact_name" name="name" type="text" class="cf-input" value="{{ old('name') }}">
+                    </div>
+                    <div>
+                        <label for="contact_email" class="mb-2 block text-sm font-medium text-[var(--color-text-primary)]">{{ __('Email') }}</label>
+                        <input id="contact_email" name="email" type="email" class="cf-input" value="{{ old('email') }}">
+                    </div>
+                    <div>
+                        <label for="contact_message" class="mb-2 block text-sm font-medium text-[var(--color-text-primary)]">{{ __('Message') }}</label>
+                        <textarea id="contact_message" name="message" rows="4" class="cf-input">{{ old('message') }}</textarea>
+                    </div>
+                    <input type="hidden" id="captcha_token" name="captcha_token" value="">
+                    <button type="submit" class="cf-button-primary w-full">{{ __('Send Message') }}</button>
+                </form>
+            </div>
+        </div>
     @endif
 </x-public-layout>

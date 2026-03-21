@@ -10,13 +10,14 @@
     html {
         scroll-behavior: smooth;
         text-size-adjust: 100%;
+        font-family: var(--font-english), sans-serif !important;
     }
 
     body {
         min-height: 100vh;
-        font-size: 17.5px;
-        line-height: 1.66;
-        letter-spacing: -0.016em;
+        font-size: 16px;
+        line-height: 1.65;
+        letter-spacing: -0.006em;
         font-optical-sizing: auto;
         text-rendering: optimizeLegibility;
         background:
@@ -24,6 +25,7 @@
             radial-gradient(circle at bottom right, rgba(11, 11, 11, 0.04), transparent 30%),
             #ffffff;
         color: var(--color-text-primary);
+        font-family: var(--font-english), sans-serif !important;
     }
 
     button,
@@ -31,6 +33,7 @@
     select,
     textarea {
         font: inherit;
+        font-family: var(--font-english), sans-serif !important;
     }
 
     img {
@@ -60,6 +63,22 @@
 }
 
 @layer components {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .cf-display,
+    .cf-heading,
+    .cf-admin-heading,
+    .cf-admin-section-title,
+    .cf-course-title,
+    .cf-dark-title {
+        font-family: var(--font-english), sans-serif !important;
+        font-style: normal;
+    }
+
     .cf-shell {
         @apply mx-auto w-full max-w-[1240px] px-5 sm:px-6 lg:px-8;
     }
@@ -100,27 +119,27 @@
     }
 
     .cf-display {
-        font-size: clamp(4.2rem, 6.8vw, 6rem);
-        font-weight: 700;
-        letter-spacing: -0.058em;
+        font-size: clamp(2.75rem, 5vw, 4.35rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
         color: var(--color-text-primary);
-        line-height: 1.02;
+        line-height: 1.16;
         text-wrap: balance;
     }
 
     .cf-heading {
         font-size: clamp(2.55rem, 3.9vw, 3.55rem);
-        font-weight: 700;
-        letter-spacing: -0.04em;
+        font-weight: 600;
+        letter-spacing: -0.02em;
         color: var(--color-text-primary);
-        line-height: 1.08;
+        line-height: 1.2;
     }
 
     .cf-subheading {
-        font-size: clamp(1.1rem, 1.55vw, 1.28rem);
+        font-size: clamp(1.05rem, 1.35vw, 1.18rem);
         font-weight: 400;
         color: rgba(11, 11, 11, 0.78);
-        line-height: 1.72;
+        line-height: 1.68;
     }
 
     .cf-muted {
@@ -283,9 +302,13 @@
     .cf-button-primary,
     .cf-button-secondary,
     .cf-button-ghost {
-        @apply inline-flex items-center justify-center rounded-full px-6 py-3.5 font-semibold transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
-        font-size: 16.5px;
-        letter-spacing: 0.01em;
+        @apply inline-flex items-center justify-center rounded-[5px] px-6 py-3.5 font-semibold transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.0625rem;
+        text-transform: uppercase;
+        white-space: nowrap;
+        font-family: var(--font-english), sans-serif;
     }
 
     .cf-app-shell label,
@@ -421,9 +444,13 @@
     }
 
     .cf-nav-link {
-        @apply inline-flex items-center rounded-full px-4 py-2.5 text-[15px] font-semibold transition;
-        letter-spacing: 0.04em;
-        color: rgba(11, 11, 11, 0.7);
+        @apply inline-flex items-center rounded-[5px] px-4 py-2.5 text-[15px] font-semibold transition;
+        min-height: 2.75rem;
+        white-space: nowrap;
+        letter-spacing: 0.0625rem;
+        text-transform: uppercase;
+        color: rgba(11, 11, 11, 0.82);
+        font-family: var(--font-english), sans-serif !important;
     }
 
     .cf-nav-link:hover,
@@ -433,8 +460,11 @@
     }
 
     .cf-mobile-link {
-        @apply block rounded-[18px] px-4 py-3 text-[16px] font-semibold transition;
+        @apply block rounded-[5px] px-4 py-3 text-[15px] font-semibold transition;
+        letter-spacing: 0.05rem;
+        text-transform: uppercase;
         color: rgba(11, 11, 11, 0.74);
+        font-family: var(--font-english), sans-serif !important;
     }
 
     .cf-mobile-link:hover,
@@ -444,16 +474,20 @@
     }
 
     .cf-nav-logo {
-        @apply flex h-11 w-11 items-center justify-center rounded-2xl text-black;
+        @apply flex h-11 w-11 items-center justify-center rounded-[5px] text-black;
         background: #f5b800;
     }
 
     .cf-nav-surface {
-        @apply inline-flex items-center gap-3 rounded-full border px-4 py-2.5 transition;
+        @apply inline-flex items-center gap-3 rounded-[5px] border px-4 py-2.5 transition;
         font-size: 15px;
+        font-weight: 600;
+        min-height: 2.75rem;
+        white-space: nowrap;
         border-color: rgba(11, 11, 11, 0.1);
         background: #ffffff;
         color: var(--color-text-primary);
+        font-family: var(--font-english), sans-serif !important;
     }
 
     .cf-nav-surface:hover {
@@ -461,7 +495,11 @@
     }
 
     .cf-nav-brand-eyebrow {
-        color: rgba(11, 11, 11, 0.45);
+        color: rgba(11, 11, 11, 0.72);
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.0625rem;
+        font-family: var(--font-english), sans-serif !important;
     }
 
     .cf-mobile-shell {
@@ -472,11 +510,12 @@
     }
 
     .cf-theme-toggle {
-        @apply inline-flex items-center gap-3 rounded-full border px-4 py-2.5 font-semibold transition;
+        @apply inline-flex items-center gap-3 rounded-[5px] px-4 py-2.5 font-semibold transition;
         font-size: 16px;
-        border-color: rgba(11, 11, 11, 0.1);
+        border-color: transparent;
         background: #ffffff;
         color: #0b0b0b;
+        box-shadow: none;
     }
 
     .cf-theme-toggle:hover {
@@ -1103,7 +1142,7 @@
     }
 
     .cf-course-content {
-        @apply flex h-full flex-col gap-4 px-6 pb-6 pt-5;
+        @apply flex h-full flex-col gap-2 px-6 pb-4 pt-4;
     }
 
     .cf-course-title {
@@ -1116,8 +1155,8 @@
     }
 
     .cf-course-description {
-        font-size: 1rem;
-        line-height: 1.62;
+        font-size: 1.02rem;
+        line-height: 1.58;
         color: var(--color-text-muted);
     }
 
@@ -1129,6 +1168,7 @@
 
     .cf-course-meta {
         @apply flex flex-wrap gap-2;
+        margin-top: 0;
     }
 
     .cf-course-meta-pill {
@@ -1139,7 +1179,7 @@
     }
 
     .cf-course-footer {
-        @apply mt-auto flex items-center justify-between gap-3 border-t pt-4;
+        @apply flex items-center justify-between gap-3 border-t pt-2.5;
         border-color: rgba(11, 11, 11, 0.08);
     }
 
@@ -1292,7 +1332,7 @@
     }
 
     .cf-feature-icon {
-        @apply flex h-12 w-12 items-center justify-center rounded-2xl text-xl;
+        @apply flex h-12 w-12 items-center justify-center rounded-[5px] text-xl;
         background: rgba(245, 184, 0, 0.14);
         color: var(--color-text-primary);
     }
@@ -1520,6 +1560,7 @@
 
     html.theme-dark .cf-panel,
     html.theme-dark .cf-section-shell,
+    html.theme-dark .cf-shell,
     html.theme-dark .cf-auth-shell,
     html.theme-dark .cf-admin-form-card,
     html.theme-dark .cf-stat-card,
@@ -1593,9 +1634,33 @@
     html.theme-dark .cf-admin-inline-note,
     html.theme-dark .cf-admin-switch,
     html.theme-dark .cf-admin-tab,
-    html.theme-dark .cf-table thead {
+    html.theme-dark .cf-table thead,
+    html.theme-dark .cf-nav-surface,
+    html.theme-dark .cf-theme-toggle {
         border-color: rgba(255, 255, 255, 0.08);
         background: #171717;
+    }
+
+    html.theme-dark .cf-theme-toggle {
+        border-color: transparent;
+    }
+
+    html.theme-dark .cf-app-shell,
+    html.theme-dark body {
+        background: #0f0f10;
+    }
+
+    html.theme-dark .cf-app-shell [class*="bg-white"],
+    html.theme-dark .cf-app-shell .bg-white,
+    html.theme-dark .cf-app-shell [class*="bg-\[var\(--color-bg\)\]"] {
+        background: #111111 !important;
+    }
+
+    html.theme-dark .cf-app-shell [class*="text-black"],
+    html.theme-dark .cf-app-shell .text-black,
+    html.theme-dark .cf-app-shell [class*="text-slate-"],
+    html.theme-dark .cf-app-shell [class*="text-zinc-"] {
+        color: #f4f4f4 !important;
     }
 
     html.theme-dark .cf-admin-tab.is-active {
@@ -1956,8 +2021,8 @@
         }
 
         .cf-display {
-            font-size: clamp(3.1rem, 12vw, 4rem);
-            line-height: 1.02;
+            font-size: clamp(2.7rem, 10.8vw, 3.7rem);
+            line-height: 1.14;
         }
 
         .cf-heading {

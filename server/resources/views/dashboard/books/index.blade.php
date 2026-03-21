@@ -101,5 +101,11 @@
                 </tbody>
             </table>
         </div>
+
+        @if (method_exists($books, 'links'))
+            <div class="flex justify-end">
+                {{ $books->onEachSide(1)->links() }}
+            </div>
+        @endif
     </div>
 </x-app-layout>

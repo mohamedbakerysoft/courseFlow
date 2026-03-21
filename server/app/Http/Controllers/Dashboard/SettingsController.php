@@ -8,10 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Services\SettingsService;
 use App\Support\LandingContent;
-use App\Support\MediaAsset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class SettingsController extends Controller
@@ -43,10 +41,6 @@ class SettingsController extends Controller
         $landingFeature2Description = (string) $settings->get('landing.feature_2_description', 'Guide students through lessons with protected access and saved progress.');
         $landingFeature3Title = (string) $settings->get('landing.feature_3_title', 'Stronger instructor trust');
         $landingFeature3Description = (string) $settings->get('landing.feature_3_description', 'Show a real instructor, clear course cards, and a buying flow that feels premium.');
-        $landingInstructorImagePath = $settings->get('landing.instructor_image');
-        $landingInstructorImageUrl = MediaAsset::url($landingInstructorImagePath, MediaAsset::avatarFallbackPath($instructorName));
-        $currentHeroImagePath = (string) $settings->get('hero.image', '');
-        $heroImageUrl = MediaAsset::url($currentHeroImagePath, 'images/demo/real/hero-formal-2.jpg');
         $landingShowHero = (bool) $settings->get('landing.show_hero', true);
         $landingShowContactForm = (bool) $settings->get('landing.show_contact_form', true);
         $landingShowPlatformProof = (bool) $settings->get('landing.show_platform_proof', true);
@@ -55,10 +49,7 @@ class SettingsController extends Controller
         $landingShowProblemSection = (bool) $settings->get('landing.show_problem_section', true);
         $landingShowFlowSection = (bool) $settings->get('landing.show_flow_section', true);
         $landingShowTestimonials = (bool) $settings->get('landing.show_testimonials', true);
-        $landingShowFaqSection = (bool) $settings->get('landing.show_faq_section', true);
         $landingShowFooterCta = (bool) $settings->get('landing.show_footer_cta', true);
-        $landingHeroImageMode = (string) $settings->get('landing.hero_image_mode', 'cover');
-        $landingHeroImageFocus = (string) $settings->get('landing.hero_image_focus', 'center');
         $socialTwitter = (string) $settings->get('instructor.social.twitter', '');
         $socialInstagram = (string) $settings->get('instructor.social.instagram', '');
         $socialYouTube = (string) $settings->get('instructor.social.youtube', '');
@@ -66,13 +57,10 @@ class SettingsController extends Controller
         $heroVideoUrl = (string) $settings->get('landing.hero_video_url', $socialYouTube);
         $landingCopy = LandingContent::copy($settings);
         $landingTestimonials = LandingContent::testimonials($settings);
-        $landingFaqs = LandingContent::faqs($settings);
 
         $heroFontTitle = (int) $settings->get('hero.font.title', 56);
         $heroFontSubtitle = (int) $settings->get('hero.font.subtitle', 24);
         $heroFontDescription = (int) $settings->get('hero.font.description', 18);
-        $heroImageWidth = (int) $settings->get('hero.image_width', 0);
-        $heroImageHeight = (int) $settings->get('hero.image_height', 0);
 
         $googleLoginEnabled = (bool) $settings->get('auth.google.enabled', false);
         $googleClientId = (string) $settings->get('auth.google.client_id', '');
@@ -161,19 +149,14 @@ class SettingsController extends Controller
             'landingFeature2Description',
             'landingFeature3Title',
             'landingFeature3Description',
-            'landingInstructorImageUrl',
             'landingShowHero',
-            'landingShowContactForm',
             'landingShowPlatformProof',
             'landingShowAbout',
             'landingShowCoursesPreview',
             'landingShowProblemSection',
             'landingShowFlowSection',
             'landingShowTestimonials',
-            'landingShowFaqSection',
             'landingShowFooterCta',
-            'landingHeroImageMode',
-            'landingHeroImageFocus',
             'socialTwitter',
             'socialInstagram',
             'socialYouTube',
@@ -181,7 +164,6 @@ class SettingsController extends Controller
             'heroVideoUrl',
             'landingCopy',
             'landingTestimonials',
-            'landingFaqs',
             'legalTermsEn',
             'legalPrivacyEn',
             'googleLoginEnabled',
@@ -211,12 +193,9 @@ class SettingsController extends Controller
             'paypalStatusVariant',
             'paypalStatusMessage',
             'paypalWebhookSecretExists',
-            'heroImageUrl',
             'heroFontTitle',
             'heroFontSubtitle',
             'heroFontDescription',
-            'heroImageWidth',
-            'heroImageHeight',
         ));
     }
 
@@ -286,7 +265,6 @@ class SettingsController extends Controller
                 'landing_feature_2_description' => ['nullable', 'string'],
                 'landing_feature_3_title' => ['nullable', 'string', 'max:255'],
                 'landing_feature_3_description' => ['nullable', 'string'],
-                'landing_instructor_image' => ['nullable', 'image', 'max:2048'],
                 'landing_show_hero' => ['nullable', 'boolean'],
                 'landing_show_contact_form' => ['nullable', 'boolean'],
                 'landing_show_platform_proof' => ['nullable', 'boolean'],
@@ -295,12 +273,7 @@ class SettingsController extends Controller
                 'landing_show_problem_section' => ['nullable', 'boolean'],
                 'landing_show_flow_section' => ['nullable', 'boolean'],
                 'landing_show_testimonials' => ['nullable', 'boolean'],
-                'landing_show_faq_section' => ['nullable', 'boolean'],
                 'landing_show_footer_cta' => ['nullable', 'boolean'],
-                'landing_hero_image_mode' => ['nullable', 'in:contain,cover'],
-                'landing_hero_image_focus' => ['nullable', 'in:center,top,bottom,left,right'],
-                'hero_image_width' => ['nullable', 'integer', 'between:100,3000'],
-                'hero_image_height' => ['nullable', 'integer', 'between:100,2000'],
                 'social_twitter' => ['nullable', 'url'],
                 'social_instagram' => ['nullable', 'url'],
                 'social_youtube' => ['nullable', 'url'],
@@ -313,11 +286,6 @@ class SettingsController extends Controller
                 'landing_testimonials.*.role' => ['nullable', 'string', 'max:255'],
                 'landing_testimonials.*.avatar' => ['nullable', 'string', 'max:500'],
                 'landing_testimonials.*.quote' => ['nullable', 'string', 'max:1000'],
-                'landing_faqs' => ['nullable', 'array'],
-                'landing_faqs.*.question' => ['nullable', 'string', 'max:255'],
-                'landing_faqs.*.answer' => ['nullable', 'string', 'max:1000'],
-                'hero_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
-                'remove_hero_image' => ['nullable', 'boolean'],
             ]);
         } else {
             $validated = $request->validate([
@@ -343,19 +311,14 @@ class SettingsController extends Controller
                 'landing_feature_2_description' => ['nullable', 'string'],
                 'landing_feature_3_title' => ['nullable', 'string', 'max:255'],
                 'landing_feature_3_description' => ['nullable', 'string'],
-                'landing_instructor_image' => ['nullable', 'image', 'max:2048'],
                 'landing_show_hero' => ['nullable', 'boolean'],
-                'landing_show_contact_form' => ['nullable', 'boolean'],
                 'landing_show_platform_proof' => ['nullable', 'boolean'],
                 'landing_show_about' => ['nullable', 'boolean'],
                 'landing_show_courses_preview' => ['nullable', 'boolean'],
                 'landing_show_problem_section' => ['nullable', 'boolean'],
                 'landing_show_flow_section' => ['nullable', 'boolean'],
                 'landing_show_testimonials' => ['nullable', 'boolean'],
-                'landing_show_faq_section' => ['nullable', 'boolean'],
                 'landing_show_footer_cta' => ['nullable', 'boolean'],
-                'landing_hero_image_mode' => ['nullable', 'in:contain,cover'],
-                'landing_hero_image_focus' => ['nullable', 'in:center,top,bottom,left,right'],
                 'social_twitter' => ['nullable', 'url'],
                 'social_instagram' => ['nullable', 'url'],
                 'social_youtube' => ['nullable', 'url'],
@@ -368,9 +331,6 @@ class SettingsController extends Controller
                 'landing_testimonials.*.role' => ['nullable', 'string', 'max:255'],
                 'landing_testimonials.*.avatar' => ['nullable', 'string', 'max:500'],
                 'landing_testimonials.*.quote' => ['nullable', 'string', 'max:1000'],
-                'landing_faqs' => ['nullable', 'array'],
-                'landing_faqs.*.question' => ['nullable', 'string', 'max:255'],
-                'landing_faqs.*.answer' => ['nullable', 'string', 'max:1000'],
                 'legal_terms_en' => ['nullable', 'string'],
                 'legal_privacy_en' => ['nullable', 'string'],
                 'auth_google_enabled' => ['nullable', 'boolean'],
@@ -500,26 +460,15 @@ class SettingsController extends Controller
                 'landing.show_testimonials' => $request->has('landing_show_testimonials')
                     ? $request->boolean('landing_show_testimonials')
                     : (bool) $settings->get('landing.show_testimonials', true),
-                'landing.show_faq_section' => $request->has('landing_show_faq_section')
-                    ? $request->boolean('landing_show_faq_section')
-                    : (bool) $settings->get('landing.show_faq_section', true),
                 'landing.show_footer_cta' => $request->has('landing_show_footer_cta')
                     ? $request->boolean('landing_show_footer_cta')
                     : (bool) $settings->get('landing.show_footer_cta', true),
-                'landing.hero_image_mode' => $validated['landing_hero_image_mode'] ?? (string) $settings->get('landing.hero_image_mode', 'cover'),
-                'landing.hero_image_focus' => $validated['landing_hero_image_focus'] ?? (string) $settings->get('landing.hero_image_focus', 'center'),
                 'instructor.social.twitter' => $validated['social_twitter'] ?? (string) $settings->get('instructor.social.twitter', ''),
                 'instructor.social.instagram' => $validated['social_instagram'] ?? (string) $settings->get('instructor.social.instagram', ''),
                 'instructor.social.youtube' => $validated['social_youtube'] ?? (string) $settings->get('instructor.social.youtube', ''),
                 'instructor.social.linkedin' => $validated['social_linkedin'] ?? (string) $settings->get('instructor.social.linkedin', ''),
                 'landing.hero_video_url' => $validated['hero_video_url'] ?? (string) $settings->get('landing.hero_video_url', ''),
             ]);
-            if (array_key_exists('hero_image_width', $validated)) {
-                $values['hero.image_width'] = (int) $validated['hero_image_width'];
-            }
-            if (array_key_exists('hero_image_height', $validated)) {
-                $values['hero.image_height'] = (int) $validated['hero_image_height'];
-            }
             if (array_key_exists('hero_font_title', $validated)) {
                 $values['hero.font.title'] = (int) $validated['hero_font_title'];
             }
@@ -558,12 +507,6 @@ class SettingsController extends Controller
                 $values["landing.testimonials.{$number}.role"] = (string) data_get($validated, "landing_testimonials.{$index}.role", $settings->get("landing.testimonials.{$number}.role", $testimonialDefaults['role']));
                 $values["landing.testimonials.{$number}.avatar"] = (string) data_get($validated, "landing_testimonials.{$index}.avatar", $settings->get("landing.testimonials.{$number}.avatar", $testimonialDefaults['avatar']));
                 $values["landing.testimonials.{$number}.quote"] = (string) data_get($validated, "landing_testimonials.{$index}.quote", $settings->get("landing.testimonials.{$number}.quote", $testimonialDefaults['quote']));
-            }
-
-            foreach (LandingContent::FAQ_DEFAULTS as $index => $faqDefaults) {
-                $number = $index + 1;
-                $values["landing.faqs.{$number}.question"] = (string) data_get($validated, "landing_faqs.{$index}.question", $settings->get("landing.faqs.{$number}.question", $faqDefaults['question']));
-                $values["landing.faqs.{$number}.answer"] = (string) data_get($validated, "landing_faqs.{$index}.answer", $settings->get("landing.faqs.{$number}.answer", $faqDefaults['answer']));
             }
         }
         if ($group === 'authentication' || $group === '') {
@@ -634,26 +577,17 @@ class SettingsController extends Controller
             $values['site.logo_path'] = $path;
         }
 
-        if ($request->hasFile('landing_instructor_image')) {
-            $path = $request->file('landing_instructor_image')->store('landing', 'public');
-            $values['landing.instructor_image'] = $path;
-        }
         if ($group === 'landing') {
-            $removeHero = $request->boolean('remove_hero_image');
-            if ($removeHero) {
-                $current = (string) $settings->get('hero.image', '');
-                if ($current !== '') {
-                    Storage::disk('public')->delete($current);
-                }
-                Setting::query()->where('key', 'hero.image')->delete();
-            } elseif ($request->hasFile('hero_image')) {
-                $current = (string) $settings->get('hero.image', '');
-                $path = $request->file('hero_image')->store('hero', 'public');
-                if ($current !== '' && $current !== $path) {
-                    Storage::disk('public')->delete($current);
-                }
-                $values['hero.image'] = $path;
-            }
+            Setting::query()->whereIn('key', [
+                'hero.image',
+                'hero.image_fit',
+                'hero.image_focus',
+                'hero.image_ratio',
+                'hero.image_width',
+                'hero.image_height',
+                'landing.hero_image_mode',
+                'landing.hero_image_focus',
+            ])->delete();
         }
 
         $settings->set($values);

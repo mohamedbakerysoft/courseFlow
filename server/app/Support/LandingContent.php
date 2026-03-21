@@ -8,9 +8,6 @@ class LandingContent
 {
     public const COPY_DEFAULTS = [
         'hero_kicker' => 'Independent course business platform',
-        'hero_highlight_1' => 'One-time pricing and fast checkout',
-        'hero_highlight_2' => 'Instant lesson access after enrollment',
-        'hero_highlight_3' => 'Protected curriculum with saved progress',
         'hero_video_eyebrow' => 'Platform walkthrough',
         'hero_video_title' => 'See the storefront, course page, and enrollment flow together in one clean preview.',
         'hero_video_badge' => 'YouTube-ready showcase',
@@ -40,15 +37,9 @@ class LandingContent
         'testimonials_kicker' => 'Testimonials',
         'testimonials_title' => 'What students say after joining Learnova courses',
         'testimonials_subtitle' => 'Short, believable feedback helps visitors trust the instructor and understand the learning experience before they enroll.',
-        'faq_kicker' => 'Frequently asked questions',
-        'faq_title' => 'Remove friction before users reach the buy decision',
-        'faq_subtitle' => 'A premium course product answers practical questions early, keeps pricing clear, and makes the next step obvious.',
-        'contact_kicker' => 'Get in touch',
-        'contact_title' => 'Ask a question before you enroll',
-        'contact_subtitle' => 'Use this section for support, custom requests, or questions about which course to start with.',
-        'footer_kicker' => 'Your next step',
-        'footer_title' => 'Present your courses like a premium product and make the next action obvious',
-        'footer_body' => 'Clear messaging, stronger hierarchy, and a simpler CTA structure help this platform feel much closer to a sellable product.',
+        'footer_kicker' => 'Launch with confidence',
+        'footer_title' => 'Present, launch, and sell your courses with a storefront that feels premium from the first click',
+        'footer_body' => 'Give your courses a cleaner public presence, guide visitors into checkout with less friction, and help students enter the curriculum with confidence.',
     ];
 
     public const TESTIMONIAL_DEFAULTS = [

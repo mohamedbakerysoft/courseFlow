@@ -24,9 +24,6 @@ class InstructorProfileController extends Controller
         $socialInstagram = (string) $settings->get('instructor.social.instagram', '');
         $socialYouTube = (string) $settings->get('instructor.social.youtube', '');
         $socialLinkedIn = (string) $settings->get('instructor.social.linkedin', '');
-        $heroImageFitSetting = (string) ($settings->get('hero.image_fit') ?: $settings->get('landing.hero_image_mode', 'cover'));
-        $heroImageMode = in_array($heroImageFitSetting, ['contain', 'cover'], true) ? $heroImageFitSetting : 'contain';
-
         return view('dashboard.instructor.edit', compact(
             'instructorName',
             'instructorTitle',
@@ -38,7 +35,6 @@ class InstructorProfileController extends Controller
             'socialInstagram',
             'socialYouTube',
             'socialLinkedIn',
-            'heroImageMode',
         ));
     }
 
@@ -54,7 +50,6 @@ class InstructorProfileController extends Controller
             'social_instagram' => ['nullable', 'url'],
             'social_youtube' => ['nullable', 'url'],
             'social_linkedin' => ['nullable', 'url'],
-            'hero_image_mode' => ['nullable', 'in:contain,cover'],
             'instructor_image' => ['nullable', 'image', 'max:4096'],
         ]);
 
@@ -69,9 +64,6 @@ class InstructorProfileController extends Controller
             'instructor.social.youtube' => $validated['social_youtube'] ?? '',
             'instructor.social.linkedin' => $validated['social_linkedin'] ?? '',
         ];
-        if (array_key_exists('hero_image_mode', $validated)) {
-            $values['landing.hero_image_mode'] = $validated['hero_image_mode'];
-        }
 
         if ($request->hasFile('instructor_image')) {
             $path = $request->file('instructor_image')->store('landing', 'public');

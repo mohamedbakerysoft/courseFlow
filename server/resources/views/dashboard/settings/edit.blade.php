@@ -463,13 +463,6 @@
                         </label>
                         <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
                             <div>
-                                <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show Contact Form') }}</p>
-                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle simple contact form at the bottom.') }}</p>
-                            </div>
-                            <input type="checkbox" name="landing_show_contact_form" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowContactForm ?? false)>
-                        </label>
-                        <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
-                            <div>
                                 <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show Instructor Bio') }}</p>
                                 <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle the short instructor introduction inside the hero.') }}</p>
                             </div>
@@ -509,13 +502,6 @@
                                 <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle testimonials section.') }}</p>
                             </div>
                             <input type="checkbox" name="landing_show_testimonials" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowTestimonials)>
-                        </label>
-                        <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
-                            <div>
-                                <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ __('Show FAQ Section') }}</p>
-                                <p class="text-xs text-[var(--color-text-muted)]">{{ __('Toggle the frequently asked questions block.') }}</p>
-                            </div>
-                            <input type="checkbox" name="landing_show_faq_section" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" @checked($landingShowFaqSection ?? true)>
                         </label>
                         <label class="flex items-center justify-between rounded-md border border-[var(--color-secondary)]/20 p-3">
                             <div>
@@ -571,19 +557,6 @@
                             </div>
                         </div>
                     </section>
-                    <div>
-                        <span class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero Image Display Mode') }}</span>
-                        <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <label class="flex items-center gap-2 rounded-md border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_hero_image_mode" value="contain" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'cover') === 'contain' ? 'checked' : '' }}>
-                                <span class="text-sm text-[var(--color-text-primary)]">{{ __('Fit (Show Full Image)') }}</span>
-                            </label>
-                            <label class="flex items-center gap-2 rounded-md border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_hero_image_mode" value="cover" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'cover') === 'cover' ? 'checked' : '' }}>
-                                <span class="text-sm text-[var(--color-text-primary)]">{{ __('Fill (Crop to Container)') }}</span>
-                            </label>
-                        </div>
-                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="space-y-2">
                             <label for="landing_feature_1_title" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Feature 1 title') }}</label>
@@ -634,12 +607,6 @@
                                 <label for="landing_copy_hero_kicker" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero kicker') }}</label>
                                 <input id="landing_copy_hero_kicker" name="landing_copy[hero_kicker]" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('landing_copy.hero_kicker', $landingCopy['hero_kicker'] ?? '') }}">
                             </div>
-                            @foreach (['hero_highlight_1' => 'Highlight 1', 'hero_highlight_2' => 'Highlight 2', 'hero_highlight_3' => 'Highlight 3'] as $copyKey => $copyLabel)
-                                <div>
-                                    <label for="landing_copy_{{ $copyKey }}" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __($copyLabel) }}</label>
-                                    <input id="landing_copy_{{ $copyKey }}" name="landing_copy[{{ $copyKey }}]" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_copy.$copyKey", $landingCopy[$copyKey] ?? '') }}">
-                                </div>
-                            @endforeach
                             @foreach (['hero_video_eyebrow' => 'Video eyebrow', 'hero_video_badge' => 'Video badge', 'hero_video_title' => 'Video title'] as $copyKey => $copyLabel)
                                 <div class="{{ str_contains($copyKey, 'body') || $copyKey === 'hero_video_title' ? 'md:col-span-2' : '' }}">
                                     <label for="landing_copy_{{ $copyKey }}" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __($copyLabel) }}</label>
@@ -682,12 +649,6 @@
                                 'testimonials_kicker' => 'Testimonials kicker',
                                 'testimonials_title' => 'Testimonials title',
                                 'testimonials_subtitle' => 'Testimonials subtitle',
-                                'faq_kicker' => 'FAQ kicker',
-                                'faq_title' => 'FAQ title',
-                                'faq_subtitle' => 'FAQ subtitle',
-                                'contact_kicker' => 'Contact kicker',
-                                'contact_title' => 'Contact title',
-                                'contact_subtitle' => 'Contact subtitle',
                                 'footer_kicker' => 'Footer kicker',
                                 'footer_title' => 'Footer title',
                                 'footer_body' => 'Footer body',
@@ -720,73 +681,6 @@
                             @endforeach
                         </div>
                     </section>
-                    <section class="cf-admin-form-card space-y-5">
-                        <h3 class="text-base font-semibold text-[var(--color-text-primary)]">{{ __('FAQ items') }}</h3>
-                        <div class="grid gap-5 lg:grid-cols-3">
-                            @foreach (($landingFaqs ?? []) as $index => $faq)
-                                <div class="rounded-2xl border border-[var(--color-secondary)]/10 p-4 space-y-3">
-                                    <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Question') }}</label>
-                                    <input type="text" name="landing_faqs[{{ $index }}][question]" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old("landing_faqs.$index.question", $faq['question']) }}">
-                                    <label class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Answer') }}</label>
-                                    <textarea name="landing_faqs[{{ $index }}][answer]" rows="4" class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old("landing_faqs.$index.answer", $faq['answer']) }}</textarea>
-                                </div>
-                            @endforeach
-                        </div>
-                    </section>
-                    <div>
-                        <label for="landing_instructor_image" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Instructor hero image') }}</label>
-                        <input id="landing_instructor_image" name="landing_instructor_image" type="file" accept="image/*" class="mt-1 block w-full text-sm text-[var(--color-text-primary)] border-[var(--color-secondary)]/30 rounded-md shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
-                        @error('landing_instructor_image')
-                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                        @if ($landingInstructorImageUrl)
-                            <div class="mt-3">
-                                <p class="text-xs font-medium text-[var(--color-text-muted)] mb-1">{{ __('Current hero image') }}</p>
-                                <div class="overflow-hidden rounded-xl ring-1 ring-[var(--color-secondary)]/20 shadow-sm">
-                                    <img src="{{ $landingInstructorImageUrl }}" alt="Instructor hero" class="w-48 h-48 object-cover" onerror="this.onerror=null;this.src='{{ \App\Support\MediaAsset::avatarFallback($instructorName ?: 'Instructor') }}';">
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                    <div x-data="{ previewUrl: null }" class="space-y-2">
-                        <label for="hero_image" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero Image') }}</label>
-                        <input id="hero_image" name="hero_image" type="file" accept="image/jpg,image/png,image/webp" class="mt-1 block w-full text-sm text-[var(--color-text-primary)] border-[var(--color-secondary)]/30 rounded-md shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" @change="const f = $event.target.files[0]; if (f) { const r = new FileReader(); r.onload = e => previewUrl = e.target.result; r.readAsDataURL(f); } else { previewUrl = null }">
-                        @error('hero_image')
-                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                        <p class="text-xs text-[var(--color-text-muted)] mt-1">{{ __('Recommended size: 1920×1080 (16:9 ratio). Formats: JPG, PNG, WEBP.') }}</p>
-                        <div class="mt-3">
-                            <p class="text-xs font-medium text-[var(--color-text-muted)] mb-1">{{ __('Preview') }}</p>
-                            <div class="inline-flex items-center justify-center rounded-xl border border-[var(--color-secondary)]/20 bg-white shadow-sm p-3">
-                                <img x-show="previewUrl" :src="previewUrl" alt="Hero Image" class="h-32 w-64 object-cover rounded-lg">
-                                @if ($heroImageUrl)
-                                    <img x-show="!previewUrl" src="{{ $heroImageUrl }}" alt="Hero Image" class="h-32 w-64 object-cover rounded-lg" onerror="this.onerror=null;this.src='{{ asset('images/demo/real/hero-formal-2.jpg') }}';">
-                                @endif
-                            </div>
-                        </div>
-                        <div class="mt-2">
-                            <label class="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-                                <input type="checkbox" name="remove_hero_image" value="1" class="rounded border-[var(--color-secondary)]/30 text-[var(--color-primary)] focus:ring-[var(--color-primary)]">
-                                {{ __('Remove Hero Image (reset to default)') }}
-                            </label>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                            <div>
-                                <label for="hero_image_width" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero image width (px)') }}</label>
-                                <input id="hero_image_width" name="hero_image_width" type="number" min="100" max="3000" step="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('hero_image_width', $heroImageWidth ?: '') }}">
-                                @error('hero_image_width')
-                                    <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="hero_image_height" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero image height (px)') }}</label>
-                                <input id="hero_image_height" name="hero_image_height" type="number" min="100" max="2000" step="10" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('hero_image_height', $heroImageHeight ?: '') }}">
-                                @error('hero_image_height')
-                                    <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </section>
             <div class="mt-4 flex items-center justify-end">
@@ -1284,19 +1178,6 @@
                                    value="{{ old('hero_subtitle_en', $heroSubtitleEn ?? '') }}">
                         </div>
                     </div>
-                    <div>
-                        <span class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Hero Image Display Mode') }}</span>
-                        <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <label class="flex items-center gap-2 rounded-md border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_hero_image_mode" value="contain" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'cover') === 'contain' ? 'checked' : '' }}>
-                                <span class="text-sm text-[var(--color-text-primary)]">{{ __('Fit (Show Full Image)') }}</span>
-                            </label>
-                            <label class="flex items-center gap-2 rounded-md border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_hero_image_mode" value="cover" {{ old('landing_hero_image_mode', $landingHeroImageMode ?? 'cover') === 'cover' ? 'checked' : '' }}>
-                                <span class="text-sm text-[var(--color-text-primary)]">{{ __('Fill (Crop to Container)') }}</span>
-                            </label>
-                        </div>
-                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="space-y-2">
                             <label for="landing_feature_1_title" class="block text-sm font-medium text-[var(--color-text-muted)]">
@@ -1357,23 +1238,6 @@
                             </label>
                             <input id="social_linkedin" name="social_linkedin" type="url" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ old('social_linkedin', $socialLinkedIn ?? '') }}" placeholder="https://www.linkedin.com/in/username">
                         </div>
-                    </div>
-                    <div>
-                        <label for="landing_instructor_image" class="block text-sm font-medium text-[var(--color-text-muted)]">
-                            {{ __('Instructor hero image') }}
-                        </label>
-                        <input id="landing_instructor_image" name="landing_instructor_image" type="file" accept="image/*" class="mt-1 block w-full text-sm text-[var(--color-text-primary)] border-[var(--color-secondary)]/30 rounded-md shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">
-                        @error('landing_instructor_image')
-                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                        @if ($landingInstructorImageUrl)
-                            <div class="mt-3">
-                                <p class="text-xs font-medium text-[var(--color-text-muted)] mb-1">{{ __('Current hero image') }}</p>
-                                <div class="overflow-hidden rounded-xl ring-1 ring-[var(--color-secondary)]/20 shadow-sm">
-                                    <img src="{{ $landingInstructorImageUrl }}" alt="Instructor hero" class="w-48 h-48 object-cover">
-                                </div>
-                            </div>
-                        @endif
                     </div>
                 </div>
             </section>

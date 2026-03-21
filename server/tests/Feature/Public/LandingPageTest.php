@@ -125,26 +125,6 @@ it('instructor settings override landing data', function () {
     $response->assertSee('Instructor Subheadline');
 });
 
-it('landing hero image mode defaults to cover', function () {
-    $response = \Pest\Laravel\get('/');
-    $response->assertOk();
-    $response->assertSee('object-cover');
-    $response->assertSee('transition-transform');
-});
-
-it('admin can switch hero image mode to cover', function () {
-    $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
-    \Pest\Laravel\actingAs($admin)->post(route('dashboard.settings.update'), [
-        'default_language' => 'en',
-        'landing_hero_image_mode' => 'cover',
-    ])->assertRedirect();
-
-    $response = \Pest\Laravel\get('/');
-    $response->assertOk();
-    $response->assertSee('object-cover');
-    $response->assertSee('transition-transform');
-});
-
 it('admin can toggle landing sections visibility', function () {
     $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
     \Pest\Laravel\actingAs($admin)->post(route('dashboard.settings.update'), [
@@ -190,18 +170,6 @@ it('admin can hide instructor bio block inside hero', function () {
     $response->assertOk();
     $response->assertSee('Landing Admin');
     $response->assertDontSee('Landing bio');
-});
-
-it('hero image settings override landing image config', function () {
-    \App\Models\Setting::updateOrCreate(['key' => 'hero.image_fit'], ['value' => 'cover']);
-    \App\Models\Setting::updateOrCreate(['key' => 'hero.image_focus'], ['value' => 'left']);
-    \App\Models\Setting::updateOrCreate(['key' => 'hero.image_ratio'], ['value' => '4:5']);
-
-    $response = \Pest\Laravel\get('/');
-    $response->assertOk();
-    $response->assertSee('object-cover');
-    $response->assertSee('object-position: left;', false);
-    $response->assertSee('aspect-ratio: 4/5', false);
 });
 
 it('hero text settings render in english', function () {
@@ -264,42 +232,6 @@ it('hides WhatsApp CTA when disabled', function () {
     $response->assertDontSee('Chat on WhatsApp');
 });
 
-it('admin uploads hero image and landing shows it', function () {
-    $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
-    $file = \Illuminate\Http\UploadedFile::fake()->image('hero.webp', 1920, 1080)->size(500);
-
-    \Pest\Laravel\actingAs($admin)->post(route('dashboard.settings.update'), [
-        'settings_group' => 'landing',
-        'default_language' => 'en',
-        'hero_image' => $file,
-    ])->assertRedirect();
-
-    $path = Setting::where('key', 'hero.image')->value('value');
-    expect($path)->toBeString()->and($path)->toStartWith('hero/');
-
-    $response = \Pest\Laravel\get('/');
-    $response->assertOk();
-    $response->assertSee('storage/hero/', false);
-});
-
-it('admin removes hero image and fallback appears', function () {
-    Setting::updateOrCreate(['key' => 'hero.image'], ['value' => 'hero/existing.webp']);
-
-    $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
-    \Pest\Laravel\actingAs($admin)->post(route('dashboard.settings.update'), [
-        'settings_group' => 'landing',
-        'default_language' => 'en',
-        'remove_hero_image' => true,
-    ])->assertRedirect();
-
-    $exists = Setting::where('key', 'hero.image')->exists();
-    expect($exists)->toBeFalse();
-
-    $response = \Pest\Laravel\get('/');
-    $response->assertOk();
-    $response->assertSee('hero-formal-2.jpg');
-});
-
 it('injects default hero font CSS variables', function () {
     $response = \Pest\Laravel\get('/');
     $response->assertOk();
@@ -331,14 +263,4 @@ it('clamps out-of-range hero font settings', function () {
     $response->assertSee('--hero-title-size: 96px', false);
     $response->assertSee('--hero-subtitle-size: 48px', false);
     $response->assertSee('--hero-description-size: 14px', false);
-});
-
-it('applies hero image width/height settings to image style', function () {
-    Setting::updateOrCreate(['key' => 'hero.image_width'], ['value' => 640]);
-    Setting::updateOrCreate(['key' => 'hero.image_height'], ['value' => 400]);
-
-    $response = \Pest\Laravel\get('/');
-    $response->assertOk();
-    $response->assertSee('width: 640px', false);
-    $response->assertSee('height: 400px', false);
 });

@@ -37,7 +37,7 @@
         </div>
 
         <div class="cf-course-content">
-            <div class="space-y-4">
+            <div class="space-y-2.5">
                 <div class="flex flex-wrap gap-2">
                     @if (isset($course->lessons_count))
                         <span class="cf-chip !py-1 !text-[11px] !font-semibold">
@@ -51,7 +51,7 @@
                 </h3>
                 @if (!empty($course->description))
                     <p class="cf-course-description line-clamp-2">
-                        {{ str($course->description)->limit(158) }}
+                        {{ str($course->description)->limit(132) }}
                     </p>
                 @endif
             </div>

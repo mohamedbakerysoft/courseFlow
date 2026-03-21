@@ -95,5 +95,11 @@
                 </tbody>
             </table>
         </div>
+
+        @if (method_exists($courses, 'links'))
+            <div class="flex justify-end">
+                {{ $courses->onEachSide(1)->links() }}
+            </div>
+        @endif
     </div>
 </x-app-layout>

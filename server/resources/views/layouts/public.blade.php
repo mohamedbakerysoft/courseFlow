@@ -24,15 +24,6 @@
                 }
             })();
         </script>
-        @php
-            $googleFonts = [
-                'Poppins' => 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap',
-            ];
-            $englishFontUrl = $googleFonts['Poppins'];
-        @endphp
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="{{ $englishFontUrl }}" rel="stylesheet" />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>
             :root {
@@ -46,12 +37,10 @@
                 --color-text-primary: {{ $theme['text'] ?? '#0B0B0B' }};
                 --color-text-muted: {{ $theme['text_muted'] ?? '#4A4A4A' }};
                 --color-error: {{ $theme['error'] ?? '#dc2626' }};
-                --font-english: {{ $typographyCss['english_stack'] ?? "'Poppins', system-ui, sans-serif" }};
                 --hero-title-size: {{ $heroTypography['title'] ?? '76px' }};
                 --hero-subtitle-size: {{ $heroTypography['subtitle'] ?? '22px' }};
                 --hero-description-size: {{ $heroTypography['description'] ?? '18px' }};
             }
-            html { font-family: var(--font-english); }
         </style>
     </head>
     <body class="bg-[var(--color-background)] text-[var(--color-text-primary)] antialiased" @if(isset($rightClickEnabled) && ! $rightClickEnabled) oncontextmenu="return false" @endif data-right-click-enabled="{{ isset($rightClickEnabled) && $rightClickEnabled ? '1' : '0' }}">

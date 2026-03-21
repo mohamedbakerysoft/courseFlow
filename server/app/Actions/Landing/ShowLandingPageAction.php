@@ -6,7 +6,6 @@ use App\Models\Course;
 use App\Models\User;
 use App\Services\SettingsService;
 use App\Support\LandingContent;
-use App\Support\MediaAsset;
 use Illuminate\View\View;
 
 class ShowLandingPageAction
@@ -32,27 +31,6 @@ class ShowLandingPageAction
         $instructorName = (string) ($this->settings->get('instructor.name') ?: ($instructor?->name ?? 'Instructor'));
         $instructorTitle = (string) ($this->settings->get('instructor.title') ?: '');
         $instructorBio = (string) ($this->settings->get('instructor.bio') ?: ($instructor?->bio ?? ''));
-
-        $heroImagePath = (string) (
-            $this->settings->get('hero.image')
-            ?: $this->settings->get('landing.instructor_image', '')
-        );
-        $heroImageUrl = MediaAsset::url($heroImagePath, 'images/demo/real/hero-formal-2.jpg');
-
-        $heroImageFitSetting = (string) ($this->settings->get('hero.image_fit') ?: $this->settings->get('landing.hero_image_mode', 'cover'));
-        $heroImageMode = in_array($heroImageFitSetting, ['contain', 'cover'], true) ? $heroImageFitSetting : 'contain';
-        $heroImageFocusSetting = (string) ($this->settings->get('hero.image_focus') ?: $this->settings->get('landing.hero_image_focus', 'center'));
-        $heroImageFocus = in_array($heroImageFocusSetting, ['center', 'top', 'bottom', 'left', 'right'], true) ? $heroImageFocusSetting : 'center';
-        $heroImageRatioSetting = (string) ($this->settings->get('hero.image_ratio') ?: '4:5');
-        $heroImageRatio = match ($heroImageRatioSetting) {
-            '4:5' => '4/5',
-            '1:1' => '1/1',
-            default => '16/9',
-        };
-        $heroImageWidthVal = (int) ($this->settings->get('hero.image_width') ?: 0);
-        $heroImageHeightVal = (int) ($this->settings->get('hero.image_height') ?: 0);
-        $heroImageWidth = $heroImageWidthVal > 0 ? $heroImageWidthVal : null;
-        $heroImageHeight = $heroImageHeightVal > 0 ? $heroImageHeightVal : null;
 
         $showHero = (bool) $this->settings->get('landing.show_hero', true);
         $showPlatformProof = (bool) $this->settings->get('landing.show_platform_proof', true);
@@ -128,13 +106,7 @@ class ShowLandingPageAction
             'instructorName' => $instructorName,
             'instructorTitle' => $instructorTitle,
             'instructorBio' => $instructorBio,
-            'heroImageUrl' => $heroImageUrl,
             'instructorLinks' => $instructorLinks,
-            'heroImageMode' => $heroImageMode,
-            'heroImageFocus' => $heroImageFocus,
-            'heroImageRatio' => $heroImageRatio,
-            'heroImageWidth' => $heroImageWidth,
-            'heroImageHeight' => $heroImageHeight,
             'showHero' => $showHero,
             'showPlatformProof' => $showPlatformProof,
             'showAboutInstructor' => $showAboutInstructor,
@@ -154,14 +126,6 @@ class ShowLandingPageAction
             'heroVideoUrl' => $heroVideoUrl,
         ];
 
-        $layoutSetting = (string) ($this->settings->get('landing.layout') ?? 'default');
-        $layoutView = match ($layoutSetting) {
-            'default' => 'default',
-            'layout_v2' => 'v2',
-            'layout_v3' => 'v3',
-            default => 'default',
-        };
-
-        return view("landing.layouts.$layoutView", $data);
+        return view('landing.layouts.default', $data);
     }
 }

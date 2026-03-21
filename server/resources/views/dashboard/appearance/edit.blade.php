@@ -14,13 +14,9 @@
         ]" />
 
         <div class="cf-admin-form-card !p-6 sm:!p-7 shadow-none">
-            <form x-data="{isSubmitting:false, tab: 'colors'}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.appearance.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.appearance.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
-                <div class="cf-admin-tabbar">
-                    <button type="button" x-on:click="tab='colors'" :class="tab==='colors' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">Colors</button>
-                    <button type="button" x-on:click="tab='layout'" :class="tab==='layout' ? 'cf-admin-tab is-active' : 'cf-admin-tab'">Layout</button>
-                </div>
-                <div x-show="tab==='colors'" class="cf-admin-form-grid">
+                <div class="cf-admin-form-grid">
                     <div class="cf-admin-field">
                         <label>Primary Color</label>
                         <input type="color" name="primary" value="{{ $primary }}" class="h-10 w-16 rounded-xl border border-[var(--color-secondary)]/20 bg-white">
@@ -37,38 +33,6 @@
                         <input type="color" name="accent" value="{{ $accent }}" class="h-10 w-16 rounded-xl border border-[var(--color-secondary)]/20 bg-white">
                         <p class="cf-admin-helper">Used for soft surfaces, chips, and supporting backgrounds.</p>
                         @error('accent')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
-                    </div>
-                </div>
-                <div x-show="tab==='layout'" class="cf-admin-form-grid">
-                    <div class="cf-admin-field">
-                        <span>Landing Layout</span>
-                        <p class="cf-admin-helper mb-4">The Learnova storefront now uses one fixed brand font across the public site and admin panel for a fully consistent look.</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <label class="block rounded-lg border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_layout" value="default" class="mb-2" {{ ($landingLayout ?? 'default') === 'default' ? 'checked' : '' }}>
-                                <div class="rounded-md overflow-hidden ring-1 ring-[var(--color-secondary)]/10 bg-white">
-                                    <img src="{{ asset('images/layouts/default.svg') }}" alt="Default Layout" class="w-full h-28 object-contain">
-                                </div>
-                                <p class="mt-2 text-sm font-medium text-[var(--color-text-primary)]">Default</p>
-                                <p class="text-xs text-[var(--color-text-muted)]">Balanced hero + courses.</p>
-                            </label>
-                            <label class="block rounded-lg border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_layout" value="layout_v2" class="mb-2" {{ ($landingLayout ?? 'default') === 'layout_v2' ? 'checked' : '' }}>
-                                <div class="rounded-md overflow-hidden ring-1 ring-[var(--color-secondary)]/10 bg-white">
-                                    <img src="{{ asset('images/layouts/v2.svg') }}" alt="Layout v2" class="w-full h-28 object-contain">
-                                </div>
-                                <p class="mt-2 text-sm font-medium text-[var(--color-text-primary)]">Modern Alt</p>
-                                <p class="text-xs text-[var(--color-text-muted)]">Image-forward hero.</p>
-                            </label>
-                            <label class="block rounded-lg border border-[var(--color-secondary)]/20 p-3 cursor-pointer">
-                                <input type="radio" name="landing_layout" value="layout_v3" class="mb-2" {{ ($landingLayout ?? 'default') === 'layout_v3' ? 'checked' : '' }}>
-                                <div class="rounded-md overflow-hidden ring-1 ring-[var(--color-secondary)]/10 bg-white">
-                                    <img src="{{ asset('images/layouts/v3.svg') }}" alt="Layout v3" class="w-full h-28 object-contain">
-                                </div>
-                                <p class="mt-2 text-sm font-medium text-[var(--color-text-primary)]">Minimal / Bold</p>
-                                <p class="text-xs text-[var(--color-text-muted)]">Big title, clean sections.</p>
-                            </label>
-                        </div>
                     </div>
                 </div>
                 <div>

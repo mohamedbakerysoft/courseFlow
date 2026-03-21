@@ -11,7 +11,7 @@
                         </div>
                     @endif
                     <div class="hidden sm:block">
-                        <p class="cf-nav-brand-eyebrow text-sm font-semibold uppercase tracking-[0.22em]">{{ config('app.name') }}</p>
+                        <p class="cf-nav-brand-eyebrow uppercase">{{ config('app.name') }}</p>
                         <p class="text-sm text-[var(--color-text-primary)]">{{ __('Premium learning storefront') }}</p>
                     </div>
                 </a>
@@ -44,7 +44,7 @@
             </div>
 
             <div class="hidden items-center gap-3 lg:flex">
-                <button type="button" data-theme-toggle class="cf-theme-toggle !h-11 !w-11 !justify-center !rounded-2xl !px-0 !py-0" aria-label="{{ __('Toggle theme') }}" title="{{ __('Toggle theme') }}">
+                <button type="button" data-theme-toggle class="cf-theme-toggle !h-11 !w-11 !justify-center !px-0 !py-0" aria-label="{{ __('Toggle theme') }}" title="{{ __('Toggle theme') }}">
                     <span class="cf-theme-icon-shell">
                         <svg data-theme-icon="light" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                             <path d="M12 3v2.5M12 18.5V21M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M3 12h2.5M18.5 12H21M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" />
@@ -90,7 +90,7 @@
             </div>
 
             <div class="flex items-center lg:hidden">
-                <button @click="open = ! open" class="cf-button-secondary !rounded-2xl !px-3 !py-2" aria-label="{{ __('Toggle navigation') }}">
+                <button @click="open = ! open" class="cf-button-secondary !px-3 !py-2" aria-label="{{ __('Toggle navigation') }}">
                     <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7h16M4 12h16M4 17h16" />
                         <path :class="{ 'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 18L18 6M6 6l12 12" />
@@ -114,7 +114,7 @@
                     @endif
                 @endguest
 
-                <button type="button" data-theme-toggle class="cf-theme-toggle mt-2 !h-11 !w-11 !justify-center !rounded-2xl !px-0 !py-0 lg:hidden" aria-label="{{ __('Toggle theme') }}" title="{{ __('Toggle theme') }}">
+                <button type="button" data-theme-toggle class="cf-theme-toggle mt-2 !h-11 !w-11 !justify-center !px-0 !py-0 lg:hidden" aria-label="{{ __('Toggle theme') }}" title="{{ __('Toggle theme') }}">
                     <span class="cf-theme-icon-shell">
                         <svg data-theme-icon="light" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                             <path d="M12 3v2.5M12 18.5V21M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M3 12h2.5M18.5 12H21M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" />
