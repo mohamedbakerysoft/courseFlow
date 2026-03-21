@@ -28,10 +28,6 @@
                 <div class="cf-hero-main">
                     <div class="cf-hero-copy space-y-6">
                         <div class="space-y-5">
-                            <span class="cf-kicker">
-                                {{ $landingCopy['hero_kicker'] ?? __('Independent course business platform') }}
-                            </span>
-
                             <div class="space-y-5">
                                 <h1 class="cf-display max-w-[14ch]" style="font-size: var(--hero-title-size);">
                                     {{ $heroTitle }}
@@ -73,6 +69,10 @@
                                     {{ __('Meet the Instructor') }}
                                 </a>
                             </div>
+
+                            <span class="cf-kicker">
+                                {{ $landingCopy['hero_kicker'] ?? __('Independent course business platform') }}
+                            </span>
                         </div>
                     </div>
 
