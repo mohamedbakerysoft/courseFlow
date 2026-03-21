@@ -17,15 +17,13 @@
                 </a>
 
                 <div class="hidden items-center gap-2 lg:flex">
-                    @guest
                         <x-nav-link :href="url('/')" :active="request()->is('/')">{{ __('Home') }}</x-nav-link>
                         <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.index') || request()->routeIs('courses.show')">{{ __('Courses') }}</x-nav-link>
                         <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')">{{ __('Books') }}</x-nav-link>
                         <x-nav-link :href="route('instructor.show')" :active="request()->routeIs('instructor.show')">{{ __('Instructor') }}</x-nav-link>
-                    @endguest
                     @auth
                         @can('viewAny', \App\Models\Course::class)
-                            <x-nav-link :href="url('/')" :active="request()->is('/')">{{ __('View Site') }}</x-nav-link>
+                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">{{ __('Dashboard') }}</x-nav-link>
                         @else
                             <x-nav-link :href="url('/')" :active="request()->is('/')">{{ __('Home') }}</x-nav-link>
                             <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.index') || request()->routeIs('courses.show')">{{ __('Browse Courses') }}</x-nav-link>
