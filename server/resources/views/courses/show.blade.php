@@ -149,6 +149,61 @@
         </div>
     </section>
 
+    <section class="cf-shell pb-14 sm:pb-16 lg:pb-20">
+        <div class="cf-section-shell">
+            <div class="flex items-center justify-between gap-4">
+                <div>
+                    <span class="cf-kicker">{{ __('Curriculum') }}</span>
+                    <h2 class="mt-3 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Curriculum preview') }}</h2>
+                </div>
+                @auth
+                    @if ($isEnrolled)
+                        <span class="cf-chip">{{ __('Progress') }}: {{ $progressPercent }}%</span>
+                    @endif
+                @endauth
+            </div>
+
+            @if (!empty($lessons) && $lessons->count())
+                <div class="mt-6 space-y-3">
+                    @foreach ($lessons as $l)
+                        @php
+                            $lessonCompleted = in_array($l->id, $completedLessonIds ?? []);
+                        @endphp
+
+                        <a href="{{ route('lessons.show', [$course, $l]) }}" class="cf-panel-soft block rounded-[14px] border border-[rgba(11,11,11,0.08)] px-5 py-4 hover:border-[var(--color-primary)] hover:bg-[rgba(245,184,0,0.08)] transition w-full">
+                            <div class="flex items-center justify-between gap-4">
+                                <div class="flex min-w-0 items-center gap-3">
+                                    <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[var(--color-primary)]/10 text-sm font-semibold text-[var(--color-primary)]">
+                                        {{ $l->position }}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="truncate text-sm font-medium text-[var(--color-text-primary)]">{{ $l->title }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2 whitespace-nowrap">
+                                    @if ($lessonCompleted)
+                                        <span class="cf-badge text-xs">{{ __('Completed') }}</span>
+                                        <svg class="h-4 w-4 text-emerald-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.028a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-3.75-3.75a.75.75 0 111.06-1.06l3.22 3.22 6.97-6.97a.75.75 0 011.06 0z" clip-rule="evenodd" /></svg>
+                                    @elseif ($isEnrolled)
+                                        <span class="cf-badge-muted text-xs">{{ __('In progress') }}</span>
+                                    @else
+                                        <span class="cf-badge-muted text-xs">{{ __('Locked') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            @else
+                <div class="mt-6 cf-panel-soft px-6 py-8 text-center">
+                    <p class="font-medium text-[var(--color-text-primary)]">{{ __('Lessons will appear once the course is published.') }}</p>
+                    <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('Once published, the curriculum preview will appear here.') }}</p>
+                </div>
+            @endif
+        </div>
+    </section>
+
     <section class="cf-shell pb-8">
         <x-public.trust-bar />
     </section>
@@ -211,59 +266,6 @@
                             <li>{{ __('A storefront that keeps the instructor visible and credible.') }}</li>
                         </ul>
                     </article>
-                </div>
-
-                <div class="cf-section-shell">
-                    <div class="flex items-center justify-between gap-4">
-                        <div>
-                            <span class="cf-kicker">{{ __('Curriculum') }}</span>
-                            <h2 class="mt-3 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Curriculum preview') }}</h2>
-                        </div>
-                        @auth
-                            @if ($isEnrolled)
-                                <span class="cf-chip">{{ __('Progress') }}: {{ $progressPercent }}%</span>
-                            @endif
-                        @endauth
-                    </div>
-
-                    @if (!empty($lessons) && $lessons->count())
-                        <div class="mt-6 space-y-3">
-                            @foreach ($lessons as $l)
-                                @php
-                                    $lessonCompleted = in_array($l->id, $completedLessonIds ?? []);
-                                @endphp
-
-                                <a href="{{ route('lessons.show', [$course, $l]) }}" class="cf-panel-soft block rounded-[14px] border border-[rgba(11,11,11,0.08)] px-5 py-4 hover:border-[var(--color-primary)] hover:bg-[rgba(245,184,0,0.08)] transition">
-                                    <div class="flex items-center justify-between gap-4">
-                                        <div class="flex min-w-0 items-center gap-3">
-                                            <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[var(--color-primary)]/10 text-sm font-semibold text-[var(--color-primary)]">
-                                                {{ $l->position }}
-                                            </div>
-                                            <div class="min-w-0">
-                                                <p class="truncate text-sm font-medium text-[var(--color-text-primary)]">{{ $l->title }}</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="flex items-center gap-2 whitespace-nowrap">
-                                            @if ($lessonCompleted)
-                                                <span class="cf-badge text-xs">{{ __('Completed') }}</span>
-                                                <svg class="h-4 w-4 text-emerald-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.028a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-3.75-3.75a.75.75 0 111.06-1.06l3.22 3.22 6.97-6.97a.75.75 0 011.06 0z" clip-rule="evenodd" /></svg>
-                                            @elseif ($isEnrolled)
-                                                <span class="cf-badge-muted text-xs">{{ __('In progress') }}</span>
-                                            @else
-                                                <span class="cf-badge-muted text-xs">{{ __('Locked') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    @else
-                        <div class="mt-6 cf-panel-soft px-6 py-8 text-center">
-                            <p class="font-medium text-[var(--color-text-primary)]">{{ __('Lessons will appear once the course is published.') }}</p>
-                            <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('Once published, the curriculum preview will appear here.') }}</p>
-                        </div>
-                    @endif
                 </div>
 
                 <div class="cf-panel px-6 py-6 sm:px-8">
