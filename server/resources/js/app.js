@@ -133,7 +133,8 @@ document.addEventListener('contextmenu', function (e) {
 
 document.addEventListener('selectstart', function (e) {
     const t = e.target;
-    const allow = t && (t.closest('input, textarea, select') || t.isContentEditable === true);
+    const isFormControl = t instanceof Element && t.closest('input, textarea, select');
+    const allow = (t && t.isContentEditable === true) || isFormControl;
     if (!allow) {
         e.preventDefault();
     }
