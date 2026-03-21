@@ -10,7 +10,7 @@
     html {
         scroll-behavior: smooth;
         text-size-adjust: 100%;
-        font-family: var(--font-english), sans-serif !important;
+        font-family: sans-serif !important;
     }
 
     body {
@@ -24,7 +24,7 @@
             radial-gradient(circle at bottom right, rgba(11, 11, 11, 0.04), transparent 30%),
             #ffffff;
         color: var(--color-text-primary);
-        font-family: var(--font-english), sans-serif !important;
+        font-family: sans-serif !important;
     }
 
     button,
@@ -74,7 +74,7 @@
     .cf-admin-section-title,
     .cf-course-title,
     .cf-dark-title {
-        font-family: var(--font-english), sans-serif !important;
+        font-family: sans-serif !important;
         font-style: normal;
         letter-spacing: -0.028em;
         word-spacing: -0.02em;
@@ -88,6 +88,7 @@
         font-size: 44px;
         font-weight: 600;
         line-height: 1.25em;
+        font-family: sans-serif;
     }
 
     p,
@@ -338,7 +339,7 @@
         letter-spacing: 0.045em;
         text-transform: uppercase;
         white-space: nowrap;
-        font-family: var(--font-english), sans-serif;
+        font-family: sans-serif;
     }
 
     .cf-app-shell label,
