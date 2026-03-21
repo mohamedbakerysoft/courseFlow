@@ -44,15 +44,14 @@
             </div>
 
             <div class="hidden items-center gap-3 lg:flex">
-                <button type="button" data-theme-toggle class="cf-theme-toggle !h-11 !w-11 !justify-center !px-0 !py-0" aria-label="{{ __('Toggle theme') }}" title="{{ __('Toggle theme') }}">
-                    <span class="cf-theme-icon-shell">
+                    <a href='javascript:void(0)' data-theme-toggle class="cf-theme-icon-shell ">
                         <svg data-theme-icon="light" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                             <path d="M12 3v2.5M12 18.5V21M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M3 12h2.5M18.5 12H21M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         <svg data-theme-icon="dark" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                             <path d="M20 15.5A8.5 8.5 0 118.5 4 6.5 6.5 0 0020 15.5z" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                    </span>
+                    </a>
                 </button>
 
                 @auth

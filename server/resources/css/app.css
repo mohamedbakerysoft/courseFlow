@@ -16,8 +16,8 @@
     body {
         min-height: 100vh;
         font-size: 16px;
-        line-height: 1.65;
-        letter-spacing: -0.006em;
+        line-height: 1.7;
+        
         font-optical-sizing: auto;
         text-rendering: optimizeLegibility;
         background:
@@ -77,6 +77,30 @@
     .cf-dark-title {
         font-family: var(--font-english), sans-serif !important;
         font-style: normal;
+        letter-spacing: -0.028em;
+        word-spacing: -0.02em;
+    }
+
+    h1 {
+        color: var(--darker-blue);
+        letter-spacing: -.75px;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 44px;
+        font-weight: 600;
+        line-height: 1.25em;
+    }
+
+    p,
+    li,
+    label,
+    a,
+    button,
+    input,
+    textarea,
+    select {
+        letter-spacing: -0.012em;
+        word-spacing: 0;
     }
 
     .cf-shell {
@@ -103,7 +127,8 @@
     }
 
     .cf-kicker {
-        @apply inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.22em];
+        @apply inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[12px] font-semibold uppercase;
+        letter-spacing: 0.1em;
         color: #0b0b0b;
         border-color: rgba(11, 11, 11, 0.1);
         background: #ffffff;
@@ -121,25 +146,26 @@
     .cf-display {
         font-size: clamp(2.75rem, 5vw, 4.35rem);
         font-weight: 600;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.038em;
         color: var(--color-text-primary);
-        line-height: 1.16;
+        line-height: 1.12;
         text-wrap: balance;
     }
 
     .cf-heading {
         font-size: clamp(2.55rem, 3.9vw, 3.55rem);
         font-weight: 600;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.032em;
         color: var(--color-text-primary);
-        line-height: 1.2;
+        line-height: 1.16;
     }
 
     .cf-subheading {
         font-size: clamp(1.05rem, 1.35vw, 1.18rem);
         font-weight: 400;
+        letter-spacing: -0.014em;
         color: rgba(11, 11, 11, 0.78);
-        line-height: 1.68;
+        line-height: 1.74;
     }
 
     .cf-muted {
@@ -190,7 +216,8 @@
     }
 
     .cf-dark-kicker {
-        @apply inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.22em];
+        @apply inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12px] font-semibold uppercase;
+        letter-spacing: 0.1em;
         color: #0b0b0b;
         background: #ffffff;
         border: 1px solid transparent;
@@ -225,6 +252,7 @@
 
     .cf-dark-chip {
         @apply inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold;
+        letter-spacing: 0.015em;
         color: #0b0b0b;
         background: #ffffff;
         border: 1px solid transparent;
@@ -238,6 +266,7 @@
         padding: 1rem 1.25rem;
         font-size: 15px;
         font-weight: 600;
+        letter-spacing: -0.01em;
         color: #ffffff;
         transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
     }
@@ -260,6 +289,7 @@
 
     .cf-chip {
         @apply inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12px] font-semibold;
+        letter-spacing: 0.02em;
         border-color: rgba(11, 11, 11, 0.08);
         background: #f7f7f7;
         color: var(--color-text-primary);
@@ -267,6 +297,7 @@
 
     .cf-floating-pill {
         @apply rounded-full border px-3 py-1.5 text-[12px] font-medium;
+        letter-spacing: 0.015em;
         border-color: rgba(11, 11, 11, 0.08);
         background: #ffffff;
         color: var(--color-text-primary);
@@ -305,7 +336,7 @@
         @apply inline-flex items-center justify-center rounded-[5px] px-6 py-3.5 font-semibold transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
         font-size: 15px;
         font-weight: 700;
-        letter-spacing: 0.0625rem;
+        letter-spacing: 0.045em;
         text-transform: uppercase;
         white-space: nowrap;
         font-family: var(--font-english), sans-serif;
@@ -416,6 +447,7 @@
         min-height: 3.35rem;
         font-size: 16px;
         font-weight: 500;
+        letter-spacing: -0.012em;
         border-color: rgba(11, 11, 11, 0.1);
         background: #ffffff;
         color: var(--color-text-primary);
@@ -447,7 +479,7 @@
         @apply inline-flex items-center rounded-[5px] px-4 py-2.5 text-[15px] font-semibold transition;
         min-height: 2.75rem;
         white-space: nowrap;
-        letter-spacing: 0.0625rem;
+        letter-spacing: 0.045em;
         text-transform: uppercase;
         color: rgba(11, 11, 11, 0.82);
         font-family: var(--font-english), sans-serif !important;
@@ -461,7 +493,7 @@
 
     .cf-mobile-link {
         @apply block rounded-[5px] px-4 py-3 text-[15px] font-semibold transition;
-        letter-spacing: 0.05rem;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
         color: rgba(11, 11, 11, 0.74);
         font-family: var(--font-english), sans-serif !important;
@@ -482,6 +514,7 @@
         @apply inline-flex items-center gap-3 rounded-[5px] border px-4 py-2.5 transition;
         font-size: 15px;
         font-weight: 600;
+        letter-spacing: -0.01em;
         min-height: 2.75rem;
         white-space: nowrap;
         border-color: rgba(11, 11, 11, 0.1);
@@ -498,7 +531,7 @@
         color: rgba(11, 11, 11, 0.72);
         font-size: 0.9rem;
         font-weight: 600;
-        letter-spacing: 0.0625rem;
+        letter-spacing: 0.05em;
         font-family: var(--font-english), sans-serif !important;
     }
 
@@ -511,7 +544,8 @@
 
     .cf-theme-toggle {
         @apply inline-flex items-center gap-3 rounded-[5px] px-4 py-2.5 font-semibold transition;
-        font-size: 16px;
+        font-size: 15px;
+        letter-spacing: -0.01em;
         border-color: transparent;
         background: #ffffff;
         color: #0b0b0b;
@@ -617,7 +651,7 @@
         margin: 0;
         font-size: 0.78rem;
         font-weight: 700;
-        letter-spacing: 0.2em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--color-text-muted);
     }
@@ -702,9 +736,9 @@
         margin-top: 1rem;
         max-width: 12ch;
         font-size: clamp(2.8rem, 5vw, 4.45rem);
-        font-weight: 800;
-        line-height: 0.96;
-        letter-spacing: -0.065em;
+        font-weight: 700;
+        line-height: 1.02;
+        letter-spacing: -0.042em;
         text-wrap: balance;
         color: var(--color-text-primary);
     }
@@ -719,7 +753,8 @@
     }
 
     .cf-lesson-kicker {
-        @apply inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.2em];
+        @apply inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[12px] font-semibold uppercase;
+        letter-spacing: 0.1em;
         border-color: rgba(11, 11, 11, 0.08);
         background: #ffffff;
         color: var(--color-text-primary);
@@ -806,7 +841,7 @@
         margin: 0;
         font-size: 0.8rem;
         font-weight: 700;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--color-text-muted);
     }
@@ -855,7 +890,7 @@
         margin: 0;
         font-size: 0.8rem;
         font-weight: 700;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--color-text-muted);
     }
@@ -940,8 +975,8 @@
     .cf-admin-heading {
         font-size: clamp(2rem, 3vw, 2.7rem);
         line-height: 1.06;
-        letter-spacing: -0.05em;
-        font-weight: 800;
+        letter-spacing: -0.035em;
+        font-weight: 700;
         color: var(--color-text-primary);
         text-wrap: balance;
     }
@@ -1049,7 +1084,8 @@
     }
 
     .cf-table th {
-        @apply px-6 py-4 text-left text-[12px] font-semibold uppercase tracking-[0.18em];
+        @apply px-6 py-4 text-left text-[12px] font-semibold uppercase;
+        letter-spacing: 0.08em;
         color: var(--color-text-muted);
     }
 
@@ -1083,7 +1119,7 @@
     .cf-table-empty-title {
         font-size: 1.55rem;
         font-weight: 700;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.028em;
         color: var(--color-text-primary);
     }
 
@@ -1095,13 +1131,15 @@
     }
 
     .cf-badge {
-        @apply inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em];
+        @apply inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase;
+        letter-spacing: 0.06em;
         background: rgba(245, 184, 0, 0.18);
         color: #0b0b0b;
     }
 
     .cf-badge-muted {
-        @apply inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em];
+        @apply inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase;
+        letter-spacing: 0.06em;
         background: #f7f7f7;
         color: var(--color-text-primary);
     }
@@ -1136,7 +1174,8 @@
     }
 
     .cf-price-pill {
-        @apply rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em];
+        @apply rounded-full px-3 py-1 text-[11px] font-bold uppercase;
+        letter-spacing: 0.06em;
         background: #f5b800;
         color: #0b0b0b;
     }
@@ -1147,9 +1186,9 @@
 
     .cf-course-title {
         font-size: 1.58rem;
-        font-weight: 800;
+        font-weight: 700;
         line-height: 1.12;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.03em;
         color: var(--color-text-primary);
         text-wrap: balance;
     }
@@ -1172,7 +1211,8 @@
     }
 
     .cf-course-meta-pill {
-        @apply inline-flex items-center rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em];
+        @apply inline-flex items-center rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase;
+        letter-spacing: 0.06em;
         border-color: rgba(11, 11, 11, 0.08);
         background: #f7f7f7;
         color: rgba(11, 11, 11, 0.74);
@@ -2023,6 +2063,7 @@
         .cf-display {
             font-size: clamp(2.7rem, 10.8vw, 3.7rem);
             line-height: 1.14;
+            letter-spacing: -0.034em;
         }
 
         .cf-heading {
@@ -2095,7 +2136,7 @@
         .cf-lesson-title {
             max-width: 100%;
             font-size: clamp(2.45rem, 12vw, 3.5rem);
-            line-height: 0.98;
+            line-height: 1.02;
         }
 
         .cf-lesson-lead {
