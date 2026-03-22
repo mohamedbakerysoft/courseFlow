@@ -40,6 +40,7 @@ class CourseController extends Controller
         $progressPercent = $isEnrolled ? $progressAction->execute($request->user(), $course) : 0;
         $lessons = $course->publishedLessonsList();
         $firstLesson = $lessons->first();
+        $nextLesson = null;
 
         $completedLessonIds = [];
         if ($request->user() && $isEnrolled) {
@@ -48,11 +49,29 @@ class CourseController extends Controller
                 ->pluck('lessons.id')
                 ->toArray();
         }
+
+        if ($isEnrolled) {
+            $nextLesson = $lessons->first(fn ($lesson) => ! in_array($lesson->id, $completedLessonIds, true)) ?? $firstLesson;
+        }
+
         $isStripeEnabled = (bool) $settings->get('payments.stripe.enabled', true);
         $isPayPalEnabled = (bool) $settings->get('payments.paypal.enabled', true);
         $manualInstructions = (string) $settings->get('payments.manual.instructions', 'Send the course fee via bank transfer or cash and upload your proof of payment.');
         $hasManualPayment = trim($manualInstructions) !== '';
         $hasAnyPaymentMethod = $isStripeEnabled || $isPayPalEnabled || $hasManualPayment;
+
+        $envOk = app()->environment(['production']);
+        $stripeConfigValid = ! $envOk || ((string) config('services.stripe.publishable_key') !== '' && (string) config('services.stripe.secret') !== '');
+        $paypalClientIdValue = (string) $settings->get('paypal.client_id', '');
+        $paypalSecretValue = (string) $settings->get('paypal.client_secret', '');
+        $paypalModeValue = (string) $settings->get('paypal.mode', 'sandbox');
+        $paypalClientOk = $paypalClientIdValue !== '' && $paypalSecretValue !== '';
+        $paypalModeOk = in_array(strtolower($paypalModeValue), ['sandbox', 'live'], true);
+        $paypalConfigValid = ! $envOk || ($paypalClientOk && $paypalModeOk);
+        $stripeAvailable = $isStripeEnabled && $stripeConfigValid;
+        $paypalAvailable = $isPayPalEnabled && $paypalConfigValid;
+        $hasAnyAvailablePaymentMethod = $stripeAvailable || $paypalAvailable || $hasManualPayment;
+        $hasSomeUnavailablePaymentMethod = ($isStripeEnabled && ! $stripeAvailable) || ($isPayPalEnabled && ! $paypalAvailable);
 
         $instructorName = (string) ($settings->get('instructor.name') ?: ($course->instructor?->name ?? ''));
         $instructorBio = (string) ($settings->get('instructor.bio') ?: ($course->instructor?->bio ?? ''));
@@ -65,14 +84,18 @@ class CourseController extends Controller
             'progressPercent',
             'lessons',
             'firstLesson',
+            'nextLesson',
             'completedLessonIds',
-            'isStripeEnabled',
-            'isPayPalEnabled',
+            'stripeAvailable',
+            'paypalAvailable',
             'hasManualPayment',
             'hasAnyPaymentMethod',
+            'hasAnyAvailablePaymentMethod',
+            'hasSomeUnavailablePaymentMethod',
             'instructorName',
             'instructorBio',
             'instructorImageUrl',
+            'paypalClientIdValue',
         ));
     }
 

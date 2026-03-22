@@ -3,6 +3,7 @@
         $displayPrice = $course->is_free || (float) $course->price == 0.0
             ? __('Free')
             : number_format((float) $course->price, 2).' '.$course->currency;
+        $isGuest = ! auth()->check();
         $displayName = $instructorName !== '' ? $instructorName : ($course->instructor->name ?? '');
         $displayBio = $instructorBio !== '' ? $instructorBio : ($course->instructor->bio ?? '');
         $profileImage = !empty($instructorImageUrl)
@@ -84,6 +85,12 @@
             __('Instant access after enrollment'),
             __('Saved progress while learning'),
         ];
+        $learningIncludes = [
+            __('Structured lessons available any time after enrollment'),
+            __('Saved progress across completed lessons'),
+            __('Continue from your next unfinished lesson'),
+            __('Protected access from one clean learning dashboard'),
+        ];
     @endphp
 
     <section class="cf-shell cf-section pt-10 sm:pt-14">
@@ -119,10 +126,12 @@
                             <p class="font-semibold text-[var(--color-text-primary)]">{{ __('Self-paced format') }}</p>
                             <p class="mt-1 text-[var(--color-text-muted)]">{{ __('Learn through a focused curriculum at your own pace') }}</p>
                         </div>
-                        <div class="cf-panel-soft px-4 py-3">
-                            <p class="font-semibold text-[var(--color-text-primary)]">{{ __('Enrollment ready') }}</p>
-                            <p class="mt-1 text-[var(--color-text-muted)]">{{ __('Card, PayPal, or manual payment support') }}</p>
-                        </div>
+                        @unless ($isEnrolled)
+                            <div class="cf-panel-soft px-4 py-3">
+                                <p class="font-semibold text-[var(--color-text-primary)]">{{ __('Enrollment ready') }}</p>
+                                <p class="mt-1 text-[var(--color-text-muted)]">{{ __('Card, PayPal, or manual payment support') }}</p>
+                            </div>
+                        @endunless
                     </div>
                     @auth
                         @if ($isEnrolled)
@@ -222,9 +231,9 @@
                             </ul>
                         </div>
                         <div class="cf-panel-soft px-5 py-5">
-                            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('This course includes') }}</p>
+                            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ $isEnrolled ? __('Learning access includes') : __('This course includes') }}</p>
                             <ul class="cf-check-list mt-4">
-                                @foreach ($courseIncludes as $courseInclude)
+                                @foreach ($isEnrolled ? $learningIncludes : $courseIncludes as $courseInclude)
                                     <li>{{ $courseInclude }}</li>
                                 @endforeach
                             </ul>
@@ -261,9 +270,15 @@
                     <article class="cf-panel px-5 py-5">
                         <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('What to expect') }}</p>
                         <ul class="cf-check-list mt-4">
-                            <li>{{ __('A clear lesson path instead of scattered resources.') }}</li>
-                            <li>{{ __('A clear decision journey from course page to enrollment.') }}</li>
-                            <li>{{ __('A storefront that keeps the instructor visible and credible.') }}</li>
+                            @if ($isEnrolled)
+                                <li>{{ __('A clear lesson path instead of scattered resources.') }}</li>
+                                <li>{{ __('A smoother return point each time you continue learning.') }}</li>
+                                <li>{{ __('Visible progress while you move through the curriculum.') }}</li>
+                            @else
+                                <li>{{ __('A clear lesson path instead of scattered resources.') }}</li>
+                                <li>{{ __('A clear decision journey from course page to enrollment.') }}</li>
+                                <li>{{ __('A storefront that keeps the instructor visible and credible.') }}</li>
+                            @endif
                         </ul>
                     </article>
                 </div>
@@ -301,174 +316,167 @@
 
             <div class="space-y-6">
                 <div class="cf-panel sticky top-28 px-6 py-6 sm:px-8">
-                    <div class="space-y-4">
-                        <div class="flex items-start justify-between gap-4">
-                            <div>
-                                <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $course->title }}</p>
-                                <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('Review the curriculum, choose a payment method, and start learning right away.') }}</p>
+                    @if ($isEnrolled)
+                        <div class="space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('You are enrolled') }}</p>
+                                    <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('Continue your learning path, review completed material, and jump back into the next lesson.') }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $progressPercent }}%</p>
+                                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('Course progress') }}</p>
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <p class="text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $displayPrice }}</p>
-                                <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $lessons->count() }} {{ Str::plural('lesson', $lessons->count()) }}</p>
+
+                            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                <div class="cf-soft-pill">{{ __('Instant lesson access') }}</div>
+                                <div class="cf-soft-pill">{{ __('Saved progress across lessons') }}</div>
+                                <div class="cf-soft-pill">{{ __('Structured course flow') }}</div>
+                                <div class="cf-soft-pill">{{ __('Return any time to review') }}</div>
                             </div>
-                        </div>
 
-                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                            <div class="cf-soft-pill">
-                                {{ __('Payments via Stripe, PayPal, or manual approval') }}
-                            </div>
-                            <div class="cf-soft-pill">
-                                {{ __('Instant lesson access after enrollment') }}
-                            </div>
-                            <div class="cf-soft-pill">
-                                {{ __('One-time payment with no subscription') }}
-                            </div>
-                            <div class="cf-soft-pill">
-                                {{ __('Clear course flow with protected progress') }}
-                            </div>
-                        </div>
-
-                        <div class="grid gap-2">
-                            @guest
-                                <a href="{{ route('login') }}" class="cf-button-primary w-full">{{ __('Login to enroll') }}</a>
-                            @else
-                                @if ($isEnrolled)
-                                    @if (!empty($firstLesson))
-                                        <a href="{{ route('lessons.show', [$course, $firstLesson]) }}" class="cf-button-primary w-full">{{ __('Continue learning') }}</a>
-                                    @endif
-                                    <p class="text-center text-sm text-[var(--color-text-muted)]">{{ __('You are already enrolled in this course.') }}</p>
-                                @else
-                                    @if ($course->is_free || (float)$course->price == 0.0)
-                                        <form action="{{ route('courses.enroll', $course) }}" method="POST" class="w-full">
-                                            @csrf
-                                            <button type="submit" class="cf-button-primary w-full">{{ __('Get instant access') }}</button>
-                                        </form>
-                                    @else
-                                        @if ($hasAnyPaymentMethod)
-                                            @php
-                                                $envOk = app()->environment(['production']) ? true : false;
-                                                $stripeConfigValid = !$envOk || ((string) config('services.stripe.publishable_key') !== '' && (string) config('services.stripe.secret') !== '');
-                                                $settingsSvc = app(\App\Services\SettingsService::class);
-                                                $paypalClientIdVal = (string) $settingsSvc->get('paypal.client_id', '');
-                                                $paypalSecretVal = (string) $settingsSvc->get('paypal.client_secret', '');
-                                                $paypalModeVal = (string) $settingsSvc->get('paypal.mode', 'sandbox');
-                                                $paypalClientOk = $paypalClientIdVal !== '' && $paypalSecretVal !== '';
-                                                $paypalModeOk = in_array(strtolower($paypalModeVal), ['sandbox', 'live'], true);
-                                                $paypalConfigValid = !$envOk || ($paypalClientOk && $paypalModeOk);
-                                                $stripeAvailable = $isStripeEnabled && $stripeConfigValid;
-                                                $paypalAvailable = $isPayPalEnabled && $paypalConfigValid;
-                                                $hasAnyAvailable = $stripeAvailable || $paypalAvailable || $hasManualPayment;
-                                                $hasSomeUnavailable = ($isStripeEnabled && ! $stripeAvailable) || ($isPayPalEnabled && ! $paypalAvailable);
-                                            @endphp
-
-                                            @if ($hasAnyAvailable)
-                                                @if ($stripeAvailable)
-                                                    <form action="{{ route('payments.checkout', $course) }}" method="POST" class="w-full">
-                                                        @csrf
-                                                        <button type="submit" class="cf-button-primary w-full">{{ __('Pay securely with Card') }}</button>
-                                                    </form>
-                                                @endif
-
-                                                @if ($paypalAvailable)
-                                                    <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="w-full">
-                                                        @csrf
-                                                        <button type="submit" class="cf-button-secondary w-full">{{ __('Checkout with PayPal') }}</button>
-                                                    </form>
-                                                    <div id="paypal-button-container" class="mt-3" data-course-id="{{ (int) $course->id }}"></div>
-                                                    @php
-                                                        $ppClientId = (string) app(\App\Services\SettingsService::class)->get('paypal.client_id', '');
-                                                        $ppCurrency = $course->currency ?? 'USD';
-                                                    @endphp
-                                                    @if ($ppClientId !== '')
-                                                        <script src="https://www.paypal.com/sdk/js?client-id={{ $ppClientId }}&currency={{ $ppCurrency }}&intent=capture"></script>
-                                                        <script>
-                                                            (function () {
-                                                                var csrfMeta = document.querySelector('meta[name="csrf-token"]');
-                                                                var csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
-                                                                var container = document.getElementById('paypal-button-container');
-                                                                var courseId = container ? parseInt(container.getAttribute('data-course-id') || '0', 10) : 0;
-                                                                function callCreateOrder() {
-                                                                    return fetch('{{ route('payments.paypal.create_order') }}', {
-                                                                        method: 'POST',
-                                                                        headers: {
-                                                                            'Content-Type': 'application/json',
-                                                                            'X-CSRF-TOKEN': csrf
-                                                                        },
-                                                                        body: JSON.stringify({ course_id: courseId })
-                                                                    }).then(function (r) { return r.json(); }).then(function (d) { return d.order_id; });
-                                                                }
-                                                                function callCapture(orderId) {
-                                                                    return fetch('{{ route('payments.paypal.capture') }}', {
-                                                                        method: 'POST',
-                                                                        headers: {
-                                                                            'Content-Type': 'application/json',
-                                                                            'X-CSRF-TOKEN': csrf
-                                                                        },
-                                                                        body: JSON.stringify({ order_id: orderId })
-                                                                    }).then(function (r) { return r.json(); });
-                                                                }
-                                                                if (window.paypal && container) {
-                                                                    var funding = [paypal.FUNDING.PAYPAL, paypal.FUNDING.CARD];
-                                                                    funding.forEach(function (source) {
-                                                                        paypal.Buttons({
-                                                                            fundingSource: source,
-                                                                            createOrder: function () { return callCreateOrder(); },
-                                                                            onApprove: function (data) {
-                                                                                return callCapture(data.orderID).then(function () {
-                                                                                    container.innerHTML = '<div class="rounded-2xl border border-[var(--color-primary)] bg-[var(--color-primary)]/10 p-3 text-sm text-[var(--color-primary)]">{{ __('Payment successful. You are enrolled.') }}</div>';
-                                                                                    var forms = container.parentElement.querySelectorAll('form');
-                                                                                    forms.forEach(function (f) { f.style.display = 'none'; });
-                                                                                });
-                                                                            },
-                                                                            onError: function () {}
-                                                                        }).render('#paypal-button-container');
-                                                                    });
-                                                                }
-                                                            })();
-                                                        </script>
-                                                    @endif
-                                                @endif
-
-                                                @if ($hasManualPayment)
-                                                    <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="w-full">
-                                                        @csrf
-                                                        <button type="submit" class="cf-button-secondary w-full">{{ __('Request manual payment') }}</button>
-                                                    </form>
-                                                @endif
-
-                                                @if ($hasSomeUnavailable)
-                                                    <p class="text-center text-xs text-[var(--color-text-muted)]">{{ __('Some payment methods are currently unavailable.') }}</p>
-                                                @endif
-                                            @else
-                                                <div class="rounded-2xl border border-[rgba(15,23,42,0.08)] bg-[rgba(15,23,42,0.04)] px-4 py-3 text-center text-sm text-[var(--color-text-muted)]">
-                                                    {{ __('Online payments are temporarily unavailable. Please contact the instructor.') }}
-                                                </div>
-                                            @endif
-                                        @else
-                                            <div class="rounded-2xl border border-[rgba(15,23,42,0.08)] bg-[rgba(15,23,42,0.04)] px-4 py-3 text-center text-sm text-[var(--color-text-muted)]">
-                                                {{ __('Online payments are temporarily unavailable. Please contact the instructor.') }}
-                                            </div>
-                                        @endif
-                                    @endif
+                            <div class="grid gap-3">
+                                @if ($nextLesson)
+                                    <a href="{{ route('lessons.show', [$course, $nextLesson]) }}" class="cf-button-primary w-full">{{ count($completedLessonIds) ? __('Continue learning') : __('Start learning') }}</a>
+                                    <div class="rounded-2xl border border-[rgba(15,23,42,0.08)] bg-[rgba(15,23,42,0.04)] px-4 py-4">
+                                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">{{ __('Next lesson') }}</p>
+                                        <p class="mt-2 text-sm font-semibold text-[var(--color-text-primary)]">{{ $nextLesson->title }}</p>
+                                    </div>
                                 @endif
-                            @endguest
-                        </div>
 
-                        <div class="cf-divider pt-4 text-sm text-[var(--color-text-muted)]">
-                            <p>{{ __('One-time purchase, no monthly subscription, and instant access after enrollment.') }}</p>
+                                <div class="rounded-2xl border border-[rgba(15,23,42,0.08)] bg-[rgba(15,23,42,0.04)] px-4 py-4">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">{{ __('Access details') }}</p>
+                                    <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('You have full access to :count lessons in this course.', ['count' => $lessons->count()]) }}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $course->title }}</p>
+                                    <p class="mt-2 text-sm text-[var(--color-text-muted)]">{{ __('Review the curriculum, choose a payment method, and start learning right away.') }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $displayPrice }}</p>
+                                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $lessons->count() }} {{ Str::plural('lesson', $lessons->count()) }}</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                <div class="cf-soft-pill">{{ __('Payments via Stripe, PayPal, or manual approval') }}</div>
+                                <div class="cf-soft-pill">{{ __('Instant lesson access after enrollment') }}</div>
+                                <div class="cf-soft-pill">{{ __('One-time payment with no subscription') }}</div>
+                                <div class="cf-soft-pill">{{ __('Clear course flow with protected progress') }}</div>
+                            </div>
+
+                            <div class="grid gap-2">
+                                @if ($isGuest)
+                                    <a href="{{ route('login') }}" class="cf-button-primary w-full">{{ __('Login to enroll') }}</a>
+                                @elseif ($course->is_free || (float)$course->price == 0.0)
+                                    <form action="{{ route('courses.enroll', $course) }}" method="POST" class="w-full">
+                                        @csrf
+                                        <button type="submit" class="cf-button-primary w-full">{{ __('Get instant access') }}</button>
+                                    </form>
+                                @elseif ($hasAnyPaymentMethod)
+                                    @if ($hasAnyAvailablePaymentMethod)
+                                        @if ($stripeAvailable)
+                                            <form action="{{ route('payments.checkout', $course) }}" method="POST" class="w-full">
+                                                @csrf
+                                                <button type="submit" class="cf-button-primary w-full">{{ __('Pay securely with Card') }}</button>
+                                            </form>
+                                        @endif
+
+                                        @if ($paypalAvailable)
+                                            <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="w-full">
+                                                @csrf
+                                                <button type="submit" class="cf-button-secondary w-full">{{ __('Checkout with PayPal') }}</button>
+                                            </form>
+                                            <div id="paypal-button-container" class="mt-3" data-course-id="{{ (int) $course->id }}"></div>
+                                            @if ($paypalClientIdValue !== '')
+                                                <script src="https://www.paypal.com/sdk/js?client-id={{ $paypalClientIdValue }}&currency={{ $course->currency ?? 'USD' }}&intent=capture"></script>
+                                                <script>
+                                                    (function () {
+                                                        var csrfMeta = document.querySelector('meta[name="csrf-token"]');
+                                                        var csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
+                                                        var container = document.getElementById('paypal-button-container');
+                                                        var courseId = container ? parseInt(container.getAttribute('data-course-id') || '0', 10) : 0;
+                                                        function callCreateOrder() {
+                                                            return fetch('{{ route('payments.paypal.create_order') }}', {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'X-CSRF-TOKEN': csrf
+                                                                },
+                                                                body: JSON.stringify({ course_id: courseId })
+                                                            }).then(function (r) { return r.json(); }).then(function (d) { return d.order_id; });
+                                                        }
+                                                        function callCapture(orderId) {
+                                                            return fetch('{{ route('payments.paypal.capture') }}', {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'X-CSRF-TOKEN': csrf
+                                                                },
+                                                                body: JSON.stringify({ order_id: orderId })
+                                                            }).then(function (r) { return r.json(); });
+                                                        }
+                                                        if (window.paypal && container) {
+                                                            var funding = [paypal.FUNDING.PAYPAL, paypal.FUNDING.CARD];
+                                                            funding.forEach(function (source) {
+                                                                paypal.Buttons({
+                                                                    fundingSource: source,
+                                                                    createOrder: function () { return callCreateOrder(); },
+                                                                    onApprove: function (data) {
+                                                                        return callCapture(data.orderID).then(function () {
+                                                                            container.innerHTML = '<div class="rounded-2xl border border-[var(--color-primary)] bg-[var(--color-primary)]/10 p-3 text-sm text-[var(--color-primary)]">{{ __('Payment successful. You are enrolled.') }}</div>';
+                                                                            var forms = container.parentElement.querySelectorAll('form');
+                                                                            forms.forEach(function (f) { f.style.display = 'none'; });
+                                                                        });
+                                                                    },
+                                                                    onError: function () {}
+                                                                }).render('#paypal-button-container');
+                                                            });
+                                                        }
+                                                    })();
+                                                </script>
+                                            @endif
+                                        @endif
+
+                                        @if ($hasManualPayment)
+                                            <form action="{{ route('payments.manual.start', $course) }}" method="POST" class="w-full">
+                                                @csrf
+                                                <button type="submit" class="cf-button-secondary w-full">{{ __('Request manual payment') }}</button>
+                                            </form>
+                                        @endif
+
+                                        @if ($hasSomeUnavailablePaymentMethod)
+                                            <p class="text-center text-xs text-[var(--color-text-muted)]">{{ __('Some payment methods are currently unavailable.') }}</p>
+                                        @endif
+                                    @else
+                                        <div class="rounded-2xl border border-[rgba(15,23,42,0.08)] bg-[rgba(15,23,42,0.04)] px-4 py-3 text-center text-sm text-[var(--color-text-muted)]">{{ __('Online payments are temporarily unavailable. Please contact the instructor.') }}</div>
+                                    @endif
+                                @else
+                                    <div class="rounded-2xl border border-[rgba(15,23,42,0.08)] bg-[rgba(15,23,42,0.04)] px-4 py-3 text-center text-sm text-[var(--color-text-muted)]">{{ __('Online payments are temporarily unavailable. Please contact the instructor.') }}</div>
+                                @endif
+                            </div>
+
+                            <div class="cf-divider pt-4 text-sm text-[var(--color-text-muted)]">
+                                <p>{{ __('One-time purchase, no monthly subscription, and instant access after enrollment.') }}</p>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="cf-panel-soft px-6 py-6">
-                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ __('Enrollment details') }}</p>
+                    <p class="text-sm font-semibold text-[var(--color-text-primary)]">{{ $isEnrolled ? __('Learning details') : __('Enrollment details') }}</p>
                     <ul class="cf-check-list mt-4">
-                        @foreach ($courseIncludes as $courseInclude)
+                        @foreach ($isEnrolled ? $learningIncludes : $courseIncludes as $courseInclude)
                             <li>{{ $courseInclude }}</li>
                         @endforeach
                     </ul>
                 </div>
-
 
             </div>
         </div>
