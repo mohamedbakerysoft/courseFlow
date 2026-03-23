@@ -11,4 +11,9 @@ class PaymentPolicy
     {
         return $user->role === User::ROLE_ADMIN;
     }
+
+    public function reject(User $user, Payment $payment): bool
+    {
+        return $user->role === User::ROLE_ADMIN;
+    }
 }

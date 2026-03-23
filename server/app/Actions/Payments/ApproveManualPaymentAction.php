@@ -19,6 +19,10 @@ class ApproveManualPaymentAction
             throw new \RuntimeException('Only manual payments can be approved.');
         }
 
+        if (! $payment->is_manual_submission_complete) {
+            throw new \RuntimeException('Manual payment proof is incomplete.');
+        }
+
         DB::transaction(function () use ($payment, $approver) {
             $alreadyPaid = Payment::where('user_id', $payment->user_id)
                 ->where('course_id', $payment->course_id)
@@ -31,6 +35,7 @@ class ApproveManualPaymentAction
             $payment->status = Payment::STATUS_PAID;
             $payment->approved_by = $approver->id;
             $payment->approved_at = Carbon::now();
+            $payment->rejected_at = null;
             $payment->save();
 
             $user = User::find($payment->user_id);

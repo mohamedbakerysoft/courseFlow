@@ -140,6 +140,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/payments/paypal/cancel/{course:slug}', [\App\Http\Controllers\Payments\PayPalCheckoutController::class, 'cancel'])->name('payments.paypal.cancel');
     Route::post('/courses/{course:slug}/manual/start', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'start'])->name('payments.manual.start');
     Route::get('/payments/manual/pending/{payment}', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'pending'])->name('payments.manual.pending');
+    Route::post('/payments/manual/{payment}/submit', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'submit'])->name('payments.manual.submit');
 
     Route::post('/payments/paypal/create-order', [\App\Http\Controllers\Payments\PayPalCheckoutController::class, 'createOrder'])->name('payments.paypal.create_order');
     Route::post('/payments/paypal/capture', [\App\Http\Controllers\Payments\PayPalCheckoutController::class, 'capture'])->name('payments.paypal.capture');
@@ -163,6 +164,7 @@ Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.
     Route::get('/courses', [\App\Http\Controllers\Dashboard\CourseController::class, 'index'])->name('courses.index');
     Route::get('/books', [\App\Http\Controllers\Dashboard\BookController::class, 'index'])->name('books.index');
     $approveRoute = Route::post('/payments/{payment}/approve', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'approve'])->name('payments.approve');
+    Route::post('/payments/{payment}/reject', [\App\Http\Controllers\Payments\ManualPaymentController::class, 'reject'])->name('payments.reject');
     if (! app()->environment('production')) {
         $approveRoute->withoutMiddleware([
             \App\Http\Middleware\EnsureUserIsInstructor::class,
@@ -198,9 +200,17 @@ Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.
     Route::get('/courses/{course:slug}/lessons', [\App\Http\Controllers\Dashboard\LessonController::class, 'index'])->name('courses.lessons.index');
     Route::get('/courses/{course:slug}/lessons/create', [\App\Http\Controllers\Dashboard\LessonController::class, 'create'])->name('courses.lessons.create');
     Route::post('/courses/{course:slug}/lessons', [\App\Http\Controllers\Dashboard\LessonController::class, 'store'])->name('courses.lessons.store');
+    Route::post('/courses/{course:slug}/lessons/reorder', [\App\Http\Controllers\Dashboard\LessonController::class, 'reorder'])->name('courses.lessons.reorder');
+    Route::post('/courses/{course:slug}/modules', [\App\Http\Controllers\Dashboard\CourseModuleController::class, 'store'])->name('courses.modules.store');
+    Route::post('/courses/{course:slug}/modules/reorder', [\App\Http\Controllers\Dashboard\CourseModuleController::class, 'reorder'])->name('courses.modules.reorder');
+    Route::put('/modules/{module}', [\App\Http\Controllers\Dashboard\CourseModuleController::class, 'update'])->name('modules.update');
+    Route::delete('/modules/{module}', [\App\Http\Controllers\Dashboard\CourseModuleController::class, 'destroy'])->name('modules.destroy');
+    Route::post('/rich-text/images', [\App\Http\Controllers\Dashboard\RichTextImageController::class, 'store'])->name('rich_text.images.store');
 
     Route::get('/lessons/{lesson}/edit', [\App\Http\Controllers\Dashboard\LessonController::class, 'edit'])->name('lessons.edit');
     Route::put('/lessons/{lesson}', [\App\Http\Controllers\Dashboard\LessonController::class, 'update'])->name('lessons.update');
+    Route::post('/lessons/{lesson}/publish', [\App\Http\Controllers\Dashboard\LessonController::class, 'publish'])->name('lessons.publish');
+    Route::post('/lessons/{lesson}/unpublish', [\App\Http\Controllers\Dashboard\LessonController::class, 'unpublish'])->name('lessons.unpublish');
     Route::delete('/lessons/{lesson}', [\App\Http\Controllers\Dashboard\LessonController::class, 'destroy'])->name('lessons.destroy');
 
     Route::get('/users', [\App\Http\Controllers\Dashboard\UserController::class, 'index'])->name('users.index');
@@ -209,4 +219,5 @@ Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.
     Route::post('/users/{user}/grant-access', [\App\Http\Controllers\Dashboard\UserController::class, 'grantAccess'])->name('users.grant_access');
 
     Route::get('/finance', [\App\Http\Controllers\Dashboard\FinanceController::class, 'index'])->name('finance.index');
+    Route::get('/finance/manual-payments', [\App\Http\Controllers\Dashboard\FinanceController::class, 'manualPayments'])->name('finance.manual_payments');
 });

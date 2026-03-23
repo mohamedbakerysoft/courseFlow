@@ -26,8 +26,7 @@
                 @error('slug')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
             </div>
             <div>
-                <label class="block text-sm font-medium">Description</label>
-                <textarea name="description" class="mt-1 w-full border rounded p-2"></textarea>
+                <x-rich-text-editor name="description" :label="__('About this course')" :value="old('description')" />
                 @error('description')<p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>@enderror
             </div>
             <div class="grid grid-cols-2 gap-4">

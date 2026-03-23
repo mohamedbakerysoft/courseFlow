@@ -12,6 +12,17 @@ class FinanceController extends Controller
     {
         $data = $stats->execute();
 
-        return view('dashboard.finance.index', $data);
+        return view('dashboard.finance.index', array_merge($data, [
+            'financeSection' => 'insights',
+        ]));
+    }
+
+    public function manualPayments(GetFinanceStatsAction $stats): View
+    {
+        $data = $stats->execute();
+
+        return view('dashboard.finance.manual-payments', array_merge($data, [
+            'financeSection' => 'manual-payments',
+        ]));
     }
 }

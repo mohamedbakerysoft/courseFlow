@@ -8,6 +8,8 @@ use App\Actions\Courses\ListPublishedCoursesAction;
 use App\Actions\Courses\ShowCourseAction;
 use App\Actions\Progress\CalculateCourseProgressAction;
 use App\Models\Course;
+use App\Models\CourseModule;
+use App\Models\Lesson;
 use App\Services\SettingsService;
 use App\Support\MediaAsset;
 use Illuminate\Http\RedirectResponse;
@@ -54,6 +56,44 @@ class CourseController extends Controller
             $nextLesson = $lessons->first(fn ($lesson) => ! in_array($lesson->id, $completedLessonIds, true)) ?? $firstLesson;
         }
 
+        $lessonModules = $course->modules()
+            ->with(['lessons' => function ($query) {
+                $query->published()
+                    ->orderBy('position')
+                    ->select(['id', 'course_id', 'module_id', 'slug', 'title', 'position']);
+            }])
+            ->get()
+            ->map(function (CourseModule $module) use ($completedLessonIds, $isEnrolled) {
+                $module->setRelation('lessons', $module->lessons->map(function ($lesson) use ($completedLessonIds, $isEnrolled) {
+                    $lesson->is_completed = in_array($lesson->id, $completedLessonIds, true);
+                    $lesson->is_locked = ! $isEnrolled;
+
+                    return $lesson;
+                }));
+
+                return $module;
+            })
+            ->filter(fn (CourseModule $module) => $module->lessons->isNotEmpty())
+            ->values();
+
+        $unassignedLessons = $lessons->whereNull('module_id')->values();
+        if ($unassignedLessons->isNotEmpty()) {
+            $fallbackModule = new CourseModule([
+                'title' => __('Additional lessons'),
+                'description' => null,
+                'position' => $lessonModules->count() + 1,
+            ]);
+
+            $fallbackModule->setRelation('lessons', $unassignedLessons->map(function (Lesson $lesson) use ($completedLessonIds, $isEnrolled) {
+                $lesson->is_completed = in_array($lesson->id, $completedLessonIds, true);
+                $lesson->is_locked = ! $isEnrolled;
+
+                return $lesson;
+            }));
+
+            $lessonModules->push($fallbackModule);
+        }
+
         $isStripeEnabled = (bool) $settings->get('payments.stripe.enabled', true);
         $isPayPalEnabled = (bool) $settings->get('payments.paypal.enabled', true);
         $manualInstructions = (string) $settings->get('payments.manual.instructions', 'Send the course fee via bank transfer or cash and upload your proof of payment.');
@@ -76,13 +116,15 @@ class CourseController extends Controller
         $instructorName = (string) ($settings->get('instructor.name') ?: ($course->instructor?->name ?? ''));
         $instructorBio = (string) ($settings->get('instructor.bio') ?: ($course->instructor?->bio ?? ''));
         $instructorImagePath = (string) $settings->get('landing.instructor_image', '');
-        $instructorImageUrl = MediaAsset::url($instructorImagePath, MediaAsset::avatarFallbackPath($instructorName));
+        $instructorImageUrl = $course->instructor?->profile_image_url
+            ?: MediaAsset::url($instructorImagePath, MediaAsset::avatarFallbackPath($instructorName));
 
         return view('courses.show', compact(
             'course',
             'isEnrolled',
             'progressPercent',
             'lessons',
+            'lessonModules',
             'firstLesson',
             'nextLesson',
             'completedLessonIds',

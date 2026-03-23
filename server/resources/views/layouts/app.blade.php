@@ -94,9 +94,17 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('dashboard.finance.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.finance.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                                                {{ __('Finance') }}
-                                            </a>
+                                            <div class="space-y-1">
+                                                <p class="px-4 py-2 text-sm font-semibold {{ request()->routeIs('dashboard.finance.*') || request()->routeIs('dashboard.payments.*') ? 'text-gray-900' : 'text-gray-600' }}">
+                                                    {{ __('Finance') }}
+                                                </p>
+                                                <a href="{{ route('dashboard.finance.index') }}" class="ml-4 block rounded px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.finance.index') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                    {{ __('Insights / Sales') }}
+                                                </a>
+                                                <a href="{{ route('dashboard.finance.manual_payments') }}" class="ml-4 block rounded px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.finance.manual_payments') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                    {{ __('Manual Payment Requests') }}
+                                                </a>
+                                            </div>
                                         </li>
                                         <li>
                                             <a href="{{ route('dashboard.appearance.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.appearance.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">

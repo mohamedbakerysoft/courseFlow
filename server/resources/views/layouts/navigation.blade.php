@@ -123,7 +123,17 @@
                         <x-responsive-nav-link :href="route('dashboard.settings.edit')" :active="request()->routeIs('dashboard.settings.*')">{{ __('Settings') }}</x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('dashboard.appearance.edit')" :active="request()->routeIs('dashboard.appearance.*')">{{ __('Appearance') }}</x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('dashboard.users.index')" :active="request()->routeIs('dashboard.users.*')">{{ __('Users') }}</x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('dashboard.finance.index')" :active="request()->routeIs('dashboard.finance.*')">{{ __('Finance') }}</x-responsive-nav-link>
+                        <div class="space-y-1 pt-2">
+                            <p class="px-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-text-muted)]">
+                                {{ __('Finance') }}
+                            </p>
+                            <x-responsive-nav-link :href="route('dashboard.finance.index')" :active="request()->routeIs('dashboard.finance.index')">
+                                {{ __('Insights / Sales') }}
+                            </x-responsive-nav-link>
+                            <x-responsive-nav-link :href="route('dashboard.finance.manual_payments')" :active="request()->routeIs('dashboard.finance.manual_payments')">
+                                {{ __('Manual Payment Requests') }}
+                            </x-responsive-nav-link>
+                        </div>
                         <x-responsive-nav-link :href="url('/')" :active="request()->is('/')">{{ __('View Site') }}</x-responsive-nav-link>
                     @else
                         <x-responsive-nav-link :href="url('/')" :active="request()->is('/')">{{ __('Home') }}</x-responsive-nav-link>

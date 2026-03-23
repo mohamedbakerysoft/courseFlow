@@ -70,6 +70,11 @@ class Course extends \Illuminate\Database\Eloquent\Model
         return $this->hasMany(Lesson::class)->orderBy('position');
     }
 
+    public function modules()
+    {
+        return $this->hasMany(CourseModule::class)->orderBy('position');
+    }
+
     public function instructor()
     {
         return $this->belongsTo(User::class, 'instructor_id');
@@ -164,7 +169,8 @@ class Course extends \Illuminate\Database\Eloquent\Model
     {
         return $this->lessons()
             ->published()
-            ->select(['id', 'slug', 'title', 'position'])
+            ->with('module')
+            ->select(['id', 'course_id', 'module_id', 'slug', 'title', 'position'])
             ->orderBy('position')
             ->get();
     }

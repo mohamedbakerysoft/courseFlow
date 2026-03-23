@@ -7,6 +7,7 @@ use App\Actions\Courses\ShowLessonAction;
 use App\Actions\Progress\CalculateCourseProgressAction;
 use App\Actions\Progress\MarkLessonCompletedAction;
 use App\Models\Course;
+use App\Models\CourseModule;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -35,8 +36,9 @@ class LessonController extends Controller
         $progressPercent = $progressAction->execute($request->user(), $course);
         $courseLessons = $course->lessons()
             ->published()
+            ->with('module')
             ->orderBy('position')
-            ->select(['id', 'slug', 'title', 'position'])
+            ->select(['id', 'course_id', 'module_id', 'slug', 'title', 'position'])
             ->get();
 
         $firstIncompleteLesson = $courseLessons->first(fn (Lesson $courseLesson) => ! $completedLessonIds->contains($courseLesson->id));
@@ -55,7 +57,41 @@ class LessonController extends Controller
             ];
         })->values();
 
-        return view('lessons.show', compact('course', 'lesson', 'isCompleted', 'progressPercent', 'lessonItems'));
+        $lessonModules = $course->modules()
+            ->with(['lessons' => function ($query) {
+                $query->published()
+                    ->orderBy('position')
+                    ->select(['id', 'course_id', 'module_id', 'slug', 'title', 'position']);
+            }])
+            ->get()
+            ->map(function (CourseModule $module) use ($lessonItems) {
+                $moduleLessonItems = $lessonItems
+                    ->filter(fn (array $item) => (int) $item['lesson']->module_id === (int) $module->id)
+                    ->values();
+
+                $module->lesson_items = $moduleLessonItems;
+
+                return $module;
+            })
+            ->filter(fn (CourseModule $module) => $module->lesson_items->isNotEmpty())
+            ->values();
+
+        $unassignedLessonItems = $lessonItems
+            ->filter(fn (array $item) => blank($item['lesson']->module_id))
+            ->values();
+
+        if ($unassignedLessonItems->isNotEmpty()) {
+            $fallbackModule = new CourseModule([
+                'title' => __('Additional lessons'),
+                'description' => null,
+                'position' => $lessonModules->count() + 1,
+            ]);
+
+            $fallbackModule->lesson_items = $unassignedLessonItems;
+            $lessonModules->push($fallbackModule);
+        }
+
+        return view('lessons.show', compact('course', 'lesson', 'isCompleted', 'progressPercent', 'lessonItems', 'lessonModules'));
     }
 
     public function complete(

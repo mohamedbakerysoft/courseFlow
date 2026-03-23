@@ -9,6 +9,9 @@ class ListCourseLessonsAction
 {
     public function execute(Course $course): Collection
     {
-        return $course->lessons()->get();
+        return $course->lessons()
+            ->with('module')
+            ->orderBy('position')
+            ->get();
     }
 }

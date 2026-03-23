@@ -155,3 +155,321 @@ document.addEventListener('keydown', function (e) {
         return;
     }
 }, { passive: false });
+
+function _syncRichEditor(editor) {
+    const surface = editor.querySelector('[data-editor-surface]');
+    const input = editor.querySelector('[data-editor-input]');
+
+    if (!surface || !input) return;
+    input.value = surface.innerHTML.trim();
+}
+
+function _initRichEditors() {
+    document.querySelectorAll('[data-rich-editor]').forEach((editor) => {
+        const surface = editor.querySelector('[data-editor-surface]');
+        const input = editor.querySelector('[data-editor-input]');
+        const imageInput = editor.querySelector('[data-editor-image-input]');
+        const uploadUrl = editor.getAttribute('data-image-upload-url') || '/dashboard/rich-text/images';
+
+        if (!surface || !input || editor.dataset.richEditorReady === '1') return;
+        editor.dataset.richEditorReady = '1';
+
+        editor.querySelectorAll('[data-editor-command]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const command = button.getAttribute('data-editor-command');
+                if (!command) return;
+                surface.focus();
+                document.execCommand(command, false);
+                _syncRichEditor(editor);
+            });
+        });
+
+        editor.querySelectorAll('[data-editor-block]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const block = button.getAttribute('data-editor-block');
+                if (!block) return;
+                surface.focus();
+                document.execCommand('formatBlock', false, block);
+                _syncRichEditor(editor);
+            });
+        });
+
+        editor.querySelectorAll('[data-editor-link]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const url = window.prompt('Enter URL');
+                if (!url) return;
+                surface.focus();
+                document.execCommand('createLink', false, url);
+                _syncRichEditor(editor);
+            });
+        });
+
+        editor.querySelectorAll('[data-editor-image]').forEach((button) => {
+            button.addEventListener('click', () => {
+                imageInput?.click();
+            });
+        });
+
+        imageInput?.addEventListener('change', async () => {
+            const file = imageInput.files?.[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
+            try {
+                const response = await fetch(uploadUrl, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json',
+                    },
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+
+                const payload = await response.json();
+                surface.focus();
+                document.execCommand('insertImage', false, payload.url);
+                _syncRichEditor(editor);
+            } catch (error) {
+                console.error(error);
+                window.alert('Image upload failed. Please try again.');
+            } finally {
+                imageInput.value = '';
+            }
+        });
+
+        surface.addEventListener('input', () => _syncRichEditor(editor));
+        surface.closest('form')?.addEventListener('submit', () => _syncRichEditor(editor));
+        _syncRichEditor(editor);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', _initRichEditors);
+
+function _initCourseOrganizers() {
+    document.querySelectorAll('[data-course-organizer]').forEach((container) => {
+        if (container.dataset.courseOrganizerReady === '1') return;
+        container.dataset.courseOrganizerReady = '1';
+
+        const moduleList = container.querySelector('[data-module-sorter-list]');
+        const status = container.querySelector('[data-course-organizer-status]');
+        const moduleReorderUrl = container.getAttribute('data-module-reorder-url');
+        const lessonReorderUrl = container.getAttribute('data-lesson-reorder-url');
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
+        if (!moduleList || !moduleReorderUrl || !lessonReorderUrl) return;
+
+        let draggedModule = null;
+        let draggedLesson = null;
+        const setStatus = (message, isError = false) => {
+            if (!status) return;
+            status.textContent = message;
+            status.classList.toggle('text-[var(--color-error)]', isError);
+            status.classList.toggle('text-[var(--color-text-muted)]', !isError);
+        };
+
+        const refreshModuleBadges = () => {
+            Array.from(moduleList.querySelectorAll('[data-module-id]')).forEach((moduleCard, moduleIndex) => {
+                const badge = moduleCard.querySelector('[data-module-order-badge]');
+                if (badge) badge.textContent = `Module ${moduleIndex + 1}`;
+
+                const lessonList = moduleCard.querySelector('[data-lesson-list]');
+                if (!lessonList) return;
+
+                Array.from(lessonList.querySelectorAll('[data-lesson-id]')).forEach((lessonCard, lessonIndex) => {
+                    const lessonBadge = lessonCard.querySelector('[data-lesson-order-badge]');
+                    if (lessonBadge) lessonBadge.textContent = `${lessonIndex + 1}`;
+                });
+            });
+        };
+
+        const saveModuleOrder = async () => {
+            const moduleIds = Array.from(moduleList.querySelectorAll('[data-module-id]')).map((item) => Number(item.getAttribute('data-module-id')));
+
+            setStatus('Saving module order...');
+
+            try {
+                const response = await fetch(moduleReorderUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                    },
+                    body: JSON.stringify({ module_ids: moduleIds }),
+                });
+
+                if (!response.ok) throw new Error('Unable to save module order.');
+                refreshModuleBadges();
+                setStatus('Module order saved.');
+            } catch (error) {
+                console.error(error);
+                setStatus('Could not save the new module order.', true);
+            }
+        };
+
+        const saveLessonOrder = async () => {
+            const modulesPayload = Array.from(moduleList.querySelectorAll('[data-module-id]')).map((moduleCard) => {
+                const lessonList = moduleCard.querySelector('[data-lesson-list]');
+                return {
+                    module_id: Number(moduleCard.getAttribute('data-module-id')),
+                    lesson_ids: lessonList
+                        ? Array.from(lessonList.querySelectorAll('[data-lesson-id]')).map((lessonCard) => Number(lessonCard.getAttribute('data-lesson-id')))
+                        : [],
+                };
+            });
+
+            setStatus('Saving lesson order...');
+
+            try {
+                const response = await fetch(lessonReorderUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                    },
+                    body: JSON.stringify({ modules: modulesPayload }),
+                });
+
+                if (!response.ok) throw new Error('Unable to save lesson order.');
+                refreshModuleBadges();
+                setStatus('Lesson order saved.');
+            } catch (error) {
+                console.error(error);
+                setStatus('Could not save the lesson order.', true);
+            }
+        };
+
+        const moduleCards = () => Array.from(moduleList.querySelectorAll('[data-module-id]'));
+        const lessonLists = () => Array.from(moduleList.querySelectorAll('[data-lesson-list]'));
+
+        moduleCards().forEach((moduleCard) => {
+            const moduleHandle = moduleCard.querySelector('[data-module-drag-handle]');
+            if (moduleHandle) {
+                moduleHandle.addEventListener('dragstart', (event) => {
+                    if (event.dataTransfer) {
+                        event.dataTransfer.effectAllowed = 'move';
+                        event.dataTransfer.setData('text/plain', moduleCard.getAttribute('data-module-id') || '');
+                    }
+
+                    draggedModule = moduleCard;
+                    moduleCard.classList.add('opacity-60');
+                    setStatus('Drop the module where you want it.');
+                });
+
+                moduleHandle.addEventListener('dragend', () => {
+                    moduleCard.classList.remove('opacity-60');
+                    draggedModule = null;
+                });
+            }
+
+            moduleCard.addEventListener('dragover', (event) => {
+                if (!draggedModule || draggedLesson) return;
+                event.preventDefault();
+            });
+
+            moduleCard.addEventListener('drop', async (event) => {
+                if (!draggedModule || draggedLesson || draggedModule === moduleCard) return;
+                event.preventDefault();
+
+                const items = moduleCards();
+                const draggedIndex = items.indexOf(draggedModule);
+                const targetIndex = items.indexOf(moduleCard);
+
+                if (draggedIndex < targetIndex) {
+                    moduleCard.after(draggedModule);
+                } else {
+                    moduleCard.before(draggedModule);
+                }
+
+                refreshModuleBadges();
+                await saveModuleOrder();
+            });
+
+            moduleCard.querySelectorAll('[data-lesson-id]').forEach((lessonCard) => {
+                const lessonHandle = lessonCard.querySelector('[data-lesson-drag-handle]');
+                if (lessonHandle) {
+                    lessonHandle.addEventListener('dragstart', (event) => {
+                        event.stopPropagation();
+                        if (event.dataTransfer) {
+                            event.dataTransfer.effectAllowed = 'move';
+                            event.dataTransfer.setData('text/plain', lessonCard.getAttribute('data-lesson-id') || '');
+                        }
+
+                        draggedLesson = lessonCard;
+                        lessonCard.classList.add('opacity-60');
+                        setStatus('Drop the lesson into the module and position you want.');
+                    });
+
+                    lessonHandle.addEventListener('dragend', (event) => {
+                        event.stopPropagation();
+                        lessonCard.classList.remove('opacity-60');
+                        draggedLesson = null;
+                    });
+                }
+
+                lessonCard.addEventListener('dragover', (event) => {
+                    if (!draggedLesson) return;
+                    event.stopPropagation();
+                    event.preventDefault();
+                });
+
+                lessonCard.addEventListener('drop', async (event) => {
+                    if (!draggedLesson || draggedLesson === lessonCard) return;
+                    event.stopPropagation();
+                    event.preventDefault();
+
+                    const currentList = lessonCard.closest('[data-lesson-list]');
+                    if (!currentList) return;
+
+                    const items = Array.from(currentList.querySelectorAll('[data-lesson-id]'));
+                    const draggedIndex = items.indexOf(draggedLesson);
+                    const targetIndex = items.indexOf(lessonCard);
+
+                    if (draggedIndex < targetIndex) {
+                        lessonCard.after(draggedLesson);
+                    } else {
+                        lessonCard.before(draggedLesson);
+                    }
+
+                    refreshModuleBadges();
+                    await saveLessonOrder();
+                });
+            });
+        });
+
+        lessonLists().forEach((lessonList) => {
+            lessonList.addEventListener('dragover', (event) => {
+                if (!draggedLesson) return;
+                event.stopPropagation();
+                event.preventDefault();
+            });
+
+            lessonList.addEventListener('drop', async (event) => {
+                if (!draggedLesson) return;
+                event.stopPropagation();
+                event.preventDefault();
+
+                if (event.target.closest('[data-lesson-id]')) return;
+
+                lessonList.appendChild(draggedLesson);
+                refreshModuleBadges();
+                await saveLessonOrder();
+            });
+        });
+
+        refreshModuleBadges();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', _initCourseOrganizers);

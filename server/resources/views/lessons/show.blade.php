@@ -1,6 +1,8 @@
 <x-public-layout :title="$lesson->title" :metaDescription="str($lesson->description)->limit(160)">
     @php
         $lessonVideoUrl = $lesson->video_url;
+        $lessonVideoFileUrl = $lesson->video_file_url;
+        $hasUploadedVideo = filled($lessonVideoFileUrl);
         $lessonBody = trim((string) $lesson->description);
         $cleanLessonBody = trim(preg_replace('/\s+/', ' ', strip_tags($lessonBody)));
         $lessonParagraphs = collect(preg_split('/\r?\n\r?\n+/', $lessonBody) ?: [])
@@ -19,7 +21,7 @@
             $lessonHighlights->get(2),
         ])->filter()->values();
 
-        if (filled($lessonVideoUrl) && str($lessonVideoUrl)->contains(['youtube.com', 'youtu.be'])) {
+        if (! $hasUploadedVideo && filled($lessonVideoUrl) && str($lessonVideoUrl)->contains(['youtube.com', 'youtu.be'])) {
             $parsedUrl = parse_url($lessonVideoUrl);
             parse_str($parsedUrl['query'] ?? '', $videoQuery);
 
@@ -66,45 +68,56 @@
                             <span style="width: {{ max(0, min(100, (int) $progressPercent)) }}%"></span>
                         </div>
 
-                        <nav aria-label="{{ __('Course lessons') }}" class="cf-learning-lesson-list">
-                            @foreach ($lessonItems as $lessonItem)
-                                @php
-                                    $sidebarLesson = $lessonItem['lesson'];
-                                    $isCurrentItem = $lessonItem['is_current'];
-                                    $isCompletedItem = $lessonItem['is_completed'];
-                                    $isLockedItem = $lessonItem['is_locked'];
-                                    $itemClasses = 'cf-learning-lesson-item';
-
-                                    if ($isCurrentItem) {
-                                        $itemClasses .= ' is-current';
-                                    } elseif ($isCompletedItem) {
-                                        $itemClasses .= ' is-completed';
-                                    } elseif ($isLockedItem) {
-                                        $itemClasses .= ' is-locked';
-                                    }
-                                @endphp
-
-                                @if ($isLockedItem)
-                                    <div class="{{ $itemClasses }}" aria-disabled="true">
-                                        <span class="cf-learning-lesson-index">{{ str_pad((string) $sidebarLesson->position, 2, '0', STR_PAD_LEFT) }}</span>
-                                        <div class="min-w-0 flex-1">
-                                            <p class="cf-learning-lesson-title">{{ $sidebarLesson->title }}</p>
-                                            <p class="cf-learning-lesson-state">{{ __('Locked') }}</p>
-                                        </div>
+                        <div class="cf-learning-lesson-list">
+                            @foreach ($lessonModules as $module)
+                                <section class="space-y-3">
+                                    <div class="px-1">
+                                        <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('Module :number', ['number' => $module->position]) }}</p>
+                                        <h3 class="mt-1 text-sm font-semibold text-[var(--color-text-primary)]">{{ $module->title }}</h3>
                                     </div>
-                                @else
-                                    <a href="{{ route('lessons.show', [$course, $sidebarLesson]) }}" class="{{ $itemClasses }}">
-                                        <span class="cf-learning-lesson-index">{{ str_pad((string) $sidebarLesson->position, 2, '0', STR_PAD_LEFT) }}</span>
-                                        <div class="min-w-0 flex-1">
-                                            <p class="cf-learning-lesson-title">{{ $sidebarLesson->title }}</p>
-                                            <p class="cf-learning-lesson-state">
-                                                {{ $isCurrentItem ? __('Current lesson') : ($isCompletedItem ? __('Completed') : __('Ready to watch')) }}
-                                            </p>
-                                        </div>
-                                    </a>
-                                @endif
+
+                                    <nav aria-label="{{ $module->title }}" class="space-y-2">
+                                        @foreach ($module->lesson_items as $lessonItem)
+                                            @php
+                                                $sidebarLesson = $lessonItem['lesson'];
+                                                $isCurrentItem = $lessonItem['is_current'];
+                                                $isCompletedItem = $lessonItem['is_completed'];
+                                                $isLockedItem = $lessonItem['is_locked'];
+                                                $itemClasses = 'cf-learning-lesson-item';
+
+                                                if ($isCurrentItem) {
+                                                    $itemClasses .= ' is-current';
+                                                } elseif ($isCompletedItem) {
+                                                    $itemClasses .= ' is-completed';
+                                                } elseif ($isLockedItem) {
+                                                    $itemClasses .= ' is-locked';
+                                                }
+                                            @endphp
+
+                                            @if ($isLockedItem)
+                                                <div class="{{ $itemClasses }}" aria-disabled="true">
+                                                    <span class="cf-learning-lesson-index">{{ str_pad((string) $sidebarLesson->position, 2, '0', STR_PAD_LEFT) }}</span>
+                                                    <div class="min-w-0 flex-1">
+                                                        <p class="cf-learning-lesson-title">{{ $sidebarLesson->title }}</p>
+                                                        <p class="cf-learning-lesson-state">{{ __('Locked') }}</p>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <a href="{{ route('lessons.show', [$course, $sidebarLesson]) }}" class="{{ $itemClasses }}">
+                                                    <span class="cf-learning-lesson-index">{{ str_pad((string) $sidebarLesson->position, 2, '0', STR_PAD_LEFT) }}</span>
+                                                    <div class="min-w-0 flex-1">
+                                                        <p class="cf-learning-lesson-title">{{ $sidebarLesson->title }}</p>
+                                                        <p class="cf-learning-lesson-state">
+                                                            {{ $isCurrentItem ? __('Current lesson') : ($isCompletedItem ? __('Completed') : __('Ready to watch')) }}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            @endif
+                                        @endforeach
+                                    </nav>
+                                </section>
                             @endforeach
-                        </nav>
+                        </div>
                     </div>
                 </div>
             </aside>
@@ -133,13 +146,20 @@
                     </div>
 
                     <div class="cf-learning-video-shell">
-                        <iframe
-                            src="{{ $lessonVideoUrl }}"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            title="{{ $lesson->title }}"
-                        ></iframe>
+                        @if ($hasUploadedVideo)
+                            <video controls playsinline class="h-full w-full rounded-[inherit] bg-black">
+                                <source src="{{ $lessonVideoFileUrl }}" type="video/mp4">
+                                {{ __('Your browser does not support HTML5 video.') }}
+                            </video>
+                        @else
+                            <iframe
+                                src="{{ $lessonVideoUrl }}"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                title="{{ $lesson->title }}"
+                            ></iframe>
+                        @endif
                     </div>
 
                     <div class="cf-learning-actions">

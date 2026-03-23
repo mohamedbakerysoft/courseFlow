@@ -12,6 +12,8 @@
     </x-slot>
 
     <div class="cf-admin-shell">
+        @include('dashboard.finance._subnav')
+
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div class="cf-stat-card space-y-2">
                 <p class="text-sm text-[var(--color-text-muted)]">{{ __('Total Sales (All Time)') }}</p>
@@ -45,7 +47,7 @@
                     <p class="cf-table-shell-copy">{{ __('A cleaner revenue breakdown by course title with less visual noise and clearer scanning.') }}</p>
                 </div>
             </div>
-            @if (!empty($sales_per_course))
+            @if ($sales_per_course->count())
                 <div class="overflow-x-auto">
                     <table class="cf-table">
                         <thead>
@@ -59,16 +61,21 @@
                                 <tr>
                                     <td>
                                         <div>
-                                            <p class="font-semibold text-[var(--color-text-primary)]">{{ $row['title'] }}</p>
+                                            <p class="font-semibold text-[var(--color-text-primary)]">{{ $row->title }}</p>
                                             <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('Confirmed enrollments only') }}</p>
                                         </div>
                                     </td>
-                                    <td class="text-[var(--color-text-muted)]">{{ $row['count'] }}</td>
+                                    <td class="text-[var(--color-text-muted)]">{{ (int) $row->cnt }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
+                @if ($sales_per_course->hasPages())
+                    <div class="mt-4">
+                        {{ $sales_per_course->links() }}
+                    </div>
+                @endif
             @else
                 <div class="cf-table-empty">
                     <p class="cf-table-empty-title">{{ __('No payments recorded yet') }}</p>

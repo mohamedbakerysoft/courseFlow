@@ -289,7 +289,9 @@
                     </div>
                     <div>
                         <label for="payments_manual_instructions" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Manual payment instructions') }}</label>
-                        <textarea id="payments_manual_instructions" name="payments_manual_instructions" rows="4" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('payments_manual_instructions', $paymentsManualInstructions) }}</textarea>
+                        <div class="mt-1">
+                            <x-rich-text-editor name="payments_manual_instructions" :value="old('payments_manual_instructions', $paymentsManualInstructions)" />
+                        </div>
                         @error('payments_manual_instructions')
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -975,7 +977,9 @@
                         <label for="payments_manual_instructions" class="block text-sm font-medium text-[var(--color-text-muted)]">
                             {{ __('Manual payment instructions') }}
                         </label>
-                        <textarea id="payments_manual_instructions" name="payments_manual_instructions" rows="4" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]">{{ old('payments_manual_instructions', $paymentsManualInstructions) }}</textarea>
+                        <div class="mt-1">
+                            <x-rich-text-editor name="payments_manual_instructions" :value="old('payments_manual_instructions', $paymentsManualInstructions)" />
+                        </div>
                         @error('payments_manual_instructions')
                             <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
                         @enderror
