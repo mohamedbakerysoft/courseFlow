@@ -137,24 +137,32 @@
 
     @if ($showProblemSection)
         <section class="cf-shell pb-10 pt-4 sm:pb-12 sm:pt-5 lg:pb-14 lg:pt-6">
-            <div class="cf-section-shell">
-                <div class="grid gap-6 lg:grid-cols-[0.8fr,1.2fr] lg:items-start">
-                    <div class="space-y-3">
-                        <span class="cf-kicker">{{ $landingCopy['problem_kicker'] ?? __('Problem to solution') }}</span>
-                        <h2 class="cf-heading">{{ $landingCopy['problem_title'] ?? __('Turn a scattered course storefront into a focused buying and learning experience') }}</h2>
-                        <p class="cf-subheading">{{ $landingCopy['problem_subtitle'] ?? __('The platform brings your catalog, checkout, curriculum, and instructor credibility into one clear journey.') }}</p>
-                    </div>
-                    <div class="grid gap-4 sm:grid-cols-3">
-                        @foreach ($features as $feature)
-                            <article class="cf-feature-card">
-                                <div class="cf-feature-icon">
-                                    {{ $feature['icon'] }}
-                                </div>
-                                <h3>{{ $feature['title'] }}</h3>
-                                <p>{{ $feature['description'] }}</p>
-                            </article>
-                        @endforeach
-                    </div>
+            <div class="relative overflow-hidden rounded-[32px] border border-black/[0.04] bg-white px-6 py-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:border-white/[0.08] dark:bg-[#0b0b0b] sm:px-10 sm:py-16 lg:px-12 lg:py-20">
+                <div class="pointer-events-none absolute -top-40 left-1/2 h-[300px] w-[500px] -translate-x-1/2 rounded-full bg-[#f5b800] opacity-[0.08] blur-[80px] dark:opacity-[0.06]"></div>
+
+                <div class="relative mx-auto max-w-3xl space-y-5 text-center">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-white px-4 py-2 text-[12px] font-semibold uppercase tracking-wider text-black dark:border-white/[0.12] dark:bg-[#0b0b0b] dark:text-white">
+                        <span class="h-1.5 w-1.5 rounded-full bg-[#f5b800]"></span>
+                        {{ $landingCopy['problem_kicker'] ?? __('Problem to solution') }}
+                    </span>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl lg:text-5xl lg:leading-tight">
+                        {{ $landingCopy['problem_title'] ?? __('Turn a scattered course storefront into a focused buying and learning experience') }}
+                    </h2>
+                    <p class="mx-auto max-w-2xl text-[1.1rem] leading-relaxed text-gray-600 dark:text-white/80">
+                        {{ $landingCopy['problem_subtitle'] ?? __('The platform brings your catalog, checkout, curriculum, and instructor credibility into one clear journey.') }}
+                    </p>
+                </div>
+
+                <div class="relative mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-8">
+                    @foreach ($features as $feature)
+                        <article class="group flex h-full flex-col gap-4 rounded-[28px] border border-black/[0.04] bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1.5 hover:border-black/10 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] dark:border-white/[0.08] dark:bg-white/[0.03] dark:shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:hover:border-white/[0.18] dark:hover:bg-white/[0.05]">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f5b800]/15 text-xl text-[#f5b800] transition duration-300 group-hover:scale-110 group-hover:bg-[#f5b800]/25 dark:bg-[#f5b800]/10 dark:ring-1 dark:ring-[#f5b800]/20 dark:group-hover:bg-[#f5b800]/20">
+                                {{ $feature['icon'] }}
+                            </div>
+                            <h3 class="mt-3 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $feature['title'] }}</h3>
+                            <p class="text-[0.98rem] leading-relaxed text-gray-600 dark:text-white/60">{{ $feature['description'] }}</p>
+                        </article>
+                    @endforeach
                 </div>
             </div>
         </section>
