@@ -7,7 +7,7 @@ use App\Services\SettingsService;
 class LandingContent
 {
     public const COPY_DEFAULTS = [
-        'hero_kicker' => 'Independent course business platform',
+        'hero_kicker' => 'Trusted by 2,000+ independent instructors',
         'hero_video_eyebrow' => 'Platform walkthrough',
         'hero_video_title' => 'See the storefront, course page, and enrollment flow together in one clean preview.',
         'hero_video_badge' => 'YouTube-ready showcase',
@@ -38,7 +38,7 @@ class LandingContent
         'testimonials_title' => 'What students say after joining Learnova courses',
         'testimonials_subtitle' => 'Short, believable feedback helps visitors trust the instructor and understand the learning experience before they enroll.',
         'footer_kicker' => 'Launch with confidence',
-        'footer_title' => 'Present, launch, and sell your courses with a storefront that feels premium from the first click',
+        'footer_title' => 'Launch your storefront in 5 minutes with zero coding required',
         'footer_body' => 'Give your courses a cleaner public presence, guide visitors into checkout with less friction, and help students enter the curriculum with confidence.',
     ];
 

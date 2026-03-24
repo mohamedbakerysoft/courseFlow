@@ -29,6 +29,10 @@
                     <div class="cf-hero-copy space-y-6">
                         <div class="space-y-5">
                             <div class="space-y-5">
+                                <div class="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/5 px-3 py-1.5 text-[0.85rem] font-semibold text-gray-800 dark:border-white/10 dark:bg-white/5 dark:text-gray-200">
+                                    <span class="flex h-2 w-2 rounded-full bg-[#f5b800] dark:bg-[var(--color-primary)]"></span>
+                                    {{ $landingCopy['hero_kicker'] ?? __('Trusted by 2,000+ independent instructors') }}
+                                </div>
                                 <h1 class="cf-display max-w-[19ch]" style="font-size: var(--hero-title-size);">
                                     {{ $heroTitle }}
                                 </h1>
@@ -95,7 +99,7 @@
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="flex h-20 w-20 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition duration-300 group-hover:scale-110 group-hover:bg-white/30">
                                         <div class="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-xl">
-                                            <svg class="ml-1 h-6 w-6 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                            <svg class="ml-1 h-6 w-6 text-[#000000]" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                         </div>
                                     </div>
                                 </div>
@@ -217,10 +221,10 @@
                         <span class="cf-dark-kicker">
                             {{ $landingCopy['footer_kicker'] ?? __('Launch with confidence') }}
                         </span>
-                        <h2 class="cf-dark-title text-3xl font-bold tracking-[-0.04em] sm:text-4xl">
-                            {{ $landingCopy['footer_title'] ?? __('Present, launch, and sell your courses with a storefront that feels premium from the first click') }}
+                        <h2 class="cf-dark-title text-3xl font-bold tracking-tight sm:text-4xl text-white">
+                            {{ $landingCopy['footer_title'] ?? __('Launch your storefront in 5 minutes with zero coding required') }}
                         </h2>
-                        <p class="cf-dark-copy text-base leading-7">
+                        <p class="cf-dark-copy text-[1.05rem] leading-relaxed text-gray-300">
                             {{ $landingCopy['footer_body'] ?? __('Give your courses a cleaner public presence, guide visitors into checkout with less friction, and help students enter the curriculum with confidence.') }}
                         </p>
                     </div>

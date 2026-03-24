@@ -21,7 +21,7 @@ class ShowLandingPageAction
         $heroTitleLocal = (string) ($this->settings->get('instructor.hero_headline_en') ?: $this->settings->get('instructor.hero_headline') ?: $this->settings->get('hero.title.en') ?: $this->settings->get('landing.hero_title_en') ?: '');
         $heroSubtitleLocal = (string) ($this->settings->get('instructor.hero_subheadline_en') ?: $this->settings->get('instructor.hero_subheadline') ?: $this->settings->get('hero.subtitle.en') ?: $this->settings->get('landing.hero_subtitle_en') ?: '');
         $heroTitleDefault = (string) $this->settings->get('landing.hero_title', 'Launch courses with a storefront learners trust');
-        $heroSubtitleDefault = (string) $this->settings->get('landing.hero_subtitle', 'Learnova helps independent instructors sell digital courses with secure checkout, instant access, and progress-aware lessons.');
+        $heroSubtitleDefault = (string) $this->settings->get('landing.hero_subtitle', 'Launch in minutes with zero coding required. Sell digital courses with secure checkout, instant access, and structured lessons inside one clean experience.');
         $heroTitle = $heroTitleLocal !== '' ? $heroTitleLocal : $heroTitleDefault;
         $heroSubtitle = $heroSubtitleLocal !== '' ? $heroSubtitleLocal : $heroSubtitleDefault;
 
@@ -78,9 +78,9 @@ class ShowLandingPageAction
                 'icon' => '📚',
             ],
             [
-                'title' => (string) $this->settings->get('landing.feature_3_title', 'Stronger instructor trust'),
-                'description' => (string) $this->settings->get('landing.feature_3_description', 'Show a real instructor, a clear catalog, and the details learners need before they buy.'),
-                'icon' => '✨',
+                'title' => (string) $this->settings->get('landing.feature_3_title', 'Fully modular design'),
+                'description' => (string) $this->settings->get('landing.feature_3_description', 'Hide, move, or customize every single section directly from the admin dashboard without writing a single line of code.'),
+                'icon' => '🎨',
             ],
         ];
 
