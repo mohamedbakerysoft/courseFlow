@@ -9,8 +9,8 @@ class InstructorController extends Controller
 {
     public function show(ShowInstructorProfileAction $action): View
     {
-        [$instructor, $courses, $links] = $action->execute();
+        [$instructor, $courses, $links, $content] = $action->execute();
 
-        return view('instructor.show', compact('instructor', 'courses', 'links'));
+        return view('instructor.show', compact('instructor', 'courses', 'links', 'content'));
     }
 }

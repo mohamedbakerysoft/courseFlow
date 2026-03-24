@@ -18,11 +18,14 @@ use Illuminate\View\View;
 
 class CourseController extends Controller
 {
-    public function index(ListPublishedCoursesAction $action): View
+    public function index(ListPublishedCoursesAction $action, Request $request): View
     {
-        $courses = $action->execute();
+        $priceFilter = $request->string('pricing')->toString();
+        $priceFilter = in_array($priceFilter, ['free', 'paid'], true) ? $priceFilter : null;
+        $courses = $action->execute($priceFilter);
+        $catalogSummary = Course::publishedCourseCatalogSummary();
 
-        return view('courses.index', compact('courses'));
+        return view('courses.index', compact('courses', 'catalogSummary', 'priceFilter'));
     }
 
     public function show(

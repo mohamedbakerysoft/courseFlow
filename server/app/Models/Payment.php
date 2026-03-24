@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class Payment extends Model
@@ -131,5 +132,33 @@ class Payment extends Model
             ->orderByRaw("CASE WHEN status = 'pending' THEN 0 WHEN status = 'failed' THEN 1 ELSE 2 END")
             ->orderByDesc('created_at')
             ->paginate($perPage, ['*'], 'manual_page');
+    }
+
+    public static function pendingManualRequestsCount(): int
+    {
+        return (int) static::query()
+            ->where('provider', 'manual')
+            ->where('status', static::STATUS_PENDING)
+            ->count();
+    }
+
+    public static function recentManualRequests(int $limit = 5): Collection
+    {
+        return static::query()
+            ->with(['user', 'course'])
+            ->where('provider', 'manual')
+            ->orderByDesc('created_at')
+            ->limit($limit)
+            ->get();
+    }
+
+    public static function recentPaidPayments(int $limit = 5): Collection
+    {
+        return static::query()
+            ->with(['user', 'course'])
+            ->where('status', static::STATUS_PAID)
+            ->latest('created_at')
+            ->limit($limit)
+            ->get();
     }
 }

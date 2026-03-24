@@ -123,7 +123,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'courseflow-mastery-launch',
                 'title' => 'Learnova Mastery (Advanced • Best Seller)',
-                'description' => 'Advanced program to launch a polished platform, set branding, and sell confidently with Stripe, PayPal and manual payments.',
+                'description' => 'Learnova Mastery is a complete advanced program for creators, educators, and digital product owners who want to turn a basic course setup into a polished business-ready platform. Inside this course, you will work through the systems that make an online course feel premium: stronger branding, clearer offer positioning, smarter curriculum flow, cleaner sales messaging, and a checkout experience that builds trust before the student ever clicks buy. You will also learn how to connect Stripe, PayPal, and manual payments, structure lessons for better completion, and present your storefront in a way that feels professional, focused, and worth paying for. This is designed for people who want a real launch process, not scattered tips. Beyond setup, the course also focuses on decision-making: what to simplify, what to emphasize, how to reduce friction in the student journey, and how to present your offer with more confidence. By the end, you should understand not only how to configure the platform, but how to shape an experience that supports trust, clarity, conversion, and stronger long-term course delivery.',
                 'is_free' => false,
                 'price' => 129,
                 'language' => 'en',
@@ -134,7 +134,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'laravel-fundamentals-online-courses',
                 'title' => 'Laravel Fundamentals (Intermediate)',
-                'description' => 'Intermediate track covering routing, Eloquent, Blade and actions to customize Learnova with confidence.',
+                'description' => 'Laravel Fundamentals is an intermediate practical course for developers who want to understand how a real Laravel product is organized and extended. Rather than teaching isolated syntax, this course uses a course-platform style project to walk through routing, controllers, Eloquent relationships, Blade views, actions, validation, and maintainable feature structure. You will see how lessons, enrollments, payments, settings, and frontend rendering connect together in a way that feels useful in day-to-day work. By the end, you should feel more confident reading the codebase, making targeted improvements, building cleaner backend flows, and customizing an existing Laravel application without breaking important business logic or losing the overall architecture. The lessons also help you understand why specific patterns are used, where responsibilities should live, how to keep controllers thin, and how to move query logic into the right model or action layer. It is built for developers who want confidence working inside a serious Laravel application, not just theory from isolated toy examples.',
                 'is_free' => false,
                 'price' => 49,
                 'language' => 'en',
@@ -145,7 +145,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'tailwind-alpine-ui-kit',
                 'title' => 'Tailwind & Alpine UI Kit (Intermediate)',
-                'description' => 'Intermediate design kit for clean dashboards, lesson layouts and responsive landing pages with Tailwind & Alpine.',
+                'description' => 'Tailwind & Alpine UI Kit is an intermediate design-focused course for developers and designers who want to build interfaces that feel modern, clean, and intentional without overcomplicating the stack. You will learn how to structure landing pages, dashboards, lesson screens, and admin panels using Tailwind CSS for layout and visual rhythm, then use Alpine.js for lightweight interactions like collapses, tabs, toggles, and small workflow enhancements. The course emphasizes reusable patterns, spacing consistency, visual hierarchy, and responsive behavior so your pages still feel polished across devices. It is especially useful if you want a practical system for shipping sharper frontend experiences quickly while keeping the code readable and easy to maintain. You will also work through ways to reduce visual noise, choose stronger component patterns, and create interfaces that feel more premium and more deliberate. The outcome is not just prettier pages, but a more dependable UI system you can extend across a full product.',
                 'is_free' => false,
                 'price' => 39,
                 'language' => 'en',
@@ -156,7 +156,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'course-launch-marketing-blueprint',
                 'title' => 'Course Launch & Marketing (Advanced)',
-                'description' => 'Advanced playbook to plan your launch, craft effective sales copy and set up funnels into Learnova checkout.',
+                'description' => 'Course Launch & Marketing is an advanced playbook for instructors and creators who already have expertise, but need a structured way to package it, launch it, and convert interest into enrollments. This course walks through offer positioning, sales-page messaging, launch planning, email sequencing, audience warm-up, and evergreen funnel decisions that support a cleaner buying journey. You will learn how to turn a course idea into a stronger marketable offer, how to write benefit-driven copy that feels credible instead of exaggerated, and how to connect your marketing process to a storefront that feels easy to trust. The goal is to help you move from “I have content” to “I have a launch system that people can confidently buy from.” Along the way, you will review practical examples of pre-launch preparation, pricing communication, objection handling, and follow-up strategy so your promotion feels organized instead of improvised. This course is for people who want a clearer path from idea to revenue with less guesswork.',
                 'is_free' => false,
                 'price' => 89,
                 'language' => 'en',
@@ -167,7 +167,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'courseflow-content-operations',
                 'title' => 'Course Content Operations (Intermediate)',
-                'description' => 'Intermediate system for refining lesson structure, polishing copy, and keeping the student journey clear from first click to completion.',
+                'description' => 'Course Content Operations is an intermediate workflow course for creators who want a better system for managing lessons, modules, updates, and the overall student experience. Instead of treating course building as a one-time upload task, this course shows you how to continuously improve the structure of your content, polish lesson descriptions, review the order of modules, and make sure the learning journey still feels clear after each update. You will work through practical steps for organizing curriculum, checking how content is presented on the sales page and inside the lesson view, and reducing friction between enrollment, learning, and completion. It is especially helpful for anyone maintaining a growing course library and wanting more operational control. The course also covers how to review your content like a product owner, identify points of confusion, keep modules easier to scan, and make future edits without damaging the clarity of the original learning flow. It is about consistency, quality, and sustainable course maintenance.',
                 'is_free' => false,
                 'price' => 29,
                 'language' => 'en',
@@ -178,7 +178,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'courseflow-quickstart-mini-course',
                 'title' => 'Learnova Quickstart (Beginner)',
-                'description' => 'Beginner-friendly mini-course: follow a focused walkthrough from fresh install to a polished, demo-ready platform.',
+                'description' => 'Learnova Quickstart is a beginner-friendly mini-course designed to help you move from a fresh installation to a polished, demo-ready learning platform in a short amount of time. It focuses on the highest-value steps first: installing the project, running migrations, seeding realistic data, configuring branding, reviewing the student flow, and publishing your first course. The goal is not to overwhelm you with every possible feature, but to help you understand the main pieces of the platform quickly so you can start making useful changes with confidence. If you are new to the project or want a guided orientation before deeper customization, this course gives you a practical and encouraging starting point. You will finish with a clearer mental map of how the platform fits together, what to customize next, and how to present a more believable demo environment for testing, pitching, or internal review. It is designed to create momentum early, not slow you down with unnecessary complexity.',
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
@@ -189,7 +189,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'creator-productivity-systems',
                 'title' => 'Creator Productivity Systems (Beginner)',
-                'description' => 'Beginner track to plan lessons, batch content and keep your Learnova classroom organized.',
+                'description' => 'Creator Productivity Systems is a beginner course built for instructors and content creators who need a more reliable process for planning, recording, publishing, and improving their materials. Many creators lose time because everything lives in separate notes, unfinished drafts, and last-minute recording sessions. This course helps you build a simple working system for batching lessons, organizing updates, managing your publishing rhythm, and keeping your classroom clean as your content library grows. You will learn how to turn scattered ideas into a repeatable workflow, how to protect time for focused creation, and how to keep the student-facing experience organized while you continue adding new content behind the scenes. The lessons are designed to reduce creative friction, lower the cost of switching between tasks, and help you maintain consistency over time. If your current process feels messy or reactive, this course gives you a practical structure that is easier to keep using.',
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
@@ -200,7 +200,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'web-accessibility-essentials',
                 'title' => 'Web Accessibility Essentials (Intermediate)',
-                'description' => 'Intermediate essentials: inclusive design, ARIA roles and practical accessibility audits for courses.',
+                'description' => 'Web Accessibility Essentials is an intermediate course for developers, designers, and course creators who want their product experience to be usable by more people in real situations. The course covers inclusive design thinking, ARIA landmarks, semantic structure, color contrast, focus states, keyboard navigation, and simple accessibility review habits you can apply during day-to-day work. Rather than treating accessibility as a final checklist, the lessons show how to build it into layouts, forms, navigation, and content decisions from the start. If you want your course platform to feel more professional, more responsible, and easier to use for a wider audience, this course gives you a practical foundation you can apply immediately. It also helps you spot the kinds of issues that quietly reduce usability, trust, and completion for real learners. The result is a stronger product experience that works better for more people and reflects a higher standard of care.',
                 'is_free' => false,
                 'price' => 59,
                 'language' => 'en',
@@ -211,7 +211,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'video-editing-for-instructors',
                 'title' => 'Video Editing for Instructors (Intermediate)',
-                'description' => 'Intermediate workflows: trim, color correct and export high-quality lesson videos with simple steps.',
+                'description' => 'Video Editing for Instructors is an intermediate workflow course for teachers, coaches, and creators who want their lesson videos to look cleaner and feel easier to follow without becoming full-time editors. You will learn how to trim recordings, improve pacing, clean up audio, correct color, and export videos in a way that balances quality with speed. The course focuses on practical improvements that make lessons feel more professional: better cuts, clearer visuals, fewer distractions, and exports that are optimized for online delivery. If you already record content but feel the final result could be sharper, this course helps you create a more polished learning experience while keeping the editing process realistic and repeatable. You will also learn how to think like a student while editing, keeping momentum strong, reducing unnecessary pauses, and improving the clarity of what appears on screen. The aim is smoother instruction, not just prettier footage.',
                 'is_free' => false,
                 'price' => 69,
                 'language' => 'en',
@@ -222,7 +222,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'fitness-for-creators',
                 'title' => 'Fitness for Creators',
-                'description' => 'Simple routines to keep your energy high while recording and shipping lessons.',
+                'description' => 'Fitness for Creators is a practical wellness course for people who spend long hours writing, recording, editing, and managing digital products. It focuses on realistic movement routines, posture habits, mobility work, and energy management strategies that fit into a creator schedule instead of competing with it. You will learn simple ways to reduce stiffness from desk work, prepare your body before filming, improve comfort during editing sessions, and maintain better energy across long production days. This course is not about intense training or unrealistic routines. It is about building supportive habits that help you stay consistent, feel better physically, and continue creating without your workflow being constantly interrupted by fatigue or discomfort. It is especially useful for creators who want better sustainability in their routine and know that physical energy affects how clearly they teach, record, and show up for students.',
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
@@ -232,7 +232,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'business-branding-foundations',
                 'title' => 'Business Branding Foundations',
-                'description' => 'Build a clear brand identity for your course business.',
+                'description' => 'Business Branding Foundations is a strategic course for creators and educators who want their course business to look more coherent, trustworthy, and memorable. You will work through the fundamentals of positioning, tone of voice, visual identity, offer presentation, and the supporting brand assets that make your storefront feel intentional instead of improvised. The lessons help you connect your brand decisions to actual business outcomes: stronger first impressions, clearer messaging, more consistent visuals, and a more confident buying experience for potential students. Whether you are building your first serious course brand or cleaning up an inconsistent one, this course gives you a grounded process for making better branding decisions across your pages, products, and marketing assets. It also helps you avoid the common mistake of treating branding as decoration instead of communication. The result is a clearer public presence that supports trust and makes every page feel more aligned.',
                 'is_free' => false,
                 'price' => 79,
                 'language' => 'en',
@@ -242,7 +242,7 @@ class DemoSeeder extends Seeder
             [
                 'slug' => 'designing-course-thumbnails',
                 'title' => 'Designing Course Thumbnails',
-                'description' => 'Create compelling 16:9 thumbnails that increase click-through rates.',
+                'description' => 'Designing Course Thumbnails is a focused course for creators who want their course library to feel more premium and more clickable at first glance. Strong thumbnails do more than look attractive; they help communicate value, improve recognition, and make your catalog easier to scan. In this course, you will learn practical thumbnail principles such as composition, hierarchy, typography, color choices, contrast, and reusable templates that save time as you create more products. The goal is to help you build visuals that feel consistent with your brand while still standing out in listings, landing sections, and featured product grids. It is ideal for anyone who wants stronger visual presentation without overdesigning every course card from scratch. You will leave with a repeatable visual system that helps your products look more organized, more trustworthy, and more intentional across the storefront.',
                 'is_free' => true,
                 'price' => 0,
                 'language' => 'en',
@@ -816,7 +816,9 @@ class DemoSeeder extends Seeder
                     'amount' => $operationsCourse->price,
                     'currency' => 'USD',
                     'status' => Payment::STATUS_PENDING,
+                    'payment_reference' => 'BANK-TRX-204581',
                     'proof_path' => 'storage/manual-payments/demo-proof.jpg',
+                    'submitted_at' => now()->subDays(2),
                 ]
             );
         }
@@ -831,7 +833,9 @@ class DemoSeeder extends Seeder
                     'amount' => $brandingDraftCourse->price,
                     'currency' => 'USD',
                     'status' => Payment::STATUS_PENDING,
+                    'payment_reference' => 'BANK-TRX-204582',
                     'proof_path' => 'storage/manual-payments/demo-proof-2.jpg',
+                    'submitted_at' => now()->subDay(),
                 ]
             );
             $approver = $admin;

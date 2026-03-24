@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Course;
+use App\Models\FaqItem;
 use App\Models\Lesson;
 use App\Models\ReferenceOption;
 use App\Models\Setting;
@@ -29,9 +30,9 @@ class DatabaseSeeder extends Seeder
         $sampleCourse = Course::updateOrCreate(
             ['slug' => 'sample-course'],
             [
-                'title' => 'Course Business Quickstart',
+                'title' => 'Course Content Operations for Creators and Educators',
                 'thumbnail_path' => 'images/demo/real/course-real-7.jpg',
-                'description' => 'A practical starter course for instructors who want to package expertise, present it clearly, and start selling with confidence.',
+                'description' => 'Build a cleaner, more professional course experience from outline to enrollment. This course walks creators, coaches, and educators through the practical systems behind a strong digital program: defining the transformation, organizing modules and lessons, improving lesson flow, polishing sales messaging, and creating a learning experience that feels structured from the first click to completion. Instead of scattered tips, you will work through a clear process for shaping your course offer, designing an easier student journey, writing sharper positioning, and preparing a course product that feels ready for real customers.',
                 'price' => 0,
                 'currency' => 'USD',
                 'is_free' => true,
@@ -107,9 +108,9 @@ class DatabaseSeeder extends Seeder
         Course::updateOrCreate(
             ['slug' => 'courseflow-sample-resource-book'],
             [
-                'title' => 'Learnova Sample Resource Book',
+                'title' => 'Course Launch Planning Workbook',
                 'thumbnail_path' => 'images/demo/real/course-real-2.jpg',
-                'description' => 'A seeded downloadable resource that demonstrates free and paid digital book delivery inside Learnova.',
+                'description' => 'A practical companion workbook for planning a digital course launch, clarifying your offer, mapping lesson outcomes, and organizing the pieces you need before opening enrollment. It is seeded as a realistic sample resource so the storefront feels closer to a real product catalog instead of placeholder demo content.',
                 'download_file_path' => $sampleBookPath,
                 'price' => 0,
                 'currency' => 'USD',
@@ -150,7 +151,6 @@ class DatabaseSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'landing.show_platform_proof'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'landing.show_problem_section'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'landing.show_flow_section'], ['value' => true]);
-        Setting::updateOrCreate(['key' => 'landing.show_faq_section'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'demo.enabled'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'en']);
         Setting::updateOrCreate(['key' => 'ui.theme.default'], ['value' => 'light']);
@@ -189,16 +189,27 @@ class DatabaseSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'landing.testimonials.5.role'], ['value' => 'Startup mentor']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.5.quote'], ['value' => 'This platform makes my course pages look dependable and more likely to convert each month.']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.5.avatar'], ['value' => 'https://randomuser.me/api/portraits/men/45.jpg']);
-        Setting::updateOrCreate(['key' => 'landing.faqs.0.question'], ['value' => 'Can I offer both free and paid courses?']);
-        Setting::updateOrCreate(['key' => 'landing.faqs.0.answer'], ['value' => 'Yes. You can publish free offers, paid programs, and downloadable books while keeping the same storefront experience.']);
-        Setting::updateOrCreate(['key' => 'landing.faqs.1.question'], ['value' => 'What happens after a student enrolls?']);
-        Setting::updateOrCreate(['key' => 'landing.faqs.1.answer'], ['value' => 'Students get instant access to their purchased course or resource, with lesson order and progress tracking ready right away.']);
-        Setting::updateOrCreate(['key' => 'landing.faqs.2.question'], ['value' => 'Can I manage landing page content from the admin panel?']);
-        Setting::updateOrCreate(['key' => 'landing.faqs.2.answer'], ['value' => 'Yes. Hero copy, testimonials, FAQs, visibility toggles, contact block, and legal content are all controlled from admin settings.']);
-        Setting::updateOrCreate(['key' => 'landing.faqs.3.question'], ['value' => 'Which payment methods can I enable?']);
-        Setting::updateOrCreate(['key' => 'landing.faqs.3.answer'], ['value' => 'Depending on your setup, you can enable Stripe, PayPal, and manual payment instructions for one-time purchases.']);
-        Setting::updateOrCreate(['key' => 'landing.faqs.4.question'], ['value' => 'Can learners resume where they stopped?']);
-        Setting::updateOrCreate(['key' => 'landing.faqs.4.answer'], ['value' => 'Yes. Lesson progress remains visible so learners can return to the next step without losing their place.']);
+        Setting::updateOrCreate(['key' => 'faq.page.heading'], ['value' => 'Frequently Asked Questions']);
+        Setting::updateOrCreate(['key' => 'faq.page.subheading'], ['value' => 'Find clear answers about enrollment, payments, course access, and how the storefront experience works for students.']);
+
+        $faqDefaults = [
+            ['question' => 'Can I offer both free and paid courses?', 'answer' => 'Yes. You can publish free offers, paid programs, and downloadable books while keeping the same storefront experience.', 'sort_order' => 10],
+            ['question' => 'What happens after a student enrolls?', 'answer' => 'Students get instant access to their purchased course or resource, with lesson order and progress tracking ready right away.', 'sort_order' => 20],
+            ['question' => 'Can I manage storefront content from the admin panel?', 'answer' => 'Yes. Hero copy, testimonials, portfolio content, FAQs, contact details, and other public-facing content can be managed from admin.', 'sort_order' => 30],
+            ['question' => 'Which payment methods can I enable?', 'answer' => 'Depending on your setup, you can enable Stripe, PayPal, and manual payment instructions for one-time purchases.', 'sort_order' => 40],
+            ['question' => 'Can learners resume where they stopped?', 'answer' => 'Yes. Lesson progress remains visible so learners can return to the next step without losing their place.', 'sort_order' => 50],
+        ];
+
+        foreach ($faqDefaults as $faqDefault) {
+            FaqItem::updateOrCreate(
+                ['question' => $faqDefault['question']],
+                [
+                    'answer' => $faqDefault['answer'],
+                    'is_visible' => true,
+                    'sort_order' => $faqDefault['sort_order'],
+                ]
+            );
+        }
         Setting::updateOrCreate(['key' => 'legal.terms.en'], ['value' => "1. Introduction\nLearnova provides digital courses and educational resources for individual learners and customers.\n\n2. Accounts and access\nYou are responsible for the security of your account and any activity that happens under it.\n\n3. Purchases and delivery\nPaid products are delivered after successful payment confirmation. Free products become available immediately after enrollment when applicable.\n\n4. Personal use\nCourse videos, books, downloads, and supporting materials are licensed for personal use only and may not be resold, copied, or redistributed without permission.\n\n5. Refunds\nRefund terms may vary by offer and are described on the relevant sales page or purchase flow.\n\n6. Contact\nIf you need help with billing, access, or content questions, use the contact form available on the storefront."]);
         Setting::updateOrCreate(['key' => 'legal.privacy.en'], ['value' => "1. Information we collect\nLearnova may collect account details, purchase information, communication history, and basic usage data required to operate the platform.\n\n2. How we use information\nData is used to deliver purchased content, improve the learning experience, provide support, and keep the platform secure.\n\n3. Payments and providers\nPayments may be processed by third-party providers such as Stripe or PayPal. Sensitive financial details are handled according to the policies of those providers.\n\n4. Cookies and analytics\nCookies may be used to remember preferences, support login sessions, and understand how visitors use the storefront.\n\n5. Your choices\nYou can request updates or removal of your data where applicable by contacting the site owner through the storefront contact form.\n\n6. Updates\nThis privacy policy may be updated to reflect operational or legal changes, and the latest version published on the site is the one in effect."]);
 

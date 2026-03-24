@@ -36,7 +36,6 @@ class ShowLandingPageAction
         $showProblemSection = (bool) $this->settings->get('landing.show_problem_section', true);
         $showFlowSection = (bool) $this->settings->get('landing.show_flow_section', true);
         $showTestimonials = (bool) $this->settings->get('landing.show_testimonials', true);
-        $showFaqSection = (bool) $this->settings->get('landing.show_faq_section', true);
         $showFooterCta = (bool) $this->settings->get('landing.show_footer_cta', true);
         $rawContact = $this->settings->get('landing.show_contact_form', true);
         $showContactForm = false;
@@ -65,7 +64,6 @@ class ShowLandingPageAction
         }
         $landingCopy = LandingContent::copy($this->settings);
         $landingTestimonials = LandingContent::testimonials($this->settings);
-        $landingFaqs = LandingContent::faqs($this->settings);
         $heroVideoUrl = (string) $this->settings->get('landing.hero_video_url', $instructorLinks['youtube'] ?? '');
 
         $features = [
@@ -104,7 +102,6 @@ class ShowLandingPageAction
             'showProblemSection' => $showProblemSection,
             'showFlowSection' => $showFlowSection,
             'showTestimonials' => $showTestimonials,
-            'showFaqSection' => $showFaqSection,
             'showFooterCta' => $showFooterCta,
             'showContactForm' => $showContactForm,
             'features' => $features,
@@ -112,7 +109,6 @@ class ShowLandingPageAction
             'heroCourses' => $heroCourses,
             'landingCopy' => $landingCopy,
             'landingTestimonials' => $landingTestimonials,
-            'landingFaqs' => $landingFaqs,
             'heroVideoUrl' => $heroVideoUrl,
         ];
 

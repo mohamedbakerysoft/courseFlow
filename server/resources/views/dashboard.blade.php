@@ -1,28 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div class="max-w-2xl">
-                <p class="cf-dark-muted text-sm font-semibold uppercase tracking-[0.24em]">{{ __('Instructor workspace') }}</p>
+        <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+            <div class="max-w-3xl">
+                <p class="cf-dark-muted text-sm font-semibold uppercase tracking-[0.24em]">{{ __('Admin workspace') }}</p>
                 <h2 class="cf-dark-title mt-3 text-3xl font-bold tracking-[-0.04em] sm:text-4xl">
-                    {{ __('Manage your course business from one clean workspace') }}
+                    {{ __('See what needs attention and jump straight into the work') }}
                 </h2>
-                <p class="cf-dark-copy mt-3 text-sm leading-7">
-                    {{ __('Track courses, students, payments, and drafts without losing the clarity of the public storefront.') }}
+                <p class="cf-dark-copy mt-3 max-w-2xl text-sm leading-7">
+                    {{ __('Track products, lessons, students, and payments from one focused dashboard built for daily admin work instead of decorative filler.') }}
                 </p>
             </div>
-            <div class="grid gap-3 sm:grid-cols-3">
-                <div class="cf-dark-soft-card rounded-[24px] px-4 py-4 backdrop-blur">
-                    <p class="cf-dark-muted text-xs uppercase tracking-[0.22em]">{{ __('Courses') }}</p>
-                    <p class="cf-dark-title mt-2 text-2xl font-bold">{{ $totalCourses ?? ($enrolledCourses->count() ?? 0) }}</p>
-                </div>
-                <div class="cf-dark-soft-card rounded-[24px] px-4 py-4 backdrop-blur">
-                    <p class="cf-dark-muted text-xs uppercase tracking-[0.22em]">{{ __('Students') }}</p>
-                    <p class="cf-dark-title mt-2 text-2xl font-bold">{{ $totalStudents ?? 0 }}</p>
-                </div>
-                <div class="cf-dark-soft-card rounded-[24px] px-4 py-4 backdrop-blur">
-                    <p class="cf-dark-muted text-xs uppercase tracking-[0.22em]">{{ __('Lessons') }}</p>
-                    <p class="cf-dark-title mt-2 text-2xl font-bold">{{ $totalLessons ?? 0 }}</p>
-                </div>
+            <div class="flex flex-wrap gap-3">
+                <a href="{{ route('dashboard.courses.create') }}" class="cf-button-primary">{{ __('Create course') }}</a>
+                <a href="{{ route('dashboard.finance.manual_payments') }}" class="cf-button-secondary">{{ __('Review manual payments') }}</a>
             </div>
         </div>
     </x-slot>
@@ -31,79 +21,209 @@
         <x-public.demo-notice />
 
         @can('viewAny', \App\Models\Course::class)
-            <section class="grid gap-6 xl:grid-cols-[1.2fr,0.8fr]">
-                <div class="cf-section-shell">
-                    <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-                        <div>
-                            <span class="cf-kicker">{{ __('Quick actions') }}</span>
-                            <h3 class="mt-3 text-2xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Create, review, and publish from one place') }}</h3>
-                            <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{{ __('Create content, preview learner-facing pages, and move from drafts to launch without losing context.') }}</p>
-                        </div>
-                        <div class="flex flex-col gap-3 sm:flex-row">
-                            <a href="{{ route('dashboard.courses.create') }}" class="cf-button-primary">{{ __('Create Course') }}</a>
-                            <a href="{{ route('dashboard.courses.index') }}" class="cf-button-ghost">{{ __('Manage Courses') }}</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="cf-panel-dark px-6 py-6 sm:px-8">
-                    <p class="cf-dark-muted text-xs font-semibold uppercase tracking-[0.24em]">{{ __('Product status') }}</p>
-                    <h3 class="cf-dark-title mt-3 text-2xl font-bold tracking-[-0.04em]">{{ __('Instructor workflow at a glance') }}</h3>
-                    <ul class="cf-dark-copy mt-5 space-y-3 text-sm leading-7">
-                        <li>{{ __('Review important metrics before diving into daily tasks.') }}</li>
-                        <li>{{ __('Move quickly between course creation, lesson updates, and previews.') }}</li>
-                        <li>{{ __('Keep the dashboard visually aligned with the public storefront.') }}</li>
-                    </ul>
-                </div>
+            <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
+                @foreach ($stats as $stat)
+                    <article class="cf-dashboard-stat">
+                        <p class="cf-dashboard-stat-label">{{ __($stat['label']) }}</p>
+                        <p class="cf-dashboard-stat-value">{{ $stat['value'] }}</p>
+                        <p class="cf-dashboard-stat-hint">{{ __($stat['hint']) }}</p>
+                    </article>
+                @endforeach
             </section>
 
-            <section class="grid gap-6 lg:grid-cols-2">
-                <div class="cf-stat-card">
-                    <div class="flex items-center justify-between">
+            <section class="grid gap-6 xl:grid-cols-[0.95fr,1.05fr]">
+                <article class="cf-section-shell">
+                    <div class="cf-dashboard-section-head">
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('Latest draft course') }}</p>
-                            <h3 class="mt-3 text-xl font-bold text-[var(--color-text-primary)]">{{ $latestDraftCourse?->title ?? __('No draft courses yet.') }}</h3>
+                            <span class="cf-kicker">{{ __('Needs attention') }}</span>
+                            <h3 class="cf-dashboard-section-title">{{ __('Important tasks that should be handled first') }}</h3>
                         </div>
-                        <span class="cf-badge-muted">{{ __('Draft') }}</span>
                     </div>
-                    @if (!empty($latestDraftCourse))
-                        <div class="mt-6 flex flex-wrap gap-3">
-                            <a href="{{ route('dashboard.courses.edit', $latestDraftCourse) }}" class="cf-button-secondary">{{ __('Edit') }}</a>
-                            <a href="{{ route('courses.show', $latestDraftCourse) }}" target="_blank" rel="noopener" class="cf-button-primary">{{ __('Preview') }}</a>
-                        </div>
-                    @endif
-                </div>
 
-                <div class="cf-stat-card">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('Latest draft lesson') }}</p>
-                            <h3 class="mt-3 text-xl font-bold text-[var(--color-text-primary)]">{{ $latestDraftLesson?->title ?? __('No draft lessons yet.') }}</h3>
+                    @if (count($attentionItems))
+                        <div class="cf-dashboard-list mt-6">
+                            @foreach ($attentionItems as $item)
+                                <article class="cf-dashboard-list-item">
+                                    <div class="min-w-0">
+                                        <div class="flex flex-wrap items-center gap-3">
+                                            <h4 class="cf-dashboard-item-title">{{ __($item['title']) }}</h4>
+                                            <span class="cf-badge-muted">{{ __($item['badge']) }}</span>
+                                        </div>
+                                        <p class="cf-dashboard-item-copy">{{ __($item['description']) }}</p>
+                                    </div>
+                                    <a href="{{ $item['url'] }}" class="cf-button-secondary">{{ __($item['action']) }}</a>
+                                </article>
+                            @endforeach
                         </div>
-                        <span class="cf-badge-muted">{{ __('Draft') }}</span>
-                    </div>
-                    @if (!empty($latestDraftLesson))
-                        <div class="mt-6 flex flex-wrap gap-3">
-                            <a href="{{ route('dashboard.lessons.edit', $latestDraftLesson) }}" class="cf-button-secondary">{{ __('Edit') }}</a>
-                            <a href="{{ route('courses.show', $latestDraftLesson->course) }}" target="_blank" rel="noopener" class="cf-button-primary">{{ __('Preview') }}</a>
+                    @else
+                        <div class="mt-6 cf-panel-soft px-6 py-8">
+                            <p class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('Nothing urgent right now') }}</p>
+                            <p class="mt-2 text-sm leading-7 text-[var(--color-text-muted)]">{{ __('Your products and payment queue look under control. Use the shortcuts on the right to keep content moving.') }}</p>
                         </div>
                     @endif
-                </div>
+                </article>
+
+                <article class="cf-section-shell">
+                    <div class="cf-dashboard-section-head">
+                        <div>
+                            <span class="cf-kicker">{{ __('Quick access') }}</span>
+                            <h3 class="cf-dashboard-section-title">{{ __('Jump straight into the most important admin areas') }}</h3>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid gap-4 md:grid-cols-2">
+                        @foreach ($quickLinks as $link)
+                            <a href="{{ $link['url'] }}" class="cf-dashboard-quick-link">
+                                <div>
+                                    <div class="flex items-center justify-between gap-4">
+                                        <h4 class="cf-dashboard-item-title">{{ __($link['title']) }}</h4>
+                                        <span class="cf-badge-muted">{{ __($link['meta']) }}</span>
+                                    </div>
+                                    <p class="cf-dashboard-item-copy">{{ __($link['description']) }}</p>
+                                </div>
+                                <span class="cf-dashboard-link-arrow" aria-hidden="true">&rarr;</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </article>
             </section>
 
-            <section class="grid gap-6 sm:grid-cols-3">
-                <div class="cf-stat-card">
-                    <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('Total Courses') }}</p>
-                    <p class="mt-3 text-4xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $totalCourses }}</p>
-                </div>
-                <div class="cf-stat-card">
-                    <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('Total Students') }}</p>
-                    <p class="mt-3 text-4xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $totalStudents }}</p>
-                </div>
-                <div class="cf-stat-card">
-                    <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{{ __('Total Lessons') }}</p>
-                    <p class="mt-3 text-4xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ $totalLessons }}</p>
-                </div>
+            <section class="grid gap-6 xl:grid-cols-3">
+                <article class="cf-section-shell xl:col-span-1">
+                    <div class="cf-dashboard-section-head">
+                        <div>
+                            <span class="cf-kicker">{{ __('Draft queue') }}</span>
+                            <h3 class="cf-dashboard-section-title">{{ __('Unpublished work') }}</h3>
+                        </div>
+                    </div>
+
+                    @if (count($draftItems))
+                        <div class="cf-dashboard-list mt-6">
+                            @foreach ($draftItems as $item)
+                                <article class="cf-dashboard-list-item">
+                                    <div class="min-w-0">
+                                        <div class="flex flex-wrap items-center gap-3">
+                                            <h4 class="cf-dashboard-item-title">{{ $item['title'] }}</h4>
+                                            <span class="cf-badge-muted">{{ __($item['badge']) }}</span>
+                                        </div>
+                                        <p class="cf-dashboard-item-copy">{{ __($item['description']) }}</p>
+                                    </div>
+                                    <a href="{{ $item['url'] }}" class="cf-button-secondary">{{ __($item['action']) }}</a>
+                                </article>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="mt-6 cf-panel-soft px-6 py-8">
+                            <p class="text-lg font-semibold text-[var(--color-text-primary)]">{{ __('No draft items') }}</p>
+                            <p class="mt-2 text-sm leading-7 text-[var(--color-text-muted)]">{{ __('Everything currently looks ready or already published.') }}</p>
+                        </div>
+                    @endif
+                </article>
+
+                <article class="cf-section-shell xl:col-span-1">
+                    <div class="cf-dashboard-section-head">
+                        <div>
+                            <span class="cf-kicker">{{ __('Recent products') }}</span>
+                            <h3 class="cf-dashboard-section-title">{{ __('Latest course and lesson changes') }}</h3>
+                        </div>
+                    </div>
+
+                    <div class="cf-dashboard-list mt-6">
+                        @forelse ($recentProducts as $item)
+                            <article class="cf-dashboard-list-item">
+                                <div class="min-w-0">
+                                    <h4 class="cf-dashboard-item-title">{{ $item['title'] }}</h4>
+                                    <p class="cf-dashboard-item-copy">{{ __($item['description']) }}</p>
+                                    <p class="cf-dashboard-item-meta">{{ $item['meta'] }}</p>
+                                </div>
+                                <a href="{{ $item['url'] }}" class="cf-button-secondary">{{ __($item['action']) }}</a>
+                            </article>
+                        @empty
+                            <p class="text-sm text-[var(--color-text-muted)]">{{ __('No products updated yet.') }}</p>
+                        @endforelse
+                    </div>
+
+                    <div class="cf-dashboard-subsection">
+                        <h4 class="cf-dashboard-subsection-title">{{ __('Recent lessons') }}</h4>
+                        <div class="cf-dashboard-list">
+                            @forelse ($recentLessons as $item)
+                                <article class="cf-dashboard-list-item">
+                                    <div class="min-w-0">
+                                        <h4 class="cf-dashboard-item-title">{{ $item['title'] }}</h4>
+                                        <p class="cf-dashboard-item-copy">{{ __($item['description']) }}</p>
+                                        <p class="cf-dashboard-item-meta">{{ $item['meta'] }}</p>
+                                    </div>
+                                    <a href="{{ $item['url'] }}" class="cf-button-secondary">{{ __($item['action']) }}</a>
+                                </article>
+                            @empty
+                                <p class="text-sm text-[var(--color-text-muted)]">{{ __('No lesson updates yet.') }}</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </article>
+
+                <article class="cf-section-shell xl:col-span-1">
+                    <div class="cf-dashboard-section-head">
+                        <div>
+                            <span class="cf-kicker">{{ __('People and payments') }}</span>
+                            <h3 class="cf-dashboard-section-title">{{ __('Recent student and finance activity') }}</h3>
+                        </div>
+                    </div>
+
+                    <div class="cf-dashboard-subsection mt-6">
+                        <h4 class="cf-dashboard-subsection-title">{{ __('New students') }}</h4>
+                        <div class="cf-dashboard-list">
+                            @forelse ($recentStudents as $item)
+                                <article class="cf-dashboard-list-item">
+                                    <div class="min-w-0">
+                                        <h4 class="cf-dashboard-item-title">{{ $item['title'] }}</h4>
+                                        <p class="cf-dashboard-item-copy">{{ $item['description'] }}</p>
+                                        <p class="cf-dashboard-item-meta">{{ $item['meta'] }}</p>
+                                    </div>
+                                    <a href="{{ $item['url'] }}" class="cf-button-secondary">{{ __($item['action']) }}</a>
+                                </article>
+                            @empty
+                                <p class="text-sm text-[var(--color-text-muted)]">{{ __('No new students yet.') }}</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <div class="cf-dashboard-subsection">
+                        <h4 class="cf-dashboard-subsection-title">{{ __('Recent manual payment requests') }}</h4>
+                        <div class="cf-dashboard-list">
+                            @forelse ($recentManualRequests as $item)
+                                <article class="cf-dashboard-list-item">
+                                    <div class="min-w-0">
+                                        <h4 class="cf-dashboard-item-title">{{ $item['title'] }}</h4>
+                                        <p class="cf-dashboard-item-copy">{{ __($item['description']) }}</p>
+                                        <p class="cf-dashboard-item-meta">{{ $item['meta'] }}</p>
+                                    </div>
+                                    <a href="{{ $item['url'] }}" class="cf-button-secondary">{{ __($item['action']) }}</a>
+                                </article>
+                            @empty
+                                <p class="text-sm text-[var(--color-text-muted)]">{{ __('No manual payment requests yet.') }}</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <div class="cf-dashboard-subsection">
+                        <h4 class="cf-dashboard-subsection-title">{{ __('Recent paid orders') }}</h4>
+                        <div class="cf-dashboard-list">
+                            @forelse ($recentPaidPayments as $item)
+                                <article class="cf-dashboard-list-item">
+                                    <div class="min-w-0">
+                                        <h4 class="cf-dashboard-item-title">{{ $item['title'] }}</h4>
+                                        <p class="cf-dashboard-item-copy">{{ __($item['description']) }}</p>
+                                        <p class="cf-dashboard-item-meta">{{ $item['meta'] }}</p>
+                                    </div>
+                                    <a href="{{ $item['url'] }}" class="cf-button-secondary">{{ __($item['action']) }}</a>
+                                </article>
+                            @empty
+                                <p class="text-sm text-[var(--color-text-muted)]">{{ __('No paid orders yet.') }}</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </article>
             </section>
         @else
             <section class="cf-section-shell">

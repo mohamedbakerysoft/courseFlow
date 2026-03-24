@@ -8,6 +8,7 @@ use App\Support\MediaAsset;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -135,10 +136,61 @@ class User extends Authenticatable
         return static::primaryInstructor() ?? static::query()->where('role', self::ROLE_ADMIN)->firstOrFail();
     }
 
+    public static function findByEmail(string $email): ?self
+    {
+        return static::query()
+            ->where('email', $email)
+            ->first();
+    }
+
     public function enrolledCoursesList(): Collection
     {
         return $this->courses()
             ->select(['courses.id', 'courses.slug', 'courses.title'])
             ->get();
+    }
+
+    public function enrolledCoursesForDashboard(): Collection
+    {
+        return $this->courses()
+            ->published()
+            ->courses()
+            ->with('instructor')
+            ->withCount('lessons')
+            ->orderByDesc('enrollments.enrolled_at')
+            ->get([
+                'courses.id',
+                'courses.slug',
+                'courses.title',
+                'courses.description',
+                'courses.thumbnail_path',
+                'courses.price',
+                'courses.currency',
+                'courses.is_free',
+                'courses.language',
+                'courses.instructor_id',
+                'courses.product_type',
+            ]);
+    }
+
+    public static function distinctEnrolledCountForCourses(array $courseIds): int
+    {
+        if ($courseIds === []) {
+            return 0;
+        }
+
+        return (int) DB::table('enrollments')
+            ->whereIn('course_id', $courseIds)
+            ->distinct('user_id')
+            ->count('user_id');
+    }
+
+    public static function recentStudents(int $limit = 5): Collection
+    {
+        return static::query()
+            ->where('role', self::ROLE_STUDENT)
+            ->latest('created_at')
+            ->limit($limit)
+            ->get(['id', 'name', 'email', 'created_at']);
     }
 }

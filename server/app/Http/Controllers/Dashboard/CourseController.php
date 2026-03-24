@@ -10,10 +10,11 @@ use App\Actions\Dashboard\Courses\UnpublishCourseAction;
 use App\Actions\Dashboard\Courses\UpdateCourseAction;
 use App\Actions\Dashboard\Courses\UploadCourseThumbnailAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\Courses\StoreCourseRequest;
+use App\Http\Requests\Dashboard\Courses\UpdateCourseRequest;
 use App\Models\Course;
 use App\Models\ReferenceOption;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
 {
@@ -29,21 +30,11 @@ class CourseController extends Controller
         return view('dashboard.courses.create', $this->formOptions());
     }
 
-    public function store(Request $request, CreateCourseAction $create, UploadCourseThumbnailAction $upload)
+    public function store(StoreCourseRequest $request, CreateCourseAction $create, UploadCourseThumbnailAction $upload)
     {
         $this->authorize('create', Course::class);
 
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:courses,slug'],
-            'description' => ['nullable', 'string'],
-            'thumbnail_path' => ['nullable', 'string'],
-            'thumbnail' => ['nullable', 'image', 'max:2048'],
-            'price' => ['nullable', 'numeric', 'min:0'],
-            'currency' => ['nullable', 'string', 'max:8', Rule::exists('reference_options', 'code')->where('type', ReferenceOption::TYPE_CURRENCY)->where('is_active', true)],
-            'is_free' => ['nullable', 'boolean'],
-            'language' => ['nullable', 'string', 'max:12', Rule::exists('reference_options', 'code')->where('type', ReferenceOption::TYPE_LANGUAGE)->where('is_active', true)],
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail_path'] = $upload->execute($request->file('thumbnail'));
@@ -63,21 +54,11 @@ class CourseController extends Controller
         return view('dashboard.courses.edit', array_merge(['course' => $course], $this->formOptions()));
     }
 
-    public function update(Request $request, Course $course, UpdateCourseAction $update, UploadCourseThumbnailAction $upload)
+    public function update(UpdateCourseRequest $request, Course $course, UpdateCourseAction $update, UploadCourseThumbnailAction $upload)
     {
         $this->authorize('update', $course);
 
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:courses,slug,'.$course->id],
-            'description' => ['nullable', 'string'],
-            'thumbnail_path' => ['nullable', 'string'],
-            'thumbnail' => ['nullable', 'image', 'max:2048'],
-            'price' => ['nullable', 'numeric', 'min:0'],
-            'currency' => ['nullable', 'string', 'max:8', Rule::exists('reference_options', 'code')->where('type', ReferenceOption::TYPE_CURRENCY)->where('is_active', true)],
-            'is_free' => ['nullable', 'boolean'],
-            'language' => ['nullable', 'string', 'max:12', Rule::exists('reference_options', 'code')->where('type', ReferenceOption::TYPE_LANGUAGE)->where('is_active', true)],
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail_path'] = $upload->execute($request->file('thumbnail'));

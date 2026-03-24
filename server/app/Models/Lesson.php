@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
 
 class Lesson extends Model
 {
@@ -93,5 +94,44 @@ class Lesson extends Model
                 }
             }
         });
+    }
+
+    public static function countForCourses(array $courseIds): int
+    {
+        if ($courseIds === []) {
+            return 0;
+        }
+
+        return (int) static::query()
+            ->whereIn('course_id', $courseIds)
+            ->count();
+    }
+
+    public static function latestDraftForCourses(array $courseIds): ?self
+    {
+        if ($courseIds === []) {
+            return null;
+        }
+
+        return static::query()
+            ->whereIn('course_id', $courseIds)
+            ->where('status', self::STATUS_DRAFT)
+            ->with('course')
+            ->latest('updated_at')
+            ->first();
+    }
+
+    public static function recentForCourses(array $courseIds, int $limit = 5): Collection
+    {
+        if ($courseIds === []) {
+            return collect();
+        }
+
+        return static::query()
+            ->whereIn('course_id', $courseIds)
+            ->with('course')
+            ->orderByDesc('updated_at')
+            ->limit($limit)
+            ->get(['id', 'course_id', 'slug', 'title', 'status', 'updated_at']);
     }
 }

@@ -17,17 +17,25 @@
                 </a>
 
                 <div class="hidden items-center gap-2 lg:flex">
-                        <x-nav-link :href="url('/')" :active="request()->is('/')">{{ __('Home') }}</x-nav-link>
-                        <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.index') || request()->routeIs('courses.show')">{{ __('Courses') }}</x-nav-link>
-                        <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')">{{ __('Books') }}</x-nav-link>
-                        <x-nav-link :href="route('instructor.show')" :active="request()->routeIs('instructor.show')">{{ __('Instructor') }}</x-nav-link>
+                    @foreach (($headerMenuItems ?? collect()) as $item)
+                        @continue(empty($item['is_enabled']))
+                        @php
+                            $href = $item['route_name'] ? route($item['route_name']) : url($item['route'] ?? '/');
+                            $activePatterns = $item['active'] ?? [];
+                            $isActive = collect($activePatterns)->contains(function ($pattern) {
+                                if ($pattern === '*home*') {
+                                    return request()->is('/');
+                                }
+
+                                return request()->routeIs($pattern);
+                            });
+                        @endphp
+                        <x-nav-link :href="$href" :active="$isActive">{{ __($item['label']) }}</x-nav-link>
+                    @endforeach
                     @auth
                         @can('viewAny', \App\Models\Course::class)
                             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">{{ __('Dashboard') }}</x-nav-link>
                         @else
-                            <x-nav-link :href="url('/')" :active="request()->is('/')">{{ __('Home') }}</x-nav-link>
-                            <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.index') || request()->routeIs('courses.show')">{{ __('Browse Courses') }}</x-nav-link>
-                            <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')">{{ __('Books') }}</x-nav-link>
                             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">{{ __('My Courses') }}</x-nav-link>
                         @endcan
                     @endauth
@@ -94,10 +102,21 @@
         <div class="cf-shell py-4">
             <div class="space-y-2">
                 @guest
-                    <x-responsive-nav-link :href="url('/')" :active="request()->is('/')">{{ __('Home') }}</x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.index') || request()->routeIs('courses.show')">{{ __('Courses') }}</x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')">{{ __('Books') }}</x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('instructor.show')" :active="request()->routeIs('instructor.show')">{{ __('Instructor') }}</x-responsive-nav-link>
+                    @foreach (($headerMenuItems ?? collect()) as $item)
+                        @continue(empty($item['is_enabled']))
+                        @php
+                            $href = $item['route_name'] ? route($item['route_name']) : url($item['route'] ?? '/');
+                            $activePatterns = $item['active'] ?? [];
+                            $isActive = collect($activePatterns)->contains(function ($pattern) {
+                                if ($pattern === '*home*') {
+                                    return request()->is('/');
+                                }
+
+                                return request()->routeIs($pattern);
+                            });
+                        @endphp
+                        <x-responsive-nav-link :href="$href" :active="$isActive">{{ __($item['label']) }}</x-responsive-nav-link>
+                    @endforeach
                     <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">{{ __('Login') }}</x-responsive-nav-link>
                     @if (Route::has('register'))
                         <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')">{{ __('Register') }}</x-responsive-nav-link>
@@ -120,6 +139,8 @@
                         <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">{{ __('Dashboard') }}</x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('dashboard.courses.index')" :active="request()->routeIs('dashboard.courses.*')">{{ __('Courses') }}</x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('dashboard.books.index')" :active="request()->routeIs('dashboard.books.*')">{{ __('Books') }}</x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('dashboard.faqs.index')" :active="request()->routeIs('dashboard.faqs.*')">{{ __('FAQs') }}</x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('dashboard.menus.edit')" :active="request()->routeIs('dashboard.menus.*')">{{ __('Menus') }}</x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('dashboard.settings.edit')" :active="request()->routeIs('dashboard.settings.*')">{{ __('Settings') }}</x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('dashboard.appearance.edit')" :active="request()->routeIs('dashboard.appearance.*')">{{ __('Appearance') }}</x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('dashboard.users.index')" :active="request()->routeIs('dashboard.users.*')">{{ __('Users') }}</x-responsive-nav-link>
@@ -136,9 +157,21 @@
                         </div>
                         <x-responsive-nav-link :href="url('/')" :active="request()->is('/')">{{ __('View Site') }}</x-responsive-nav-link>
                     @else
-                        <x-responsive-nav-link :href="url('/')" :active="request()->is('/')">{{ __('Home') }}</x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.index') || request()->routeIs('courses.show')">{{ __('Browse Courses') }}</x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')">{{ __('Books') }}</x-responsive-nav-link>
+                        @foreach (($headerMenuItems ?? collect()) as $item)
+                            @continue(empty($item['is_enabled']))
+                            @php
+                                $href = $item['route_name'] ? route($item['route_name']) : url($item['route'] ?? '/');
+                                $activePatterns = $item['active'] ?? [];
+                                $isActive = collect($activePatterns)->contains(function ($pattern) {
+                                    if ($pattern === '*home*') {
+                                        return request()->is('/');
+                                    }
+
+                                    return request()->routeIs($pattern);
+                                });
+                            @endphp
+                            <x-responsive-nav-link :href="$href" :active="$isActive">{{ __($item['label']) }}</x-responsive-nav-link>
+                        @endforeach
                         <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">{{ __('My Courses') }}</x-responsive-nav-link>
                     @endcan
 

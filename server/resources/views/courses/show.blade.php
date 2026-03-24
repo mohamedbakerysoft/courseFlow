@@ -26,29 +26,23 @@
 
             <div class="grid gap-6 xl:grid-cols-[minmax(0,0.92fr),minmax(0,1.08fr)] xl:items-start xl:gap-8">
                 <div class="space-y-5">
-                    <a href="{{ route('courses.index') }}" class="cf-button-ghost !px-4 !py-2">{{ __('Back to courses') }}</a>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="cf-chip">{{ $displayPrice }}</span>
-                        <span class="cf-chip">{{ $lessons->count() }} {{ Str::plural('lesson', $lessons->count()) }}</span>
-                        <span class="cf-chip">{{ strtoupper($course->language) }}</span>
-                    </div>
                     <div class="space-y-4">
                         <h1 class="cf-display text-4xl sm:text-5xl">{{ $course->title }}</h1>
                         @if (!empty($course->description))
-                            <p class="cf-subheading max-w-3xl">{{ str($course->description)->limit(220) }}</p>
+                            <p class="cf-subheading max-w-none">{{ $course->description }}</p>
                         @endif
                     </div>
                     <div class="flex flex-wrap gap-4 text-sm">
-                        <div class="cf-panel-soft px-4 py-3">
+                        <div class="cf-panel-soft cf-course-hero-soft px-4 py-3">
                             <p class="font-semibold text-[var(--color-text-primary)]">{{ $course->instructor?->name ?? $instructorName }}</p>
                             <p class="mt-1 text-[var(--color-text-muted)]">{{ __('Instructor') }}</p>
                         </div>
-                        <div class="cf-panel-soft px-4 py-3">
+                        <div class="cf-panel-soft cf-course-hero-soft px-4 py-3">
                             <p class="font-semibold text-[var(--color-text-primary)]">{{ __('Self-paced format') }}</p>
                             <p class="mt-1 text-[var(--color-text-muted)]">{{ __('Learn through a focused curriculum at your own pace') }}</p>
                         </div>
                         @unless ($isEnrolled)
-                            <div class="cf-panel-soft px-4 py-3">
+                            <div class="cf-panel-soft cf-course-hero-soft px-4 py-3">
                                 <p class="font-semibold text-[var(--color-text-primary)]">{{ __('Enrollment ready') }}</p>
                                 <p class="mt-1 text-[var(--color-text-muted)]">{{ __('Card, PayPal, or manual payment support') }}</p>
                             </div>
@@ -61,10 +55,16 @@
                             </div>
                         @endif
                     @endauth
+                    <div class="flex flex-wrap items-center gap-3 pt-2">
+                        <a href="{{ route('courses.index') }}" class="cf-button-ghost !px-4 !py-2">{{ __('Back to courses') }}</a>
+                        <span class="cf-chip">{{ $displayPrice }}</span>
+                        <span class="cf-chip">{{ $lessons->count() }} {{ Str::plural('lesson', $lessons->count()) }}</span>
+                        <span class="cf-chip">{{ strtoupper($course->language) }}</span>
+                    </div>
                 </div>
 
                 <div class="space-y-6">
-                    <div class="cf-panel overflow-hidden">
+                    <div class="cf-panel cf-course-hero-panel overflow-hidden">
                         <div class="relative">
                             <img
                                 src="{{ $thumbnail }}"
@@ -77,7 +77,7 @@
                         </div>
                     </div>
 
-                    <div class="cf-panel px-6 py-6 sm:px-8">
+                    <div class="cf-panel cf-course-hero-panel px-6 py-6 sm:px-8">
                         @if ($isEnrolled)
                             <div class="space-y-4">
                                 <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">

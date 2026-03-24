@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Payments;
 
 use App\Actions\Payments\ApproveManualPaymentAction;
 use App\Actions\Payments\CreateManualPaymentAction;
+use App\Actions\Payments\RejectManualPaymentAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Payments\RejectManualPaymentRequest;
+use App\Http\Requests\Payments\SubmitManualPaymentRequest;
 use App\Models\Course;
 use App\Models\Payment;
+use App\Models\User;
 use App\Services\SettingsService;
 use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
@@ -32,14 +36,9 @@ class ManualPaymentController extends Controller
         return view('payments.manual.pending', compact('payment', 'manualInstructions'));
     }
 
-    public function submit(Request $request, Payment $payment): RedirectResponse
+    public function submit(SubmitManualPaymentRequest $request, Payment $payment): RedirectResponse
     {
         abort_unless(auth()->id() === $payment->user_id, Response::HTTP_FORBIDDEN);
-
-        $validated = $request->validate([
-            'payment_reference' => ['required', 'string', 'max:2000'],
-            'proof_image' => ['required', 'image', 'max:6144'],
-        ]);
 
         if ($payment->status !== Payment::STATUS_PENDING) {
             return back()->withErrors([
@@ -52,6 +51,7 @@ class ManualPaymentController extends Controller
         }
 
         $proofPath = $request->file('proof_image')->store('manual-payments', 'public');
+        $validated = $request->validated();
 
         $payment->update([
             'payment_reference' => $validated['payment_reference'],
@@ -71,7 +71,7 @@ class ManualPaymentController extends Controller
         }
         $approver = $request->user();
         if (! $approver && ! app()->environment('production')) {
-            $approver = \App\Models\User::where('role', \App\Models\User::ROLE_ADMIN)->first();
+            $approver = User::primaryInstructor();
         }
         $action->execute($payment, $approver);
 
@@ -81,29 +81,13 @@ class ManualPaymentController extends Controller
         );
     }
 
-    public function reject(Request $request, Payment $payment): RedirectResponse
+    public function reject(RejectManualPaymentRequest $request, Payment $payment, RejectManualPaymentAction $action): RedirectResponse
     {
         if (app()->environment('production')) {
             $this->authorize('reject', $payment);
         }
 
-        $validated = $request->validate([
-            'review_notes' => ['required', 'string', 'max:2000'],
-        ]);
-
-        Payment::query()
-            ->where('user_id', $payment->user_id)
-            ->where('course_id', $payment->course_id)
-            ->where('status', Payment::STATUS_FAILED)
-            ->whereKeyNot($payment->id)
-            ->delete();
-
-        $payment->update([
-            'status' => Payment::STATUS_FAILED,
-            'approved_by' => $request->user()?->id,
-            'review_notes' => $validated['review_notes'],
-            'rejected_at' => Carbon::now(),
-        ]);
+        $action->execute($payment, $request->user(), $request->validated('review_notes'));
 
         return redirect()->route('dashboard.finance.index')->with('status', 'Manual payment rejected.');
     }

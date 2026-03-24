@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\RichText\StoreRichTextImageRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class RichTextImageController extends Controller
 {
-    public function store(Request $request): JsonResponse
+    public function store(StoreRichTextImageRequest $request): JsonResponse
     {
-        $request->validate([
-            'image' => ['required', 'image', 'max:4096'],
-        ]);
-
         $path = $request->file('image')->store('rich-text', 'public');
 
         return response()->json([

@@ -473,3 +473,223 @@ function _initCourseOrganizers() {
 }
 
 document.addEventListener('DOMContentLoaded', _initCourseOrganizers);
+
+function _initMenuManagers() {
+    document.querySelectorAll('[data-menu-manager]').forEach((container) => {
+        if (container.dataset.menuManagerReady === '1') return;
+        container.dataset.menuManagerReady = '1';
+
+        const list = container.querySelector('[data-menu-sorter-list]');
+        const reorderUrl = container.getAttribute('data-menu-reorder-url');
+        const status = container.querySelector('[data-menu-manager-status]');
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
+        if (!list || !reorderUrl) return;
+
+        let draggedItem = null;
+
+        const setStatus = (message, isError = false) => {
+            if (!status) return;
+            status.textContent = message;
+            status.classList.toggle('text-[var(--color-error)]', isError);
+            status.classList.toggle('text-[var(--color-text-muted)]', !isError);
+        };
+
+        const items = () => Array.from(list.querySelectorAll('[data-menu-item]'));
+
+        const refreshBadges = () => {
+            items().forEach((item, index) => {
+                const badge = item.querySelector('[data-menu-order-badge]');
+                if (badge) {
+                    badge.textContent = `Item ${index + 1}`;
+                }
+
+                item.querySelectorAll('input, textarea, select').forEach((field) => {
+                    const currentName = field.getAttribute('name');
+                    if (!currentName) return;
+                    field.setAttribute('name', currentName.replace(/items\[\d+\]/, `items[${index}]`));
+                });
+            });
+        };
+
+        const saveOrder = async () => {
+            const itemKeys = items().map((item) => item.getAttribute('data-menu-key')).filter(Boolean);
+            setStatus('Saving menu order...');
+
+            try {
+                const response = await fetch(reorderUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                    },
+                    body: JSON.stringify({ item_keys: itemKeys }),
+                });
+
+                if (!response.ok) throw new Error('Unable to save menu order.');
+                refreshBadges();
+                setStatus('Menu order saved.');
+            } catch (error) {
+                console.error(error);
+                setStatus('Could not save the new menu order.', true);
+            }
+        };
+
+        items().forEach((item) => {
+            const handle = item.querySelector('[data-menu-drag-handle]');
+            if (handle) {
+                handle.addEventListener('dragstart', (event) => {
+                    if (event.dataTransfer) {
+                        event.dataTransfer.effectAllowed = 'move';
+                        event.dataTransfer.setData('text/plain', item.getAttribute('data-menu-key') || '');
+                    }
+
+                    draggedItem = item;
+                    item.classList.add('opacity-60');
+                    setStatus('Drop the menu item where you want it.');
+                });
+
+                handle.addEventListener('dragend', () => {
+                    item.classList.remove('opacity-60');
+                    draggedItem = null;
+                });
+            }
+
+            item.addEventListener('dragover', (event) => {
+                if (!draggedItem || draggedItem === item) return;
+                event.preventDefault();
+            });
+
+            item.addEventListener('drop', async (event) => {
+                if (!draggedItem || draggedItem === item) return;
+                event.preventDefault();
+
+                const currentItems = items();
+                const draggedIndex = currentItems.indexOf(draggedItem);
+                const targetIndex = currentItems.indexOf(item);
+
+                if (draggedIndex < targetIndex) {
+                    item.after(draggedItem);
+                } else {
+                    item.before(draggedItem);
+                }
+
+                refreshBadges();
+                await saveOrder();
+            });
+        });
+
+        refreshBadges();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', _initMenuManagers);
+
+function _initFaqManagers() {
+    document.querySelectorAll('[data-faq-manager]').forEach((container) => {
+        if (container.dataset.faqManagerReady === '1') return;
+        container.dataset.faqManagerReady = '1';
+
+        const list = container.querySelector('[data-faq-sorter-list]');
+        const reorderUrl = container.getAttribute('data-faq-reorder-url');
+        const status = container.querySelector('[data-faq-manager-status]');
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
+        if (!list || !reorderUrl) return;
+
+        let draggedItem = null;
+
+        const setStatus = (message, isError = false) => {
+            if (!status) return;
+            status.textContent = message;
+            status.classList.toggle('text-[var(--color-error)]', isError);
+            status.classList.toggle('text-[var(--color-text-muted)]', !isError);
+        };
+
+        const items = () => Array.from(list.querySelectorAll('[data-faq-item]'));
+
+        const refreshBadges = () => {
+            items().forEach((item, index) => {
+                const badge = item.querySelector('[data-faq-order-badge]');
+                if (badge) {
+                    badge.textContent = `Item ${index + 1}`;
+                }
+            });
+        };
+
+        const saveOrder = async () => {
+            const faqIds = items().map((item) => Number(item.getAttribute('data-faq-id'))).filter(Boolean);
+            setStatus('Saving FAQ order...');
+
+            try {
+                const response = await fetch(reorderUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                    },
+                    body: JSON.stringify({ faq_ids: faqIds }),
+                });
+
+                if (!response.ok) throw new Error('Unable to save FAQ order.');
+                refreshBadges();
+                setStatus('FAQ order saved.');
+            } catch (error) {
+                console.error(error);
+                setStatus('Could not save the FAQ order.', true);
+            }
+        };
+
+        items().forEach((item) => {
+            const handle = item.querySelector('[data-faq-drag-handle]');
+            if (handle) {
+                handle.addEventListener('dragstart', (event) => {
+                    if (event.dataTransfer) {
+                        event.dataTransfer.effectAllowed = 'move';
+                        event.dataTransfer.setData('text/plain', item.getAttribute('data-faq-id') || '');
+                    }
+
+                    draggedItem = item;
+                    item.classList.add('opacity-60');
+                    setStatus('Drop the FAQ item where you want it.');
+                });
+
+                handle.addEventListener('dragend', () => {
+                    item.classList.remove('opacity-60');
+                    draggedItem = null;
+                });
+            }
+
+            item.addEventListener('dragover', (event) => {
+                if (!draggedItem || draggedItem === item) return;
+                event.preventDefault();
+            });
+
+            item.addEventListener('drop', async (event) => {
+                if (!draggedItem || draggedItem === item) return;
+                event.preventDefault();
+
+                const currentItems = items();
+                const draggedIndex = currentItems.indexOf(draggedItem);
+                const targetIndex = currentItems.indexOf(item);
+
+                if (draggedIndex < targetIndex) {
+                    item.after(draggedItem);
+                } else {
+                    item.before(draggedItem);
+                }
+
+                refreshBadges();
+                await saveOrder();
+            });
+        });
+
+        refreshBadges();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', _initFaqManagers);

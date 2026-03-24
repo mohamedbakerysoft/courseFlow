@@ -107,6 +107,16 @@
                                             </div>
                                         </li>
                                         <li>
+                                            <a href="{{ route('dashboard.menus.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.menus.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                {{ __('Menus') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('dashboard.faqs.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.faqs.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                                {{ __('FAQs') }}
+                                            </a>
+                                        </li>
+                                        <li>
                                             <a href="{{ route('dashboard.appearance.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.appearance.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                                                 {{ __('Appearance') }}
                                             </a>

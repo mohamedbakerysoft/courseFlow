@@ -81,33 +81,6 @@ class LandingContent
         ],
     ];
 
-    public const FAQ_DEFAULTS = [
-        [
-            'question' => 'How do students access lessons after they enroll?',
-            'answer' => 'Each course unlocks its structured lessons immediately after free enrollment or payment approval, so the first next step is always clear.',
-        ],
-        [
-            'question' => 'What payment methods are supported?',
-            'answer' => 'Learnova supports Stripe, PayPal, and manual payment flows so instructors can sell in the way that fits their business.',
-        ],
-        [
-            'question' => 'Is this experience suitable for a solo instructor?',
-            'answer' => 'Yes. The storefront, checkout flow, course pages, and instructor profile are designed to help one creator present courses clearly and professionally.',
-        ],
-        [
-            'question' => 'Can I offer free and paid courses together?',
-            'answer' => 'Yes. You can publish free lead magnets, starter courses, and paid flagship programs side by side inside one consistent catalog.',
-        ],
-        [
-            'question' => 'Can students continue where they stopped?',
-            'answer' => 'Yes. The lesson experience keeps progress visible so returning students can continue from the next logical step instead of starting over.',
-        ],
-        [
-            'question' => 'Can I customize homepage copy from the admin panel?',
-            'answer' => 'Yes. Homepage copy, testimonials, FAQ content, hero media, and legal text can all be updated from the admin settings area.',
-        ],
-    ];
-
     public static function copy(SettingsService $settings): array
     {
         $copy = [];
@@ -133,20 +106,6 @@ class LandingContent
                         MediaAsset::avatarFallbackPath($testimonial['name'])
                     ),
                     'quote' => (string) $settings->get("landing.testimonials.{$number}.quote", $testimonial['quote']),
-                ];
-            })
-            ->all();
-    }
-
-    public static function faqs(SettingsService $settings): array
-    {
-        return collect(self::FAQ_DEFAULTS)
-            ->map(function (array $faq, int $index) use ($settings): array {
-                $number = $index + 1;
-
-                return [
-                    'question' => (string) $settings->get("landing.faqs.{$number}.question", $faq['question']),
-                    'answer' => (string) $settings->get("landing.faqs.{$number}.answer", $faq['answer']),
                 ];
             })
             ->all();

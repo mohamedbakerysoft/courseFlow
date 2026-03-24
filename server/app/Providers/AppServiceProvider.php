@@ -206,6 +206,12 @@ class AppServiceProvider extends ServiceProvider
                 'tawk_embed_code' => '',
             ]);
         }
+
+        try {
+            View::share('headerMenuItems', Setting::headerMenuItems());
+        } catch (\Throwable $e) {
+            View::share('headerMenuItems', collect(Setting::defaultHeaderMenuItems()));
+        }
     }
 
     private function shiftHexBrightness(string $hex, float $percentage): string

@@ -2,14 +2,12 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Course;
-use App\Models\Lesson;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -39,40 +37,9 @@ Route::middleware([\App\Http\Middleware\EnsureNotInstalled::class])->group(funct
     Route::get('/install/finish', [\App\Http\Controllers\InstallController::class, 'finish'])->name('install.finish');
 });
 
-Route::get('/dashboard', function () {
-    $user = User::find(Auth::id());
-    $enrolledCourses = $user ? $user->courses()->get() : collect();
-    $instructorCourseIds = collect();
-    if ($user && $user->role === \App\Models\User::ROLE_ADMIN) {
-        $instructorCourseIds = Course::query()->where('instructor_id', $user->id)->pluck('id');
-    }
-    $totalCourses = $instructorCourseIds->count();
-    $totalLessons = $instructorCourseIds->isEmpty()
-        ? 0
-        : Lesson::query()->whereIn('course_id', $instructorCourseIds)->count();
-    $totalStudents = $instructorCourseIds->isEmpty()
-        ? 0
-        : \Illuminate\Support\Facades\DB::table('enrollments')
-            ->whereIn('course_id', $instructorCourseIds->all())
-            ->distinct('user_id')
-            ->count('user_id');
-    $latestDraftCourse = $instructorCourseIds->isEmpty()
-        ? null
-        : Course::query()
-            ->where('instructor_id', $user->id)
-            ->where('status', \App\Models\Course::STATUS_DRAFT)
-            ->latest('updated_at')
-            ->first();
-    $latestDraftLesson = $instructorCourseIds->isEmpty()
-        ? null
-        : Lesson::query()
-            ->whereIn('course_id', $instructorCourseIds->all())
-            ->where('status', \App\Models\Lesson::STATUS_DRAFT)
-            ->latest('updated_at')
-            ->first();
-
-    return view('dashboard', compact('enrolledCourses', 'totalCourses', 'totalStudents', 'totalLessons', 'latestDraftCourse', 'latestDraftLesson'));
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', \App\Http\Controllers\Dashboard\DashboardController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -83,33 +50,14 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('/instructor', [InstructorController::class, 'show'])->name('instructor.show');
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');
 Route::get('/about', [PageController::class, 'show'])->defaults('slug', 'about')->name('pages.about');
 Route::get('/terms', [PageController::class, 'show'])->defaults('slug', 'terms')->name('pages.terms');
 Route::get('/privacy', [PageController::class, 'show'])->defaults('slug', 'privacy')->name('pages.privacy');
 
-Route::get('/demo-login/{who}', function (string $who) {
-    return app(\App\Actions\Auth\DemoLoginAction::class)->execute($who);
-})->name('demo.login');
-
-Route::get('/favicon.png', function () {
-    $docsLogo = base_path('../docs/assets/logo.png');
-    if (file_exists($docsLogo)) {
-        return response()->file($docsLogo, ['Content-Type' => 'image/png']);
-    }
-    $logoPath = app(\App\Services\SettingsService::class)->get('site.logo_path');
-    if ($logoPath) {
-        $stored = storage_path('app/public/'.$logoPath);
-        if (file_exists($stored)) {
-            return response()->file($stored, ['Content-Type' => 'image/png']);
-        }
-    }
-    $ico = public_path('favicon.ico');
-    if (file_exists($ico)) {
-        return response()->file($ico, ['Content-Type' => 'image/x-icon']);
-    }
-    abort(404);
-})->name('favicon.png');
+Route::get('/demo-login/{who}', \App\Http\Controllers\Auth\DemoLoginController::class)->name('demo.login');
+Route::get('/favicon.png', \App\Http\Controllers\FaviconController::class)->name('favicon.png');
 
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
@@ -176,6 +124,15 @@ Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.
     Route::post('/appearance', [\App\Http\Controllers\Dashboard\AppearanceController::class, 'update'])->name('appearance.update');
     Route::get('/settings', [\App\Http\Controllers\Dashboard\SettingsController::class, 'edit'])->name('settings.edit');
     Route::post('/settings', [\App\Http\Controllers\Dashboard\SettingsController::class, 'update'])->name('settings.update');
+    Route::get('/faqs', [\App\Http\Controllers\Dashboard\FaqController::class, 'index'])->name('faqs.index');
+    Route::post('/faqs', [\App\Http\Controllers\Dashboard\FaqController::class, 'store'])->name('faqs.store');
+    Route::put('/faqs/page', [\App\Http\Controllers\Dashboard\FaqController::class, 'updatePage'])->name('faqs.page');
+    Route::put('/faqs/{faq}', [\App\Http\Controllers\Dashboard\FaqController::class, 'update'])->name('faqs.update');
+    Route::delete('/faqs/{faq}', [\App\Http\Controllers\Dashboard\FaqController::class, 'destroy'])->name('faqs.destroy');
+    Route::post('/faqs/reorder', [\App\Http\Controllers\Dashboard\FaqController::class, 'reorder'])->name('faqs.reorder');
+    Route::get('/menus', [\App\Http\Controllers\Dashboard\MenuController::class, 'edit'])->name('menus.edit');
+    Route::post('/menus', [\App\Http\Controllers\Dashboard\MenuController::class, 'update'])->name('menus.update');
+    Route::post('/menus/reorder', [\App\Http\Controllers\Dashboard\MenuController::class, 'reorder'])->name('menus.reorder');
     Route::get('/settings/updates', [\App\Http\Controllers\Dashboard\UpdatesController::class, 'edit'])->name('settings.updates');
     Route::post('/settings/updates/detect', [\App\Http\Controllers\Dashboard\UpdatesController::class, 'detect'])->name('settings.updates.detect');
     Route::post('/settings/updates/run', [\App\Http\Controllers\Dashboard\UpdatesController::class, 'run'])->name('settings.updates.run');
