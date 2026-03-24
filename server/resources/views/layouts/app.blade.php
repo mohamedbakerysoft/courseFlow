@@ -68,66 +68,66 @@
                 @can('viewAny', \App\Models\Course::class)
                     <div class="flex">
                         <!-- Sidebar -->
-                        <aside class="w-64 bg-white dark:bg-[#0b0b0b] border-r border-gray-200 dark:border-white/10 min-h-screen">
+                        <aside class="w-64 bg-white dark:bg-[#111111] border-r border-gray-200 dark:border-[#222222] min-h-screen">
                             <nav class="mt-8">
                                 <div class="px-4">
-                                    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">{{ __('Admin Panel') }}</h2>
+                                    <h2 class="text-lg font-semibold text-gray-800 dark:text-[#e0e0e0] mb-4">{{ __('Admin Panel') }}</h2>
                                     <ul class="space-y-2">
                                         <li>
-                                            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard') && !request()->routeIs('dashboard.*') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard') && !request()->routeIs('dashboard.*') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                 {{ __('Dashboard') }}
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('dashboard.courses.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.courses.*') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                            <a href="{{ route('dashboard.courses.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.courses.*') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                 {{ __('Courses') }}
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('dashboard.books.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.books.*') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                            <a href="{{ route('dashboard.books.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.books.*') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                 {{ __('Books') }}
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('dashboard.users.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.users.*') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                            <a href="{{ route('dashboard.users.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.users.*') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                 {{ __('Users') }}
                                             </a>
                                         </li>
                                         <li>
                                             <div class="space-y-1">
-                                                <p class="px-4 py-2 text-sm font-semibold {{ request()->routeIs('dashboard.finance.*') || request()->routeIs('dashboard.payments.*') ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400' }}">
+                                                <p class="px-4 py-2 text-sm font-semibold {{ request()->routeIs('dashboard.finance.*') || request()->routeIs('dashboard.payments.*') ? 'text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3]' }}">
                                                     {{ __('Finance') }}
                                                 </p>
-                                                <a href="{{ route('dashboard.finance.index') }}" class="ml-4 block rounded px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.finance.index') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                                <a href="{{ route('dashboard.finance.index') }}" class="ml-4 block rounded px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.finance.index') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                     {{ __('Insights / Sales') }}
                                                 </a>
-                                                <a href="{{ route('dashboard.finance.manual_payments') }}" class="ml-4 block rounded px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.finance.manual_payments') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                                <a href="{{ route('dashboard.finance.manual_payments') }}" class="ml-4 block rounded px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.finance.manual_payments') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                     {{ __('Manual Payment Requests') }}
                                                 </a>
                                             </div>
                                         </li>
                                         <li>
-                                            <a href="{{ route('dashboard.menus.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.menus.*') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                            <a href="{{ route('dashboard.menus.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.menus.*') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                 {{ __('Menus') }}
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('dashboard.faqs.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.faqs.*') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                            <a href="{{ route('dashboard.faqs.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.faqs.*') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                 {{ __('FAQs') }}
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('dashboard.appearance.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.appearance.*') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                            <a href="{{ route('dashboard.appearance.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.appearance.*') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                 {{ __('Appearance') }}
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('dashboard.settings.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.settings.*') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                            <a href="{{ route('dashboard.settings.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.settings.*') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                 {{ __('Settings') }}
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('dashboard.instructor_profile.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.instructor_profile.*') ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                                            <a href="{{ route('dashboard.instructor_profile.edit') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('dashboard.instructor_profile.*') ? 'bg-gray-100 dark:bg-[#222222] text-gray-900 dark:text-[#ffffff]' : 'text-gray-600 dark:text-[#a3a3a3] hover:bg-gray-50 dark:hover:bg-[#1a1a1a] hover:text-gray-900 dark:hover:text-[#ffffff]' }}">
                                                 {{ __('Profile') }}
                                             </a>
                                         </li>

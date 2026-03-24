@@ -98,7 +98,7 @@
                                 @endif
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="flex h-20 w-20 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition duration-300 group-hover:scale-110 group-hover:bg-white/30">
-                                        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-xl">
+                                        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#ffffff] shadow-xl">
                                             <svg class="ml-1 h-6 w-6 text-[#000000]" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                         </div>
                                     </div>
