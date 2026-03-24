@@ -24,10 +24,18 @@
                 }
             })();
         </script>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>
             :root {
-                --color-primary: {{ $theme['primary'] ?? '#F5B800' }};
+                @php
+                    $primaryHex = $theme['primary'] ?? '#F5B800';
+                    $r = hexdec(substr($primaryHex, 1, 2));
+                    $g = hexdec(substr($primaryHex, 3, 2));
+                    $b = hexdec(substr($primaryHex, 5, 2));
+                @endphp
+                --color-primary: {{ $primaryHex }};
+                --color-primary-rgb: {{ "$r, $g, $b" }};
                 --color-primary-hover: {{ $theme['primary_hover'] ?? '#D8A100' }};
                 --color-secondary: {{ $theme['secondary'] ?? '#0B0B0B' }};
                 --color-accent: {{ $theme['accent'] ?? '#F7F7F7' }};
@@ -97,5 +105,13 @@
         @if (($liveChat['provider'] ?? 'none') === 'tawk' && ! empty($liveChat['tawk_embed_code']))
             {!! $liveChat['tawk_embed_code'] !!}
         @endif
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script>
+            AOS.init({
+                once: true,
+                offset: 50,
+                duration: 600,
+            });
+        </script>
     </body>
 </html>

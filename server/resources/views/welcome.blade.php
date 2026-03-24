@@ -23,7 +23,7 @@
     @endphp
 
     @if ($showHero)
-        <section id="hero" class="cf-shell pt-6 pb-6 sm:pt-10 sm:pb-8 lg:pt-14 lg:pb-10">
+        <section id="hero" class="cf-shell pt-6 pb-6 sm:pt-10 sm:pb-8 lg:pt-14 lg:pb-10" data-aos="fade-up" data-aos-duration="800">
             <div class="cf-hero-shell">
                 <div class="cf-hero-main">
                     <div class="cf-hero-copy space-y-6">
@@ -86,17 +86,20 @@
                                 </div>
                             </div>
 
-                            <div class="cf-hero-video-frame overflow-hidden rounded-[1.45rem] border border-[rgba(11,11,11,0.09)] bg-black shadow-[0_18px_42px_rgba(11,11,11,0.12)]">
-                                <iframe
-                                    src="{{ $heroVideoEmbedUrl }}"
-                                    title="{{ __('Learnova video preview') }}"
-                                    loading="lazy"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                    referrerpolicy="strict-origin-when-cross-origin"
-                                    allowfullscreen
-                                ></iframe>
+                            <div class="cf-hero-video-frame group relative overflow-hidden rounded-[1.45rem] border border-[rgba(11,11,11,0.09)] bg-black shadow-[0_18px_42px_rgba(11,11,11,0.12)] cursor-pointer" onclick="this.innerHTML='<iframe src=\'{{ $heroVideoEmbedUrl }}&autoplay=1\' title=\'{{ __('Learnova video preview') }}\' class=\'absolute inset-0 w-full h-full border-0\' allow=\'autoplay; encrypted-media\' allowfullscreen></iframe>'">
+                                @if($heroVideoId)
+                                    <img src="https://img.youtube.com/vi/{{ $heroVideoId }}/maxresdefault.jpg" alt="Video cover" class="absolute inset-0 w-full h-full object-cover opacity-80 transition duration-500 group-hover:scale-105 group-hover:opacity-70">
+                                @else
+                                    <div class="absolute inset-0 bg-gray-900"></div>
+                                @endif
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition duration-300 group-hover:scale-110 group-hover:bg-white/30">
+                                        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-xl">
+                                            <svg class="ml-1 h-6 w-6 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -105,7 +108,7 @@
     @endif
 
     @if ($showCoursesPreview)
-        <section class="cf-shell pt-4 pb-10 sm:pt-5 sm:pb-12 lg:pt-6 lg:pb-14">
+        <section class="cf-shell pt-4 pb-10 sm:pt-5 sm:pb-12 lg:pt-6 lg:pb-14" data-aos="fade-up">
             <div class="cf-section-shell">
                 <div class="cf-section-header !mb-6 sm:!mb-7">
                     <div class="max-w-2xl space-y-2.5">
@@ -130,19 +133,19 @@
     @endif
 
     @if ($showPlatformProof)
-        <section id="platform-proof" class="cf-shell pb-6 sm:pb-8 lg:pb-9">
+        <section id="platform-proof" class="cf-shell pb-6 sm:pb-8 lg:pb-9" data-aos="fade-up">
             <x-public.trust-bar :copy="$landingCopy" :courses="$featuredCourses" />
         </section>
     @endif
 
     @if ($showProblemSection)
-        <section class="cf-shell pb-10 pt-4 sm:pb-12 sm:pt-5 lg:pb-14 lg:pt-6">
+        <section class="cf-shell pb-10 pt-4 sm:pb-12 sm:pt-5 lg:pb-14 lg:pt-6" data-aos="fade-up">
             <div class="relative overflow-hidden rounded-[32px] border border-black/[0.04] bg-white px-6 py-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:border-white/[0.08] dark:bg-[#0b0b0b] sm:px-10 sm:py-16 lg:px-12 lg:py-20">
-                <div class="pointer-events-none absolute -top-40 left-1/2 h-[300px] w-[500px] -translate-x-1/2 rounded-full bg-[#f5b800] opacity-[0.08] blur-[80px] dark:opacity-[0.06]"></div>
+                <div class="pointer-events-none absolute -top-40 left-1/2 h-[300px] w-[500px] -translate-x-1/2 rounded-full opacity-[0.08] blur-[80px] dark:opacity-[0.06]" style="background-color: var(--color-primary)"></div>
 
                 <div class="relative mx-auto max-w-3xl space-y-5 text-center">
                     <span class="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-white px-4 py-2 text-[12px] font-semibold uppercase tracking-wider text-black dark:border-white/[0.12] dark:bg-[#0b0b0b] dark:text-white">
-                        <span class="h-1.5 w-1.5 rounded-full bg-[#f5b800]"></span>
+                        <span class="h-1.5 w-1.5 rounded-full" style="background-color: var(--color-primary)"></span>
                         {{ $landingCopy['problem_kicker'] ?? __('Problem to solution') }}
                     </span>
                     <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl lg:text-5xl lg:leading-tight">
@@ -156,7 +159,7 @@
                 <div class="relative mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-8">
                     @foreach ($features as $feature)
                         <article class="group flex h-full flex-col gap-4 rounded-[28px] border border-black/[0.04] bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1.5 hover:border-black/10 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] dark:border-white/[0.08] dark:bg-white/[0.03] dark:shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:hover:border-white/[0.18] dark:hover:bg-white/[0.05]">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f5b800]/15 text-xl text-[#f5b800] transition duration-300 group-hover:scale-110 group-hover:bg-[#f5b800]/25 dark:bg-[#f5b800]/10 dark:ring-1 dark:ring-[#f5b800]/20 dark:group-hover:bg-[#f5b800]/20">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-[12px] text-xl transition duration-300 group-hover:scale-110 bg-[rgba(var(--color-primary-rgb),0.15)] text-[var(--color-primary)] group-hover:bg-[rgba(var(--color-primary-rgb),0.25)] dark:bg-[rgba(var(--color-primary-rgb),0.1)] dark:ring-1 dark:ring-[rgba(var(--color-primary-rgb),0.2)] dark:group-hover:bg-[rgba(var(--color-primary-rgb),0.2)]">
                                 {{ $feature['icon'] }}
                             </div>
                             <h3 class="mt-3 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $feature['title'] }}</h3>
@@ -169,13 +172,13 @@
     @endif
 
     @if ($showFlowSection)
-        <section class="cf-shell pb-8 pt-1 sm:pb-10 lg:pb-12">
+        <section class="cf-shell pb-8 pt-1 sm:pb-10 lg:pb-12" data-aos="fade-up">
             <x-public.social-proof :copy="$landingCopy" />
         </section>
     @endif
 
     @if ($showTestimonials)
-        <section class="cf-shell pb-10 pt-2 sm:pb-12 sm:pt-3 lg:pb-14 lg:pt-4">
+        <section class="cf-shell pb-10 pt-2 sm:pb-12 sm:pt-3 lg:pb-14 lg:pt-4" data-aos="fade-up">
             <div class="cf-section-shell">
                 <div class="mb-6 max-w-2xl space-y-2.5 sm:mb-7">
                     <span class="cf-kicker">{{ $landingCopy['testimonials_kicker'] ?? __('Testimonials') }}</span>
@@ -207,7 +210,7 @@
     @endif
 
     @if ($showFooterCta)
-        <section class="cf-shell pb-12 sm:pb-14 lg:pb-16">
+        <section class="cf-shell pb-12 sm:pb-14 lg:pb-16" data-aos="fade-up">
             <div class="cf-panel-dark px-6 py-8 sm:px-9 sm:py-9">
                 <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                     <div class="max-w-2xl space-y-2.5">
