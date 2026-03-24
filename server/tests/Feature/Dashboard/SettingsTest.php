@@ -37,6 +37,8 @@ it('instructor can update settings including logo and payments', function () {
 
     $response = $this->post(route('dashboard.settings.update'), [
         'logo' => $logo,
+        'site_brand_name' => 'CourseFlow Academy',
+        'site_brand_slogan' => 'Learn with clarity',
         'payments_stripe_enabled' => '1',
         'payments_paypal_enabled' => '0',
         'payments_manual_instructions' => 'Bank transfer details',
@@ -47,6 +49,8 @@ it('instructor can update settings including logo and payments', function () {
     $settings = Setting::query()->pluck('value', 'key');
 
     expect($settings['site.default_language'] ?? null)->toBe('en');
+    expect($settings['site.brand_name'] ?? null)->toBe('CourseFlow Academy');
+    expect($settings['site.brand_slogan'] ?? null)->toBe('Learn with clarity');
     expect((bool) ($settings['payments.stripe.enabled'] ?? false))->toBeTrue();
     expect((bool) ($settings['payments.paypal.enabled'] ?? false))->toBeFalse();
     expect($settings['payments.manual.instructions'] ?? null)->toBe('Bank transfer details');
@@ -54,6 +58,23 @@ it('instructor can update settings including logo and payments', function () {
     $logoPath = $settings['site.logo_path'] ?? null;
     expect($logoPath)->not->toBeNull();
     Storage::disk('public')->assertExists($logoPath);
+});
+
+it('renders the saved brand title and slogan in the public navigation', function () {
+    Setting::updateOrCreate(
+        ['key' => 'site.brand_name'],
+        ['value' => 'CourseFlow Academy'],
+    );
+    Setting::updateOrCreate(
+        ['key' => 'site.brand_slogan'],
+        ['value' => 'Learn with clarity'],
+    );
+
+    $response = $this->get('/');
+
+    $response->assertOk();
+    $response->assertSee('CourseFlow Academy');
+    $response->assertSee('Learn with clarity');
 });
 
 it('keeps public pages in english without rtl direction', function () {

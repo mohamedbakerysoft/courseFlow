@@ -100,6 +100,38 @@
                             </div>
                         @endif
                     </div>
+                    <div class="cf-admin-field">
+                        <label for="site_brand_name">{{ __('Brand Title') }}</label>
+                        <input
+                            id="site_brand_name"
+                            name="site_brand_name"
+                            type="text"
+                            maxlength="255"
+                            class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                            value="{{ old('site_brand_name', $siteBrandName ?? config('app.name', 'Learnova')) }}"
+                            placeholder="Learnova"
+                        >
+                        <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Shown next to the logo in the public header.') }}</p>
+                        @error('site_brand_name')
+                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="cf-admin-field">
+                        <label for="site_brand_slogan">{{ __('Brand Slogan') }}</label>
+                        <input
+                            id="site_brand_slogan"
+                            name="site_brand_slogan"
+                            type="text"
+                            maxlength="255"
+                            class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                            value="{{ old('site_brand_slogan', $siteBrandSlogan ?? 'Premium learning storefront') }}"
+                            placeholder="Premium learning storefront"
+                        >
+                        <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Displayed under the brand title in the public header.') }}</p>
+                        @error('site_brand_slogan')
+                            <p class="text-[var(--color-error)] text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </section>
             <div class="mt-4 flex items-center justify-end">

@@ -4,15 +4,15 @@
             <div class="flex items-center gap-8">
                 <a href="{{ url('/') }}" class="flex items-center gap-3">
                     @if (!empty($siteLogoUrl))
-                        <img src="{{ $siteLogoUrl }}" alt="{{ config('app.name') }}" class="h-11 w-auto rounded-2xl">
+                        <img src="{{ $siteLogoUrl }}" alt="{{ $siteBrandName ?? config('app.name', 'Learnova') }}" class="h-11 w-auto rounded-2xl">
                     @else
                         <div class="cf-nav-logo">
                             <x-branding-logo class="h-6 w-6 fill-current text-white" />
                         </div>
                     @endif
                     <div class="hidden sm:block">
-                        <p class="cf-nav-brand-eyebrow uppercase">{{ config('app.name') }}</p>
-                        <p class="text-sm text-[var(--color-text-primary)]">{{ __('Premium learning storefront') }}</p>
+                        <p class="cf-nav-brand-eyebrow uppercase">{{ $siteBrandName ?? config('app.name', 'Learnova') }}</p>
+                        <p class="text-sm text-[var(--color-text-primary)]">{{ $siteBrandSlogan ?? __('Premium learning storefront') }}</p>
                     </div>
                 </a>
 

@@ -20,6 +20,8 @@ class SettingsController extends Controller
         $defaultTheme = (string) $settings->get('ui.theme.default', 'system');
         $demoEnabled = filter_var($settings->get('demo.enabled', config('demo.enabled')), FILTER_VALIDATE_BOOL);
         $logoPath = $settings->get('site.logo_path');
+        $siteBrandName = (string) $settings->get('site.brand_name', config('app.name', 'Learnova'));
+        $siteBrandSlogan = (string) $settings->get('site.brand_slogan', 'Premium learning storefront');
         $securityRightClickEnabled = (bool) $settings->get('security.right_click.enabled', true);
 
         $paymentsStripeEnabled = (bool) $settings->get('payments.stripe.enabled', true);
@@ -135,6 +137,8 @@ class SettingsController extends Controller
             'defaultTheme',
             'demoEnabled',
             'logoUrl',
+            'siteBrandName',
+            'siteBrandSlogan',
             'paymentsStripeEnabled',
             'paymentsPaypalEnabled',
             'paymentsManualInstructions',
@@ -210,6 +214,8 @@ class SettingsController extends Controller
         if ($group === 'general') {
             $validated = $request->validate([
                 'logo' => ['nullable', 'image', 'max:2048'],
+                'site_brand_name' => ['nullable', 'string', 'max:255'],
+                'site_brand_slogan' => ['nullable', 'string', 'max:255'],
                 'default_theme' => ['required', 'in:light,dark,system'],
                 'demo_enabled' => ['nullable', 'boolean'],
                 'primary' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
@@ -296,6 +302,8 @@ class SettingsController extends Controller
         } else {
             $validated = $request->validate([
                 'logo' => ['nullable', 'image', 'max:2048'],
+                'site_brand_name' => ['nullable', 'string', 'max:255'],
+                'site_brand_slogan' => ['nullable', 'string', 'max:255'],
                 'default_theme' => ['nullable', 'in:light,dark,system'],
                 'demo_enabled' => ['nullable', 'boolean'],
                 'primary' => ['nullable', 'regex:/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/'],
@@ -409,6 +417,8 @@ class SettingsController extends Controller
         if ($group === 'general' || $group === '') {
             $values = array_merge($values, [
                 'site.default_language' => 'en',
+                'site.brand_name' => trim((string) ($validated['site_brand_name'] ?? (string) $settings->get('site.brand_name', ''))) ?: config('app.name', 'Learnova'),
+                'site.brand_slogan' => trim((string) ($validated['site_brand_slogan'] ?? (string) $settings->get('site.brand_slogan', ''))) ?: 'Premium learning storefront',
                 'ui.theme.default' => ($validated['default_theme'] ?? $settings->get('ui.theme.default', 'system')),
                 'demo.enabled' => $request->has('demo_enabled')
                     ? $request->boolean('demo_enabled')

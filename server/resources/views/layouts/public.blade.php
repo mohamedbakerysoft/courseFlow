@@ -7,7 +7,7 @@
         <meta name="referrer" content="strict-origin-when-cross-origin">
         <link rel="icon" type="image/png" sizes="any" href="{{ url('/favicon.png') }}">
         <link rel="apple-touch-icon" sizes="180x180" href="{{ url('/favicon.png') }}">
-        <title>{{ $title ?? config('app.name', 'Learnova') }}</title>
+        <title>{{ $title ?? ($siteBrandName ?? config('app.name', 'Learnova')) }}</title>
         <meta name="description" content="{{ $metaDescription ?? '' }}">
         <script>
             (function () {

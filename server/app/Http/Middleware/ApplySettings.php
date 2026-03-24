@@ -28,10 +28,14 @@ class ApplySettings
         $logoUrl = $logoPath !== '' && Storage::disk('public')->exists($logoPath)
             ? asset('storage/'.$logoPath)
             : null;
+        $siteBrandName = trim((string) $this->settings->get('site.brand_name', '')) ?: config('app.name', 'Learnova');
+        $siteBrandSlogan = trim((string) $this->settings->get('site.brand_slogan', '')) ?: 'Premium learning storefront';
 
         View::share([
             'appLocale' => $locale,
             'siteLogoUrl' => $logoUrl,
+            'siteBrandName' => $siteBrandName,
+            'siteBrandSlogan' => $siteBrandSlogan,
         ]);
 
         $titleSize = (int) ($this->settings->get('hero.font.title', 56));
