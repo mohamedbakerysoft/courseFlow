@@ -1,26 +1,44 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
-            <div class="max-w-3xl">
-                <p class="cf-dark-muted text-sm font-semibold uppercase tracking-[0.24em]">{{ __('Admin workspace') }}</p>
-                <h2 class="cf-dark-title mt-3 text-3xl font-bold tracking-[-0.04em] sm:text-4xl">
-                    {{ __('See what needs attention and jump straight into the work') }}
-                </h2>
-                <p class="cf-dark-copy mt-3 max-w-2xl text-sm leading-7">
-                    {{ __('Track products, lessons, students, and payments from one focused dashboard built for daily admin work instead of decorative filler.') }}
-                </p>
+        @if ($isInstructor)
+            <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+                <div class="max-w-3xl">
+                    <p class="cf-dark-muted text-sm font-semibold uppercase tracking-[0.24em]">{{ __('Admin workspace') }}</p>
+                    <h2 class="cf-dark-title mt-3 text-3xl font-bold tracking-[-0.04em] sm:text-4xl">
+                        {{ __('See what needs attention and jump straight into the work') }}
+                    </h2>
+                    <p class="cf-dark-copy mt-3 max-w-2xl text-sm leading-7">
+                        {{ __('Track products, lessons, students, and payments from one focused dashboard built for daily admin work instead of decorative filler.') }}
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{{ route('dashboard.courses.create') }}" class="cf-button-primary">{{ __('Create course') }}</a>
+                    <a href="{{ route('dashboard.finance.manual_payments') }}" class="cf-button-secondary">{{ __('Review manual payments') }}</a>
+                </div>
             </div>
-            <div class="flex flex-wrap gap-3">
-                <a href="{{ route('dashboard.courses.create') }}" class="cf-button-primary">{{ __('Create course') }}</a>
-                <a href="{{ route('dashboard.finance.manual_payments') }}" class="cf-button-secondary">{{ __('Review manual payments') }}</a>
+        @else
+            <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+                <div class="max-w-3xl">
+                    <p class="cf-dark-muted text-sm font-semibold uppercase tracking-[0.24em]">{{ __('Student dashboard') }}</p>
+                    <h2 class="cf-dark-title mt-3 text-3xl font-bold tracking-[-0.04em] sm:text-4xl">
+                        {{ __('Your enrolled courses stay organized in one learner view') }}
+                    </h2>
+                    <p class="cf-dark-copy mt-3 max-w-2xl text-sm leading-7">
+                        {{ __('Continue learning, return to your enrolled courses quickly, and browse the catalog whenever you are ready for another course or book.') }}
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{{ route('courses.index') }}" class="cf-button-primary">{{ __('Browse Courses') }}</a>
+                    <a href="{{ route('books.index') }}" class="cf-button-secondary">{{ __('Browse Books') }}</a>
+                </div>
             </div>
-        </div>
+        @endif
     </x-slot>
 
     <div class="space-y-8">
         <x-public.demo-notice />
 
-        @can('viewAny', \App\Models\Course::class)
+        @if ($isInstructor)
             <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
                 @foreach ($stats as $stat)
                     <article class="cf-dashboard-stat">
@@ -249,6 +267,6 @@
                     </div>
                 @endif
             </section>
-        @endcan
+        @endif
     </div>
 </x-app-layout>
