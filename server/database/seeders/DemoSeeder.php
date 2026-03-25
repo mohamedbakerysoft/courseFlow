@@ -40,7 +40,7 @@ class DemoSeeder extends Seeder
                 ['email' => config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL)],
                 [
                     'name' => 'Nour Khaled',
-                    'password' => bcrypt('password'),
+                    'password' => bcrypt((string) config('demo.admin_password', 'password')),
                     'role' => User::ROLE_ADMIN,
                     'profile_image_path' => 'images/demo/real/hero-formal-2.jpg',
                     'bio' => 'Founder of Learnova and instructor focused on helping creators launch polished course businesses with stronger branding, trusted checkout, and premium student experiences.',
@@ -70,7 +70,7 @@ class DemoSeeder extends Seeder
             ['email' => 'instructor@demo.com'],
             [
                 'name' => 'Maya Hassan',
-                'password' => bcrypt('password'),
+                'password' => bcrypt((string) config('demo.admin_password', 'password')),
                 'role' => User::ROLE_ADMIN,
                 'profile_image_path' => 'images/demo/real/hero-formal-1.jpg',
                 'bio' => 'Hands-on instructor teaching how to position, launch, and sell professional online courses with Learnova.',
@@ -82,10 +82,10 @@ class DemoSeeder extends Seeder
         );
 
         $primaryStudent = User::updateOrCreate(
-            ['email' => 'student@demo.com'],
+            ['email' => (string) config('demo.student_email', 'student@demo.com')],
             [
                 'name' => 'Demo Student',
-                'password' => bcrypt('password'),
+                'password' => bcrypt((string) config('demo.student_password', 'password')),
                 'role' => User::ROLE_STUDENT,
             ]
         );

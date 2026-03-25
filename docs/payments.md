@@ -38,7 +38,7 @@ Required values:
 - mode: `sandbox` or `live`
 - client ID
 - client secret
-- webhook secret
+- webhook ID
 
 Webhook endpoint:
 
@@ -54,7 +54,8 @@ Recommended setup:
 2. Create a `Personal` sandbox account for the buyer.
 3. Create a sandbox app connected to the merchant account.
 4. Use that sandbox app client ID and secret in Learnova.
-5. Use the personal sandbox account when logging in during checkout.
+5. Save the PayPal webhook ID from your PayPal Developer webhook configuration.
+6. Use the personal sandbox account when logging in during checkout.
 
 Important:
 

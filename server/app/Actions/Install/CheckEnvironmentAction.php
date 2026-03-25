@@ -6,8 +6,9 @@ class CheckEnvironmentAction
 {
     public function execute(): array
     {
-        $versionOk = version_compare(PHP_VERSION, '8.1.0', '>=');
+        $versionOk = version_compare(PHP_VERSION, '8.2.0', '>=');
         $extensions = [
+            'ctype',
             'mbstring',
             'openssl',
             'pdo',
@@ -15,6 +16,9 @@ class CheckEnvironmentAction
             'curl',
             'dom',
             'fileinfo',
+            'json',
+            'tokenizer',
+            'xml',
         ];
         $missing = [];
         foreach ($extensions as $ext) {

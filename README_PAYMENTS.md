@@ -1,46 +1,33 @@
 # Payments Setup
 
+This project supports Stripe, PayPal, and manual payments.
+
 ## Stripe
-- Set environment:
-  - `STRIPE_SECRET` (server)
-  - `STRIPE_PUBLISHABLE_KEY` (client display if needed)
-  - `STRIPE_WEBHOOK_SECRET`
+
+- Configure the Stripe keys from the dashboard settings.
 - Webhook endpoint: `POST /webhooks/stripe`
-- Behavior:
-  - CSRF disabled on webhook only
-  - Signature verification required
-  - Enrollment occurs after verified `checkout.session.completed`
+- Access is granted only after verified completion.
 
 ## PayPal
-- Set environment:
-  - `PAYPAL_CLIENT_ID`
-  - `PAYPAL_CLIENT_SECRET`
-  - `PAYPAL_WEBHOOK_SECRET` (used for Dusk/testing HMAC)
-  - `PAYPAL_BASE_URL` (`https://api-m.paypal.com` or `https://api-m.sandbox.paypal.com`)
-- **Demo / Sandbox Testing Credentials**:
-  - Test Buyer Email: `sb-ftn2t50151885@personal.example.com`
-  - Test Buyer Password: `2F/thMUa`
-- Callback:
-  - Success URL: `GET /payments/paypal/success`
-  - Server-side verification required (`Orders API`)
-  - Enrollment occurs only after verified completion
+
+- Configure PayPal mode, client ID, client secret, and webhook ID from the dashboard settings.
+- Webhook endpoint: `POST /webhooks/paypal`
+- For sandbox testing, use your own PayPal Developer sandbox merchant and buyer accounts.
+- Do not rely on bundled or shared third-party sandbox credentials.
 
 ## Manual Payments
-- Flow:
-  - Student starts manual payment: `POST /courses/{course:slug}/manual/start`
-  - Pending page: `GET /payments/manual/pending/{payment}`
-  - Approval (instructor/admin): `POST /dashboard/payments/{payment}/approve`
-- Security:
-  - Requires authenticated user
-  - Requires instructor/admin role
-  - Requires CSRF (production)
-  - Idempotent approval (no duplicate enrollments)
+
+- Student flow:
+  - `POST /courses/{course:slug}/manual/start`
+  - `GET /payments/manual/pending/{payment}`
+  - `POST /payments/manual/{payment}/submit`
+- Admin flow:
+  - `POST /dashboard/payments/{payment}/approve`
+  - `POST /dashboard/payments/{payment}/reject`
 
 ## Security Notes
-- Production never bypasses auth/role/CSRF
-- Conditional relaxations exist only when `app()->environment('dusk')` is true:
-  - Manual approval route may skip auth/role/CSRF for browser tests
-  - Controller may select an admin approver only in Dusk
-- Duplicate paid records are prevented across providers
-- Success URLs redirect only when payment context belongs to the user
 
+- Webhooks are CSRF-exempt only on the webhook endpoints.
+- Installation and dashboard forms use normal CSRF protection.
+- Access is granted only after confirmed or approved payment states.
+- Duplicate paid records are protected by reconciliation logic across checkout flows.

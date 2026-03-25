@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class PayPalService
@@ -125,9 +126,103 @@ class PayPalService
         return $status === 'COMPLETED';
     }
 
+    public function verifyWebhookSignature(string $payload, array $headers): bool
+    {
+        if ($this->shouldMockGateway()) {
+            return $this->verifyMockWebhookSignature($payload, $headers);
+        }
+
+        $webhookId = trim((string) $this->settings->get('paypal.webhook_secret', ''));
+        if ($webhookId === '') {
+            return false;
+        }
+
+        $transmissionId = $this->headerValue($headers, 'paypal-transmission-id');
+        $transmissionTime = $this->headerValue($headers, 'paypal-transmission-time');
+        $transmissionSig = $this->headerValue($headers, 'paypal-transmission-sig');
+        $certUrl = $this->headerValue($headers, 'paypal-cert-url');
+        $authAlgo = $this->headerValue($headers, 'paypal-auth-algo');
+
+        if ($transmissionId === '' || $transmissionTime === '' || $transmissionSig === '' || $certUrl === '' || $authAlgo === '') {
+            return false;
+        }
+
+        $clientId = (string) $this->settings->get('paypal.client_id', '');
+        $clientSecret = (string) $this->settings->get('paypal.client_secret', '');
+        $mode = (string) $this->settings->get('paypal.mode', 'sandbox');
+        $baseUrl = rtrim($mode === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com', '/');
+        if (! $clientId || ! $clientSecret) {
+            return false;
+        }
+
+        $tokenResp = Http::asForm()->withBasicAuth($clientId, $clientSecret)
+            ->post($baseUrl.'/v1/oauth2/token', [
+                'grant_type' => 'client_credentials',
+            ]);
+        $accessToken = (string) ($tokenResp->json('access_token') ?? '');
+        if ($accessToken === '') {
+            return false;
+        }
+
+        $event = json_decode($payload, true);
+        if (! is_array($event)) {
+            return false;
+        }
+
+        $verifyResp = Http::withToken($accessToken)
+            ->acceptJson()
+            ->post($baseUrl.'/v1/notifications/verify-webhook-signature', [
+                'auth_algo' => $authAlgo,
+                'cert_url' => $certUrl,
+                'transmission_id' => $transmissionId,
+                'transmission_sig' => $transmissionSig,
+                'transmission_time' => $transmissionTime,
+                'webhook_id' => $webhookId,
+                'webhook_event' => $event,
+            ]);
+
+        return strtoupper((string) $verifyResp->json('verification_status', '')) === 'SUCCESS';
+    }
+
     protected function shouldMockGateway(): bool
     {
         return app()->runningUnitTests()
             || app()->environment(['local', 'testing', 'dusk', 'dusk.local']);
+    }
+
+    private function verifyMockWebhookSignature(string $payload, array $headers): bool
+    {
+        $signatureHeader = $this->headerValue($headers, 'paypal-signature');
+        $secret = (string) $this->settings->get('paypal.webhook_secret', '');
+
+        $parts = [];
+        foreach (explode(',', $signatureHeader) as $pair) {
+            [$key, $value] = array_pad(explode('=', trim($pair), 2), 2, null);
+            if ($key && $value) {
+                $parts[$key] = $value;
+            }
+        }
+
+        $ts = $parts['t'] ?? null;
+        $sig = $parts['v1'] ?? null;
+        if (! $ts || ! $sig) {
+            return false;
+        }
+
+        $expected = hash_hmac('sha256', $ts.'.'.$payload, $secret);
+
+        return hash_equals($expected, $sig);
+    }
+
+    private function headerValue(array $headers, string $name): string
+    {
+        $lower = array_change_key_case($headers, CASE_LOWER);
+        $value = Arr::get($lower, $name, Arr::get($lower, 'http_'.$name, ''));
+
+        if (is_array($value)) {
+            return trim((string) ($value[0] ?? ''));
+        }
+
+        return trim((string) $value);
     }
 }

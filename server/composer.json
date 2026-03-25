@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "bakerysoft/learnova",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Learnova online course and digital books platform built with Laravel.",
+    "keywords": ["learnova", "laravel", "lms", "courses", "digital-products"],
     "license": "MIT",
     "require": {
         "php": "^8.2",

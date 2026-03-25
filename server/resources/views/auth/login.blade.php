@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div x-data="{ demoLogin(email, password) { $refs.email.value = email; $refs.password.value = password; $refs.form.submit() } }">
+    <div x-data="{ fillDemoCredentials(email, password) { $refs.email.value = email; $refs.password.value = password; $refs.email.dispatchEvent(new Event('input')); $refs.password.dispatchEvent(new Event('input')); } }">
         <div class="mb-6">
             <span class="cf-kicker">{{ __('Login') }}</span>
             <h1 class="mt-4 text-3xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)]">{{ __('Welcome back') }}</h1>
@@ -9,10 +9,20 @@
         @if(config('demo.enabled'))
             <div class="mb-6 cf-panel-soft px-4 py-4">
                 <div class="flex flex-col gap-3 sm:flex-row">
-                    <a href="{{ route('demo.login', ['who' => 'admin']) }}" data-test="demo-admin" class="cf-button-primary">{{ __('Login as Admin') }}</a>
-                    <a href="{{ route('demo.login', ['who' => 'student']) }}" data-test="demo-student" class="cf-button-secondary">{{ __('Login as Student') }}</a>
+                    <button
+                        type="button"
+                        data-test="demo-admin"
+                        class="cf-button-primary"
+                        x-on:click="fillDemoCredentials(@js(config('demo.admin_email')), @js(config('demo.admin_password')))"
+                    >{{ __('Fill Admin Demo') }}</button>
+                    <button
+                        type="button"
+                        data-test="demo-student"
+                        class="cf-button-secondary"
+                        x-on:click="fillDemoCredentials(@js(config('demo.student_email')), @js(config('demo.student_password')))"
+                    >{{ __('Fill Student Demo') }}</button>
                 </div>
-                <p class="mt-3 text-xs text-[var(--color-text-muted)]">{{ __('Demo mode keeps one-click access available for visitors exploring the admin and student flows.') }}</p>
+                <p class="mt-3 text-xs text-[var(--color-text-muted)]">{{ __('Demo mode can prefill the demo credentials for quick testing, while still requiring a normal login submit.') }}</p>
             </div>
         @endif
 

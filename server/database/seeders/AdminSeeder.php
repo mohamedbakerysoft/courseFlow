@@ -10,6 +10,10 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
+        if (! app()->environment(['local', 'testing', 'demo', 'dusk', 'dusk.local'])) {
+            return;
+        }
+
         User::query()->updateOrCreate(
             ['email' => 'admin@example.com'],
             [

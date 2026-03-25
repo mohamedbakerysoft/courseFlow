@@ -146,12 +146,12 @@ class DatabaseSeeder extends Seeder
         }
 
         Setting::updateOrCreate(['key' => 'landing.show_contact_form'], ['value' => true]);
-        Setting::updateOrCreate(['key' => 'contact.live_chat.provider'], ['value' => 'tawk']);
-        Setting::updateOrCreate(['key' => 'contact.live_chat.tawk_embed_code'], ['value' => "<!--Start of Tawk.to Script-->\n<script type=\"text/javascript\">\nvar Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();\n(function(){\nvar s1=document.createElement(\"script\"),s0=document.getElementsByTagName(\"script\")[0];\ns1.async=true;\ns1.src='https://embed.tawk.to/69beef38cfaccd1c35825392/1jk8tct2m';\ns1.charset='UTF-8';\ns1.setAttribute('crossorigin','*');\ns0.parentNode.insertBefore(s1,s0);\n})();\n</script>\n<!--End of Tawk.to Script-->"]);
+        Setting::updateOrCreate(['key' => 'contact.live_chat.provider'], ['value' => 'none']);
+        Setting::updateOrCreate(['key' => 'contact.live_chat.tawk_embed_code'], ['value' => '']);
         Setting::updateOrCreate(['key' => 'landing.show_platform_proof'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'landing.show_problem_section'], ['value' => true]);
         Setting::updateOrCreate(['key' => 'landing.show_flow_section'], ['value' => true]);
-        Setting::updateOrCreate(['key' => 'demo.enabled'], ['value' => true]);
+        Setting::updateOrCreate(['key' => 'demo.enabled'], ['value' => false]);
         Setting::updateOrCreate(['key' => 'site.default_language'], ['value' => 'en']);
         Setting::updateOrCreate(['key' => 'ui.theme.default'], ['value' => 'light']);
         Setting::updateOrCreate(['key' => 'theme.primary'], ['value' => '#F5B800']);
@@ -168,27 +168,27 @@ class DatabaseSeeder extends Seeder
         Setting::updateOrCreate(['key' => 'landing.testimonials.0.name'], ['value' => 'Maya Collins']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.0.role'], ['value' => 'Course buyer']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.0.quote'], ['value' => 'The checkout felt clear, the lessons opened instantly, and the platform looked polished from the first click.']);
-        Setting::updateOrCreate(['key' => 'landing.testimonials.0.avatar'], ['value' => 'https://randomuser.me/api/portraits/women/44.jpg']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.0.avatar'], ['value' => 'images/demo/avatar-1.svg']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.1.name'], ['value' => 'Ethan Brooks']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.1.role'], ['value' => 'Business coach']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.1.quote'], ['value' => 'Learnova made the course offer feel trustworthy before I even reached the pricing section.']);
-        Setting::updateOrCreate(['key' => 'landing.testimonials.1.avatar'], ['value' => 'https://randomuser.me/api/portraits/men/62.jpg']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.1.avatar'], ['value' => 'images/demo/avatar-2.svg']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.2.name'], ['value' => 'Sofia Turner']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.2.role'], ['value' => 'Consultant']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.2.quote'], ['value' => 'I liked how easy it was to move from browsing to enrollment without any confusing extra steps.']);
-        Setting::updateOrCreate(['key' => 'landing.testimonials.2.avatar'], ['value' => 'https://randomuser.me/api/portraits/women/68.jpg']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.2.avatar'], ['value' => 'images/demo/avatar-3.svg']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.3.name'], ['value' => 'Daniel Ross']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.3.role'], ['value' => 'Online educator']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.3.quote'], ['value' => 'The lesson flow feels structured, premium, and professional enough to trust with a paid program.']);
-        Setting::updateOrCreate(['key' => 'landing.testimonials.3.avatar'], ['value' => 'https://randomuser.me/api/portraits/men/33.jpg']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.3.avatar'], ['value' => 'images/demo/avatar-4.svg']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.4.name'], ['value' => 'Maya Collins']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.4.role'], ['value' => 'Course strategist']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.4.quote'], ['value' => 'I love how quickly visitors can find the right program and feel confident deciding to enroll.']);
-        Setting::updateOrCreate(['key' => 'landing.testimonials.4.avatar'], ['value' => 'https://randomuser.me/api/portraits/women/12.jpg']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.4.avatar'], ['value' => 'images/demo/avatar-1.svg']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.5.name'], ['value' => 'Noah Kim']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.5.role'], ['value' => 'Startup mentor']);
         Setting::updateOrCreate(['key' => 'landing.testimonials.5.quote'], ['value' => 'This platform makes my course pages look dependable and more likely to convert each month.']);
-        Setting::updateOrCreate(['key' => 'landing.testimonials.5.avatar'], ['value' => 'https://randomuser.me/api/portraits/men/45.jpg']);
+        Setting::updateOrCreate(['key' => 'landing.testimonials.5.avatar'], ['value' => 'images/demo/avatar-2.svg']);
         Setting::updateOrCreate(['key' => 'faq.page.heading'], ['value' => 'Frequently Asked Questions']);
         Setting::updateOrCreate(['key' => 'faq.page.subheading'], ['value' => 'Find clear answers about enrollment, payments, course access, and how the storefront experience works for students.']);
 

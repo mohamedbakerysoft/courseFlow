@@ -71,13 +71,13 @@ class InstallController extends Controller
             (string) $request->input('password')
         );
 
+        app(SettingsService::class)->set(['app.installed' => true]);
+
         return response()->json(['ok' => true, 'user_id' => $user->id]);
     }
 
-    public function finish(SettingsService $settings): RedirectResponse
+    public function finish(): RedirectResponse
     {
-        $settings->set(['app.installed' => true]);
-
         return redirect()->to('/login');
     }
 }

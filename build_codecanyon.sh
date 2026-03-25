@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SERVER_DIR="${PROJECT_ROOT}/server"
+DOCS_DIR="${PROJECT_ROOT}/docs"
 DIST_DIR="${PROJECT_ROOT}/codecanyon_build"
 PACKAGE_ROOT="${DIST_DIR}/Learnova"
 ZIP_NAME="${ZIP_NAME:-Learnova_Codecanyon_v1.0.zip}"
@@ -52,8 +53,10 @@ log "Copying buyer package files"
 rsync -a "$SERVER_DIR/" "$PACKAGE_ROOT/" \
     --exclude '.git/' \
     --exclude '.github/' \
+    --exclude '.DS_Store' \
     --exclude '.env' \
     --exclude '.env.*' \
+    --exclude 'build/' \
     --exclude 'node_modules/' \
     --exclude 'tests/' \
     --exclude 'phpunit.xml' \
@@ -64,7 +67,13 @@ rsync -a "$SERVER_DIR/" "$PACKAGE_ROOT/" \
     --exclude 'storage/framework/testing/*' \
     --exclude 'storage/framework/views/*.php' \
     --exclude 'storage/app/private/*' \
+    --exclude 'bootstrap/cache/*.php' \
     --exclude 'database/*.sqlite'
+
+if [ -d "$DOCS_DIR" ]; then
+    log "Copying buyer documentation"
+    rsync -a "$DOCS_DIR/" "${PACKAGE_ROOT}/docs/"
+fi
 
 log "Removing project-only files from buyer package"
 rm -rf "${PACKAGE_ROOT}/ops"

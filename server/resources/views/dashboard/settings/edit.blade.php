@@ -226,7 +226,7 @@
                             </div>
                             <div class="sm:col-span-2">
                                 <label for="stripe_webhook_secret" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Stripe Webhook Secret') }}</label>
-                                <input id="stripe_webhook_secret" name="stripe_webhook_secret" type="password" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="whsec_..." value="{{ ! empty($stripeWebhookSecretExists) ? '••••••••' : '' }}">
+                                <input id="stripe_webhook_secret" name="stripe_webhook_secret" type="password" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="{{ $stripeWebhookSecretExists ? __('Leave blank to keep current secret') : 'whsec_...' }}" value="">
                                 <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Store your Stripe signing secret. For local dev, copy it from Stripe CLI output after running stripe listen. The value is masked after save.') }}</p>
                             </div>
                         </div>
@@ -909,7 +909,7 @@
                                 </div>
                                 <div class="sm:col-span-2">
                                     <label for="stripe_webhook_secret" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Stripe Webhook Secret') }}</label>
-                                    <input id="stripe_webhook_secret" name="stripe_webhook_secret" type="password" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="whsec_..." value="{{ ! empty($stripeWebhookSecretExists) ? '••••••••' : '' }}">
+                                    <input id="stripe_webhook_secret" name="stripe_webhook_secret" type="password" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="{{ $stripeWebhookSecretExists ? __('Leave blank to keep current secret') : 'whsec_...' }}" value="">
                                     <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Store your Stripe signing secret. For local dev, copy it from Stripe CLI output after running stripe listen. The value is masked after save.') }}</p>
                                 </div>
                             </div>
@@ -977,9 +977,9 @@
                                     <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Add this URL to PayPal → Webhooks') }}</p>
                                 </div>
                                 <div class="sm:col-span-2">
-                                    <label for="paypal_webhook_secret" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('PayPal Webhook Secret') }}</label>
-                                    <input id="paypal_webhook_secret" name="paypal_webhook_secret" type="password" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="whsec_..." value="{{ ! empty($paypalWebhookSecretExists) ? '••••••••' : '' }}">
-                                    <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Store your PayPal signing secret. For local dev, you can set a test value.') }}</p>
+                                    <label for="paypal_webhook_secret" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('PayPal Webhook ID') }}</label>
+                                    <input id="paypal_webhook_secret" name="paypal_webhook_secret" type="text" class="mt-1 block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" placeholder="{{ $paypalWebhookSecretExists ? __('Leave blank to keep current webhook ID') : __('PayPal webhook ID') }}" value="">
+                                    <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Use the webhook ID created in PayPal Developer Dashboard. In local or automated tests, a temporary test value can still be used.') }}</p>
                                 </div>
                                 @if (! empty($paymentsPaypalEnabled))
                                     @if (! empty($paypalWebhookSecretExists))

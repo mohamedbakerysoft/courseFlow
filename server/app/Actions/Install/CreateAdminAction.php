@@ -2,6 +2,7 @@
 
 namespace App\Actions\Install;
 
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,14 +17,27 @@ class CreateAdminAction
             $user->role = User::ROLE_ADMIN;
             $user->save();
 
+            $this->assignOrphanedContentTo($user);
+
             return $user;
         }
 
-        return User::query()->create([
+        $user = User::query()->create([
             'name' => $name,
             'email' => $email,
             'password' => Hash::make($password),
             'role' => User::ROLE_ADMIN,
         ]);
+
+        $this->assignOrphanedContentTo($user);
+
+        return $user;
+    }
+
+    private function assignOrphanedContentTo(User $user): void
+    {
+        Course::query()
+            ->whereNull('instructor_id')
+            ->update(['instructor_id' => $user->id]);
     }
 }

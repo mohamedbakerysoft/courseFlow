@@ -15,7 +15,7 @@ class DemoLoginAction
         }
 
         $email = match ($who) {
-            'student' => 'student@demo.com',
+            'student' => (string) config('demo.student_email', 'student@demo.com'),
             'instructor' => 'instructor@demo.com',
             default => config('demo.admin_email', User::PROTECTED_ADMIN_EMAIL),
         };

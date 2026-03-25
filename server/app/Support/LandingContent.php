@@ -46,37 +46,37 @@ class LandingContent
         [
             'name' => 'Sara Mitchell',
             'role' => 'Product designer',
-            'avatar' => 'https://randomuser.me/api/portraits/women/44.jpg',
+            'avatar' => 'images/demo/avatar-1.svg',
             'quote' => 'The entire experience feels premium and clear. I knew exactly what I was buying before checkout.',
         ],
         [
             'name' => 'Omar Farouk',
             'role' => 'Independent creator',
-            'avatar' => 'https://randomuser.me/api/portraits/men/62.jpg',
+            'avatar' => 'images/demo/avatar-2.svg',
             'quote' => 'The course cards are simple to compare, and the purchase flow feels much more trustworthy than most demos.',
         ],
         [
             'name' => 'Lina Hassan',
             'role' => 'Marketing consultant',
-            'avatar' => 'https://randomuser.me/api/portraits/women/68.jpg',
+            'avatar' => 'images/demo/avatar-3.svg',
             'quote' => 'The product feels like a real course business, not a generic template. That matters a lot for trust.',
         ],
         [
             'name' => 'Daniel Ross',
             'role' => 'Online educator',
-            'avatar' => 'https://randomuser.me/api/portraits/men/33.jpg',
+            'avatar' => 'images/demo/avatar-4.svg',
             'quote' => 'The lesson flow is simple to follow, the checkout is clean, and the platform feels ready to sell from day one.',
         ],
         [
             'name' => 'Maya Collins',
             'role' => 'Course strategist',
-            'avatar' => 'https://randomuser.me/api/portraits/women/12.jpg',
+            'avatar' => 'images/demo/avatar-1.svg',
             'quote' => 'I love how quickly visitors can find the right program and feel confident deciding to enroll.',
         ],
         [
             'name' => 'Noah Kim',
             'role' => 'Startup mentor',
-            'avatar' => 'https://randomuser.me/api/portraits/men/45.jpg',
+            'avatar' => 'images/demo/avatar-2.svg',
             'quote' => 'This platform makes my course pages look dependable and more likely to convert each month.',
         ],
     ];

@@ -31,7 +31,7 @@ The installer sets the main application values such as:
 ### Payments
 
 - Stripe publishable key, secret key, and webhook secret
-- PayPal mode, client ID, client secret, and webhook secret
+- PayPal mode, client ID, client secret, and webhook ID
 - manual payment instructions
 - payment method visibility
 
@@ -83,6 +83,7 @@ The installer sets the main application values such as:
 - Payment settings are read from the dashboard settings.
 - Do not rely on hardcoded sandbox credentials.
 - PayPal and Stripe webhook endpoints should be configured on your final HTTPS domain.
+- For PayPal webhook verification, save the webhook ID created in PayPal Developer Dashboard.
 
 ## Language and UI Notes
 

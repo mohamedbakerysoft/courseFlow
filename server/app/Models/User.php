@@ -82,7 +82,7 @@ class User extends Authenticatable
         $demoEmails = [
             config('demo.admin_email', self::PROTECTED_ADMIN_EMAIL),
             'instructor@demo.com',
-            'student@demo.com',
+            config('demo.student_email', 'student@demo.com'),
         ];
         if (str_ends_with($this->email, '@demo.com')) {
             $demoEmails[] = $this->email;

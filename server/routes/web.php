@@ -16,26 +16,15 @@ Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'
 
 Route::middleware([\App\Http\Middleware\EnsureNotInstalled::class])->group(function () {
     Route::get('/install', [\App\Http\Controllers\InstallController::class, 'show'])->name('install.show');
-    Route::post('/install/check', [\App\Http\Controllers\InstallController::class, 'check'])
-        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
-        ->name('install.check');
-    Route::post('/install/database', [\App\Http\Controllers\InstallController::class, 'database'])
-        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
-        ->name('install.database');
-    Route::post('/install/dependencies', [\App\Http\Controllers\InstallController::class, 'dependencies'])
-        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
-        ->name('install.dependencies');
-    Route::post('/install/build', [\App\Http\Controllers\InstallController::class, 'build'])
-        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
-        ->name('install.build');
-    Route::post('/install/migrate', [\App\Http\Controllers\InstallController::class, 'migrate'])
-        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
-        ->name('install.migrate');
-    Route::post('/install/admin', [\App\Http\Controllers\InstallController::class, 'admin'])
-        ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
-        ->name('install.admin');
-    Route::get('/install/finish', [\App\Http\Controllers\InstallController::class, 'finish'])->name('install.finish');
+    Route::post('/install/check', [\App\Http\Controllers\InstallController::class, 'check'])->name('install.check');
+    Route::post('/install/database', [\App\Http\Controllers\InstallController::class, 'database'])->name('install.database');
+    Route::post('/install/dependencies', [\App\Http\Controllers\InstallController::class, 'dependencies'])->name('install.dependencies');
+    Route::post('/install/build', [\App\Http\Controllers\InstallController::class, 'build'])->name('install.build');
+    Route::post('/install/migrate', [\App\Http\Controllers\InstallController::class, 'migrate'])->name('install.migrate');
+    Route::post('/install/admin', [\App\Http\Controllers\InstallController::class, 'admin'])->name('install.admin');
 });
+
+Route::get('/install/finish', [\App\Http\Controllers\InstallController::class, 'finish'])->name('install.finish');
 
 Route::get('/dashboard', \App\Http\Controllers\Dashboard\DashboardController::class)
     ->middleware(['auth', 'verified'])
@@ -56,7 +45,6 @@ Route::get('/about', [PageController::class, 'show'])->defaults('slug', 'about')
 Route::get('/terms', [PageController::class, 'show'])->defaults('slug', 'terms')->name('pages.terms');
 Route::get('/privacy', [PageController::class, 'show'])->defaults('slug', 'privacy')->name('pages.privacy');
 
-Route::get('/demo-login/{who}', \App\Http\Controllers\Auth\DemoLoginController::class)->name('demo.login');
 Route::get('/favicon.png', \App\Http\Controllers\FaviconController::class)->name('favicon.png');
 
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
