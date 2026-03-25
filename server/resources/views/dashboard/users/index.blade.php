@@ -32,35 +32,38 @@
                                     <th>{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-[rgba(15,23,42,0.08)] bg-white">
+                            <tbody class="divide-y divide-[rgba(15,23,42,0.04)] bg-white dark:divide-white/[0.04] dark:bg-transparent">
                                 @foreach ($users as $u)
-                                    <tr>
+                                    <tr class="group">
                                         <td>
-                                            <div>
-                                                <p class="font-semibold text-[var(--color-text-primary)]">{{ $u->name }}</p>
-                                                <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('Learner account') }}</p>
+                                            <div class="flex items-center gap-3">
+                                                <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-xs font-bold text-[var(--color-primary)]">
+                                                    {{ Str::substr($u->name, 0, 1) }}
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-[var(--color-text-primary)]">{{ $u->name }}</p>
+                                                    <p class="mt-0.5 text-xs text-[var(--color-text-muted)]">{{ __('Learner account') }}</p>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td class="text-[var(--color-text-muted)]">{{ $u->email }}</td>
+                                        <td class="text-sm text-[var(--color-text-muted)]">{{ $u->email }}</td>
                                         <td>
                                             @if ($u->is_disabled)
-                                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[var(--color-error)]/10 text-[var(--color-error)] text-xs font-semibold">
-                                                    <svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[var(--color-error)]/10 text-[var(--color-error)] text-[11px] font-bold tracking-wider uppercase">
                                                     {{ __('Disabled') }}
                                                 </span>
                                             @else
-                                                <span class="cf-badge">
-                                                    <svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-green-500/10 text-green-700 dark:bg-green-500/20 dark:text-green-400 text-[11px] font-bold tracking-wider uppercase">
                                                     {{ __('Active') }}
                                                 </span>
                                             @endif
                                         </td>
-                                        <td class="text-[var(--color-text-muted)]">
+                                        <td class="text-sm font-medium text-[var(--color-text-muted)]">
                                             {{ \App\Models\User::find($u->id)->courses()->count() }}
                                         </td>
                                         <td class="text-right">
-                                            <a href="{{ route('dashboard.users.show', $u) }}" class="cf-button-primary !px-4 !py-2.5 !text-sm">
-                                                {{ __('View details') }}
+                                            <a href="{{ route('dashboard.users.show', $u) }}" class="cf-button-secondary !px-4 !py-2 !text-xs opacity-0 transition-opacity group-hover:opacity-100 sm:opacity-100">
+                                                {{ __('View Details') }}
                                             </a>
                                         </td>
                                     </tr>

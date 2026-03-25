@@ -13,41 +13,44 @@
 
     <div class="cf-admin-shell">
         <div class="cf-admin-form-card">
-            <div class="cf-admin-toolbar">
-                <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between p-2">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-lg font-bold text-[var(--color-primary)]">
+                        {{ Str::substr($user->name, 0, 1) }}
+                    </div>
                     <div>
-                        <p class="text-sm text-[var(--color-text-muted)]">{{ __('Name') }}</p>
-                        <p class="text-lg font-semibold text-[var(--color-text-primary)]">{{ $user->name }}</p>
+                        <p class="text-lg font-bold tracking-tight text-[var(--color-text-primary)]">{{ $user->name }}</p>
                         <p class="text-sm text-[var(--color-text-muted)]">{{ $user->email }}</p>
                     </div>
-                    <div class="text-right">
-                        <p class="text-sm text-[var(--color-text-muted)]">{{ __('Status') }}</p>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div class="text-left sm:text-right">
                         @if ($user->is_disabled)
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[var(--color-error)]/10 text-[var(--color-error)] text-xs font-semibold">{{ __('Disabled') }}</span>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-[var(--color-error)]/10 text-[var(--color-error)] text-xs font-semibold">{{ __('Disabled') }}</span>
                         @else
-                            <span class="cf-badge">{{ __('Active') }}</span>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-green-500/10 text-green-700 dark:bg-green-500/20 dark:text-green-400 text-xs font-semibold">{{ __('Active') }}</span>
                         @endif
                     </div>
-                </div>
-                <div class="mt-4">
-                    <form action="{{ route('dashboard.users.status', $user) }}" method="POST" class="inline-flex gap-2">
+                    <form action="{{ route('dashboard.users.status', $user) }}" method="POST" class="m-0">
                         @csrf
                         <input type="hidden" name="is_disabled" value="{{ $user->is_disabled ? 0 : 1 }}">
                         @if ($user->is_disabled)
-                            <button type="submit" class="cf-button-primary">
+                            <button type="submit" class="cf-button-primary !py-2 !px-4 text-sm w-full sm:w-auto">
                                 {{ __('Activate') }}
                             </button>
                         @else
-                            <button type="submit" class="cf-button-secondary">
+                            <button type="submit" class="cf-button-secondary !py-2 !px-4 text-sm w-full sm:w-auto">
                                 {{ __('Deactivate') }}
                             </button>
                         @endif
                     </form>
-                    <p class="mt-2 text-xs text-[var(--color-text-muted)]">
-                        {{ __('Deactivating a user removes course access; data remains.') }}
-                    </p>
                 </div>
             </div>
+            @if (!$user->is_disabled)
+                <p class="mt-4 border-t border-[rgba(15,23,42,0.06)] dark:border-white/[0.06] pt-4 text-xs text-[var(--color-text-muted)]">
+                    {{ __('Deactivating a user prevents them from logging in and accessing any course material.') }}
+                </p>
+            @endif
         </div>
 
         <div class="cf-admin-form-card space-y-6">
@@ -58,16 +61,16 @@
                 @if ($enrolledCourses->count())
                     <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach ($enrolledCourses as $c)
-                            <li class="cf-admin-inline-note flex justify-between items-center group">
+                            <li class="flex flex-col justify-between gap-4 rounded-xl border border-[rgba(15,23,42,0.08)] bg-[rgba(15,23,42,0.02)] p-4 dark:border-white/[0.08] dark:bg-white/[0.02] sm:flex-row sm:items-center">
                                 <div>
-                                    <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ $c->title }}</p>
-                                    <p class="text-xs text-[var(--color-text-muted)]">#{{ $c->slug }}</p>
+                                    <p class="text-sm font-bold text-[var(--color-text-primary)]">{{ $c->title }}</p>
+                                    <p class="mt-1 text-xs text-[var(--color-text-muted)]">#{{ $c->slug }}</p>
                                 </div>
                                 <form action="{{ route('dashboard.users.revoke_access', [$user, $c]) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to revoke access to this course?') }}');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-xs font-semibold text-[var(--color-error)] opacity-0 transition-opacity group-hover:opacity-100 hover:opacity-80">
-                                        {{ __('Revoke') }}
+                                    <button type="submit" class="inline-flex items-center justify-center rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 transition-colors hover:bg-red-100 dark:border-red-900/50 dark:bg-[#280c0c] dark:text-red-400 dark:hover:bg-red-900/40">
+                                        {{ __('Revoke Access') }}
                                     </button>
                                 </form>
                             </li>
@@ -90,18 +93,23 @@
                     </div>
                 @endif
 
-                <div class="pt-2">
-                    <form action="{{ route('dashboard.users.grant_access', $user) }}" method="POST" class="flex flex-col gap-4 lg:flex-row lg:items-end">
+                <div class="mt-8 border-t border-[rgba(15,23,42,0.08)] pt-6 dark:border-white/[0.08]">
+                    <div class="mb-4">
+                        <h4 class="text-sm font-bold text-[var(--color-text-primary)]">{{ __('Grant New Course Access') }}</h4>
+                        <p class="mt-1 text-xs text-[var(--color-text-muted)]">{{ __('Manually enroll this user into an existing published course.') }}</p>
+                    </div>
+                    <form action="{{ route('dashboard.users.grant_access', $user) }}" method="POST" class="flex flex-col gap-3 sm:flex-row sm:items-start">
                         @csrf
-                        <div class="cf-admin-field flex-1">
-                            <label>{{ __('Grant Access to Course') }}</label>
+                        <div class="flex-1">
+                            <label class="sr-only">{{ __('Select Course') }}</label>
                             <select name="course_id" class="cf-select w-full">
+                                <option value="" disabled selected>{{ __('Choose a course...') }}</option>
                                 @foreach ($courses as $course)
                                     <option value="{{ $course->id }}">{{ $course->title }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <button type="submit" class="cf-button-primary">
+                        <button type="submit" class="cf-button-primary whitespace-nowrap">
                             {{ __('Grant Access') }}
                         </button>
                     </form>
