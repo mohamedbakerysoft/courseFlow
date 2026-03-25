@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Dashboard\Finance\GetFinanceStatsAction;
 use App\Actions\Payments\CreatePayPalCheckoutAction;
 use App\Models\Course;
 use App\Models\Payment;
@@ -73,7 +74,12 @@ it('does not grant access when paypal capture is not completed', function () {
 
     $this->actingAs($student)
         ->postJson(route('payments.paypal.capture'), ['order_id' => 'order_incomplete'])
-        ->assertOk();
+        ->assertStatus(422)
+        ->assertJson([
+            'ok' => false,
+            'reason' => 'capture_incomplete',
+            'status' => 'PAYER_ACTION_REQUIRED',
+        ]);
 
     $payment = Payment::query()->where('external_reference', 'order_incomplete')->first();
 
@@ -90,7 +96,11 @@ it('grants access once after a completed paypal capture', function () {
 
     $this->actingAs($student)
         ->postJson(route('payments.paypal.capture'), ['order_id' => $order['id']])
-        ->assertOk();
+        ->assertOk()
+        ->assertJson([
+            'ok' => true,
+            'status' => 'COMPLETED',
+        ]);
 
     $payment = Payment::query()->where('external_reference', $order['id'])->first();
 
@@ -110,6 +120,14 @@ it('grants access once after a completed paypal capture', function () {
         ->count();
 
     expect($paidCount)->toBe(1);
+
+    $financeStats = app(GetFinanceStatsAction::class)->execute();
+
+    $topCourse = $financeStats['sales_per_course']->items()[0] ?? null;
+
+    expect($financeStats['all_time_sales'])->toBe(89.0);
+    expect($topCourse)->not->toBeNull();
+    expect((int) $topCourse->cnt)->toBe(1);
 });
 
 it('marks paypal payment as failed when success verification is invalid', function () {

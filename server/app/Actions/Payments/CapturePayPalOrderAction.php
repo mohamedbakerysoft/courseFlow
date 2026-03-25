@@ -13,14 +13,14 @@ class CapturePayPalOrderAction
 {
     public function __construct(private PayPalService $paypal, private EnrollUserInCourseAction $enroller) {}
 
-    public function execute(string $orderId): void
+    public function execute(string $orderId): array
     {
-        DB::transaction(function () use ($orderId) {
+        return DB::transaction(function () use ($orderId) {
             $payment = Payment::where('external_reference', $orderId)
                 ->where('provider', 'paypal')
                 ->first();
             if (! $payment) {
-                return;
+                return ['ok' => false, 'reason' => 'payment_not_found'];
             }
 
             $alreadyPaid = Payment::where('user_id', $payment->user_id)
@@ -28,12 +28,17 @@ class CapturePayPalOrderAction
                 ->where('status', Payment::STATUS_PAID)
                 ->exists();
             if ($alreadyPaid) {
-                return;
+                return ['ok' => true, 'status' => 'COMPLETED', 'reason' => 'already_paid'];
             }
 
             $result = $this->paypal->captureOrder($orderId);
             if (($result['status'] ?? '') !== 'COMPLETED') {
-                return;
+                return [
+                    'ok' => false,
+                    'reason' => 'capture_incomplete',
+                    'status' => (string) ($result['status'] ?? ''),
+                    'http_status' => (int) ($result['http_status'] ?? 0),
+                ];
             }
 
             $payment->status = Payment::STATUS_PAID;
@@ -44,6 +49,8 @@ class CapturePayPalOrderAction
             if ($user && $course) {
                 $this->enroller->execute($user, $course);
             }
+
+            return ['ok' => true, 'status' => 'COMPLETED'];
         });
     }
 }

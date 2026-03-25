@@ -28,9 +28,17 @@ class PayPalCheckoutController extends Controller
     public function capture(CapturePayPalOrderRequest $request, CapturePayPalOrderAction $action): Response
     {
         $orderId = (string) $request->input('order_id');
-        $action->execute($orderId);
+        $result = $action->execute($orderId);
 
-        return response(['ok' => true], 200);
+        if (! ($result['ok'] ?? false)) {
+            return response([
+                'ok' => false,
+                'reason' => $result['reason'] ?? 'capture_failed',
+                'status' => $result['status'] ?? null,
+            ], 422);
+        }
+
+        return response(['ok' => true, 'status' => $result['status'] ?? 'COMPLETED'], 200);
     }
 
     public function checkout(Request $request, Course $course, CreatePayPalCheckoutAction $action): RedirectResponse

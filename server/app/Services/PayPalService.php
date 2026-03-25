@@ -71,7 +71,7 @@ class PayPalService
     public function captureOrder(string $orderId): array
     {
         if ($this->shouldMockGateway()) {
-            return ['id' => $orderId, 'status' => 'COMPLETED'];
+            return ['id' => $orderId, 'status' => 'COMPLETED', 'http_status' => 200];
         }
 
         $clientId = (string) $this->settings->get('paypal.client_id', '');
@@ -84,10 +84,17 @@ class PayPalService
             ]);
         $accessToken = (string) ($tokenResp->json('access_token') ?? '');
 
-        $resp = Http::withToken($accessToken)->post($baseUrl.'/v2/checkout/orders/'.$orderId.'/capture', []);
+        $resp = Http::withToken($accessToken)
+            ->withBody('{}', 'application/json')
+            ->post($baseUrl.'/v2/checkout/orders/'.$orderId.'/capture');
         $status = (string) ($resp->json('status') ?? '');
 
-        return ['id' => $orderId, 'status' => $status];
+        return [
+            'id' => $orderId,
+            'status' => $status,
+            'http_status' => $resp->status(),
+            'body' => $resp->json(),
+        ];
     }
 
     public function verifyOrder(string $orderId, ?string $ts = null, ?string $sig = null): bool

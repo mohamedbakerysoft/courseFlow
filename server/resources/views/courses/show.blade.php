@@ -153,7 +153,14 @@
                                                                         'X-CSRF-TOKEN': csrf
                                                                     },
                                                                     body: JSON.stringify({ order_id: orderId })
-                                                                }).then(function (r) { return r.json(); });
+                                                                }).then(function (r) {
+                                                                    return r.json().then(function (data) {
+                                                                        if (!r.ok || !data.ok) {
+                                                                            throw new Error(data.reason || 'paypal_capture_failed');
+                                                                        }
+                                                                        return data;
+                                                                    });
+                                                                });
                                                             }
                                                             if (window.paypal && container) {
                                                                 var funding = [paypal.FUNDING.PAYPAL, paypal.FUNDING.CARD];
@@ -168,7 +175,9 @@
                                                                                 forms.forEach(function (f) { f.style.display = 'none'; });
                                                                             });
                                                                         },
-                                                                        onError: function () {}
+                                                                        onError: function () {
+                                                                            container.insertAdjacentHTML('beforeend', '<div class="mt-3 rounded-2xl border border-[var(--color-error)]/20 bg-[var(--color-error)]/10 p-3 text-sm text-[var(--color-error)]">{{ __('PayPal could not confirm the payment. Please try again or contact support if the issue continues.') }}</div>');
+                                                                        }
                                                                     }).render('#paypal-button-container');
                                                                 });
                                                             }
