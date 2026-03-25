@@ -114,6 +114,7 @@ log "Syncing repository into ${SOURCE_DIR}"
 rsync -a --delete \
     --exclude='.git/' \
     --exclude='server/.env' \
+    --exclude='server/public/build/' \
     --exclude='server/storage/' \
     --exclude='server/database/database.sqlite' \
     "$WORKSPACE"/ "$SOURCE_DIR"/
@@ -137,6 +138,11 @@ log "Installing frontend dependencies"
     cd "$APP_DIR"
     "$NPM_BIN" ci
     "$NPM_BIN" run build
+
+    if [ ! -f public/build/manifest.json ]; then
+        printf 'Vite manifest not found after build: %s\n' "$APP_DIR/public/build/manifest.json" >&2
+        exit 1
+    fi
 )
 
 if ! grep -q '^APP_KEY=base64:' "$SHARED_ENV_FILE"; then
