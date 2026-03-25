@@ -23,89 +23,141 @@
             </div>
 
             @if ($manual_payment_requests->count())
-                <div class="overflow-x-auto">
-                    <table class="cf-table">
+                <div class="overflow-hidden rounded-[28px] border border-white/10 bg-[#111111] shadow-[0_30px_80px_rgba(0,0,0,0.28)]">
+                    <div class="grid gap-4 border-b border-white/10 bg-[linear-gradient(135deg,rgba(255,193,7,0.14),rgba(255,193,7,0.03)_45%,rgba(255,255,255,0)_100%)] px-5 py-5 sm:grid-cols-3 sm:px-7">
+                        <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
+                            <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/45">{{ __('Queue size') }}</p>
+                            <p class="mt-2 text-3xl font-bold text-white">{{ $manual_payment_requests->total() }}</p>
+                            <p class="mt-1 text-sm text-white/55">{{ __('Requests currently awaiting review or audit history.') }}</p>
+                        </div>
+                        <div class="rounded-2xl border border-amber-300/20 bg-amber-300/10 px-4 py-4">
+                            <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-amber-100/70">{{ __('Pending review') }}</p>
+                            <p class="mt-2 text-3xl font-bold text-amber-100">
+                                {{ $manual_payment_requests->getCollection()->where('status', \App\Models\Payment::STATUS_PENDING)->count() }}
+                            </p>
+                            <p class="mt-1 text-sm text-amber-100/70">{{ __('Requests that still need a manual decision.') }}</p>
+                        </div>
+                        <div class="rounded-2xl border border-emerald-300/20 bg-emerald-300/10 px-4 py-4">
+                            <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-100/70">{{ __('Ready to approve') }}</p>
+                            <p class="mt-2 text-3xl font-bold text-emerald-100">
+                                {{ $manual_payment_requests->getCollection()->filter(fn ($payment) => $payment->status === \App\Models\Payment::STATUS_PENDING && $payment->is_manual_submission_complete)->count() }}
+                            </p>
+                            <p class="mt-1 text-sm text-emerald-100/70">{{ __('Submitted reference and proof are both available.') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                    <table class="cf-table min-w-[1120px] border-separate border-spacing-0">
                         <thead>
-                            <tr>
-                                <th>{{ __('Student') }}</th>
-                                <th>{{ __('Course') }}</th>
-                                <th>{{ __('Reference') }}</th>
-                                <th>{{ __('Proof') }}</th>
-                                <th>{{ __('Status') }}</th>
-                                <th>{{ __('Review') }}</th>
+                            <tr class="bg-[#151515]">
+                                <th class="!px-8 !py-5">{{ __('Student') }}</th>
+                                <th class="!px-6 !py-5">{{ __('Course') }}</th>
+                                <th class="!px-6 !py-5">{{ __('Reference') }}</th>
+                                <th class="!px-6 !py-5">{{ __('Proof') }}</th>
+                                <th class="!px-6 !py-5">{{ __('Status') }}</th>
+                                <th class="!px-8 !py-5">{{ __('Review') }}</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-[rgba(15,23,42,0.08)] bg-white">
+                        <tbody class="bg-[#111111]">
                             @foreach ($manual_payment_requests as $payment)
-                                <tr>
-                                    <td>
-                                        <div>
-                                            <p class="font-semibold text-[var(--color-text-primary)]">{{ $payment->user?->name ?? '-' }}</p>
-                                            <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ $payment->user?->email ?? '-' }}</p>
+                                <tr class="align-top transition hover:bg-white/[0.03]">
+                                    <td class="!px-8 !py-7 border-t border-white/10">
+                                        <div class="flex items-start gap-4">
+                                            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-primary)] text-sm font-bold text-[var(--color-secondary)] shadow-[0_12px_30px_rgba(255,193,7,0.22)]">
+                                                {{ \Illuminate\Support\Str::of($payment->user?->name ?? 'U')->substr(0, 1)->upper() }}
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-white">{{ $payment->user?->name ?? '-' }}</p>
+                                                <p class="mt-1 text-sm text-white/60">{{ $payment->user?->email ?? '-' }}</p>
+                                                @if ($payment->submitted_at)
+                                                    <p class="mt-3 inline-flex rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-white/45">
+                                                        {{ __('Submitted') }} {{ $payment->submitted_at->format('M d, H:i') }}
+                                                    </p>
+                                                @endif
+                                            </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div>
-                                            <p class="font-semibold text-[var(--color-text-primary)]">{{ $payment->course?->title ?? '-' }}</p>
-                                            <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ number_format((float) $payment->amount, 2) }} {{ $payment->currency }}</p>
+                                    <td class="!px-6 !py-7 border-t border-white/10">
+                                        <div class="max-w-[250px]">
+                                            <p class="font-semibold leading-8 text-white">{{ $payment->course?->title ?? '-' }}</p>
+                                            <div class="mt-3 inline-flex items-center rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 px-3 py-1.5 text-sm font-semibold text-[var(--color-primary)]">
+                                                {{ number_format((float) $payment->amount, 2) }} {{ $payment->currency }}
+                                            </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="max-w-xs whitespace-pre-line text-sm text-[var(--color-text-muted)]">
-                                            {{ $payment->payment_reference ?: __('Not submitted yet') }}
+                                    <td class="!px-6 !py-7 border-t border-white/10">
+                                        <div class="max-w-[260px] rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
+                                            <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">{{ __('Transfer reference') }}</p>
+                                            <div class="mt-3 break-words whitespace-pre-line font-mono text-sm leading-7 text-white/72">
+                                                {{ $payment->payment_reference ?: __('Not submitted yet') }}
+                                            </div>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td class="!px-6 !py-7 border-t border-white/10">
                                         @if ($payment->proof_url)
-                                            <a href="{{ $payment->proof_url }}" target="_blank" rel="noopener">
-                                                <img src="{{ $payment->proof_url }}" alt="{{ __('Payment proof') }}" class="h-20 w-20 rounded-xl object-cover ring-1 ring-[rgba(15,23,42,0.08)]">
+                                            <a href="{{ $payment->proof_url }}" target="_blank" rel="noopener" class="group block">
+                                                <div class="relative w-fit overflow-hidden rounded-[22px] border border-white/10 bg-white/[0.04] p-2 transition group-hover:border-[var(--color-primary)]/40 group-hover:bg-white/[0.06]">
+                                                    <img src="{{ $payment->proof_url }}" alt="{{ __('Payment proof') }}" class="h-24 w-24 rounded-2xl object-cover">
+                                                    <div class="pointer-events-none absolute inset-x-2 bottom-2 rounded-b-2xl bg-gradient-to-t from-black/70 via-black/15 to-transparent px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/85 opacity-0 transition group-hover:opacity-100">
+                                                        {{ __('Open proof') }}
+                                                    </div>
+                                                </div>
                                             </a>
                                         @else
-                                            <span class="text-sm text-[var(--color-text-muted)]">{{ __('No proof yet') }}</span>
+                                            <div class="inline-flex min-h-24 min-w-24 items-center justify-center rounded-[22px] border border-dashed border-white/10 bg-white/[0.02] px-4 text-center text-sm leading-6 text-white/45">
+                                                {{ __('No proof yet') }}
+                                            </div>
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="!px-6 !py-7 border-t border-white/10">
+                                        <div class="space-y-3">
                                         @if ($payment->status === \App\Models\Payment::STATUS_PAID)
-                                            <span class="cf-badge">{{ __('Approved') }}</span>
+                                            <span class="inline-flex rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-emerald-200">{{ __('Approved') }}</span>
                                         @elseif ($payment->status === \App\Models\Payment::STATUS_FAILED)
-                                            <span class="cf-badge-muted !border-[var(--color-error)]/20 !bg-[var(--color-error)]/10 !text-[var(--color-error)]">{{ __('Rejected') }}</span>
+                                            <span class="inline-flex rounded-full border border-red-400/20 bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-300">{{ __('Rejected') }}</span>
                                         @else
-                                            <span class="cf-badge-muted">{{ __('Pending') }}</span>
+                                            <span class="inline-flex rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-white/70">{{ __('Pending') }}</span>
                                         @endif
 
-                                        @if ($payment->submitted_at)
-                                            <p class="mt-2 text-xs text-[var(--color-text-muted)]">{{ __('Submitted') }}: {{ $payment->submitted_at->format('Y-m-d H:i') }}</p>
-                                        @endif
+                                            <p class="text-sm leading-7 text-white/55">
+                                                {{ $payment->is_manual_submission_complete ? __('Ready for a final decision.') : __('Waiting for the student to finish submission.') }}
+                                            </p>
+                                        </div>
                                     </td>
-                                    <td>
+                                    <td class="!px-8 !py-7 border-t border-white/10">
                                         <div class="space-y-3">
                                             @if ($payment->status === \App\Models\Payment::STATUS_PENDING)
                                                 @if ($payment->is_manual_submission_complete)
-                                                    <div class="flex flex-col gap-2">
+                                                    <div class="max-w-[320px] rounded-[24px] border border-white/10 bg-white/[0.04] p-4">
+                                                        <p class="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40">{{ __('Review actions') }}</p>
+                                                        <div class="flex flex-col gap-3">
                                                         <form action="{{ route('dashboard.payments.approve', $payment) }}" method="POST">
                                                             @csrf
-                                                            <button type="submit" class="cf-button-primary !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold w-full justify-center">
+                                                            <button type="submit" class="cf-button-primary !w-full !justify-center !rounded-2xl !px-4 !py-3 text-[11px] font-bold uppercase tracking-[0.22em] shadow-[0_14px_32px_rgba(255,193,7,0.18)]">
                                                                 {{ __('Approve') }}
                                                             </button>
                                                         </form>
 
                                                         <form action="{{ route('dashboard.payments.reject', $payment) }}" method="POST" class="space-y-2">
                                                             @csrf
-                                                            <textarea name="review_notes" rows="2" class="w-full min-w-[150px] rounded-lg border border-[var(--color-secondary)]/20 px-3 py-1.5 text-xs" placeholder="{{ __('Reason for rejection') }}"></textarea>
-                                                            <button type="submit" class="cf-button-secondary !text-red-500 border border-red-200 dark:border-red-900 !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold hover:!bg-red-50 dark:hover:!bg-red-900/20 w-full justify-center">
+                                                            <textarea name="review_notes" rows="3" class="w-full rounded-2xl border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-[var(--color-primary)] focus:outline-none focus:ring-0" placeholder="{{ __('Reason for rejection') }}"></textarea>
+                                                            <button type="submit" class="inline-flex w-full items-center justify-center rounded-2xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.22em] text-red-300 transition hover:bg-red-500/16">
                                                                 {{ __('Reject') }}
                                                             </button>
                                                         </form>
+                                                        </div>
                                                     </div>
                                                 @else
-                                                    <p class="text-sm text-[var(--color-text-muted)]">{{ __('Waiting for the student to submit the payment reference and screenshot.') }}</p>
+                                                    <div class="max-w-[320px] rounded-[24px] border border-dashed border-white/10 bg-white/[0.03] px-4 py-4 text-sm leading-7 text-white/52">
+                                                        {{ __('Waiting for the student to submit the payment reference and screenshot.') }}
+                                                    </div>
                                                 @endif
                                             @else
                                                 @if ($payment->approver)
-                                                    <p class="text-sm text-[var(--color-text-muted)]">{{ __('Reviewed by') }} {{ $payment->approver->name }}</p>
+                                                    <p class="text-sm font-medium text-white/65">{{ __('Reviewed by') }} <span class="text-white">{{ $payment->approver->name }}</span></p>
                                                 @endif
                                                 @if ($payment->review_notes)
-                                                    <div class="max-w-xs whitespace-pre-line text-sm text-[var(--color-text-muted)]">
+                                                    <div class="max-w-[320px] whitespace-pre-line rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-4 text-sm leading-7 text-white/60">
                                                         {{ $payment->review_notes }}
                                                     </div>
                                                 @endif
@@ -116,6 +168,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
                 </div>
 
                 @if ($manual_payment_requests->hasPages())

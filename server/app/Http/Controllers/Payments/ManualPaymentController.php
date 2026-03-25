@@ -8,7 +8,6 @@ use App\Actions\Payments\RejectManualPaymentAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payments\RejectManualPaymentRequest;
 use App\Http\Requests\Payments\SubmitManualPaymentRequest;
-use App\Models\Course;
 use App\Models\Payment;
 use App\Models\User;
 use App\Services\SettingsService;
@@ -73,12 +72,13 @@ class ManualPaymentController extends Controller
         if (! $approver && ! app()->environment('production')) {
             $approver = User::primaryInstructor();
         }
-        $action->execute($payment, $approver);
+        $result = $action->execute($payment, $approver);
 
-        return redirect()->route(
-            ($payment->course?->product_type ?? Course::TYPE_COURSE) === Course::TYPE_BOOK ? 'books.show' : 'courses.show',
-            $payment->course
-        );
+        $status = ($result['result'] ?? null) === 'already_paid_reconciled'
+            ? __('Access was restored from an existing completed payment, and the duplicate manual request was closed.')
+            : __('Manual payment approved and access granted.');
+
+        return redirect()->route('dashboard.finance.manual_payments')->with('status', $status);
     }
 
     public function reject(RejectManualPaymentRequest $request, Payment $payment, RejectManualPaymentAction $action): RedirectResponse
