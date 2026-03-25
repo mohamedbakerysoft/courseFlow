@@ -13,11 +13,7 @@ class PayPalService
 
     public function createOrder(User $user, Course $course, string $successUrl, string $cancelUrl): array
     {
-        if (
-            app()->runningUnitTests()
-            || app()->environment(['local', 'testing', 'dusk', 'dusk.local'])
-            || config('demo.enabled')
-        ) {
+        if ($this->shouldMockGateway()) {
             $orderId = 'order_'.Str::random(12);
             $secret = (string) $this->settings->get('paypal.webhook_secret', '');
             $ts = (string) time();
@@ -74,11 +70,7 @@ class PayPalService
 
     public function captureOrder(string $orderId): array
     {
-        if (
-            app()->runningUnitTests()
-            || app()->environment(['local', 'testing', 'dusk', 'dusk.local'])
-            || config('demo.enabled')
-        ) {
+        if ($this->shouldMockGateway()) {
             return ['id' => $orderId, 'status' => 'COMPLETED'];
         }
 
@@ -100,11 +92,7 @@ class PayPalService
 
     public function verifyOrder(string $orderId, ?string $ts = null, ?string $sig = null): bool
     {
-        if (
-            app()->runningUnitTests()
-            || app()->environment(['local', 'testing', 'dusk', 'dusk.local'])
-            || config('demo.enabled')
-        ) {
+        if ($this->shouldMockGateway()) {
             $secret = (string) $this->settings->get('paypal.webhook_secret', '');
             if (! $ts || ! $sig) {
                 return false;
@@ -128,5 +116,11 @@ class PayPalService
         $status = (string) ($resp->json('status') ?? '');
 
         return $status === 'COMPLETED';
+    }
+
+    protected function shouldMockGateway(): bool
+    {
+        return app()->runningUnitTests()
+            || app()->environment(['local', 'testing', 'dusk', 'dusk.local']);
     }
 }
