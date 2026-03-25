@@ -33,6 +33,11 @@ class CapturePayPalOrderAction
 
             $result = $this->paypal->captureOrder($orderId);
             if (($result['status'] ?? '') !== 'COMPLETED') {
+                if ($this->isTerminalCaptureFailure($result)) {
+                    $payment->status = Payment::STATUS_FAILED;
+                    $payment->save();
+                }
+
                 return [
                     'ok' => false,
                     'reason' => 'capture_incomplete',
@@ -52,5 +57,10 @@ class CapturePayPalOrderAction
 
             return ['ok' => true, 'status' => 'COMPLETED'];
         });
+    }
+
+    private function isTerminalCaptureFailure(array $result): bool
+    {
+        return (int) ($result['http_status'] ?? 0) === 422;
     }
 }
