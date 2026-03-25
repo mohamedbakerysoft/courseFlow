@@ -58,6 +58,13 @@ class ApproveManualPaymentAction
 
     private function reconcileAlreadyPaidManualRequest(Payment $payment): void
     {
+        Payment::query()
+            ->where('user_id', $payment->user_id)
+            ->where('course_id', $payment->course_id)
+            ->where('status', Payment::STATUS_FAILED)
+            ->whereKeyNot($payment->getKey())
+            ->delete();
+
         $payment->status = Payment::STATUS_FAILED;
         $payment->review_notes = __('Access was already granted by another completed payment.');
         $payment->rejected_at = Carbon::now();

@@ -120,6 +120,62 @@ it('manual approval restores enrollment when another payment is already marked p
     expect($student->courses()->where('course_id', $course->id)->exists())->toBeTrue();
 });
 
+it('manual approval replaces older failed duplicates when reconciling an existing paid payment', function () {
+    $student = User::factory()->create(['role' => User::ROLE_STUDENT]);
+    $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+    $course = Course::create([
+        'title' => 'Recovered Access Duplicate Cleanup',
+        'slug' => 'recovered-access-duplicate-cleanup',
+        'price' => 70,
+        'currency' => 'USD',
+        'is_free' => false,
+        'status' => Course::STATUS_PUBLISHED,
+        'language' => 'en',
+    ]);
+
+    Payment::create([
+        'user_id' => $student->id,
+        'course_id' => $course->id,
+        'provider' => 'paypal',
+        'amount' => 70,
+        'currency' => 'USD',
+        'status' => Payment::STATUS_PAID,
+        'external_reference' => 'paypal_paid_for_cleanup',
+    ]);
+
+    Payment::create([
+        'user_id' => $student->id,
+        'course_id' => $course->id,
+        'provider' => 'paypal',
+        'amount' => 70,
+        'currency' => 'USD',
+        'status' => Payment::STATUS_FAILED,
+        'external_reference' => 'older_failed_duplicate',
+    ]);
+
+    $manualPayment = app(CreateManualPaymentAction::class)->execute($student, $course);
+    $manualPayment->update([
+        'payment_reference' => 'BANK-REF-CLEANUP',
+        'proof_path' => 'manual-payments/proof-cleanup.png',
+        'submitted_at' => now(),
+    ]);
+
+    $this->actingAs($admin)
+        ->post(route('dashboard.payments.approve', $manualPayment))
+        ->assertRedirect(route('dashboard.finance.manual_payments'));
+
+    $payments = Payment::query()
+        ->where('user_id', $student->id)
+        ->where('course_id', $course->id)
+        ->orderBy('id')
+        ->get();
+
+    expect($payments)->toHaveCount(2);
+    expect($payments->where('status', Payment::STATUS_PAID))->toHaveCount(1);
+    expect($payments->where('status', Payment::STATUS_FAILED))->toHaveCount(1);
+    expect($payments->last()->external_reference)->toBe($manualPayment->external_reference);
+});
+
 it('duplicate payments prevented for paypal and manual', function () {
     app(\App\Services\SettingsService::class)->set(['paypal.webhook_secret' => 'whsec_test']);
     $student = User::factory()->create(['role' => User::ROLE_STUDENT]);
