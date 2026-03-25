@@ -14,3 +14,10 @@ Environment variables:
 Updating Settings:
 - Go to Dashboard → Settings
 - Save changes; they take effect immediately
+
+## Testing Payments (Demo Mode)
+If you would like to test the checkout flow using the PayPal Sandbox, you can use the following test buyer account:
+- **Email:** `sb-ftn2t50151885@personal.example.com`
+- **Password:** `2F/thMUa`
+
+*This account is pre-funded with sandbox currency specifically for testing PayPal integration.*

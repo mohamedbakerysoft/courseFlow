@@ -16,7 +16,10 @@
   - `PAYPAL_CLIENT_ID`
   - `PAYPAL_CLIENT_SECRET`
   - `PAYPAL_WEBHOOK_SECRET` (used for Dusk/testing HMAC)
-  - `PAYPAL_BASE_URL` (`https://api-m.paypal.com` or sandbox)
+  - `PAYPAL_BASE_URL` (`https://api-m.paypal.com` or `https://api-m.sandbox.paypal.com`)
+- **Demo / Sandbox Testing Credentials**:
+  - Test Buyer Email: `sb-ftn2t50151885@personal.example.com`
+  - Test Buyer Password: `2F/thMUa`
 - Callback:
   - Success URL: `GET /payments/paypal/success`
   - Server-side verification required (`Orders API`)
