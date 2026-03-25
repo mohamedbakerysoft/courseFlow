@@ -7,7 +7,6 @@ Thumbs.db
 .idea/
 .vscode/
 .zed/
-build_codecanyon.sh
 ### Logs & coverage
 *.log
 npm-debug.log*
