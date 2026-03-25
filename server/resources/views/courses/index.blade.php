@@ -41,9 +41,9 @@
                     </div>
                 </div>
 
-                <div class="mt-5 rounded-[5px] border border-[rgba(11,11,11,0.08)] bg-[rgba(247,247,247,0.72)] px-5 py-4">
-                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">{{ __('What you get here') }}</p>
-                    <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">
+                <div class="mt-5 rounded-[5px] border border-gray-200 bg-gray-50 px-5 py-4 dark:border-white/10 dark:bg-white/5">
+                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500 dark:text-gray-400">{{ __('What you get here') }}</p>
+                    <p class="mt-3 text-sm leading-7 text-[var(--color-text-muted)] dark:text-gray-300">
                         {{ __('Every course page shows clear pricing, lesson structure, and direct enrollment so you can compare offers quickly without guessing what happens next.') }}
                     </p>
                 </div>

@@ -47,6 +47,10 @@ class AppServiceProvider extends ServiceProvider
             }
         }
 
+        if (str_starts_with(config('app.url'), 'https://')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         Gate::policy(Course::class, CoursePolicy::class);
         Gate::policy(Lesson::class, LessonPolicy::class);
         Gate::policy(Payment::class, PaymentPolicy::class);
