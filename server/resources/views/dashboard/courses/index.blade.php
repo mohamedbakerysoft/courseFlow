@@ -46,37 +46,36 @@
                         <tr>
                             <td>
                                 <div>
-                                    <p class="font-semibold text-[var(--color-text-primary)]">{{ $course->title }}</p>
-                                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">{{ __('Course overview and learning flow') }}</p>
+                                    <p class="font-semibold text-sm text-[var(--color-text-primary)] leading-tight">{{ $course->title }}</p>
                                 </div>
                             </td>
-                            <td class="text-[var(--color-text-muted)]">{{ $course->slug }}</td>
+                            <td class="text-[var(--color-text-muted)] text-sm">{{ $course->slug }}</td>
                             <td>
                                 @if($course->status === \App\Models\Course::STATUS_DRAFT)
-                                    <span class="cf-badge-muted">{{ __('Draft') }}</span>
+                                    <span class="cf-badge-muted !py-1 !px-2 text-[10px]">{{ __('Draft') }}</span>
                                 @else
-                                    <span class="cf-badge">{{ __('Published') }}</span>
+                                    <span class="cf-badge !py-1 !px-2 text-[10px]">{{ __('Published') }}</span>
                                 @endif
                             </td>
                             <td>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="{{ route('dashboard.courses.edit', $course) }}" class="cf-button-ghost !px-4 !py-2">{{ __('Edit') }}</a>
-                                    <a href="{{ route('dashboard.courses.lessons.index', $course) }}" class="cf-button-ghost !px-4 !py-2">{{ __('Lessons') }}</a>
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ route('dashboard.courses.edit', $course) }}" class="cf-button-secondary !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold">{{ __('Edit') }}</a>
+                                    <a href="{{ route('dashboard.courses.lessons.index', $course) }}" class="cf-button-secondary !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold">{{ __('Lessons') }}</a>
                                     @if($course->status === \App\Models\Course::STATUS_DRAFT)
                                         <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.publish', $course) }}" method="POST" class="inline-flex">
                                             @csrf
-                                            <button :disabled="isSubmitting" class="cf-button-primary !px-4 !py-2">{{ __('Publish') }}</button>
+                                            <button :disabled="isSubmitting" class="cf-button-primary !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold">{{ __('Publish') }}</button>
                                         </form>
                                     @else
                                         <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.unpublish', $course) }}" method="POST" class="inline-flex">
                                             @csrf
-                                            <button :disabled="isSubmitting" class="cf-button-secondary !px-4 !py-2 !text-[var(--color-text-primary)]">{{ __('Unpublish') }}</button>
+                                            <button :disabled="isSubmitting" class="cf-button-secondary !text-amber-600 border border-amber-200 dark:border-amber-900 !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold hover:!bg-amber-50 dark:hover:!bg-amber-900/20">{{ __('Unpublish') }}</button>
                                         </form>
                                     @endif
                                     <form x-data="{isSubmitting:false}" x-on:submit="isSubmitting=true" action="{{ route('dashboard.courses.destroy', $course) }}" method="POST" class="inline-flex" onsubmit="return confirm('Delete course?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button :disabled="isSubmitting" class="inline-flex items-center rounded-full bg-[var(--color-error)]/10 px-4 py-2 text-sm font-semibold text-[var(--color-error)] hover:bg-[var(--color-error)]/14">{{ __('Delete') }}</button>
+                                        <button :disabled="isSubmitting" class="cf-button-secondary !text-red-500 border border-red-200 dark:border-red-900 !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold hover:!bg-red-50 dark:hover:!bg-red-900/20">{{ __('Delete') }}</button>
                                     </form>
                                 </div>
                             </td>

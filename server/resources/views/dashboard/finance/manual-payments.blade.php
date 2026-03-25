@@ -81,20 +81,22 @@
                                         <div class="space-y-3">
                                             @if ($payment->status === \App\Models\Payment::STATUS_PENDING)
                                                 @if ($payment->is_manual_submission_complete)
-                                                    <form action="{{ route('dashboard.payments.approve', $payment) }}" method="POST">
-                                                        @csrf
-                                                        <button type="submit" class="cf-button-primary !px-4 !py-2">
-                                                            {{ __('Approve') }}
-                                                        </button>
-                                                    </form>
+                                                    <div class="flex flex-col gap-2">
+                                                        <form action="{{ route('dashboard.payments.approve', $payment) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="cf-button-primary !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold w-full justify-center">
+                                                                {{ __('Approve') }}
+                                                            </button>
+                                                        </form>
 
-                                                    <form action="{{ route('dashboard.payments.reject', $payment) }}" method="POST" class="space-y-2">
-                                                        @csrf
-                                                        <textarea name="review_notes" rows="3" class="w-full rounded-xl border border-[var(--color-secondary)]/20 px-3 py-2 text-sm" placeholder="{{ __('Reason for rejection') }}"></textarea>
-                                                        <button type="submit" class="inline-flex items-center rounded-md border border-[var(--color-error)]/20 px-4 py-2 text-sm font-medium text-[var(--color-error)]">
-                                                            {{ __('Reject') }}
-                                                        </button>
-                                                    </form>
+                                                        <form action="{{ route('dashboard.payments.reject', $payment) }}" method="POST" class="space-y-2">
+                                                            @csrf
+                                                            <textarea name="review_notes" rows="2" class="w-full min-w-[150px] rounded-lg border border-[var(--color-secondary)]/20 px-3 py-1.5 text-xs" placeholder="{{ __('Reason for rejection') }}"></textarea>
+                                                            <button type="submit" class="cf-button-secondary !text-red-500 border border-red-200 dark:border-red-900 !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold hover:!bg-red-50 dark:hover:!bg-red-900/20 w-full justify-center">
+                                                                {{ __('Reject') }}
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 @else
                                                     <p class="text-sm text-[var(--color-text-muted)]">{{ __('Waiting for the student to submit the payment reference and screenshot.') }}</p>
                                                 @endif

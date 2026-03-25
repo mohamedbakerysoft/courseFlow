@@ -47,42 +47,42 @@
                         <tr>
                             <td>
                                 <div>
-                                    <p class="font-semibold text-[var(--color-text-primary)]">{{ $book->title }}</p>
-                                    <p class="mt-1 text-sm text-[var(--color-text-muted)]">#{{ $book->slug }}</p>
+                                    <p class="font-semibold text-sm text-[var(--color-text-primary)] leading-tight">{{ $book->title }}</p>
+                                    <p class="mt-0.5 text-[11px] font-mono text-[var(--color-text-muted)] opacity-80">#{{ $book->slug }}</p>
                                 </div>
                             </td>
-                            <td class="text-[var(--color-text-muted)]">
+                            <td class="text-[var(--color-text-muted)] text-sm">
                                 {{ $book->is_free ? __('Free') : number_format((float) $book->price, 2).' '.strtoupper($book->currency ?: 'USD') }}
                             </td>
-                            <td class="text-[var(--color-text-muted)]">
+                            <td class="text-[var(--color-text-muted)] text-sm">
                                 {{ $book->download_file_path ? __('Ready') : __('Missing file') }}
                             </td>
                             <td>
                                 @if($book->status === \App\Models\Course::STATUS_DRAFT)
-                                    <span class="cf-badge-muted">{{ __('Draft') }}</span>
+                                    <span class="cf-badge-muted !py-1 !px-2 text-[10px]">{{ __('Draft') }}</span>
                                 @else
-                                    <span class="cf-badge">{{ __('Published') }}</span>
+                                    <span class="cf-badge !py-1 !px-2 text-[10px]">{{ __('Published') }}</span>
                                 @endif
                             </td>
                             <td>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="{{ route('dashboard.books.edit', $book) }}" class="cf-button-ghost !px-4 !py-2">{{ __('Edit') }}</a>
-                                    <a href="{{ route('books.show', $book) }}" class="cf-button-ghost !px-4 !py-2">{{ __('Preview') }}</a>
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ route('dashboard.books.edit', $book) }}" class="cf-button-secondary !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold">{{ __('Edit') }}</a>
+                                    <a href="{{ route('books.show', $book) }}" target="_blank" class="cf-button-secondary !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold">{{ __('Preview') }}</a>
                                     @if($book->status === \App\Models\Course::STATUS_DRAFT)
                                         <form action="{{ route('dashboard.books.publish', $book) }}" method="POST" class="inline-flex">
                                             @csrf
-                                            <button class="cf-button-primary !px-4 !py-2">{{ __('Publish') }}</button>
+                                            <button class="cf-button-primary !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold">{{ __('Publish') }}</button>
                                         </form>
                                     @else
                                         <form action="{{ route('dashboard.books.unpublish', $book) }}" method="POST" class="inline-flex">
                                             @csrf
-                                            <button class="cf-button-secondary !px-4 !py-2">{{ __('Unpublish') }}</button>
+                                            <button class="cf-button-secondary !text-amber-600 border border-amber-200 dark:border-amber-900 !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold hover:!bg-amber-50 dark:hover:!bg-amber-900/20">{{ __('Unpublish') }}</button>
                                         </form>
                                     @endif
                                     <form action="{{ route('dashboard.books.destroy', $book) }}" method="POST" class="inline-flex" onsubmit="return confirm('Delete book?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="cf-button-ghost !px-4 !py-2">{{ __('Delete') }}</button>
+                                        <button class="cf-button-secondary !text-red-500 border border-red-200 dark:border-red-900 !px-3 !py-1 text-[11px] uppercase tracking-wider font-bold hover:!bg-red-50 dark:hover:!bg-red-900/20">{{ __('Delete') }}</button>
                                     </form>
                                 </div>
                             </td>
