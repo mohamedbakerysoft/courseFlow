@@ -199,7 +199,7 @@
                             <div class="sm:col-span-2">
                                 <label for="stripe_webhook_endpoint" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Stripe Webhook Endpoint') }}</label>
                                 <div x-data="{ copied: false }" class="mt-1 relative">
-                                    <input id="stripe_webhook_endpoint" type="text" readonly class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm pr-20 focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ url('/webhooks/stripe') }}">
+                                    <input id="stripe_webhook_endpoint" type="text" readonly class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm pr-20 focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ $stripeWebhookEndpoint }}">
                                     <div class="absolute inset-y-0 right-0 flex items-center gap-2 pr-3">
                                         <button type="button" class="px-3 py-1 rounded-md border border-[var(--color-secondary)]/30 bg-white text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]" aria-label="{{ __('Copy') }}"
                                             @click="navigator.clipboard.writeText(document.getElementById('stripe_webhook_endpoint').value); copied = true">
@@ -220,7 +220,7 @@
                                     <p class="text-xs text-[var(--color-text-muted)]">{{ __('Note: Stripe Dashboard cannot reach local domains directly. Use Stripe CLI to forward webhooks to your local Sail domain.') }}</p>
                                     <div class="flex items-center gap-2">
                                         <span class="text-xs text-[var(--color-text-primary)] font-medium">{{ __('Stripe CLI command') }}:</span>
-                                        <code class="text-xs px-2 py-1 rounded bg-white border border-[var(--color-secondary)]/30 text-[var(--color-text-primary)]">stripe listen --forward-to {{ url('/webhooks/stripe') }}</code>
+                                        <code class="text-xs px-2 py-1 rounded bg-white border border-[var(--color-secondary)]/30 text-[var(--color-text-primary)]">stripe listen --forward-to {{ $stripeWebhookEndpoint }}</code>
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +281,7 @@
                         <div class="mt-4 sm:col-span-2">
                             <label for="paypal_webhook_endpoint" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('PayPal Webhook Endpoint') }}</label>
                             <div x-data="{ copied: false }" class="mt-1 relative">
-                                <input id="paypal_webhook_endpoint" type="text" readonly class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm pr-20 focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ url('/webhooks/paypal') }}">
+                                <input id="paypal_webhook_endpoint" type="text" readonly class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm pr-20 focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ $paypalWebhookEndpoint }}">
                                 <div class="absolute inset-y-0 right-0 flex items-center gap-2 pr-3">
                                     <button type="button" class="px-3 py-1 rounded-md border border-[var(--color-secondary)]/30 bg-white text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]" aria-label="{{ __('Copy') }}"
                                         @click="navigator.clipboard.writeText(document.getElementById('paypal_webhook_endpoint').value); copied = true">
@@ -883,7 +883,7 @@
                                 <div class="sm:col-span-2">
                                     <label for="stripe_webhook_endpoint" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('Stripe Webhook Endpoint') }}</label>
                                     <div x-data="{ copied: false }" class="mt-1 relative">
-                                        <input id="stripe_webhook_endpoint" type="text" readonly class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm pr-10 focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ url('/webhooks/stripe') }}">
+                                        <input id="stripe_webhook_endpoint" type="text" readonly class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm pr-10 focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ $stripeWebhookEndpoint }}">
                                         <button type="button" class="absolute inset-y-0 right-0 px-3 flex items-center text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]" aria-label="{{ __('Copy') }}"
                                             @click="navigator.clipboard.writeText(document.getElementById('stripe_webhook_endpoint').value); copied = true">
                                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 9V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-4M7 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -903,7 +903,7 @@
                                         </p>
                                         <div class="flex items-center gap-2">
                                             <span class="text-xs text-[var(--color-text-primary)] font-medium">{{ __('Stripe CLI command') }}:</span>
-                                            <code class="text-xs px-2 py-1 rounded bg-white border border-[var(--color-secondary)]/30 text-[var(--color-text-primary)]">stripe listen --forward-to {{ url('/webhooks/stripe') }}</code>
+                                            <code class="text-xs px-2 py-1 rounded bg-white border border-[var(--color-secondary)]/30 text-[var(--color-text-primary)]">stripe listen --forward-to {{ $stripeWebhookEndpoint }}</code>
                                         </div>
                                     </div>
                                 </div>
@@ -968,7 +968,7 @@
                                 <div class="sm:col-span-2">
                                     <label for="paypal_webhook_endpoint" class="block text-sm font-medium text-[var(--color-text-muted)]">{{ __('PayPal Webhook Endpoint') }}</label>
                                     <div x-data="{ copied: false }" class="mt-1 relative">
-                                        <input id="paypal_webhook_endpoint" type="text" readonly class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm pr-10 focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ url('/webhooks/paypal') }}">
+                                        <input id="paypal_webhook_endpoint" type="text" readonly class="block w-full rounded-md border-[var(--color-secondary)]/30 shadow-sm pr-10 focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]" value="{{ $paypalWebhookEndpoint }}">
                                         <button type="button" class="absolute inset-y-0 right-0 px-3 flex items-center text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]" aria-label="{{ __('Copy') }}"
                                             @click="navigator.clipboard.writeText(document.getElementById('paypal_webhook_endpoint').value); copied = true">
                                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 9V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-4M7 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>

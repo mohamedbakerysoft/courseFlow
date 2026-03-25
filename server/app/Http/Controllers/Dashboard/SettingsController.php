@@ -10,6 +10,7 @@ use App\Services\SettingsService;
 use App\Support\LandingContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 
 class SettingsController extends Controller
@@ -92,6 +93,7 @@ class SettingsController extends Controller
         $stripePublishableKeyMasked = $stripePublishableKey !== '' && strlen($stripePublishableKey) > 12
             ? substr($stripePublishableKey, 0, 8).'…'.substr($stripePublishableKey, -4)
             : $stripePublishableKey;
+        $stripeWebhookEndpoint = $this->webhookUrl('payments.webhook.stripe');
         if ($paymentsStripeEnabled) {
             $pk = (string) config('services.stripe.publishable_key', '');
             $sk = (string) config('services.stripe.secret', '');
@@ -117,6 +119,7 @@ class SettingsController extends Controller
         $paypalHasSecret = $paypalClientSecret !== '';
         $paypalMode = (string) $settings->get('paypal.mode', 'sandbox');
         $paypalWebhookSecretExists = (string) $settings->get('paypal.webhook_secret', '') !== '';
+        $paypalWebhookEndpoint = $this->webhookUrl('payments.webhook.paypal');
         $paypalStatusLabel = 'Disabled';
         $paypalStatusVariant = 'gray';
         $paypalStatusMessage = null;
@@ -193,6 +196,7 @@ class SettingsController extends Controller
             'stripeMode',
             'stripeHasSecret',
             'stripeWebhookSecretExists',
+            'stripeWebhookEndpoint',
             'paypalClientId',
             'paypalClientSecret',
             'paypalHasSecret',
@@ -201,10 +205,23 @@ class SettingsController extends Controller
             'paypalStatusVariant',
             'paypalStatusMessage',
             'paypalWebhookSecretExists',
+            'paypalWebhookEndpoint',
             'heroFontTitle',
             'heroFontSubtitle',
             'heroFontDescription',
         ));
+    }
+
+    private function webhookUrl(string $routeName): string
+    {
+        $path = Route::has($routeName) ? route($routeName, [], false) : '/';
+        $appUrl = rtrim((string) config('app.url', ''), '/');
+
+        if ($appUrl !== '') {
+            return $appUrl.$path;
+        }
+
+        return url($path);
     }
 
     public function update(Request $request, SettingsService $settings, ValidateStripeConfigAction $stripeValidator, ValidatePayPalConfigAction $paypalValidator): RedirectResponse
