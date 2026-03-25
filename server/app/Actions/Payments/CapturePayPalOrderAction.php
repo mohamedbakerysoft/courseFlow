@@ -34,8 +34,7 @@ class CapturePayPalOrderAction
             $result = $this->paypal->captureOrder($orderId);
             if (($result['status'] ?? '') !== 'COMPLETED') {
                 if ($this->isTerminalCaptureFailure($result)) {
-                    $payment->status = Payment::STATUS_FAILED;
-                    $payment->save();
+                    $this->markPaymentAsFailed($payment);
                 }
 
                 return [
@@ -62,5 +61,18 @@ class CapturePayPalOrderAction
     private function isTerminalCaptureFailure(array $result): bool
     {
         return (int) ($result['http_status'] ?? 0) === 422;
+    }
+
+    private function markPaymentAsFailed(Payment $payment): void
+    {
+        Payment::query()
+            ->where('user_id', $payment->user_id)
+            ->where('course_id', $payment->course_id)
+            ->where('status', Payment::STATUS_FAILED)
+            ->whereKeyNot($payment->getKey())
+            ->delete();
+
+        $payment->status = Payment::STATUS_FAILED;
+        $payment->save();
     }
 }

@@ -133,6 +133,54 @@ it('marks the payment as failed when paypal returns a terminal capture error', f
     expect($student->courses()->where('course_id', $course->id)->exists())->toBeFalse();
 });
 
+it('replaces an older failed payment when a new paypal capture fails terminally', function () {
+    app()->instance(PayPalService::class, new class(app(\App\Services\SettingsService::class)) extends PayPalService
+    {
+        public function createOrder(User $user, Course $course, string $successUrl, string $cancelUrl): array
+        {
+            return ['id' => 'order_replace_failed', 'approve_url' => $successUrl];
+        }
+
+        public function captureOrder(string $orderId): array
+        {
+            return [
+                'id' => $orderId,
+                'status' => '',
+                'http_status' => 422,
+            ];
+        }
+    });
+
+    $student = User::factory()->create(['role' => User::ROLE_STUDENT]);
+    $course = createPaypalPaidCourse();
+
+    Payment::create([
+        'user_id' => $student->id,
+        'course_id' => $course->id,
+        'provider' => 'paypal',
+        'amount' => (float) $course->price,
+        'currency' => $course->currency,
+        'status' => Payment::STATUS_FAILED,
+        'external_reference' => 'older_failed_order',
+    ]);
+
+    app(CreatePayPalCheckoutAction::class)->execute($student, $course);
+
+    $this->actingAs($student)
+        ->postJson(route('payments.paypal.capture'), ['order_id' => 'order_replace_failed'])
+        ->assertStatus(422);
+
+    $payments = Payment::query()
+        ->where('user_id', $student->id)
+        ->where('course_id', $course->id)
+        ->orderBy('id')
+        ->get();
+
+    expect($payments)->toHaveCount(1);
+    expect($payments->first()->status)->toBe(Payment::STATUS_FAILED);
+    expect($payments->first()->external_reference)->toBe('order_replace_failed');
+});
+
 it('grants access once after a completed paypal capture', function () {
     $student = User::factory()->create(['role' => User::ROLE_STUDENT]);
     $course = createPaypalPaidCourse();
