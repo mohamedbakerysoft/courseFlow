@@ -126,10 +126,6 @@
                                             @endif
 
                                             @if ($paypalAvailable)
-                                                <form action="{{ route('payments.paypal.checkout', $course) }}" method="POST" class="w-full">
-                                                    @csrf
-                                                    <button type="submit" class="cf-button-secondary w-full">{{ __('Checkout with PayPal') }}</button>
-                                                </form>
                                                 <div id="paypal-button-container" class="mt-3" data-course-id="{{ (int) $course->id }}"></div>
                                                 @if ($paypalClientIdValue !== '')
                                                     <script src="https://www.paypal.com/sdk/js?client-id={{ $paypalClientIdValue }}&currency={{ $course->currency ?? 'USD' }}&intent=capture"></script>

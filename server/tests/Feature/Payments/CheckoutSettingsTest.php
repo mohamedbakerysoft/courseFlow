@@ -20,13 +20,16 @@ function createPaidCourse(): Course
     ]);
 }
 
-it('hides stripe checkout button when disabled', function () {
+it('shows paypal sdk buttons without the extra paypal checkout button', function () {
     $user = User::factory()->create(['role' => User::ROLE_STUDENT]);
     $course = createPaidCourse();
 
     app(SettingsService::class)->set([
         'payments.stripe.enabled' => false,
         'payments.paypal.enabled' => true,
+        'paypal.client_id' => 'paypal-client-id',
+        'paypal.client_secret' => 'paypal-secret',
+        'paypal.mode' => 'sandbox',
         'payments.manual.instructions' => 'Bank transfer details',
     ]);
 
@@ -34,7 +37,8 @@ it('hides stripe checkout button when disabled', function () {
 
     $response->assertOk();
     $response->assertDontSee('Pay securely with Card');
-    $response->assertSee('Checkout with PayPal');
+    $response->assertDontSee('Checkout with PayPal');
+    $response->assertSee('paypal-button-container');
     $response->assertSee('Request manual payment');
 });
 
@@ -53,6 +57,7 @@ it('hides paypal checkout button when disabled', function () {
     $response->assertOk();
     $response->assertSee('Pay securely with Card');
     $response->assertDontSee('Checkout with PayPal');
+    $response->assertDontSee('paypal-button-container');
     $response->assertSee('Request manual payment');
 });
 

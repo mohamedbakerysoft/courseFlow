@@ -66,6 +66,10 @@ it('manual payment stays pending and approves enroll', function () {
         'language' => 'en',
     ]);
     $payment = app(CreateManualPaymentAction::class)->execute($student, $course);
+    $payment->update([
+        'payment_reference' => 'BANK-REF-123',
+        'proof_path' => 'manual-payments/proof.png',
+    ]);
     expect($payment->status)->toBe(Payment::STATUS_PENDING);
     expect($student->courses()->where('course_id', $course->id)->exists())->toBeFalse();
     app(ApproveManualPaymentAction::class)->execute($payment, $instructor);
@@ -95,6 +99,10 @@ it('duplicate payments prevented for paypal and manual', function () {
     $this->actingAs($student)->get(route('payments.paypal.success', ['order_id' => $orderId, 't' => $ts, 'sig' => $sig]))->assertRedirect();
     // Approving manual after paid should not create another paid record
     $manual = app(CreateManualPaymentAction::class)->execute($student, $course);
+    $manual->update([
+        'payment_reference' => 'BANK-REF-456',
+        'proof_path' => 'manual-payments/proof-2.png',
+    ]);
     app(ApproveManualPaymentAction::class)->execute($manual, $instructor);
     $paidCount = Payment::where('user_id', $student->id)->where('course_id', $course->id)->where('status', Payment::STATUS_PAID)->count();
     expect($paidCount)->toBe(1);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Payments;
 
 use App\Actions\Payments\CapturePayPalOrderAction;
 use App\Http\Controllers\Controller;
+use App\Support\PayPalWebhookPayload;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,11 +39,10 @@ class PayPalWebhookController extends Controller
             return response('Invalid signature', 400);
         }
 
-        $data = json_decode($payload, true);
-        $type = (string) ($data['type'] ?? $data['event_type'] ?? '');
-        $orderId = (string) ($data['data']['object']['id'] ?? $data['resource']['id'] ?? '');
-        if ($orderId !== '') {
-            $this->captureAction->execute($orderId);
+        $webhookPayload = PayPalWebhookPayload::fromArray(json_decode($payload, true) ?? []);
+
+        if ($webhookPayload->shouldCapture()) {
+            $this->captureAction->execute($webhookPayload->orderId);
         }
 
         return response('ok', 200);
