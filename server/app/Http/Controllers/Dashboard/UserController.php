@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Actions\Dashboard\Users\GrantCourseAccessAction;
 use App\Actions\Dashboard\Users\ListUsersAction;
+use App\Actions\Dashboard\Users\RevokeCourseAccessAction;
 use App\Actions\Dashboard\Users\UpdateUserStatusAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\Users\GrantCourseAccessRequest;
@@ -46,5 +47,12 @@ class UserController extends Controller
         $grant->execute($user, $course);
 
         return redirect()->route('dashboard.users.show', $user)->with('status', 'granted');
+    }
+
+    public function revokeAccess(User $user, Course $course, RevokeCourseAccessAction $revoke): RedirectResponse
+    {
+        $revoke->execute($user, $course);
+
+        return redirect()->route('dashboard.users.show', $user)->with('status', 'revoked');
     }
 }

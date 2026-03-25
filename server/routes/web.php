@@ -174,6 +174,7 @@ Route::middleware(['auth', 'instructor'])->prefix('dashboard')->name('dashboard.
     Route::get('/users/{user}', [\App\Http\Controllers\Dashboard\UserController::class, 'show'])->name('users.show');
     Route::post('/users/{user}/status', [\App\Http\Controllers\Dashboard\UserController::class, 'updateStatus'])->name('users.status');
     Route::post('/users/{user}/grant-access', [\App\Http\Controllers\Dashboard\UserController::class, 'grantAccess'])->name('users.grant_access');
+    Route::delete('/users/{user}/revoke-access/{course}', [\App\Http\Controllers\Dashboard\UserController::class, 'revokeAccess'])->name('users.revoke_access');
 
     Route::get('/finance', [\App\Http\Controllers\Dashboard\FinanceController::class, 'index'])->name('finance.index');
     Route::get('/finance/manual-payments', [\App\Http\Controllers\Dashboard\FinanceController::class, 'manualPayments'])->name('finance.manual_payments');

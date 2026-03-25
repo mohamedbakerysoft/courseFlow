@@ -61,3 +61,27 @@ it('admin can grant course access', function () {
     $exists = $student->courses()->where('course_id', $course->id)->exists();
     expect($exists)->toBeTrue();
 });
+
+it('admin can revoke course access', function () {
+    $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+    $student = User::factory()->create(['role' => User::ROLE_STUDENT]);
+    $course = Course::create([
+        'title' => 'Revokable Course',
+        'slug' => 'revokable-course',
+        'price' => 0,
+        'currency' => 'USD',
+        'is_free' => true,
+        'status' => Course::STATUS_PUBLISHED,
+        'language' => 'en',
+        'instructor_id' => $admin->id,
+    ]);
+
+    $student->courses()->attach($course->id, ['enrolled_at' => now()]);
+
+    \Pest\Laravel\actingAs($admin)
+        ->delete(route('dashboard.users.revoke_access', [$student, $course]))
+        ->assertRedirect(route('dashboard.users.show', $student));
+
+    $exists = $student->fresh()->courses()->where('course_id', $course->id)->exists();
+    expect($exists)->toBeFalse();
+});

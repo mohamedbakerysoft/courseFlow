@@ -58,9 +58,18 @@
                 @if ($enrolledCourses->count())
                     <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach ($enrolledCourses as $c)
-                            <li class="cf-admin-inline-note">
-                                <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ $c->title }}</p>
-                                <p class="text-xs text-[var(--color-text-muted)]">#{{ $c->slug }}</p>
+                            <li class="cf-admin-inline-note flex justify-between items-center group">
+                                <div>
+                                    <p class="text-sm font-medium text-[var(--color-text-primary)]">{{ $c->title }}</p>
+                                    <p class="text-xs text-[var(--color-text-muted)]">#{{ $c->slug }}</p>
+                                </div>
+                                <form action="{{ route('dashboard.users.revoke_access', [$user, $c]) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to revoke access to this course?') }}');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-xs font-semibold text-[var(--color-error)] opacity-0 transition-opacity group-hover:opacity-100 hover:opacity-80">
+                                        {{ __('Revoke') }}
+                                    </button>
+                                </form>
                             </li>
                         @endforeach
                     </ul>
