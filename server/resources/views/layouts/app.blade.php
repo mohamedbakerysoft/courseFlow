@@ -39,7 +39,7 @@
             }
         </style>
     </head>
-    <body class="antialiased" @if(isset($rightClickEnabled) && ! $rightClickEnabled) oncontextmenu="return false" @endif data-right-click-enabled="{{ isset($rightClickEnabled) && $rightClickEnabled ? '1' : '0' }}">
+    <body class="antialiased">
         @if (session('status'))
             <div
                 x-data="{ visible: true }"

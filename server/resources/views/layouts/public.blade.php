@@ -51,7 +51,7 @@
             }
         </style>
     </head>
-    <body class="bg-[var(--color-background)] text-[var(--color-text-primary)] antialiased" @if(isset($rightClickEnabled) && ! $rightClickEnabled) oncontextmenu="return false" @endif data-right-click-enabled="{{ isset($rightClickEnabled) && $rightClickEnabled ? '1' : '0' }}">
+    <body class="bg-[var(--color-background)] text-[var(--color-text-primary)] antialiased">
         <div class="relative isolate overflow-hidden">
             <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(circle_at_top_left,_rgba(245,184,0,0.18),_transparent_28%),radial-gradient(circle_at_top_right,_rgba(11,11,11,0.06),_transparent_36%)]"></div>
             @include('layouts.navigation')

@@ -120,41 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-function _isRightClickEnabled() {
-    const body = document.body;
-    if (!body) return true;
-    const v = body.getAttribute('data-right-click-enabled');
-    return v !== '0';
-}
-document.addEventListener('contextmenu', function (e) {
-    if (_isRightClickEnabled()) return;
-    e.preventDefault();
-}, { passive: false });
 
-document.addEventListener('selectstart', function (e) {
-    const t = e.target;
-    const isFormControl = t instanceof Element && t.closest('input, textarea, select');
-    const allow = (t && t.isContentEditable === true) || isFormControl;
-    if (!allow) {
-        e.preventDefault();
-    }
-}, { passive: false });
-
-document.addEventListener('keydown', function (e) {
-    const k = e.key.toLowerCase();
-    if (k === 'f12') {
-        e.preventDefault();
-        return;
-    }
-    if ((e.ctrlKey || e.metaKey) && (k === 'i' || k === 'u' || k === 's')) {
-        e.preventDefault();
-        return;
-    }
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'i' || k === 'c' || k === 'j')) {
-        e.preventDefault();
-        return;
-    }
-}, { passive: false });
 
 function _syncRichEditor(editor) {
     const surface = editor.querySelector('[data-editor-surface]');
