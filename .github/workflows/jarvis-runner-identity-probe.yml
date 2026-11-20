@@ -1,0 +1,33 @@
+name: Jarvis runner identity preflight (read-only)
+on:
+  push:
+    branches:
+      - infra/jarvis-runner-identity-probe-20261120
+    paths:
+      - .github/workflows/jarvis-runner-identity-probe.yml
+permissions:
+  contents: read
+concurrency:
+  group: jarvis-runner-preflight-20261120
+  cancel-in-progress: false
+jobs:
+  identity:
+    name: Verify existing self-hosted runner is Jarvis (read-only)
+    runs-on: [self-hosted, Linux, ARM64, learnova]
+    timeout-minutes: 5
+    steps:
+      - name: Validate host and production dir without secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Machine arch: $(uname -m)"
+          echo "Runner user: $(id -un)"
+          echo "Runner host: $(hostname -s)"
+          echo "Jarvis SimoVest app directory: $([ -f /var/www/simovest/artisan ] && echo present || echo absent)"
+          echo "Learnova project directory: $([ -d /var/www/learnova.bakerysoft.net ] && echo present || echo absent)"
+          echo "SSH Bridge install: NOT ATTEMPTED"
+          if [ ! -f /var/www/simovest/artisan ]; then
+            echo "::warning::Runner is not verified as production Jarvis. Stop."
+            exit 2
+          fi
+          echo "JARVIS_CANDIDATE=true"
