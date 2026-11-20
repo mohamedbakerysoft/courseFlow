@@ -1,0 +1,21 @@
+name: Jarvis ARM64 runner availability discovery (read-only)
+on:
+  push:
+    branches:
+      - infra/jarvis-runner-identity-probe-20261120
+    paths:
+      - .github/workflows/jarvis-arm64-runner-discovery.yml
+permissions:
+  contents: read
+jobs:
+  identify:
+    runs-on: [self-hosted, Linux, ARM64]
+    timeout-minutes: 4
+    steps:
+      - name: Identify existing Linux ARM64 runner only
+        run: |
+          set -euo pipefail
+          echo "HOSTNAME=$(hostname -s)"
+          echo "ARCH=$(uname -m)"
+          echo "SIMOVEST_DIR=$([ -f /var/www/simovest/artisan ] && echo present || echo absent)"
+          echo "No changes or installs attempted."
